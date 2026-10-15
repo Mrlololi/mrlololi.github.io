@@ -20,5 +20,8 @@ export const formatDate = (date, locale) =>
     ? new Intl.DateTimeFormat('de-AT', { day: '2-digit', month: '2-digit', year: 'numeric', timeZone: 'Europe/Vienna' }).format(date)
     : new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Vienna' }).format(date);
 
+// Escaped text where hyphenated words never break at their hyphen (for big headlines).
+export const keepHyphenated = (s) => esc(s).replace(/(\S+-\S+)/g, '<span class="nowrap">$1</span>');
+
 // Joins template parts, dropping false/null/undefined.
 export const join = (parts) => parts.filter((p) => p !== false && p != null && p !== '').join('\n');

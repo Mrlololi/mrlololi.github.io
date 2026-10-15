@@ -1,7 +1,19 @@
-import { esc } from './util.mjs';
+import { hero } from './hero.mjs';
+import { problems } from './problems.mjs';
+import { pricing } from './pricing.mjs';
+import { references } from './references.mjs';
+import { processSteps, about, faq, contact } from './sections.mjs';
 
+// Section order per brief section 4.
 export function home(t, config) {
-  return `<section class="hero" aria-labelledby="hero-title">
-<h1 id="hero-title">${esc(t.hero.h1)}</h1>
-</section>`;
+  return [
+    hero(t),
+    problems(t),
+    pricing(t),
+    processSteps(t),
+    references(t, config),
+    about(t, config),
+    faq(t),
+    contact(t, config),
+  ].join('\n');
 }
