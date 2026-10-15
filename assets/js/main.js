@@ -24,7 +24,12 @@ initHeader();
 initCalculator();
 initPriceDetails();
 if (document.querySelector('.run')) loadMotion();
-else root.classList.remove('h1-pending');
+else releasePending();
+
+// Drops the classes that hold H1 and run log for their entrance (set in <head>).
+function releasePending() {
+  root.classList.remove('h1-pending', 'run-pending');
+}
 
 // The self-hosted GSAP files are fetched only after the first frame is painted, so the
 // headline (LCP) never waits for 50 KB of animation code on a slow phone.
@@ -41,12 +46,12 @@ async function loadMotion() {
     await load('/assets/vendor/gsap.min.js');
     await Promise.all([load('/assets/vendor/ScrollTrigger.min.js'), load('/assets/vendor/SplitText.min.js').catch(() => {})]);
   } catch {
-    root.classList.remove('h1-pending'); // no animation library: everything stays in its final state
+    releasePending(); // no animation library: everything stays in its final state
     return;
   }
   ({ gsap, ScrollTrigger, SplitText } = window);
   hasGsap = Boolean(gsap && ScrollTrigger);
-  if (!hasGsap) { root.classList.remove('h1-pending'); return; }
+  if (!hasGsap) { releasePending(); return; }
   gsap.registerPlugin(ScrollTrigger, ...(SplitText ? [SplitText] : []));
   const mm = gsap.matchMedia();
   initRun(mm);
@@ -98,7 +103,7 @@ function initHeader() {
 /* ---------- Hero: the automation run (the one orchestrated load moment) ---------- */
 function initRun(mm) {
   const run = document.querySelector('.run');
-  if (!run) { root.classList.remove('h1-pending'); return; }
+  if (!run) { releasePending(); return; }
   const h1 = document.querySelector('.hero h1');
   const summary = run.querySelector('.run__summary');
   const replay = run.querySelector('.run__replay');
@@ -114,7 +119,9 @@ function initRun(mm) {
   }));
   let played = false; // the load sequence runs once; later breakpoint changes only rebuild
   let h1Done = false;
-  replay.hidden = false;
+  // After 2 s the CSS failsafe has shown H1 and the finished log. From then on the load run
+  // is not played any more, so a reader never sees finished steps rewind.
+  const late = () => performance.now() > 1900;
 
   const announce = () => {
     status.textContent = '';
@@ -126,11 +133,13 @@ function initRun(mm) {
 
     if (reduced) {
       // Final state is the CSS default. Replay just confirms the result for screen readers.
-      root.classList.remove('h1-pending');
+      releasePending();
+      replay.hidden = false;
       replay.addEventListener('click', announce);
       return () => replay.removeEventListener('click', announce);
     }
 
+    // Built paused; its first tweens render the rewound state right away (same task, no paint).
     const tl = buildRunTimeline(steps, summary, seconds);
     let replayed = false; // announce the result only after a replay, not on page load
     tl.eventCallback('onComplete', () => { if (replayed) { replayed = false; announce(); } });
@@ -142,26 +151,36 @@ function initRun(mm) {
     };
     replay.addEventListener('click', onReplay);
 
+    // The replay button appears only once the run has started (or is shown finished).
+    const begin = () => { played = true; replay.hidden = false; tl.restart(true); };
+    // Start now if the log is on screen, otherwise when the reader scrolls to it (any width).
+    const whenVisible = () => {
+      if (run.getBoundingClientRect().top < innerHeight * 0.85) begin();
+      else ScrollTrigger.create({ trigger: run, start: 'top 85%', once: true, onEnter: begin });
+    };
+
     if (played) {
+      tl.progress(1);
+    } else if (late()) {
+      releasePending();
+      played = true;
+      replay.hidden = false;
       tl.progress(1);
     } else if (isDesktop && h1 && SplitText && !h1Done) {
       h1Done = true;
-      revealHeadline(h1, run).then(() => { played = true; tl.restart(true); });
+      root.classList.remove('run-pending'); // steps now hold the rewound state; the frame waits for the reveal
+      revealHeadline(h1, run).then(whenVisible);
     } else {
-      root.classList.remove('h1-pending');
-      // On phones the log sits below the fold: start it when it scrolls into view.
-      const start = () => { played = true; tl.restart(true); };
-      const r = run.getBoundingClientRect();
-      if (r.top < innerHeight * 0.85) start();
-      else ScrollTrigger.create({ trigger: run, start: 'top 85%', once: true, onEnter: start });
+      releasePending();
+      whenVisible();
     }
     return () => replay.removeEventListener('click', onReplay);
   });
 }
 
 function buildRunTimeline(steps, summary, seconds) {
-  const tl = gsap.timeline({ paused: true, delay: 0.3, defaults: { ease: 'power2.out' } });
-  const STEP = 0.28;
+  const tl = gsap.timeline({ paused: true, delay: 0.25, defaults: { ease: 'power2.out' } });
+  const STEP = 0.27;
   const first = 0.15;
   tl.fromTo(steps.map((s) => s.wait), { autoAlpha: 0 }, { autoAlpha: 0, duration: 0 }, 0)
     .fromTo(steps.map((s) => s.done), { autoAlpha: 0 }, { autoAlpha: 0, duration: 0 }, 0)
@@ -170,21 +189,23 @@ function buildRunTimeline(steps, summary, seconds) {
     .fromTo(steps.filter((s) => s.link).map((s) => s.link), { strokeDashoffset: 1 }, { strokeDashoffset: 1, duration: 0 }, 0)
     .fromTo(summary, { autoAlpha: 0 }, { autoAlpha: 0, duration: 0 }, 0);
 
+  // Per step: pending, then done with its check and time, then the connector draws down
+  // to the next step, which goes pending only once the line has arrived.
   steps.forEach((s, i) => {
     const at = first + i * STEP;
     const counter = { v: 0 };
-    tl.to(s.wait, { autoAlpha: 1, duration: 0.12 }, at)
-      .to(s.done, { autoAlpha: 1, duration: 0.16 }, at + 0.16)
-      .to(s.check, { strokeDashoffset: 0, duration: 0.2 }, at + 0.2)
-      .to(s.time, { autoAlpha: 1, duration: 0.1 }, at + 0.18)
+    tl.to(s.wait, { autoAlpha: 1, duration: 0.1 }, at)
+      .to(s.done, { autoAlpha: 1, duration: 0.12 }, at + 0.1)
+      .to(s.check, { strokeDashoffset: 0, duration: 0.12 }, at + 0.12)
+      .to(s.time, { autoAlpha: 1, duration: 0.08 }, at + 0.12)
       .fromTo(counter, { v: 0 }, {
-        v: s.seconds, duration: 0.24, ease: 'none',
+        v: s.seconds, duration: 0.2, ease: 'none',
         onUpdate: () => { s.time.textContent = `${seconds.format(counter.v)} s`; },
-      }, at + 0.18);
-    if (s.link) tl.to(s.link, { strokeDashoffset: 0, duration: 0.2, ease: 'none' }, at + 0.3);
+      }, at + 0.12);
+    if (s.link) tl.to(s.link, { strokeDashoffset: 0, duration: 0.09, ease: 'none' }, at + 0.17);
   });
-  tl.to(summary, { autoAlpha: 1, duration: 0.25 }, first + steps.length * STEP + 0.12);
-  return tl; // about 2.2 s including the 0.3 s delay
+  tl.to(summary, { autoAlpha: 1, duration: 0.25 }, first + steps.length * STEP + 0.05);
+  return tl; // 2.07 s of content + 0.25 s delay; with the 0.15 s hand-off from the reveal about 2.5 s
 }
 
 // Line reveal of the H1 while the log frame comes in, after fonts are ready.

@@ -47,9 +47,9 @@ export function layout({ t, other, config, page, main }) {
     '<link rel="preload" href="/assets/fonts/atkinson-hyperlegible-next-latin.woff2" as="font" type="font/woff2" crossorigin>',
     // The stylesheet is inlined at build time (saves a render-blocking request on slow phones).
     `<style>${css}</style>`,
-    // Runs before first paint: marks JS as available and, on desktop with motion allowed,
-    // holds the hero H1 for its line reveal (CSS shows it anyway after 2 s).
-    `<script>document.documentElement.classList.add('js');if(matchMedia('(min-width: 800px) and (prefers-reduced-motion: no-preference)').matches)document.documentElement.classList.add('h1-pending')</script>`,
+    // Runs before first paint: marks JS as available; with motion allowed it holds the run log
+    // steps (all widths) and, on desktop, the hero H1 for their entrance. CSS shows them anyway after 2 s.
+    `<script>var d=document.documentElement;d.classList.add('js');if(matchMedia('(prefers-reduced-motion: no-preference)').matches){d.classList.add('run-pending');if(matchMedia('(min-width: 800px)').matches)d.classList.add('h1-pending')}</script>`,
     // main.js loads the GSAP files itself after the first paint (home pages only).
     '<script type="module" src="/assets/js/main.js"></script>',
     isHome && jsonLd(t, config),
@@ -80,6 +80,7 @@ function header({ t, page, isHome }) {
 <div class="site-header__in">
 <a class="wordmark" href="${t.paths.home}">mrlololi<span class="sr-only"> ${esc(t.ui.wordmarkName)}</span></a>
 <nav class="site-nav" aria-label="${esc(t.ui.navLabel)}">
+<a class="site-nav__jump" href="#footer-nav">${esc(t.ui.menu)}</a>
 <button class="site-nav__toggle" type="button" aria-expanded="false" aria-controls="site-nav-list" hidden>${esc(t.ui.menu)}</button>
 <ul class="site-nav__list" id="site-nav-list">
 ${items}
@@ -90,12 +91,17 @@ ${items}
 </header>`;
 }
 
+// The footer repeats the section links: it is also where the phone "Menü" link leads
+// when main.js has not (yet) loaded.
 function footer({ t, page }) {
+  const base = page.key === 'home' ? '' : t.paths.home;
+  const sections = t.nav.map((n) => `<li><a href="${base}${n.href}">${esc(n.label)}</a></li>`).join('\n');
   return `<footer class="site-footer">
 <div class="site-footer__in">
 <p class="site-footer__copy">${esc(t.footer.copyright)}</p>
-<nav aria-label="${esc(t.ui.footerNavLabel)}">
+<nav id="footer-nav" aria-label="${esc(t.ui.footerNavLabel)}">
 <ul class="site-footer__links">
+${sections}
 <li><a href="${t.paths.legal}">${esc(t.footer.legal)}</a></li>
 <li><a href="${t.paths.privacy}">${esc(t.footer.privacy)}</a></li>
 <li><a href="${page.altPath}" hreflang="${t.ui.langCode}" lang="${t.ui.langCode}">${esc(t.ui.langName)}</a></li>

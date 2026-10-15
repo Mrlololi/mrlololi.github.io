@@ -6,6 +6,7 @@ import { chromium, repoRoot, qaDir } from './browsers.mjs';
 import { startServer } from './serve.mjs';
 import { checkOverflow } from './overflow.mjs';
 import { checkBehaviour } from './behaviour.mjs';
+import { checkReviewFixes } from './review-fixes.mjs';
 import { screenshots, network, accessibility, links, copy, keyboard, budget } from './checks.mjs';
 import { lighthouseCheck } from './lighthouse.mjs';
 
@@ -26,6 +27,7 @@ await run('Layout (no horizontal scroll)', async () => {
 });
 await run('Screenshots', () => screenshots(browser, server.url));
 await run('Motion, reduced motion, no JS, calculator', () => checkBehaviour(browser, server.url));
+await run('Final-review cases (late scripts, failed main.js, timing)', () => checkReviewFixes(browser, server.url));
 await run('Network', () => network(browser, server.url));
 await run('Accessibility (axe)', () => accessibility(browser, server.url));
 await run('Keyboard', () => keyboard(browser, server.url));

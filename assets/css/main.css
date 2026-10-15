@@ -196,16 +196,21 @@ main:focus { outline: none; }
 .site-nav__list a:hover { color: var(--ink); text-decoration: underline; text-decoration-thickness: 2px; }
 .site-nav__lang { padding-inline-start: var(--space-5); border-inline-start: 1px solid var(--line); }
 .site-nav__lang a { color: var(--run-strong); }
-.site-nav__toggle {
+/* The jump link (to the footer nav) and the toggle button look identical, so the swap
+   when main.js arrives moves nothing. */
+.site-nav__toggle, .site-nav__jump {
+  display: inline-flex; align-items: center; justify-content: center;
   min-height: 2.75rem; min-width: 2.75rem; padding: var(--space-2) var(--space-4);
   border: 1px solid var(--line); border-radius: var(--radius-control); background: var(--sheet);
-  font-weight: 700; cursor: pointer;
+  font-family: var(--font-body); font-size: var(--step-0); font-weight: 700; line-height: 1.2;
+  color: var(--ink); text-decoration: none; cursor: pointer;
 }
+.site-nav__jump { display: none; }
 .site-nav__toggle[aria-expanded="true"] { border-color: var(--ink); }
 
 /* With JS (class set in <head> before first paint) the phone menu starts collapsed, so the
-   header never changes height when main.js arrives. Without JS the links simply wrap.
-   If main.js never arrives, the list unfolds in place after 4 s (failsafe). */
+   header never changes height when main.js arrives. Until main.js has wired the toggle,
+   "Menü" is a plain link to the footer navigation. Without JS the links simply wrap. */
 @media (max-width: 799.98px) {
   .js .site-nav__list {
     display: none;
@@ -214,7 +219,7 @@ main:focus { outline: none; }
     padding: var(--space-2) var(--gutter) var(--space-5);
     background: var(--paper); border-bottom: 1px solid var(--line);
   }
-  .js:not(.nav-ready) .site-nav__list { animation: nav-failsafe 0s linear 4s forwards; }
+  .js:not(.nav-ready) .site-nav__jump { display: inline-flex; }
   .js .site-nav.is-open .site-nav__list { display: flex; }
   .js .site-nav__list li { border-top: 1px solid var(--line); }
   .js .site-nav__list a { width: 100%; min-height: 3rem; color: var(--ink); }
@@ -223,7 +228,6 @@ main:focus { outline: none; }
   html:not(.js) .site-header__in { padding-block: var(--space-2); }
   html:not(.js) .site-header { position: static; }
 }
-@keyframes nav-failsafe { to { display: flex; position: static; } }
 @media (min-width: 800px) {
   .site-nav__toggle { display: none !important; }
 }
@@ -279,8 +283,9 @@ main:focus { outline: none; }
 }
 /* Desktop line reveal: held until main.js takes over; shown anyway after 2 s. */
 .hero h1 { text-wrap: wrap; } /* SplitText measures natural lines; balance would fight it */
-.h1-pending .hero h1, .h1-pending .hero .run { visibility: hidden; animation: h1-failsafe 0s linear 2s forwards; }
-@keyframes h1-failsafe { to { visibility: visible; } }
+.h1-pending .hero h1, .h1-pending .hero .run,
+.run-pending .run__steps, .run-pending .run__foot { visibility: hidden; animation: failsafe-show 0s linear 2s forwards; }
+@keyframes failsafe-show { to { visibility: visible; } }
 
 /* ---------- Run log ---------- */
 .run { margin: 0; overflow: hidden; }
@@ -400,7 +405,7 @@ main:focus { outline: none; }
 .price-details summary:hover { color: var(--ink); }
 .price-details__body { overflow: hidden; }
 .price-details__body p { color: var(--ink-soft); max-width: var(--measure); padding-bottom: var(--space-2); }
-.tariff__notes { display: grid; gap: var(--space-3); max-width: 46rem; }
+.tariff__notes { display: grid; gap: var(--space-3); max-width: 40rem; } /* under 80 characters per line */
 .tariff__hourly { font-weight: 600; }
 @media (min-width: 960px) {
   .tariff__group { grid-template-columns: 13rem minmax(0, 1fr); column-gap: var(--space-7); }

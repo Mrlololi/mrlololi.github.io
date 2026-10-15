@@ -199,11 +199,14 @@ color: var(--ink-soft); text-decoration: none; font-weight: 600;
 .site-nav__list a:hover { color: var(--ink); text-decoration: underline; text-decoration-thickness: 2px; }
 .site-nav__lang { padding-inline-start: var(--space-5); border-inline-start: 1px solid var(--line); }
 .site-nav__lang a { color: var(--run-strong); }
-.site-nav__toggle {
+.site-nav__toggle, .site-nav__jump {
+display: inline-flex; align-items: center; justify-content: center;
 min-height: 2.75rem; min-width: 2.75rem; padding: var(--space-2) var(--space-4);
 border: 1px solid var(--line); border-radius: var(--radius-control); background: var(--sheet);
-font-weight: 700; cursor: pointer;
+font-family: var(--font-body); font-size: var(--step-0); font-weight: 700; line-height: 1.2;
+color: var(--ink); text-decoration: none; cursor: pointer;
 }
+.site-nav__jump { display: none; }
 .site-nav__toggle[aria-expanded="true"] { border-color: var(--ink); }
 @media (max-width: 799.98px) {
 .js .site-nav__list {
@@ -213,7 +216,7 @@ flex-direction: column; align-items: stretch; gap: 0;
 padding: var(--space-2) var(--gutter) var(--space-5);
 background: var(--paper); border-bottom: 1px solid var(--line);
 }
-.js:not(.nav-ready) .site-nav__list { animation: nav-failsafe 0s linear 4s forwards; }
+.js:not(.nav-ready) .site-nav__jump { display: inline-flex; }
 .js .site-nav.is-open .site-nav__list { display: flex; }
 .js .site-nav__list li { border-top: 1px solid var(--line); }
 .js .site-nav__list a { width: 100%; min-height: 3rem; color: var(--ink); }
@@ -222,7 +225,6 @@ background: var(--paper); border-bottom: 1px solid var(--line);
 html:not(.js) .site-header__in { padding-block: var(--space-2); }
 html:not(.js) .site-header { position: static; }
 }
-@keyframes nav-failsafe { to { display: flex; position: static; } }
 @media (min-width: 800px) {
 .site-nav__toggle { display: none !important; }
 }
@@ -267,8 +269,9 @@ box-shadow: var(--shadow-instrument);
 .hero .run { margin-top: var(--space-3); }
 }
 .hero h1 { text-wrap: wrap; } 
-.h1-pending .hero h1, .h1-pending .hero .run { visibility: hidden; animation: h1-failsafe 0s linear 2s forwards; }
-@keyframes h1-failsafe { to { visibility: visible; } }
+.h1-pending .hero h1, .h1-pending .hero .run,
+.run-pending .run__steps, .run-pending .run__foot { visibility: hidden; animation: failsafe-show 0s linear 2s forwards; }
+@keyframes failsafe-show { to { visibility: visible; } }
 .run { margin: 0; overflow: hidden; }
 .run__bar {
 display: block; padding: var(--space-3) var(--space-5);
@@ -378,7 +381,7 @@ color: var(--run-strong); font-weight: 700; cursor: pointer; list-style: none;
 .price-details summary:hover { color: var(--ink); }
 .price-details__body { overflow: hidden; }
 .price-details__body p { color: var(--ink-soft); max-width: var(--measure); padding-bottom: var(--space-2); }
-.tariff__notes { display: grid; gap: var(--space-3); max-width: 46rem; }
+.tariff__notes { display: grid; gap: var(--space-3); max-width: 40rem; } 
 .tariff__hourly { font-weight: 600; }
 @media (min-width: 960px) {
 .tariff__group { grid-template-columns: 13rem minmax(0, 1fr); column-gap: var(--space-7); }
@@ -477,7 +480,7 @@ font-family: var(--font-display); font-size: var(--step-1); font-weight: 600; li
 @media (prefers-reduced-motion: reduce) {
 *, *::before, *::after { transition-duration: 0s !important; animation-duration: 0s !important; animation-delay: 0s !important; }
 }</style>
-<script>document.documentElement.classList.add('js');if(matchMedia('(min-width: 800px) and (prefers-reduced-motion: no-preference)').matches)document.documentElement.classList.add('h1-pending')</script>
+<script>var d=document.documentElement;d.classList.add('js');if(matchMedia('(prefers-reduced-motion: no-preference)').matches){d.classList.add('run-pending');if(matchMedia('(min-width: 800px)').matches)d.classList.add('h1-pending')}</script>
 <script type="module" src="/assets/js/main.js"></script>
 </head>
 <body class="page-legal">
@@ -486,6 +489,7 @@ font-family: var(--font-display); font-size: var(--step-1); font-weight: 600; li
 <div class="site-header__in">
 <a class="wordmark" href="/en/">mrlololi<span class="sr-only"> Iva Tsatskrialashvili, home</span></a>
 <nav class="site-nav" aria-label="Main navigation">
+<a class="site-nav__jump" href="#footer-nav">Menu</a>
 <button class="site-nav__toggle" type="button" aria-expanded="false" aria-controls="site-nav-list" hidden>Menu</button>
 <ul class="site-nav__list" id="site-nav-list">
 <li><a href="/en/#services">Services</a></li>
@@ -539,8 +543,13 @@ Email: <a href="mailto:ivikosha@gmail.com">ivikosha@gmail.com</a></address>
 <footer class="site-footer">
 <div class="site-footer__in">
 <p class="site-footer__copy">© 2026 Iva Tsatskrialashvili, Werbeagentur (advertising agency), Graz, Austria</p>
-<nav aria-label="Legal and language">
+<nav id="footer-nav" aria-label="Legal and language">
 <ul class="site-footer__links">
+<li><a href="/en/#services">Services</a></li>
+<li><a href="/en/#pricing">Pricing</a></li>
+<li><a href="/en/#references">References</a></li>
+<li><a href="/en/#about">About</a></li>
+<li><a href="/en/#contact">Contact</a></li>
 <li><a href="/en/legal-notice/">Legal notice</a></li>
 <li><a href="/en/privacy/">Privacy</a></li>
 <li><a href="/impressum/" hreflang="de" lang="de">Deutsch</a></li>
