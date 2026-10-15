@@ -4,8 +4,11 @@
 import { calcSavings, formatResult, toNumber } from './calc.js';
 
 const root = document.documentElement;
-const { gsap, ScrollTrigger, SplitText } = window;
-const hasGsap = Boolean(gsap && ScrollTrigger);
+// GSAP is loaded after the first paint (see loadMotion), so these are filled in later.
+let gsap;
+let ScrollTrigger;
+let SplitText;
+let hasGsap = false;
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
 const locale = root.lang === 'de' ? 'de-AT' : 'en-GB';
 // matchMedia runs a handler only while at least one condition matches, so both
@@ -20,14 +23,34 @@ initNav();
 initHeader();
 initCalculator();
 initPriceDetails();
+if (document.querySelector('.run')) loadMotion();
+else root.classList.remove('h1-pending');
 
-if (hasGsap) {
+// The self-hosted GSAP files are fetched only after the first frame is painted, so the
+// headline (LCP) never waits for 50 KB of animation code on a slow phone.
+async function loadMotion() {
+  await new Promise((resolve) => requestAnimationFrame(() => setTimeout(resolve, 0)));
+  const load = (src) => new Promise((resolve, reject) => {
+    const s = document.createElement('script');
+    s.src = src;
+    s.onload = resolve;
+    s.onerror = reject;
+    document.head.append(s);
+  });
+  try {
+    await load('/assets/vendor/gsap.min.js');
+    await Promise.all([load('/assets/vendor/ScrollTrigger.min.js'), load('/assets/vendor/SplitText.min.js').catch(() => {})]);
+  } catch {
+    root.classList.remove('h1-pending'); // no animation library: everything stays in its final state
+    return;
+  }
+  ({ gsap, ScrollTrigger, SplitText } = window);
+  hasGsap = Boolean(gsap && ScrollTrigger);
+  if (!hasGsap) { root.classList.remove('h1-pending'); return; }
   gsap.registerPlugin(ScrollTrigger, ...(SplitText ? [SplitText] : []));
   const mm = gsap.matchMedia();
   initRun(mm);
   initProblems(mm);
-} else {
-  root.classList.remove('h1-pending');
 }
 
 /* ---------- Navigation: disclosure menu below 800 px ---------- */

@@ -50,9 +50,7 @@ export function layout({ t, other, config, page, main }) {
     // Runs before first paint: marks JS as available and, on desktop with motion allowed,
     // holds the hero H1 for its line reveal (CSS shows it anyway after 2 s).
     `<script>document.documentElement.classList.add('js');if(matchMedia('(min-width: 800px) and (prefers-reduced-motion: no-preference)').matches)document.documentElement.classList.add('h1-pending')</script>`,
-    isHome && '<script defer src="/assets/vendor/gsap.min.js"></script>',
-    isHome && '<script defer src="/assets/vendor/ScrollTrigger.min.js"></script>',
-    isHome && '<script defer src="/assets/vendor/SplitText.min.js"></script>',
+    // main.js loads the GSAP files itself after the first paint (home pages only).
     '<script type="module" src="/assets/js/main.js"></script>',
     isHome && jsonLd(t, config),
   ]);

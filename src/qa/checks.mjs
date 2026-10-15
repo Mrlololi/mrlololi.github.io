@@ -7,7 +7,7 @@ import { repoRoot, projectRoot, qaDir } from './browsers.mjs';
 import { PAGES } from './overflow.mjs';
 
 const ok = (name, pass, details = '') => ({ name, pass: Boolean(pass), details });
-const settle = async (page, p) => { if (p === '/' || p === '/en/') await page.waitForTimeout(3200); };
+const settle = async (page, p) => { if (p === '/' || p === '/en/') await page.waitForTimeout(3500); };
 
 /* 1. Screenshots of every page at 375, 768, 1280, 1440 (full page). */
 export async function screenshots(browser, base) {
