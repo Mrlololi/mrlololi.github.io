@@ -166,7 +166,7 @@ export default {
       },
     ],
     hourly: 'Alles außerhalb der Pakete: 60 € pro Stunde. Express unter 48 Stunden oder am Wochenende: plus 50 %.',
-    smallPrint: 'Alle Preise sind Endpreise. Als Kleinunternehmer gemäß § 6 Abs. 1 Z 27 UStG weise ich keine Umsatzsteuer aus. Für Unternehmen in der EU mit UID gilt Reverse Charge.',
+    smallPrint: 'Alle Preise sind Endpreise. Als Kleinunternehmer gemäß § 6 Abs. 1 Z 27 UStG weise ich keine Umsatzsteuer aus. Bei Unternehmen mit gültiger UID in einem anderen EU-Mitgliedstaat geht die Steuerschuld auf den Leistungsempfänger über (Reverse Charge).',
   },
 
   calc: {

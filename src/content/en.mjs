@@ -164,7 +164,7 @@ export default {
       },
     ],
     hourly: 'Anything outside the packages: €60 per hour. Express under 48 hours or on weekends: plus 50%.',
-    smallPrint: 'All prices are final. As a small business under Austrian VAT law (§ 6 (1) Z 27 UStG) I do not charge VAT. For EU businesses with a VAT ID, the reverse charge applies.',
+    smallPrint: 'All prices are final. As a small business under Austrian VAT law (§ 6 (1) Z 27 UStG) I do not charge VAT. For businesses with a valid VAT ID in another EU member state, the reverse charge applies.',
   },
 
   calc: {

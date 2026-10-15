@@ -38,7 +38,9 @@ test('pricing: anchors, details only where there is more text', () => {
   assert.equal(count(de, /<details class="price-details">/g), 3);
   assert.match(de, /<summary>Details<span class="sr-only">: Technik-Check<\/span><\/summary>/);
   assert.match(de, /Express unter 48 Stunden oder am Wochenende: plus 50 %\./);
-  assert.match(de, /Für Unternehmen in der EU mit UID gilt Reverse Charge\./);
+  assert.match(de, /Bei Unternehmen mit gültiger UID in einem anderen EU-Mitgliedstaat geht die Steuerschuld auf den Leistungsempfänger über \(Reverse Charge\)\./);
+  assert.match(en, /For businesses with a valid VAT ID in another EU member state, the reverse charge applies\./);
+  assert.ok(!de.includes('Für Unternehmen in der EU mit UID gilt Reverse Charge'));
 });
 
 test('calculator: four numeric inputs and the pre-rendered default result', () => {
