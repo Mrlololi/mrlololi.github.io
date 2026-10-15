@@ -1,9 +1,22 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { pages, sitemap } from '../src/build.mjs';
+import { readFileSync } from 'node:fs';
+import { pages, sitemap, cname } from '../src/build.mjs';
 import config from '../src/config.json' with { type: 'json' };
 
-const SITE = 'https://mrlololi.github.io';
+const SITE = config.site_url.replace(/\/$/, '');
+const SITE_RE = SITE.replace(/[.]/g, '\\.').replace(/\//g, '\\/');
+
+test('the site lives on its own domain (Iva, 2026-10-15)', () => {
+  assert.equal(SITE, 'https://mrlololi.com');
+  assert.equal(config.geoapp_url, 'https://mrlololi.com/Webprojekte/geoapp/');
+});
+
+test('CNAME is derived from site_url and committed at the repo root', () => {
+  assert.equal(cname(config), 'mrlololi.com\n');
+  assert.equal(cname({ ...config, site_url: 'https://mrlololi.github.io' }), null);
+  assert.equal(readFileSync(new URL('../CNAME', import.meta.url), 'utf8'), 'mrlololi.com\n');
+});
 const fixedDate = new Date('2026-10-15T12:00:00Z');
 const all = pages(config, { buildDate: fixedDate });
 const byFile = Object.fromEntries(all.map((p) => [p.file, p.html]));
@@ -47,9 +60,10 @@ for (const [file, { lang, url }] of Object.entries(expected)) {
       const html = byFile[file];
       assert.match(html, new RegExp(`<link rel="canonical" href="${url}">`));
       assert.equal(count(html, /<link rel="alternate" hreflang="(de|en|x-default)"/g), 3);
-      assert.match(html, /hreflang="x-default" href="https:\/\/mrlololi\.github\.io\/(impressum\/|datenschutz\/)?"/);
+      assert.match(html, new RegExp(`hreflang="x-default" href="${SITE_RE}\\/(impressum\\/|datenschutz\\/)?"`));
       assert.match(html, new RegExp(`<meta property="og:url" content="${url}">`));
-      assert.match(html, /<meta property="og:image" content="https:\/\/mrlololi\.github\.io\/og-image-(de|en)\.png">/);
+      assert.match(html, new RegExp(`<meta property="og:image" content="${SITE_RE}\\/og-image-(de|en)\\.png">`));
+      assert.ok(!html.includes('mrlololi.github.io'), 'old github.io address left in the page');
       assert.match(html, /<meta name="twitter:card" content="summary_large_image">/);
     });
   }
@@ -142,5 +156,5 @@ test('sitemap lists the six indexable pages with alternates', () => {
   const xml = sitemap(config, fixedDate);
   assert.equal(count(xml, /<url>/g), 6);
   assert.equal(count(xml, /<xhtml:link rel="alternate"/g), 18);
-  assert.ok(xml.includes('<loc>https://mrlololi.github.io/en/privacy/</loc>'));
+  assert.ok(xml.includes(`<loc>${SITE}/en/privacy/</loc>`));
 });

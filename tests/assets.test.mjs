@@ -16,7 +16,8 @@ function localRefs(html) {
   for (const m of html.matchAll(/srcset="([^"]+)"/g)) {
     for (const part of m[1].split(',')) refs.add(part.trim().split(/\s+/)[0]);
   }
-  for (const m of html.matchAll(/content="https:\/\/mrlololi\.github\.io(\/[^"]+\.(?:png|jpg))"/g)) refs.add(m[1]);
+  const site = config.site_url.replace(/\/$/, '');
+  for (const m of html.matchAll(/content="(https:\/\/[^/"]+)(\/[^"]+\.(?:png|jpg))"/g)) if (m[1] === site) refs.add(m[2]);
   return [...refs].filter((r) => /\.[a-z0-9]+$/i.test(r));
 }
 

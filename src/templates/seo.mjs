@@ -31,6 +31,13 @@ export function jsonLd(t, config) {
   return `<script type="application/ld+json">${JSON.stringify(data).replace(/</g, '\\u003c')}</script>`;
 }
 
+// GitHub Pages reads the custom domain from a CNAME file at the publishing root.
+// The build writes it from site_url every time, so a rebuild can never drop it.
+export function cname(config) {
+  const host = new URL(config.site_url).hostname;
+  return host.endsWith('.github.io') ? null : `${host}\n`;
+}
+
 export const robots = (config) => `User-agent: *\nAllow: /\n\nSitemap: ${absUrl(config, '/sitemap.xml')}\n`;
 
 export function sitemap(config, buildDate) {

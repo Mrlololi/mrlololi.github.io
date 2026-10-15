@@ -90,8 +90,7 @@ export async function links(browser, base) {
     const hrefs = await page.$$eval('a[href]', (as) => as.map((a) => a.getAttribute('href')));
     for (const h of hrefs) {
       if (h.startsWith('mailto:')) continue;
-      if (/^https?:/.test(h) && !h.startsWith('https://mrlololi.github.io/') ) external.add(h);
-      else if (h.startsWith('https://mrlololi.github.io/')) external.add(h);
+      if (/^https?:/.test(h)) external.add(h); // absolute links (portfolio included) are checked live
       else internal.set(new URL(h, base + p).href, p);
     }
   }

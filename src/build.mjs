@@ -9,9 +9,9 @@ import en from './content/en.mjs';
 import { layout } from './templates/layout.mjs';
 import { home } from './templates/home.mjs';
 import { impressum, privacy, notFound } from './templates/legal.mjs';
-import { robots, sitemap } from './templates/seo.mjs';
+import { robots, sitemap, cname } from './templates/seo.mjs';
 
-export { sitemap };
+export { sitemap, cname };
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const fileFor = (p) => (p.endsWith('/') ? `${p.slice(1)}index.html` : p.slice(1));
@@ -55,6 +55,11 @@ export async function build({ outDir = root, buildDate } = {}) {
   await writeFile(path.join(outDir, 'robots.txt'), robots(config), 'utf8');
   await writeFile(path.join(outDir, 'sitemap.xml'), sitemap(config, date), 'utf8');
   console.log('page: robots.txt, sitemap.xml');
+  const domain = cname(config);
+  if (domain) {
+    await writeFile(path.join(outDir, 'CNAME'), domain, 'utf8');
+    console.log(`page: CNAME (${domain.trim()})`);
+  }
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1]).href) {

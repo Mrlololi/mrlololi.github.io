@@ -1,13 +1,26 @@
 // Checks the published site on GitHub Pages (brief section 9.4).
-// Usage: node src/qa/live.mjs [https://mrlololi.github.io]
+// Usage: node src/qa/live.mjs [https://mrlololi.com]
 import { mkdir } from 'node:fs/promises';
 import path from 'node:path';
+import config from '../config.json' with { type: 'json' };
 import { chromium, qaDir } from './browsers.mjs';
 import { network } from './checks.mjs';
 
-const base = (process.argv[2] || 'https://mrlololi.github.io').replace(/\/$/, '');
+const base = (process.argv[2] || config.site_url).replace(/\/$/, '');
 const results = [];
 const check = (name, pass, details = '') => results.push({ name, pass: Boolean(pass), details });
+
+// Old and alternative addresses end on the canonical https origin, by real HTTP redirects.
+for (const from of ['https://mrlololi.github.io/', 'https://mrlololi.github.io/en/', 'https://www.mrlololi.com/', 'http://mrlololi.com/', 'http://www.mrlololi.com/']) {
+  try {
+    const res = await fetch(from, { redirect: 'follow' });
+    const to = new URL(res.url);
+    const want = new URL(from.replace(/^http:/, 'https:').replace('://www.', '://').replace('mrlololi.github.io', new URL(base).host));
+    check(`${from} -> ${res.url} (${res.status})`, res.status === 200 && res.redirected && to.origin === new URL(base).origin && to.pathname === want.pathname, `status ${res.status}`);
+  } catch (e) {
+    check(`${from} redirects to ${base}`, false, e.cause?.code || e.message);
+  }
+}
 
 // Our pages: status, language, H1.
 const ours = [
@@ -40,7 +53,10 @@ for (const [p, title, redirect] of portfolio) {
   const res = await fetch(base + p, { redirect: 'manual' });
   const html = await res.text();
   const t = (html.match(/<title>([\s\S]*?)<\/title>/i) || [])[1]?.trim() || '';
-  const ok = res.status === 200 && t.includes(title) && (!redirect || html.includes(`url=${base}${redirect}`));
+  // The old project pages point at their new home by an absolute URL of their own repo
+  // (github.io or the custom domain, both end at the same page).
+  const target = redirect ? new RegExp(`url=https://(mrlololi\\.github\\.io|${new URL(base).host.replace(/\./g, '\\.')})${redirect}`) : null;
+  const ok = res.status === 200 && t.includes(title) && (!target || target.test(html));
   check(`${p}: ${res.status} "${t}"${redirect ? ` -> ${redirect}` : ''}`, ok, `status ${res.status}, title "${t}"`);
 }
 {

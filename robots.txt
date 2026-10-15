@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://mrlololi.github.io/sitemap.xml
+Sitemap: https://mrlololi.com/sitemap.xml

@@ -80,24 +80,21 @@ git commit -m "Preise aktualisiert"
 git push
 ```
 
-GitHub Pages сам выложит новую версию на https://mrlololi.github.io примерно через минуту. Настройки Pages: Deploy from branch, ветка `main`, папка `/ (root)`.
+GitHub Pages сам выложит новую версию на https://mrlololi.com примерно через минуту. Настройки Pages: Deploy from branch, ветка `main`, папка `/ (root)`, Custom domain `mrlololi.com`, Enforce HTTPS включён.
 
-Портфолио живёт в отдельном репозитории `Webprojekte` и открывается по адресу https://mrlololi.github.io/Webprojekte/. Этот сайт его не трогает. Не создавай здесь папки `Webprojekte`, `GeoAPP` или `KittyCats`.
+Портфолио живёт в отдельном репозитории `Webprojekte` и открывается по адресу https://mrlololi.com/Webprojekte/. Этот сайт его не трогает. Не создавай здесь папки `Webprojekte`, `GeoAPP` или `KittyCats`.
 
-## Позже: свой домен mrlololi.com
+## Домен mrlololi.com
 
-Пока этого не делаем, шаги на будущее:
+Сайт живёт на https://mrlololi.com. Адреса https://mrlololi.github.io и https://www.mrlololi.com GitHub сам перенаправляет туда.
 
-1. Купить `mrlololi.com` (Cloudflare Registrar или Namecheap).
-2. GitHub: Profile Settings, Pages, «Add a domain». Добавить у регистратора TXT-запись `_github-pages-challenge-mrlololi.mrlololi.com` с выданным значением и нажать Verify. TXT-запись не удалять.
-3. Репозиторий: Settings, Pages, Custom domain `mrlololi.com`, Save. Это создаст файл `CNAME` в ветке.
-4. DNS у регистратора:
-   - A-записи для корня: `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`
-   - AAAA-записи: `2606:50c0:8000::153`, `2606:50c0:8001::153`, `2606:50c0:8002::153`, `2606:50c0:8003::153`
-   - `www`: CNAME на `mrlololi.github.io`
-   - Никаких wildcard-записей. В Cloudflare DNS эти записи ставить в режим «DNS only» (серое облако).
-5. Когда DNS разойдётся, включить «Enforce HTTPS».
-6. В `src/config.json` поменять `site_url` на `https://mrlololi.com`, пересобрать (canonical, hreflang, sitemap и og-ссылки обновятся сами) и опубликовать. Картинки для соцсетей пересобирать не нужно.
-7. По желанию e-mail: бесплатная пересылка `hello@mrlololi.com` на Gmail через Cloudflare Email Routing. Потом поменять `contact_email` в `src/config.json`, пересобрать и опубликовать (Impressum и Datenschutz обновятся сами).
+- Файл `CNAME` в корне создаёт `npm run build` из `site_url` в `src/config.json`. Руками его не правь и не удаляй: без него GitHub отключит домен. Тест `npm test` проверяет, что он на месте.
+- Домен подтверждён в GitHub (Profile Settings, Pages, Verified domains). TXT-запись `_github-pages-challenge-mrlololi` в DNS не удалять.
+- DNS в Cloudflare, все записи «DNS only» (серое облако):
+  - A для корня: `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`
+  - AAAA: `2606:50c0:8000::153`, `2606:50c0:8001::153`, `2606:50c0:8002::153`, `2606:50c0:8003::153`
+  - `www`: CNAME на `mrlololi.github.io`
+  - Никаких wildcard-записей.
+- Проверка живого сайта, включая перенаправления и портфолио: `node src/qa/live.mjs`.
 
-После подключения домена GitHub автоматически отдаёт портфолио по адресу mrlololi.com/Webprojekte/.
+Позже по желанию: пересылка `hello@mrlololi.com` на Gmail (например, Cloudflare Email Routing). Потом поменять `contact_email` в `src/config.json`, пересобрать и опубликовать (Impressum и Datenschutz обновятся сами).

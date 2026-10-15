@@ -71,7 +71,7 @@ test('references: case link opens in same tab with noopener; quotes typographic'
 test('about: responsive portrait with width and height, GeoAPP link', () => {
   assert.match(de, /<source type="image\/avif" srcset="\/assets\/img\/portrait-260\.avif 260w, \/assets\/img\/portrait-410\.avif 410w"/);
   assert.match(de, /<img src="\/assets\/img\/portrait-260\.jpg"[^>]*width="260" height="325"[^>]*loading="lazy"[^>]*alt="Iva Tsatskrialashvili"/);
-  assert.match(de, /href="https:\/\/mrlololi\.github\.io\/Webprojekte\/geoapp\/"/);
+  assert.match(de, /href="https:\/\/mrlololi\.com\/Webprojekte\/geoapp\/"/);
 });
 
 test('faq: six details', () => {

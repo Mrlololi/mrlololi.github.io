@@ -1,5 +1,5 @@
 // Lighthouse (mobile, default simulated throttling) on / and /en/ using Playwright's Chromium.
-// The local server rewrites https://mrlololi.github.io to its own origin so canonical,
+// The local server rewrites the site_url origin (https://mrlololi.com) to its own origin so canonical,
 // hreflang and og:url point at the page being tested, as they will on GitHub Pages.
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';

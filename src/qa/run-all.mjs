@@ -1,4 +1,5 @@
 // Runs every QA check from brief section 8 and writes mrlololi-site/qa/report.md.
+import config from '../config.json' with { type: 'json' };
 // Usage: npm run qa   (add --no-lighthouse to skip the slow part)
 import { writeFile } from 'node:fs/promises';
 import path from 'node:path';
@@ -38,7 +39,7 @@ await browser.close();
 await server.close();
 
 if (!skipLighthouse) {
-  const lhServer = await startServer({ root: repoRoot, rewriteOrigin: 'https://mrlololi.github.io' });
+  const lhServer = await startServer({ root: repoRoot, rewriteOrigin: config.site_url });
   await run('Lighthouse (mobile)', () => lighthouseCheck(lhServer.url));
   await lhServer.close();
 }
