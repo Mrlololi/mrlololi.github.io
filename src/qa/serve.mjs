@@ -26,13 +26,18 @@ async function resolveFile(root, urlPath) {
   }
 }
 
-export function startServer({ root, port = 0 } = {}) {
+// rewriteOrigin: replace the production origin in HTML/XML/TXT with the local one (Lighthouse SEO checks).
+export function startServer({ root, port = 0, rewriteOrigin = null } = {}) {
+  let localOrigin = '';
   const server = createServer(async (req, res) => {
     let file = await resolveFile(root, req.url);
     let status = 200;
     if (!file) { file = path.join(root, '404.html'); status = 404; }
     const ext = path.extname(file);
     let body = await readFile(file);
+    if (rewriteOrigin && ['.html', '.xml', '.txt'].includes(ext)) {
+      body = Buffer.from(body.toString('utf8').replaceAll(rewriteOrigin, localOrigin));
+    }
     const headers = { 'Content-Type': TYPES[ext] || 'application/octet-stream', 'Cache-Control': 'max-age=600' };
     if (COMPRESS.has(ext) && /gzip/.test(req.headers['accept-encoding'] || '')) {
       body = gzipSync(body);
@@ -44,7 +49,8 @@ export function startServer({ root, port = 0 } = {}) {
   return new Promise((resolve) => {
     server.listen(port, '127.0.0.1', () => {
       const { port: p } = server.address();
-      resolve({ url: `http://127.0.0.1:${p}`, close: () => new Promise((r) => server.close(r)) });
+      localOrigin = `http://127.0.0.1:${p}`;
+      resolve({ url: localOrigin, close: () => new Promise((r) => server.close(r)) });
     });
   });
 }

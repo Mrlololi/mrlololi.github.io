@@ -194,24 +194,27 @@ main:focus { outline: none; }
 }
 .site-nav__toggle[aria-expanded="true"] { border-color: var(--ink); }
 
-/* The menu collapses only once main.js has wired the toggle (.nav-ready),
-   so a failed script never hides the navigation. */
+/* With JS (class set in <head> before first paint) the phone menu starts collapsed, so the
+   header never changes height when main.js arrives. Without JS the links simply wrap.
+   If main.js never arrives, the list unfolds in place after 4 s (failsafe). */
 @media (max-width: 799.98px) {
-  .nav-ready .site-nav__list {
+  .js .site-nav__list {
     display: none;
     position: absolute; inset-inline: 0; top: 100%;
     flex-direction: column; align-items: stretch; gap: 0;
     padding: var(--space-2) var(--gutter) var(--space-5);
     background: var(--paper); border-bottom: 1px solid var(--line);
   }
-  .nav-ready .site-nav.is-open .site-nav__list { display: flex; }
-  .nav-ready .site-nav__list li { border-top: 1px solid var(--line); }
-  .nav-ready .site-nav__list a { width: 100%; min-height: 3rem; color: var(--ink); }
-  .nav-ready .site-nav__lang { padding-inline-start: 0; border-inline-start: 0; }
-  .nav-ready .site-header__in { flex-wrap: nowrap; }
-  html:not(.nav-ready) .site-header__in { padding-block: var(--space-2); }
-  html:not(.nav-ready) .site-header { position: static; }
+  .js:not(.nav-ready) .site-nav__list { animation: nav-failsafe 0s linear 4s forwards; }
+  .js .site-nav.is-open .site-nav__list { display: flex; }
+  .js .site-nav__list li { border-top: 1px solid var(--line); }
+  .js .site-nav__list a { width: 100%; min-height: 3rem; color: var(--ink); }
+  .js .site-nav__lang { padding-inline-start: 0; border-inline-start: 0; }
+  .js .site-header__in { flex-wrap: nowrap; }
+  html:not(.js) .site-header__in { padding-block: var(--space-2); }
+  html:not(.js) .site-header { position: static; }
 }
+@keyframes nav-failsafe { to { display: flex; position: static; } }
 @media (min-width: 800px) {
   .site-nav__toggle { display: none !important; }
 }

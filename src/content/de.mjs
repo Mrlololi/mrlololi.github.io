@@ -269,10 +269,10 @@ export default {
     link: 'Zur Startseite',
   },
 
-  // Impressum (CONTENT.md section 3). Address without the flat number, per Iva (15.10.2026).
+  // Impressum (CONTENT.md section 3). Full address incl. flat number, confirmed by Iva (15.10.2026).
   legalPage: {
     h1: 'Impressum',
-    address: ['Iva Tsatskrialashvili', 'Herbersteinstraße 4', '8020 Graz, Österreich'],
+    address: ['Iva Tsatskrialashvili', 'Herbersteinstraße 4/4181', '8020 Graz, Österreich'],
     emailLabel: 'E-Mail',
     facts: [
       ['Unternehmensgegenstand', 'Werbeagentur (freies Gewerbe)'],
@@ -285,7 +285,7 @@ export default {
     ],
     disclosureTitle: 'Offenlegung gemäß § 25 Mediengesetz',
     disclosure: [
-      ['Medieninhaber', 'Iva Tsatskrialashvili, Herbersteinstraße 4, 8020 Graz'],
+      ['Medieninhaber', 'Iva Tsatskrialashvili, Herbersteinstraße 4/4181, 8020 Graz'],
       ['Grundlegende Richtung', 'Information über die Dienstleistungen von Iva Tsatskrialashvili im Bereich Marketing-Automation, Websites und Launch-Technik.'],
     ],
     linksTitle: 'Haftung für Links',
@@ -296,7 +296,7 @@ export default {
   privacyPage: {
     h1: 'Datenschutzerklärung',
     sections: [
-      { key: 'controller', title: 'Verantwortlicher', text: 'Iva Tsatskrialashvili, Herbersteinstraße 4, 8020 Graz, Österreich, {email}' },
+      { key: 'controller', title: 'Verantwortlicher', text: 'Iva Tsatskrialashvili, Herbersteinstraße 4/4181, 8020 Graz, Österreich, {email}' },
       {
         key: 'hosting',
         title: 'Hosting',

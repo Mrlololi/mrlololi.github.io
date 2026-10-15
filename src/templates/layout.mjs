@@ -1,5 +1,13 @@
+import { readFileSync } from 'node:fs';
 import { esc, absUrl, join } from './util.mjs';
 import { alternatesFor, jsonLd } from './seo.mjs';
+
+// Source of truth stays assets/css/main.css; comments and indentation are stripped when inlined.
+const css = readFileSync(new URL('../../assets/css/main.css', import.meta.url), 'utf8')
+  .replace(/\/\*[\s\S]*?\*\//g, '')
+  .replace(/\n\s*/g, '\n')
+  .replace(/\n{2,}/g, '\n')
+  .trim();
 
 // page: { key: 'home'|'legal'|'privacy'|'404', path, altPath, title, description, noindex? }
 export function layout({ t, other, config, page, main }) {
@@ -37,7 +45,8 @@ export function layout({ t, other, config, page, main }) {
     '<link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">',
     '<link rel="preload" href="/assets/fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin>',
     '<link rel="preload" href="/assets/fonts/atkinson-hyperlegible-next-latin.woff2" as="font" type="font/woff2" crossorigin>',
-    '<link rel="stylesheet" href="/assets/css/main.css">',
+    // The stylesheet is inlined at build time (saves a render-blocking request on slow phones).
+    `<style>${css}</style>`,
     // Runs before first paint: marks JS as available and, on desktop with motion allowed,
     // holds the hero H1 for its line reveal (CSS shows it anyway after 2 s).
     `<script>document.documentElement.classList.add('js');if(matchMedia('(min-width: 800px) and (prefers-reduced-motion: no-preference)').matches)document.documentElement.classList.add('h1-pending')</script>`,

@@ -271,7 +271,7 @@ export default {
 
   legalPage: {
     h1: 'Legal notice (Impressum)',
-    address: ['Iva Tsatskrialashvili', 'Herbersteinstraße 4', '8020 Graz, Austria'],
+    address: ['Iva Tsatskrialashvili', 'Herbersteinstraße 4/4181', '8020 Graz, Austria'],
     emailLabel: 'Email',
     facts: [
       ['Business', 'advertising agency (free trade)'],
@@ -284,7 +284,7 @@ export default {
     ],
     disclosureTitle: 'Disclosure under § 25 Austrian Media Act',
     disclosure: [
-      ['Media owner', 'Iva Tsatskrialashvili, Herbersteinstraße 4, 8020 Graz, Austria'],
+      ['Media owner', 'Iva Tsatskrialashvili, Herbersteinstraße 4/4181, 8020 Graz, Austria'],
       ['Basic editorial line', 'Information about the services of Iva Tsatskrialashvili in marketing automation, websites and launch tech.'],
     ],
     linksTitle: 'Liability for links',
@@ -294,7 +294,7 @@ export default {
   privacyPage: {
     h1: 'Privacy policy',
     sections: [
-      { key: 'controller', title: 'Controller', text: 'Iva Tsatskrialashvili, Herbersteinstraße 4, 8020 Graz, Austria, {email}' },
+      { key: 'controller', title: 'Controller', text: 'Iva Tsatskrialashvili, Herbersteinstraße 4/4181, 8020 Graz, Austria, {email}' },
       {
         key: 'hosting',
         title: 'Hosting',

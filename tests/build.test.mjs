@@ -87,15 +87,17 @@ test('at most two font preloads per page', () => {
   }
 });
 
-test('Impressum: facts from CONTENT.md, address without flat number, no ODR link', () => {
+test('Impressum: facts from CONTENT.md, full address, no ODR link', () => {
   const html = byFile['impressum/index.html'];
   assert.match(html, /GISA-Zahl/);
   assert.match(html, /40197975/);
-  assert.match(html, /Herbersteinstraße 4<br>8020 Graz, Österreich/);
+  assert.match(html, /Herbersteinstraße 4\/4181<br>8020 Graz, Österreich/);
+  assert.match(html, /Medieninhaber<\/dt>\n<dd>Iva Tsatskrialashvili, Herbersteinstraße 4\/4181, 8020 Graz<\/dd>/);
+  assert.match(byFile['datenschutz/index.html'], /Herbersteinstraße 4\/4181, 8020 Graz, Österreich/);
+  assert.match(byFile['en/legal-notice/index.html'], /Herbersteinstraße 4\/4181<br>8020 Graz, Austria/);
   assert.match(html, /Kleinunternehmer gemäß § 6 Abs\. 1 Z 27 UStG/);
   assert.match(html, /Offenlegung gemäß § 25 Mediengesetz/);
   assert.match(html, /href="mailto:ivikosha@gmail\.com"/);
-  assert.ok(!html.includes('4181'));
   assert.ok(!/odr|online-streitbeilegung/i.test(html));
   assert.match(byFile['en/legal-notice/index.html'], /Trade register number \(GISA\)/);
   assert.match(byFile['en/legal-notice/index.html'], /Disclosure under § 25 Austrian Media Act/);

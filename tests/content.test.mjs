@@ -35,10 +35,10 @@ for (const [name, t] of [['de', de], ['en', en]]) {
     assert.equal(withCalc.length, 1);
   });
 
-  test(`${name}: address has no flat number (Iva, 15.10.2026)`, () => {
+  test(`${name}: full address with flat number (Iva, 15.10.2026, second answer)`, () => {
     const all = JSON.stringify(t);
-    assert.ok(!all.includes('4181'));
-    assert.ok(all.includes('Herbersteinstraße 4'));
+    assert.ok(all.includes('Herbersteinstraße 4/4181'));
+    assert.ok(!/Herbersteinstraße 4(?!\/4181)/.test(all), 'address without /4181 found');
   });
 }
 
