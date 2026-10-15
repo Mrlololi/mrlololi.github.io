@@ -131,10 +131,11 @@ test('booking button, booking privacy section and UID line appear when set', () 
   assert.ok(html.includes('ATU12345678'));
 });
 
-test('404: German text and link to the home page', () => {
+test('404: German text and link to the home page, plus the English line', () => {
   const html = byFile['404.html'];
   assert.match(html, /Diese Seite gibt es nicht\./);
   assert.match(html, /Vielleicht hilft die Startseite weiter\./);
+  assert.match(html, /<p class="doc__alt" lang="en">This page doesn't exist\. The home page might help\. <a href="\/en\/">Go to the home page<\/a><\/p>/);
 });
 
 test('sitemap lists the six indexable pages with alternates', () => {

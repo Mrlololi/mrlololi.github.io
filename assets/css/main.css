@@ -252,6 +252,7 @@ main:focus { outline: none; }
 .doc dt { color: var(--ink-soft); }
 .doc dd { margin: 0; }
 .doc .small { margin-top: var(--space-4); }
+.doc__alt { border-top: 1px solid var(--line); padding-top: var(--space-5); color: var(--ink-soft); }
 @media (max-width: 599.98px) {
   .doc dl { grid-template-columns: 1fr; gap: 0; }
   .doc dd { margin-bottom: var(--space-3); }

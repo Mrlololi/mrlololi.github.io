@@ -241,6 +241,7 @@ display: flex; flex-wrap: wrap; gap: var(--space-4) var(--space-6); justify-cont
 .doc dt { color: var(--ink-soft); }
 .doc dd { margin: 0; }
 .doc .small { margin-top: var(--space-4); }
+.doc__alt { border-top: 1px solid var(--line); padding-top: var(--space-5); color: var(--ink-soft); }
 @media (max-width: 599.98px) {
 .doc dl { grid-template-columns: 1fr; gap: 0; }
 .doc dd { margin-bottom: var(--space-3); }
@@ -497,6 +498,7 @@ font-family: var(--font-display); font-size: var(--step-1); font-weight: 600; li
 <h1>Diese Seite gibt es nicht.</h1>
 <p class="lead">Vielleicht hilft die Startseite weiter.</p>
 <p><a class="btn btn--primary" href="/">Zur Startseite</a></p>
+<p class="doc__alt" lang="en">This page doesn't exist. The home page might help. <a href="/en/">Go to the home page</a></p>
 </article>
 </main>
 <footer class="site-footer">

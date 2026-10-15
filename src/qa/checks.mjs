@@ -102,13 +102,20 @@ export async function links(browser, base) {
   await page.close();
   const ext = [];
   const known = [];
+  const viaBrowser = await browser.newPage();
   for (const url of external) {
     try {
       const res = await fetch(url, { redirect: 'follow', headers: { 'user-agent': 'Mozilla/5.0 (link check)', accept: 'text/html' } });
-      if (res.status === 999 && url.includes('linkedin.com')) known.push(`${url} -> 999 (LinkedIn blocks bots; opens fine in a browser)`);
-      else if (res.status >= 400) ext.push(`${url} -> ${res.status}`);
+      if (res.status < 400) continue;
+      // LinkedIn (999) and Cloudflare-protected sites (403) refuse scripts; ask a real browser engine.
+      const r = await viaBrowser.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 }).catch(() => null);
+      const status = r?.status() ?? 0;
+      if (status && status < 400) continue;
+      if ([403, 429, 999].includes(res.status)) known.push(`${url} -> ${res.status} to scripts, ${status || 'no answer'} to headless Chromium (bot protection; check by hand)`);
+      else ext.push(`${url} -> ${res.status}`);
     } catch (e) { ext.push(`${url} -> ${e.cause?.code || e.message}`); }
   }
+  await viaBrowser.close();
   return [
     ok(`links: ${internal.size} internal links and anchors resolve`, broken.length === 0, broken.join(', ')),
     ok(`links: ${external.size} external links answer 2xx/3xx`, ext.length === 0, [...ext, ...known].join(', ')),
@@ -139,7 +146,10 @@ export async function copy(browser, base) {
   for (const p of PAGES) {
     await page.goto(base + p, { waitUntil: 'load' });
     await settle(page, p);
-    visible += ' ' + (await page.evaluate(() => document.body.innerText));
+    visible += ' ' + (await page.evaluate(() => {
+      document.querySelectorAll('details').forEach((d) => { d.open = true; }); // FAQ and price details count too
+      return document.body.innerText;
+    }));
   }
   await page.close();
   const norm = (s) => s.replace(/[„“”"]/g, '"').replace(/ /g, ' ').replace(/\s+/g, ' ').trim();
@@ -186,7 +196,8 @@ export async function keyboard(browser, base) {
         label: `${el.tagName.toLowerCase()} ${(el.textContent || el.getAttribute('aria-label') || '').trim().slice(0, 30)}`,
         outline: cs.outlineStyle !== 'none' && parseFloat(cs.outlineWidth) >= 2,
         visible: r.width > 0 && r.height > 0 && r.bottom > 0 && r.top < innerHeight,
-        covered: !inHeader && r.top < header.bottom - 2 && getComputedStyle(document.querySelector('.site-header')).transform === 'none',
+        // The skip link sits above the header on purpose (z-index), so it is never covered.
+        covered: !inHeader && !el.matches('.skip') && r.top < header.bottom - 2 && getComputedStyle(document.querySelector('.site-header')).transform === 'none',
         y: r.top + scrollY,
       };
     });

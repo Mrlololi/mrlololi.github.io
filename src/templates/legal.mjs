@@ -56,10 +56,12 @@ ${sections}
 </article>`;
 }
 
-export function notFound(t) {
+// One 404.html serves both languages: German first, the English line below it.
+export function notFound(t, alt) {
   return `<article class="doc">
 <h1>${esc(t.notFound.h1)}</h1>
 <p class="lead">${esc(t.notFound.text)}</p>
 <p><a class="btn btn--primary" href="${t.paths.home}">${esc(t.notFound.link)}</a></p>
+<p class="doc__alt" lang="${alt.lang}">${esc(alt.notFound.h1)} ${esc(alt.notFound.text)} <a href="${alt.paths.home}">${esc(alt.notFound.link)}</a></p>
 </article>`;
 }

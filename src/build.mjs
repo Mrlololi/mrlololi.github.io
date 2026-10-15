@@ -38,7 +38,7 @@ export function pages(cfg = config, { buildDate = new Date() } = {}) {
     html: layout({
       t: de, other: en, config: cfg,
       page: { key: '404', path: '/404.html', altPath: en.paths.home, noindex: true, ...de.notFoundMeta },
-      main: notFound(de),
+      main: notFound(de, en),
     }),
   });
   return out;
