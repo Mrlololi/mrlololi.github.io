@@ -19,6 +19,12 @@ export async function screenshots(browser, base) {
     for (const p of PAGES) {
       await page.goto(base + p, { waitUntil: 'load' });
       await settle(page, p);
+      // Scroll through once so lazy images load, then back to the top.
+      await page.evaluate(async () => {
+        for (let y = 0; y < document.body.scrollHeight; y += 700) { scrollTo(0, y); await new Promise((r) => setTimeout(r, 50)); }
+        scrollTo(0, 0);
+      });
+      await page.waitForTimeout(400);
       await page.screenshot({ path: path.join(out, `${p.replace(/\W+/g, '_')}-${width}.png`), fullPage: true });
       n++;
     }
