@@ -87,6 +87,54 @@ test('at most two font preloads per page', () => {
   }
 });
 
+test('Impressum: facts from CONTENT.md, address without flat number, no ODR link', () => {
+  const html = byFile['impressum/index.html'];
+  assert.match(html, /GISA-Zahl/);
+  assert.match(html, /40197975/);
+  assert.match(html, /Herbersteinstraße 4<br>8020 Graz, Österreich/);
+  assert.match(html, /Kleinunternehmer gemäß § 6 Abs\. 1 Z 27 UStG/);
+  assert.match(html, /Offenlegung gemäß § 25 Mediengesetz/);
+  assert.match(html, /href="mailto:ivikosha@gmail\.com"/);
+  assert.ok(!html.includes('4181'));
+  assert.ok(!/odr|online-streitbeilegung/i.test(html));
+  assert.match(byFile['en/legal-notice/index.html'], /Trade register number \(GISA\)/);
+  assert.match(byFile['en/legal-notice/index.html'], /Disclosure under § 25 Austrian Media Act/);
+});
+
+test('privacy: build date as Stand / Last updated', () => {
+  assert.match(byFile['datenschutz/index.html'], /Stand: 15\.10\.2026/);
+  assert.match(byFile['en/privacy/index.html'], /Last updated: 15 October 2026/);
+});
+
+test('privacy: DPF sentence only when verified', () => {
+  const on = pages({ ...config, github_dpf_verified: true }, { buildDate: fixedDate }).find((p) => p.file === 'datenschutz/index.html').html;
+  const off = pages({ ...config, github_dpf_verified: false }, { buildDate: fixedDate }).find((p) => p.file === 'datenschutz/index.html').html;
+  assert.match(on, /GitHub ist unter dem EU-US Data Privacy Framework zertifiziert\./);
+  assert.ok(!off.includes('Data Privacy Framework'));
+});
+
+test('booking button, booking privacy section and UID line are hidden while empty', () => {
+  const html = pages({ ...config, booking_url: '', uid: '' }, { buildDate: fixedDate }).map((p) => p.html).join('\n');
+  assert.ok(!html.includes('Termin buchen</a>'));
+  assert.ok(!html.includes('Book a call</a>'));
+  assert.ok(!html.includes('<h2>Terminbuchung</h2>'));
+  assert.ok(!html.includes('<dt>UID-Nummer</dt>'));
+  assert.ok(!html.includes('<dt>VAT ID</dt>'));
+});
+
+test('booking button, booking privacy section and UID line appear when set', () => {
+  const html = pages({ ...config, booking_url: 'https://example.com/book', uid: 'ATU12345678' }, { buildDate: fixedDate }).map((p) => p.html).join('\n');
+  assert.ok(html.includes('href="https://example.com/book"'));
+  assert.ok(html.includes('<h2>Terminbuchung</h2>'));
+  assert.ok(html.includes('ATU12345678'));
+});
+
+test('404: German text and link to the home page', () => {
+  const html = byFile['404.html'];
+  assert.match(html, /Diese Seite gibt es nicht\./);
+  assert.match(html, /Vielleicht hilft die Startseite weiter\./);
+});
+
 test('sitemap lists the six indexable pages with alternates', () => {
   const xml = sitemap(config, fixedDate);
   assert.equal(count(xml, /<url>/g), 6);
