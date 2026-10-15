@@ -1,0 +1,27 @@
+{
+  "name": "mrlololi-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static bilingual website of Iva Tsatskrialashvili (mrlololi), hosted on GitHub Pages.",
+  "type": "module",
+  "scripts": {
+    "build": "node src/build.mjs",
+    "assets": "node src/tools/vendor.mjs && node src/tools/fonts.mjs && node src/tools/images.mjs && node src/tools/icons.mjs && node src/tools/og.mjs",
+    "browsers": "node src/qa/install-browsers.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "qa": "node src/qa/run-all.mjs"
+  },
+  "dependencies": {
+    "@fontsource-variable/atkinson-hyperlegible-next": "5.3.0",
+    "@fontsource-variable/bricolage-grotesque": "5.3.0",
+    "@fontsource/jetbrains-mono": "5.3.0",
+    "gsap": "3.15.0"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
+    "chrome-launcher": "1.2.2",
+    "lighthouse": "13.5.0",
+    "playwright": "1.64.1",
+    "sharp": "0.35.5"
+  }
+}
