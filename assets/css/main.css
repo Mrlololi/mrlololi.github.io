@@ -265,7 +265,8 @@ main:focus { outline: none; }
   .hero .run { margin-top: var(--space-3); }
 }
 /* Desktop line reveal: held until main.js takes over; shown anyway after 2 s. */
-.h1-pending .hero h1 { visibility: hidden; animation: h1-failsafe 0s linear 2s forwards; }
+.hero h1 { text-wrap: wrap; } /* SplitText measures natural lines; balance would fight it */
+.h1-pending .hero h1, .h1-pending .hero .run { visibility: hidden; animation: h1-failsafe 0s linear 2s forwards; }
 @keyframes h1-failsafe { to { visibility: visible; } }
 
 /* ---------- Run log ---------- */
@@ -348,7 +349,8 @@ main:focus { outline: none; }
     display: flex; flex-direction: column; align-items: center;
     position: sticky; top: calc(var(--header-h) + 8vh); padding-block: var(--space-6);
   }
-  .pair { display: block; padding-block: var(--space-8); }
+  /* Equal heights keep each repair at the same scroll distance. */
+  .pair { display: block; padding-block: var(--space-8); min-height: clamp(18rem, 38vh, 24rem); }
   .pair:first-child { border-top: 0; padding-top: var(--space-6); }
   .pair__node { display: none; }
   .pair__fix { margin-top: var(--space-4); font-size: var(--step-1); line-height: 1.45; }
@@ -412,7 +414,8 @@ main:focus { outline: none; }
 .calc__field input:focus-visible { outline-offset: 1px; }
 .calc__result { font-size: var(--step-1); line-height: 1.45; max-width: 42rem; }
 .calc__result strong { font-family: var(--font-display); font-weight: 700; font-variant-numeric: tabular-nums lining-nums; }
-html:not(.js) .calc__fields { display: none; }
+/* Inputs appear once main.js can calculate; before that the example result stands alone. */
+html:not(.calc-ready) .calc__fields { display: none; }
 
 /* ---------- So arbeiten wir (a real sequence, so it is numbered) ---------- */
 .steps { display: grid; gap: var(--space-6); }
