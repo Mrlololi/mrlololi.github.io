@@ -251,7 +251,7 @@ export default {
     h2: "Tell me what's not working.",
     text: 'I reply within two working days.',
     mail: 'Write an email',
-    subject: 'Anfrage%20%C3%BCber%20mrlololi.com',
+    subject: 'Inquiry%20via%20mrlololi.com',
     booking: 'Book a call',
     linkedin: 'LinkedIn',
     malt: 'Malt profile',

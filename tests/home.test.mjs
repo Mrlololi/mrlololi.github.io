@@ -80,6 +80,8 @@ test('faq: six details', () => {
 
 test('contact: mailto with prefilled subject, LinkedIn and Malt', () => {
   assert.match(de, /href="mailto:ivikosha@gmail\.com\?subject=Anfrage%20%C3%BCber%20mrlololi\.com"/);
+  // English subject chosen by Iva (15.10.2026): "Inquiry via mrlololi.com"
+  assert.match(en, /href="mailto:ivikosha@gmail\.com\?subject=Inquiry%20via%20mrlololi\.com"/);
   assert.match(de, new RegExp(`href="${config.linkedin}"`));
   assert.match(de, new RegExp(`href="${config.malt}"`));
 });
