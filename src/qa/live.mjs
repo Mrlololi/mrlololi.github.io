@@ -75,6 +75,9 @@ await page.goto(base + '/', { waitUntil: 'load' });
 await page.waitForTimeout(3500);
 await mkdir(path.join(qaDir, 'shots'), { recursive: true });
 await page.screenshot({ path: path.join(qaDir, 'shots', 'live-home-1280.png') });
+// The run log sits below the fold and plays once it is scrolled to.
+await page.$eval('.run', (el) => el.scrollIntoView({ block: 'center' }));
+await page.waitForTimeout(3500);
 const done = await page.$$eval('.run__done', (cs) => cs.every((c) => getComputedStyle(c).opacity === '1'));
 check('live home: run log finished, no console errors', done && errors.length === 0, errors.join(' | '));
 await browser.close();
