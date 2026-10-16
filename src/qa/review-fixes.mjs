@@ -16,7 +16,6 @@ const SAMPLER = () => {
       link: steps.map((li) => { const p = li.querySelector('.run__link path'); return p ? parseFloat(getComputedStyle(p).strokeDashoffset) : 0; }),
       summary: Number(getComputedStyle(document.querySelector('.run__summary')).opacity),
       stepsVisible: getComputedStyle(document.querySelector('.run__steps')).visibility,
-      h1Pending: document.documentElement.classList.contains('h1-pending'),
     });
     if (window.__samples.length < 600) requestAnimationFrame(tick);
   };
@@ -87,38 +86,36 @@ export async function checkReviewFixes(browser, base) {
     await page.close();
   }
 
-  // R2: GSAP arriving after the 2 s failsafe never rewinds a run the reader has seen.
+  // R2: GSAP arriving after the 2 s failsafe never rewinds a log the reader is looking at.
   {
     const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
     await page.route('**/assets/vendor/*.js', async (route) => { await new Promise((r) => setTimeout(r, 2600)); await route.continue(); });
     await page.goto(base + '/', { waitUntil: 'domcontentloaded' });
-    await page.waitForTimeout(2300); // failsafe has shown H1 and the finished log
+    await page.$eval('.run', (el) => el.scrollIntoView({ block: 'center' }));
+    await page.waitForTimeout(2300); // failsafe has shown the finished log
     await page.evaluate(SAMPLER);
     await page.waitForTimeout(3000);
     const s = await page.evaluate(() => window.__samples);
     const rewound = s.filter((x) => x.done.some((d) => d < 1)).length;
-    check('R2 late GSAP: finished log is never rewound', rewound === 0, `${rewound} frames with unfinished steps`);
+    check('R2 late GSAP: finished log in view is never rewound', rewound === 0, `${rewound} frames with unfinished steps`);
     await page.close();
   }
 
-  // R3 + R4: load run within 2.6 s of the reveal; connector reaches a step before it goes pending.
+  // R3 + R4: the run ends within 2.6 s of reaching the view; connector reaches a step before it goes pending.
   {
     const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
-    // Sample from the very first frame, before main.js runs.
-    await page.addInitScript(`document.addEventListener('DOMContentLoaded', () => (${SAMPLER.toString()})())`);
     await page.goto(base + '/', { waitUntil: 'load' });
-    await page.waitForTimeout(4500);
+    await page.waitForTimeout(1500); // GSAP is in, the log below the fold is rewound
+    await page.evaluate(SAMPLER);
+    const start = await page.evaluate(() => { document.querySelector('.run').scrollIntoView({ block: 'center' }); return performance.now(); });
+    await page.waitForTimeout(3500);
     const s = await page.evaluate(() => window.__samples);
-    const firstPending = s.findIndex((x) => x.h1Pending);
-    const revealIdx = s.findIndex((x, i) => i > firstPending && firstPending >= 0 && !x.h1Pending);
-    const reveal = s[revealIdx]?.t;
-    const startedIdx = s.findIndex((x, i) => i >= revealIdx && x.done.some((d) => d < 1));
+    const startedIdx = s.findIndex((x) => x.done.some((d) => d < 1));
     const end = s.find((x, i) => i > startedIdx && startedIdx >= 0 && x.summary >= 0.99 && x.done.every((d) => d === 1))?.t;
-    const total = (end - reveal) / 1000;
-    check(`R3 load sequence ends within 2.6 s of the reveal (${total.toFixed(2)} s)`, reveal && end && total <= 2.6, `${total.toFixed(2)} s`);
+    const total = (end - start) / 1000;
+    check(`R3 run ends within 2.6 s of reaching the view (${total.toFixed(2)} s)`, end && total <= 2.6, `${total.toFixed(2)} s`);
     const order = [];
     for (let i = 1; i < 6; i++) {
-      // Only frames after the rewind count (before it, everything shows the static end state).
       const linkIn = s.find((x, k) => k > startedIdx && x.link[i - 1] <= 0.02)?.t;
       const pending = s.find((x, k) => k > startedIdx && x.wait[i] > 0.02)?.t;
       order.push(linkIn !== undefined && pending !== undefined && linkIn <= pending + 1 ? 'ok' : `step ${i + 1}: line ${Math.round(linkIn)} > pending ${Math.round(pending)}`);

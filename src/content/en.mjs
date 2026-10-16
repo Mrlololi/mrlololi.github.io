@@ -34,8 +34,8 @@ export default {
     langName: 'Deutsch',
     langCode: 'de',
     details: 'Details',
-    problem: 'Problem:',
-    fix: 'Fix:',
+    problem: 'Problem',
+    fix: 'Fix',
     lastUpdated: 'Last updated',
     caseImageAlt: 'Home page of alexandrafry.ch',
     translation: 'Translation:',
@@ -56,46 +56,31 @@ export default {
     primary: 'Ask for a first call',
     secondary: 'See pricing',
     small: 'Based in Graz, working remotely across Europe. German, English, Russian and Georgian.',
+    flow: {"label":"Flow: form, ActiveCampaign, payment, course open","nodes":["Form","ActiveCampaign","Payment","Course open"],"chip":"Hi, I'm Iva"},
   },
 
   run: {
-    title: 'Run: new course sign-up',
+    h2: "What happens when someone signs up",
+    title: "Run: new course sign-up",
     steps: [
-      { text: 'Sign-up via the Leadpages form', seconds: 0.2 },
-      { text: 'Double opt-in confirmed', seconds: 0.6 },
-      { text: 'Contact created in ActiveCampaign, tag: launch-autumn', seconds: 0.9 },
-      { text: 'Payment received via Stripe, invoice created in Quaderno', seconds: 1.4 },
-      { text: 'Members area access granted', seconds: 1.9 },
-      { text: 'Welcome email delivered, SPF, DKIM and DMARC passing', seconds: 2.3 },
+      { text: "Sign-up via the form", seconds: 0.2 },
+      { text: "Email address confirmed", seconds: 0.6 },
+      { text: "Contact created in ActiveCampaign", seconds: 0.9 },
+      { text: "Payment received, invoice created", seconds: 1.4 },
+      { text: "Course access granted", seconds: 1.9 },
+      { text: "Welcome email arrived", seconds: 2.3 },
     ],
-    summary: '6 steps, 2.3 seconds, 0 errors',
-    replay: 'Run it again',
+    summary: "6 steps, 2.3 seconds, 0 errors",
+    replay: "Play again",
   },
 
   problems: {
-    h2: 'Where launches usually break',
-    intro: 'I see the same four failures again and again. Each one costs sign-ups, revenue or nerves.',
+    h2: "Where launches usually break",
+    intro: "I see the same three failures again and again. Each one costs sign-ups, revenue or nerves.",
     items: [
-      {
-        severity: 'error',
-        problem: 'Sign-ups get lost between the form and the CRM.',
-        fix: 'Flows with checks and retries that stay reliable even when hundreds of people sign up at once.',
-      },
-      {
-        severity: 'pending',
-        problem: 'Launch emails land in spam.',
-        fix: 'Set up SPF, DKIM and DMARC correctly, warm up the sending domain and test delivery.',
-      },
-      {
-        severity: 'error',
-        problem: 'The instalment payment failed, but access is still open.',
-        fix: 'Automatic reminders, suspension and reactivation, in sync with Quaderno, Somba or Stripe.',
-      },
-      {
-        severity: 'pending',
-        problem: 'The Zapier bill grows every month.',
-        fix: 'Move high-volume flows to Google Apps Script and cut fixed costs for good.',
-      },
+      { problem: "Sign-ups get lost between the form and the CRM.", fix: "Flows with checks and retries that stay reliable even when many people sign up at once." },
+      { problem: "Launch emails land in spam.", fix: "Set up SPF, DKIM and DMARC correctly and test delivery." },
+      { problem: "The instalment payment failed, but access is still open.", fix: "Automatic reminders, suspension and reactivation, in sync with Quaderno, Somba or Stripe." },
     ],
   },
 
@@ -104,66 +89,59 @@ export default {
     intro: 'Fixed prices, clear scope. I work with a few clients at a time, one to two days a week, and give each of them my full attention.',
     groups: [
       {
-        title: 'Getting started',
-        items: [
+        "title": "Getting started",
+        "items": [
           {
-            name: 'Quick fix',
-            price: '€290 fixed',
-            summary: 'One specific thing, up to 4 hours: a form, a link, a DNS record, an automation or a booking integration.',
+            "name": "Quick fix",
+            "price": "€190 fixed",
+            "summary": "One specific task in up to 4 hours: DNS, SPF and DMARC, broken links or forms, bookings or an automation."
           },
           {
-            name: 'Tech check',
-            price: '€490 fixed',
-            summary: 'One day reviewing your setup with read access: data-loss risks, GDPR, deliverability and checkout.',
-            details: 'You get a written report with priorities and prices and a 45-minute call. If you book a project within 30 days, the €490 is fully credited.',
-          },
-        ],
+            "name": "Tech check",
+            "price": "€290 fixed",
+            "summary": "One day of analysis with read access: ActiveCampaign, Zapier or Make, payments, landing pages, double opt-in and consents.",
+            "details": "You get a list with priorities, effort and prices and a 45-minute call. If you book a project within 30 days, the €290 is fully credited."
+          }
+        ]
       },
       {
-        title: 'Fixed-price projects',
-        items: [
+        "title": "Projects",
+        "note": "Fixed price after the briefing.",
+        "items": [
           {
-            name: 'Launch setup',
-            price: '€1,800 to €2,800',
-            summary: 'Landing pages and checkout, email automations for sign-up, reminders, onboarding and failed payments, forms with proper double opt-in, course access in your members area, and support on cart-open day.',
-            details: 'Optional: launch standby during cart-open week with response under 2 hours, €450.',
+            "name": "Launch setup",
+            "price": "from €1,190",
+            "summary": "Landing pages and checkout, ActiveCampaign flows for sign-up, reminders, launch, onboarding and failed payments, forms with double opt-in and tags, connections via Zapier or Apps Script to your CRM and members area, course setup in Somba, Skool or Circle, Zoom and calendar. Everything is ready when sales open."
           },
           {
-            name: 'One-page website',
-            price: '€1,900 to €2,500',
-            summary: 'Leadpages, Wix or WordPress, responsive, with booking, cookie notice, SEO basics, legal notice and privacy policy.',
-            details: 'Three rounds of revisions and a handover call included.',
+            "name": "One-page website",
+            "price": "from €990",
+            "summary": "Wix, Leadpages or custom HTML, responsive, with Calendly, cookie banner, SEO basics, legal notice and privacy policy, domain, publishing, a handover call and three rounds of revisions."
           },
           {
-            name: 'AI in customer support',
-            price: 'setup from €690, support from €150 per month',
-            summary: 'Every incoming request gets a draft reply and a category. Your team only reviews and sends. Nothing goes out without approval.',
-            calc: true,
-          },
-          {
-            name: 'Lower your Zapier costs',
-            price: 'from €1,200',
-            summary: 'Expensive Zapier flows then run in your own Google Workspace. It usually pays for itself within two to four months.',
-          },
-        ],
+            "name": "AI in customer support",
+            "price": "from €590",
+            "summary": "A knowledge base from your FAQ and course rules, a flow in Make or Zapier, draft replies with topic and urgency in GrooveHQ, Gmail or Help Scout, a test with 50 real emails, handover. Only drafts are created: nothing is sent until your team approves it (GDPR).",
+            "extra": {
+              "label": "Optional: care plan €90 per month",
+              "text": "cancel monthly: up to 2 hours for the knowledge base, quality checks and a short report on time saved; beyond that €45 per hour; you pay API costs directly."
+            },
+            "calc": true
+          }
+        ]
       },
       {
-        title: 'Ongoing support',
-        items: [
+        "title": "Ongoing support",
+        "items": [
           {
-            name: 'Tech retainer',
-            price: 'per month',
-            tiers: [
-              ['10 hours', '€650'],
-              ['20 hours', '€1,200'],
-              ['30 hours', '€1,650'],
-            ],
-            summary: 'Ongoing automations, invoicing and instalment flows, small landing pages, troubleshooting and launch support.',
-          },
-        ],
-      },
+            "name": "Support by the hour",
+            "price": "€45 per hour",
+            "summary": "From 5 hours a month: care for your automations, small landing pages, troubleshooting. Billed by the hour at the end of the month."
+          }
+        ]
+      }
     ],
-    hourly: 'Anything outside the packages: €60 per hour. Express under 48 hours or on weekends: plus 50%.',
+    hourly: "Anything outside the packages: €45 per hour.",
     smallPrint: 'All prices are final. As a small business under Austrian VAT law (§ 6 (1) Z 27 UStG) I do not charge VAT. For businesses with a valid VAT ID in another EU member state, the reverse charge applies.',
   },
 
@@ -185,7 +163,7 @@ export default {
       { title: 'First call, 20 minutes, free.', text: 'You tell me what is not working. I tell you honestly whether I can help.' },
       { title: 'Quick fix or quote.', text: 'Small things I fix right away, bigger ones get a fixed price.' },
       { title: 'Build.', text: 'I work in your accounts, document every step and test with real data.' },
-      { title: 'Handover.', text: 'A short video and written instructions so your team can maintain everything.' },
+      { title: 'Handover.', text: 'Written instructions, and a short video on request, so your team can maintain everything.' },
     ],
   },
 
@@ -232,16 +210,19 @@ export default {
       'My business is registered in Austria. You get proper invoices and one person who is responsible.',
     ],
     tools: 'ActiveCampaign, Zapier, Make, Google Apps Script, Leadpages, WordPress, Wix, Shopware, Stripe, Quaderno, Somba, GrooveHQ, Canva, HTML, CSS, JavaScript, Python, SQL',
-    geoapp: 'Side project: GeoAPP, a learning app for Georgian numbers',
+    path: ['Tbilisi', 'DACH clients since 2020', 'Erasmus+ in 11 countries', 'Graz since 2025'],
+    pathLabel: 'My path',
+    projects: 'Side projects: GeoAPP and KittyCats',
   },
 
   faq: {
     h2: 'Frequently asked questions',
     items: [
+      { q: 'Do I need to know about tech?', a: 'No. You tell me what should happen, I take care of the rest and explain everything in plain words.' },
       { q: 'Do you work remotely?', a: 'Yes. Almost all projects run remotely across Europe. In Graz I am happy to meet in person.' },
       { q: 'How soon can you start?', a: 'Quick fixes usually within a week. Projects by arrangement, because I take on only a few at a time.' },
       { q: 'Do I need specific tools?', a: 'No. I work with what you already have and only suggest a switch when it pays off.' },
-      { q: 'How do you handle data?', a: 'I use my own login in your accounts, sign a data processing agreement on request and hand back all access when the project ends.' },
+      { q: 'How do you handle data?', a: 'I use my own login in your accounts and hand back all access when the project ends.' },
       { q: 'Do you also do customer support?', a: 'No. I build the tech that takes load off your support, for example draft replies for recurring questions.' },
       { q: "What if my problem doesn't fit a package?", a: "Send me a short note on what isn't working. You get the price before I start." },
     ],

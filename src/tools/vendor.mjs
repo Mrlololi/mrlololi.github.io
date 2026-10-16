@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const from = path.join(root, 'node_modules/gsap/dist');
 const to = path.join(root, 'assets/vendor');
-const files = ['gsap.min.js', 'ScrollTrigger.min.js', 'SplitText.min.js'];
+const files = ['gsap.min.js', 'ScrollTrigger.min.js'];
 
 await mkdir(to, { recursive: true });
 for (const f of files) {

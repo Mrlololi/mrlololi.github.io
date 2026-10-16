@@ -1,4 +1,4 @@
-// Behaviour checks for the interactive parts (run log, problems, details, calculator).
+// Behaviour checks for the interactive parts (hero flow, problem cards, run log, path line, details, calculator).
 // Usage: node src/qa/behaviour.mjs   (exit code 1 on failure; screenshots in qa/shots/behaviour)
 import { mkdir } from 'node:fs/promises';
 import path from 'node:path';
@@ -18,16 +18,18 @@ const runState = (page) => page.evaluate(() =>
 );
 const allDone = (s) => s.every((x) => x.done === 1 && x.check === 0);
 
-async function nodeStates(page, sel) {
-  return page.$$eval(sel, (nodes) => nodes.map((n) => Number(getComputedStyle(n.querySelector('.node__fixed')).opacity)));
-}
+// Problem cards: is each «Lösung» panel in place (no transform left)?
+const fixesIn = (page) => page.$$eval('.pc__fix', (els) => els.map((e) => getComputedStyle(e).transform === 'none'));
+// Hero flow: opacity of each node's check.
+const flowChecks = (page) => page.$$eval('.hf__check', (els) => els.map((e) => Number(getComputedStyle(e).opacity)));
+const pathDrawn = (page) => page.$eval('.path', (el) => getComputedStyle(el, '::after').transform === 'none');
 
 export async function checkBehaviour(browser, base) {
   await mkdir(shots, { recursive: true });
   const results = [];
   const check = (name, pass, details = '') => results.push({ name, pass: Boolean(pass), details });
 
-  // 1. Desktop load: mid-run and end state, no console errors.
+  // 1. Desktop load: the hero flow plays once; the run log waits below the fold, then plays.
   {
     const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
     const errors = [];
@@ -35,20 +37,37 @@ export async function checkBehaviour(browser, base) {
     page.on('pageerror', (e) => errors.push(e.message));
     await page.goto(base + '/', { waitUntil: 'load' });
     await page.waitForTimeout(1000);
+    const flowMid = await flowChecks(page);
     await page.screenshot({ path: path.join(shots, 'hero-mid-1280.png') });
+    const waiting = await runState(page);
+    const fixesBefore = await fixesIn(page);
+    await page.waitForTimeout(3600);
+    const flowEnd = await flowChecks(page);
+    await page.screenshot({ path: path.join(shots, 'hero-end-1280.png') });
+    check('hero flow: first node lit at 1.0 s, last not yet', flowMid[0] === 1 && flowMid[3] < 1, JSON.stringify(flowMid));
+    check('hero flow: all nodes lit by 4.6 s (plays once, under 5 s)', flowEnd.every((v) => v === 1), JSON.stringify(flowEnd));
+    check('desktop: run log below the fold waits', !allDone(waiting), JSON.stringify(waiting.map((x) => x.done)));
+    check('problems: solution panels wait below their cards before the section', fixesBefore.every((v) => !v), JSON.stringify(fixesBefore));
+
+    // 2. Problems: panels slide up once the cards are in view.
+    await page.$eval('.pcs', (el) => el.scrollIntoView({ block: 'center' }));
+    await page.waitForTimeout(1800);
+    const fixesAfter = await fixesIn(page);
+    await page.screenshot({ path: path.join(shots, 'problems-1280.png') });
+    check('problems: all solution panels in place after entering the view', fixesAfter.every(Boolean), JSON.stringify(fixesAfter));
+
+    // 3. Run log: plays when scrolled to, times count up.
+    await page.$eval('.run', (el) => el.scrollIntoView({ block: 'center' }));
+    await page.waitForTimeout(1000);
     const mid = await runState(page);
     await page.waitForTimeout(2600);
-    await page.screenshot({ path: path.join(shots, 'hero-end-1280.png') });
     const end = await runState(page);
-    check('desktop: run is mid-way at 1.0 s', !allDone(mid), JSON.stringify(mid.map((x) => x.done)));
-    check('desktop: all six steps done by 3.6 s', allDone(end), JSON.stringify(end));
+    await page.screenshot({ path: path.join(shots, 'run-end-1280.png') });
+    check('desktop: run is mid-way 1.0 s after scrolling to it', !allDone(mid), JSON.stringify(mid.map((x) => x.done)));
+    check('desktop: all six steps done 3.6 s after scrolling to it', allDone(end), JSON.stringify(end));
     check('desktop: times count up to their final values', end.map((x) => x.time).join('|') === '0,2 s|0,6 s|0,9 s|1,4 s|1,9 s|2,3 s', end.map((x) => x.time).join('|'));
-    const h1Visible = await page.$eval('.hero h1', (h) => getComputedStyle(h).visibility === 'visible' && h.getBoundingClientRect().height > 0);
-    check('desktop: H1 visible after the reveal', h1Visible);
-    const splitGone = await page.$eval('.hero h1', (h) => !h.querySelector('div'));
-    check('desktop: SplitText reverted after the reveal', splitGone);
 
-    // 2. Replay: double click mid-run must not leave half states.
+    // 4. Replay: double click mid-run must not leave half states.
     await page.click('.run__replay');
     await page.waitForTimeout(250);
     await page.click('.run__replay');
@@ -58,45 +77,15 @@ export async function checkBehaviour(browser, base) {
     const status = await page.$eval('#run-status', (s) => s.textContent);
     check('replay: result announced in the live region', status.includes('6 Schritte'), status);
 
-    // 3. Problems: scrubbed repair while scrolling.
-    await page.$eval('.pairs', (el) => el.scrollIntoView({ block: 'start' }));
-    await page.evaluate(() => scrollBy(0, -innerHeight / 2 + 10));
-    await page.waitForTimeout(400);
-    const before = await nodeStates(page, '.flow__node');
-    await page.screenshot({ path: path.join(shots, 'problems-start-1280.png') });
-    await page.$eval('.pair[data-i="1"]', (el) => el.scrollIntoView({ block: 'center' }));
-    await page.waitForTimeout(400);
-    const middle = await nodeStates(page, '.flow__node');
-    await page.screenshot({ path: path.join(shots, 'problems-middle-1280.png') });
-    await page.$eval('.pairs', (el) => el.scrollIntoView({ block: 'end' }));
-    await page.evaluate(() => scrollBy(0, innerHeight / 2));
-    await page.waitForTimeout(400);
-    const after = await nodeStates(page, '.flow__node');
-    check('problems: all nodes broken before the list', before.every((v) => v === 0), JSON.stringify(before));
-    check('problems: first nodes repaired mid-way, last still broken', middle[0] === 1 && middle[3] === 0, JSON.stringify(middle));
-    check('problems: all nodes repaired after the list', after.every((v) => v === 1), JSON.stringify(after));
-
-    // 4. Resize across the breakpoint and back keeps a consistent state.
-    await page.setViewportSize({ width: 390, height: 844 });
-    await page.waitForTimeout(1500); // let the one-shot repairs of pairs already passed finish
-    const phoneInline = await nodeStates(page, '.pair__node');
-    await page.setViewportSize({ width: 1280, height: 900 });
-    await page.waitForTimeout(800);
-    // Scroll anchoring may move the page during the reflows, so scroll past the list again.
-    await page.$eval('.pairs', (el) => el.scrollIntoView({ block: 'end' }));
-    await page.evaluate(() => scrollBy(0, innerHeight / 2));
-    await page.waitForTimeout(500);
-    const resized = await nodeStates(page, '.flow__node');
-    check('resize 1280 -> 390: inline nodes have a defined state', phoneInline.every((v) => v === 0 || v === 1), JSON.stringify(phoneInline));
-    check('resize 390 -> 1280: nodes repaired after scrolling past', resized.every((v) => v === 1), JSON.stringify(resized));
-    await page.$eval('.pairs', (el) => el.scrollIntoView({ block: 'start' }));
-    await page.evaluate(() => scrollBy(0, -innerHeight / 2 + 10));
-    await page.waitForTimeout(500);
-    const back = await nodeStates(page, '.flow__node');
-    check('resize 390 -> 1280: nodes broken again above the list (scrub)', back.every((v) => v === 0), JSON.stringify(back));
+    // 5. About: the path line draws once in view.
+    const pathBefore = await pathDrawn(page);
+    await page.$eval('.path', (el) => el.scrollIntoView({ block: 'center' }));
+    await page.waitForTimeout(2600);
+    const pathAfter = await pathDrawn(page);
+    check('about: path line undrawn before, drawn after entering the view', !pathBefore && pathAfter, `${pathBefore} -> ${pathAfter}`);
     check('desktop: no console errors', errors.length === 0, errors.join(' | '));
 
-    // 5. Price details open and close with keyboard.
+    // 6. Price details open and close with keyboard.
     await page.focus('.price-details summary');
     await page.keyboard.press('Enter');
     await page.waitForTimeout(450);
@@ -106,7 +95,11 @@ export async function checkBehaviour(browser, base) {
     const closed = await page.$eval('.price-details', (d) => !d.open);
     check('details: Enter opens and closes', opened && closed);
 
-    // 6. Calculator: new values, cleared field, live region.
+    // 7. Calculator: counts up in view, then new values, cleared field, live region.
+    await page.$eval('#ki-rechner', (el) => el.scrollIntoView({ block: 'center' }));
+    await page.waitForTimeout(1600);
+    const shown = await page.$$eval('[data-out]', (els) => els.map((e) => e.textContent));
+    check('calculator: example numbers end at the default result after counting up', shown.join('|') === '31,2|21,8|546', shown.join('|'));
     await page.fill('#calc-emails', '200');
     await page.waitForTimeout(700);
     const exp = formatResult(calcSavings({ emailsPerWeek: 200, minutesPerReply: 6, sharePercent: 60, hourlyRate: 25 }), 'de-AT');
@@ -121,16 +114,15 @@ export async function checkBehaviour(browser, base) {
     await page.close();
   }
 
-  // 7. Reduced motion: final states immediately, no scroll animation.
+  // 8. Reduced motion: every final state at once, nothing moves.
   {
     const page = await browser.newPage({ viewport: { width: 1280, height: 900 }, reducedMotion: 'reduce' });
     await page.goto(base + '/', { waitUntil: 'load' });
     await page.waitForTimeout(150);
+    check('reduced motion: hero flow lit at load', (await flowChecks(page)).every((v) => v === 1));
     check('reduced motion: run complete at load', allDone(await runState(page)));
-    await page.$eval('.pairs', (el) => el.scrollIntoView({ block: 'start' }));
-    await page.waitForTimeout(300);
-    const nodes = await nodeStates(page, '.flow__node');
-    check('reduced motion: problems already repaired', nodes.every((v) => v === 1), JSON.stringify(nodes));
+    check('reduced motion: solution panels in place at load', (await fixesIn(page)).every(Boolean));
+    check('reduced motion: path line drawn at load', await pathDrawn(page));
     await page.click('.run__replay');
     await page.waitForTimeout(200);
     const status = await page.$eval('#run-status', (s) => s.textContent);
@@ -139,37 +131,40 @@ export async function checkBehaviour(browser, base) {
     await page.close();
   }
 
-  // 8. Phone: run starts when scrolled into view, inline nodes repair on enter.
+  // 9. Phone: run starts when scrolled into view; each card's panel slides up on its own.
   {
     const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
     await page.goto(base + '/', { waitUntil: 'load' });
     await page.waitForTimeout(400);
     const waiting = await runState(page);
+    await page.$eval('.pc', (el) => el.scrollIntoView({ block: 'center' }));
+    await page.waitForTimeout(1600);
+    const cards = await fixesIn(page);
+    await page.screenshot({ path: path.join(shots, 'problems-390.png') });
+    check('phone: first card solved on enter, last card still waiting', cards[0] && !cards[2], JSON.stringify(cards));
     await page.$eval('.run', (el) => el.scrollIntoView({ block: 'center' }));
     await page.waitForTimeout(3200);
     const done = await runState(page);
     check('phone: run waits below the fold, then completes', !allDone(waiting) && allDone(done));
-    await page.$eval('.pair[data-i="0"]', (el) => el.scrollIntoView({ block: 'center' }));
-    await page.waitForTimeout(900);
-    const inline = await nodeStates(page, '.pair__node');
-    check('phone: first inline node repaired on enter, last still broken', inline[0] === 1 && inline[3] === 0, JSON.stringify(inline));
-    await page.screenshot({ path: path.join(shots, 'problems-390.png') });
     await page.close();
   }
 
-  // 9. JavaScript disabled: content and navigation usable.
+  // 10. JavaScript disabled: content and navigation usable, every final state shown.
   {
     const ctx = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 390, height: 844 } });
     const page = await ctx.newPage();
     await page.goto(base + '/', { waitUntil: 'load' });
+    await page.waitForTimeout(4500); // the CSS-only hero flow has finished
     const ok = await page.evaluate(() => ({
       nav: getComputedStyle(document.querySelector('.site-nav__list')).display !== 'none',
       h1: getComputedStyle(document.querySelector('.hero h1')).visibility === 'visible',
       run: getComputedStyle(document.querySelector('.run__done')).opacity === '1',
-      faq: document.querySelectorAll('details.faq__item').length === 6,
+      fixes: [...document.querySelectorAll('.pc__fix')].every((e) => getComputedStyle(e).transform === 'none'),
+      flow: [...document.querySelectorAll('.hf__check')].every((e) => getComputedStyle(e).opacity === '1'),
+      faq: document.querySelectorAll('details.faq__item').length === 7,
       mail: Boolean(document.querySelector('a[href^="mailto:"]')),
     }));
-    check('no JS: nav, H1, finished run, FAQ and mail link usable', Object.values(ok).every(Boolean), JSON.stringify(ok));
+    check('no JS: nav, H1, flow, finished run, solutions, FAQ and mail link usable', Object.values(ok).every(Boolean), JSON.stringify(ok));
     await page.screenshot({ path: path.join(shots, 'nojs-390.png'), fullPage: true });
     await ctx.close();
   }

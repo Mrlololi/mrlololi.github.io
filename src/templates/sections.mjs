@@ -25,16 +25,21 @@ ${steps}
 export function about(t, config) {
   return `<section class="section about" id="about" aria-labelledby="about-title">
 <div class="wrap about__grid">
-<picture class="about__photo">
-<source type="image/avif" srcset="/assets/img/portrait-260.avif 260w, /assets/img/portrait-410.avif 410w" sizes="260px">
-<source type="image/webp" srcset="/assets/img/portrait-260.webp 260w, /assets/img/portrait-410.webp 410w" sizes="260px">
-<img src="/assets/img/portrait-260.jpg" srcset="/assets/img/portrait-260.jpg 260w, /assets/img/portrait-410.jpg 410w" sizes="260px" width="260" height="325" loading="lazy" decoding="async" alt="${esc(t.about.photoAlt)}">
+<div class="about__photo">
+<picture>
+<source type="image/avif" srcset="/assets/img/portrait-260.avif 260w, /assets/img/portrait-410.avif 410w" sizes="(min-width: 800px) 340px, 80vw">
+<source type="image/webp" srcset="/assets/img/portrait-260.webp 260w, /assets/img/portrait-410.webp 410w" sizes="(min-width: 800px) 340px, 80vw">
+<img src="/assets/img/portrait-410.jpg" srcset="/assets/img/portrait-260.jpg 260w, /assets/img/portrait-410.jpg 410w" sizes="(min-width: 800px) 340px, 80vw" width="410" height="512" loading="lazy" decoding="async" alt="${esc(t.about.photoAlt)}">
 </picture>
+</div>
 <div class="about__text">
 <h2 id="about-title">${esc(t.about.h2)}</h2>
 ${t.about.paragraphs.map((p) => `<p>${esc(p)}</p>`).join('\n')}
+<ol class="path" role="list" aria-label="${esc(t.about.pathLabel)}">
+${t.about.path.map((stop) => `<li class="path__stop">${esc(stop)}</li>`).join('\n')}
+</ol>
 <p class="about__tools small">${esc(t.about.tools)}</p>
-<p class="about__project"><a href="${esc(config.geoapp_url)}">${esc(t.about.geoapp)}</a></p>
+<p class="about__project"><a href="${esc(config.projects_url)}">${esc(t.about.projects)}</a></p>
 </div>
 </div>
 </section>`;

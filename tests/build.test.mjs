@@ -9,7 +9,7 @@ const SITE_RE = SITE.replace(/[.]/g, '\\.').replace(/\//g, '\\/');
 
 test('the site lives on its own domain (Iva, 2026-10-15)', () => {
   assert.equal(SITE, 'https://mrlololi.com');
-  assert.equal(config.geoapp_url, 'https://mrlololi.com/Webprojekte/geoapp/');
+  assert.equal(config.projects_url, 'https://mrlololi.com/Webprojekte/');
 });
 
 test('CNAME is derived from site_url and committed at the repo root', () => {

@@ -36,8 +36,8 @@ export default {
     langName: 'English',
     langCode: 'en',
     details: 'Details',
-    problem: 'Problem:',
-    fix: 'Lösung:',
+    problem: 'Problem',
+    fix: 'Lösung',
     lastUpdated: 'Stand',
     caseImageAlt: 'Startseite von alexandrafry.ch',
     translation: 'Übersetzung:',
@@ -58,46 +58,31 @@ export default {
     primary: 'Erstgespräch anfragen',
     secondary: 'Preise ansehen',
     small: 'Aus Graz, remote im ganzen DACH-Raum. Deutsch, Englisch, Russisch und Georgisch.',
+    flow: {"label":"Ablauf: Formular, ActiveCampaign, Zahlung, Kurs offen","nodes":["Formular","ActiveCampaign","Zahlung","Kurs offen"],"chip":"Hallo, ich bin Iva"},
   },
 
   run: {
-    title: 'Ablauf: Neue Kursanmeldung',
+    h2: "Was passiert, wenn sich jemand anmeldet",
+    title: "Ablauf: Neue Kursanmeldung",
     steps: [
-      { text: 'Anmeldung über das Leadpages-Formular', seconds: 0.2 },
-      { text: 'Double-Opt-In bestätigt', seconds: 0.6 },
-      { text: 'Kontakt in ActiveCampaign angelegt, Tag: Launch-Herbst', seconds: 0.9 },
-      { text: 'Zahlung über Stripe erhalten, Rechnung in Quaderno erstellt', seconds: 1.4 },
-      { text: 'Zugang zum Mitgliederbereich freigeschaltet', seconds: 1.9 },
-      { text: 'Willkommens-Mail zugestellt, SPF, DKIM und DMARC in Ordnung', seconds: 2.3 },
+      { text: "Anmeldung über das Formular", seconds: 0.2 },
+      { text: "E-Mail-Adresse bestätigt", seconds: 0.6 },
+      { text: "Kontakt in ActiveCampaign angelegt", seconds: 0.9 },
+      { text: "Zahlung erhalten, Rechnung erstellt", seconds: 1.4 },
+      { text: "Kurszugang freigeschaltet", seconds: 1.9 },
+      { text: "Willkommens-Mail angekommen", seconds: 2.3 },
     ],
-    summary: '6 Schritte, 2,3 Sekunden, 0 Fehler',
-    replay: 'Ablauf erneut starten',
+    summary: "6 Schritte, 2,3 Sekunden, 0 Fehler",
+    replay: "Nochmal abspielen",
   },
 
   problems: {
-    h2: 'Wo es bei Launches meistens hakt',
-    intro: 'Vier Fehler sehe ich immer wieder. Jeder kostet Anmeldungen, Umsatz oder Nerven.',
+    h2: "Wo es bei Launches meistens hakt",
+    intro: "Drei Fehler sehe ich immer wieder. Jeder kostet Anmeldungen, Umsatz oder Nerven.",
     items: [
-      {
-        severity: 'error',
-        problem: 'Anmeldungen verschwinden zwischen Formular und CRM.',
-        fix: 'Ich baue Strecken mit Prüfung und Wiederholung, die auch bei hunderten gleichzeitigen Anmeldungen sauber laufen.',
-      },
-      {
-        severity: 'pending',
-        problem: 'Launch-Mails landen im Spam.',
-        fix: 'SPF, DKIM und DMARC richtig einrichten, die Absender-Domain aufwärmen und die Zustellung testen.',
-      },
-      {
-        severity: 'error',
-        problem: 'Die Ratenzahlung ist fehlgeschlagen, der Zugang bleibt trotzdem offen.',
-        fix: 'Automatische Erinnerungen, Sperre und Freischaltung, abgestimmt mit Quaderno, Somba oder Stripe.',
-      },
-      {
-        severity: 'pending',
-        problem: 'Die Zapier-Rechnung wächst jeden Monat.',
-        fix: 'Strecken mit vielen Durchläufen in Google Apps Script verlegen und die Fixkosten dauerhaft senken.',
-      },
+      { problem: "Anmeldungen verschwinden zwischen Formular und CRM.", fix: "Ich baue Strecken mit Prüfung und Wiederholung, die auch bei vielen gleichzeitigen Anmeldungen sauber laufen." },
+      { problem: "Launch-Mails landen im Spam.", fix: "SPF, DKIM und DMARC richtig einrichten und die Zustellung testen." },
+      { problem: "Die Ratenzahlung ist fehlgeschlagen, der Zugang bleibt trotzdem offen.", fix: "Automatische Erinnerungen, Sperre und Freischaltung, abgestimmt mit Quaderno, Somba oder Stripe." },
     ],
   },
 
@@ -106,66 +91,59 @@ export default {
     intro: 'Feste Preise, klarer Umfang. Ich arbeite mit wenigen Kund:innen gleichzeitig, an ein bis zwei Tagen pro Woche, und dafür mit voller Aufmerksamkeit.',
     groups: [
       {
-        title: 'Einstieg',
-        items: [
+        "title": "Zum Einstieg",
+        "items": [
           {
-            name: 'Quick-Fix',
-            price: '290 € fix',
-            summary: 'Eine konkrete Sache, bis 4 Stunden: Formular, Link, DNS-Eintrag, Automation oder Terminbuchung.',
+            "name": "Quick-Fix",
+            "price": "190 € fix",
+            "summary": "Eine konkrete Aufgabe in bis zu 4 Stunden: DNS, SPF und DMARC, defekte Links oder Formulare, Termine oder eine Automation."
           },
           {
-            name: 'Technik-Check',
-            price: '490 € fix',
-            summary: 'Ein Tag Analyse Ihres Systems mit Lesezugriff: Datenverlust-Risiken, DSGVO, Zustellbarkeit und Checkout.',
-            details: 'Sie bekommen einen schriftlichen Bericht mit Prioritäten und Preisen und eine Besprechung von 45 Minuten. Beauftragen Sie innerhalb von 30 Tagen ein Projekt, rechne ich die 490 € voll an.',
-          },
-        ],
+            "name": "Technik-Check",
+            "price": "290 € fix",
+            "summary": "Ein Tag Analyse mit Lesezugriff: ActiveCampaign, Zapier oder Make, Zahlung, Landingpages, Double-Opt-In und Einwilligungen.",
+            "details": "Sie bekommen eine Liste mit Prioritäten, Aufwand und Preisen und ein Gespräch von 45 Minuten. Beauftragen Sie innerhalb von 30 Tagen ein Projekt, rechne ich die 290 € voll an."
+          }
+        ]
       },
       {
-        title: 'Projekte zum Festpreis',
-        items: [
+        "title": "Projekte",
+        "note": "Festpreis nach dem Briefing.",
+        "items": [
           {
-            name: 'Launch-Setup',
-            price: '1.800 bis 2.800 €',
-            summary: 'Landingpages und Checkout, E-Mail-Automationen für Anmeldung, Erinnerung, Onboarding und Zahlungsausfall, Formulare mit sauberem Double-Opt-In, Kurszugänge im Mitgliederbereich und Bereitschaft am Cart-Open-Tag.',
-            details: 'Optional: Launch-Standby in der Cart-Open-Woche mit Reaktion unter 2 Stunden, 450 €.',
+            "name": "Launch-Setup",
+            "price": "ab 1.190 €",
+            "summary": "Landingpages und Checkout, ActiveCampaign-Abläufe für Anmeldung, Erinnerung, Start, Onboarding und Zahlungsausfall, Formulare mit Double-Opt-In und Tags, Verbindungen über Zapier oder Apps Script zu CRM und Mitgliederbereich, Kurs-Einrichtung in Somba, Skool oder Circle, Zoom und Kalender. Zum Verkaufsstart ist alles startklar."
           },
           {
-            name: 'Website als One-Pager',
-            price: '1.900 bis 2.500 €',
-            summary: 'Leadpages, Wix oder WordPress, responsiv, mit Terminbuchung, Cookie-Hinweis, SEO-Grundlagen, Impressum und Datenschutz.',
-            details: 'Drei Korrekturschleifen und ein Übergabe-Gespräch sind dabei.',
+            "name": "Website als One-Pager",
+            "price": "ab 990 €",
+            "summary": "Wix, Leadpages oder eigenes HTML, responsiv, mit Calendly, Cookie-Banner, SEO-Grundlagen, Impressum und Datenschutz, Domain, Veröffentlichung, Übergabe-Gespräch und drei Korrekturschleifen."
           },
           {
-            name: 'KI im Kundenservice',
-            price: 'Einrichtung ab 690 €, Betreuung ab 150 € pro Monat',
-            summary: 'Jede eingehende Anfrage bekommt einen Antwortentwurf und eine Kategorie. Ihr Team prüft nur noch und sendet. Nichts geht ohne Freigabe hinaus.',
-            calc: true,
-          },
-          {
-            name: 'Zapier-Kosten senken',
-            price: 'ab 1.200 €',
-            summary: 'Teure Zapier-Strecken laufen danach in Ihrem eigenen Google Workspace. Das rechnet sich meist nach zwei bis vier Monaten.',
-          },
-        ],
+            "name": "KI im Kundenservice",
+            "price": "ab 590 €",
+            "summary": "Wissensbasis aus Ihren FAQ und Kursregeln, Ablauf in Make oder Zapier, Antwortentwürfe mit Thema und Dringlichkeit in GrooveHQ, Gmail oder Help Scout, Test mit 50 echten E-Mails, Übergabe. Es entstehen nur Entwürfe: versendet wird erst nach Freigabe durch Ihr Team (DSGVO).",
+            "extra": {
+              "label": "Optional: Pflege 90 € pro Monat",
+              "text": "monatlich kündbar: bis 2 Stunden für Wissensbasis, Qualitätskontrolle und einen kurzen Bericht zur gesparten Zeit; darüber 45 € pro Stunde; API-Kosten zahlen Sie direkt."
+            },
+            "calc": true
+          }
+        ]
       },
       {
-        title: 'Laufende Betreuung',
-        items: [
+        "title": "Laufende Betreuung",
+        "items": [
           {
-            name: 'Tech-Retainer',
-            price: 'pro Monat',
-            tiers: [
-              ['10 Stunden', '650 €'],
-              ['20 Stunden', '1.200 €'],
-              ['30 Stunden', '1.650 €'],
-            ],
-            summary: 'Laufende Automationen, Rechnungs- und Ratenzahlungsstrecken, kleine Landingpages, Fehlerbehebung und Bereitschaft im Launch.',
-          },
-        ],
-      },
+            "name": "Betreuung nach Stunden",
+            "price": "45 € pro Stunde",
+            "summary": "Ab 5 Stunden im Monat: Pflege Ihrer Automationen, kleine Landingpages, Fehlerbehebung. Abrechnung am Monatsende nach Stunden."
+          }
+        ]
+      }
     ],
-    hourly: 'Alles außerhalb der Pakete: 60 € pro Stunde. Express unter 48 Stunden oder am Wochenende: plus 50 %.',
+    hourly: "Alles außerhalb der Pakete: 45 € pro Stunde.",
     smallPrint: 'Alle Preise sind Endpreise. Als Kleinunternehmer gemäß § 6 Abs. 1 Z 27 UStG weise ich keine Umsatzsteuer aus. Bei Unternehmen mit gültiger UID in einem anderen EU-Mitgliedstaat geht die Steuerschuld auf den Leistungsempfänger über (Reverse Charge).',
   },
 
@@ -187,7 +165,7 @@ export default {
       { title: 'Erstgespräch, 20 Minuten, kostenlos.', text: 'Sie erzählen, was hakt. Ich sage ehrlich, ob ich helfen kann.' },
       { title: 'Quick-Fix oder Angebot.', text: 'Kleine Dinge löse ich direkt, für größere bekommen Sie einen Festpreis.' },
       { title: 'Umsetzung.', text: 'Ich arbeite in Ihren Konten, dokumentiere jeden Schritt und teste mit echten Daten.' },
-      { title: 'Übergabe.', text: 'Ein kurzes Video und eine schriftliche Anleitung, damit Ihr Team alles selbst pflegen kann.' },
+      { title: 'Übergabe.', text: 'Eine schriftliche Anleitung, auf Wunsch ein kurzes Video, damit Ihr Team alles selbst pflegen kann.' },
     ],
   },
 
@@ -232,16 +210,19 @@ export default {
       'Mein Gewerbe ist in Österreich angemeldet. Sie bekommen ordentliche Rechnungen und einen festen Ansprechpartner.',
     ],
     tools: 'ActiveCampaign, Zapier, Make, Google Apps Script, Leadpages, WordPress, Wix, Shopware, Stripe, Quaderno, Somba, GrooveHQ, Canva, HTML, CSS, JavaScript, Python, SQL',
-    geoapp: 'Eigenes Projekt: GeoAPP, eine Lern-App für georgische Zahlen',
+    path: ['Tbilisi', 'DACH-Kunden ab 2020', 'Erasmus+ in 11 Ländern', 'Graz seit 2025'],
+    pathLabel: 'Mein Weg',
+    projects: 'Eigene Projekte: GeoAPP und KittyCats',
   },
 
   faq: {
     h2: 'Häufige Fragen',
     items: [
+      { q: 'Muss ich mich mit Technik auskennen?', a: 'Nein. Sie sagen mir, was passieren soll, ich kümmere mich um den Rest und erkläre alles in einfachen Worten.' },
       { q: 'Arbeiten Sie auch remote?', a: 'Ja. Fast alle Projekte laufen remote im DACH-Raum. In Graz komme ich gern persönlich vorbei.' },
       { q: 'Wie schnell können Sie starten?', a: 'Quick-Fixes meist innerhalb einer Woche. Projekte nach Absprache, weil ich bewusst nur wenige gleichzeitig annehme.' },
       { q: 'Brauche ich bestimmte Tools?', a: 'Nein. Ich arbeite mit dem, was Sie schon haben, und schlage einen Wechsel nur vor, wenn er sich rechnet.' },
-      { q: 'Wie gehen Sie mit Daten um?', a: 'Ich arbeite mit eigenem Zugang in Ihren Konten, unterschreibe auf Wunsch einen Auftragsverarbeitungsvertrag und gebe alle Zugänge nach Projektende zurück.' },
+      { q: 'Wie gehen Sie mit Daten um?', a: 'Ich arbeite mit eigenem Zugang in Ihren Konten und gebe nach Projektende alle Zugänge zurück.' },
       { q: 'Übernehmen Sie auch den Kundensupport?', a: 'Nein. Ich baue die Technik, die Ihren Support entlastet, zum Beispiel Antwortentwürfe für wiederkehrende Fragen.' },
       { q: 'Was, wenn mein Problem in kein Paket passt?', a: 'Schreiben Sie mir kurz, was nicht funktioniert. Sie erfahren den Preis, bevor ich anfange.' },
     ],

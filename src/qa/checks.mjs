@@ -232,7 +232,7 @@ export async function keyboard(browser, base) {
 
 /* Budget: total JS <= 90 KB gzip incl. GSAP. */
 export async function budget() {
-  const files = ['assets/vendor/gsap.min.js', 'assets/vendor/ScrollTrigger.min.js', 'assets/vendor/SplitText.min.js', 'assets/js/main.js', 'assets/js/calc.js'];
+  const files = ['assets/vendor/gsap.min.js', 'assets/vendor/ScrollTrigger.min.js', 'assets/js/main.js', 'assets/js/calc.js'];
   let total = 0;
   const parts = [];
   for (const f of files) {

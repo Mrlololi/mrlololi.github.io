@@ -49,9 +49,11 @@ export function layout({ t, other, config, page, main }) {
     `<style>${css}</style>`,
     // Runs before first paint: marks JS as available; with motion allowed it holds the run log
     // steps (all widths) and, on desktop, the hero H1 for their entrance. CSS shows them anyway after 2 s.
-    `<script>var d=document.documentElement;d.classList.add('js');if(matchMedia('(prefers-reduced-motion: no-preference)').matches){d.classList.add('run-pending');if(matchMedia('(min-width: 800px)').matches)d.classList.add('h1-pending')}</script>`,
-    // main.js loads the GSAP files itself after the first paint (home pages only).
-    '<script type="module" src="/assets/js/main.js"></script>',
+    `<script>var d=document.documentElement;d.classList.add('js');if(matchMedia('(prefers-reduced-motion: no-preference)').matches)d.classList.add('run-pending')</script>`,
+    // main.js is fetched only after the first frame is on screen, so the headline (LCP) never
+    // waits for it; the page works without it until then ("Menü" link, example result).
+    // main.js in turn loads the GSAP files after load (home pages only).
+    `<script type="module">requestAnimationFrame(()=>requestAnimationFrame(()=>import('/assets/js/main.js')))</script>`,
     isHome && jsonLd(t, config),
   ]);
 

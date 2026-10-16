@@ -1,4 +1,4 @@
-// mrlololi: navigation, hero run log, problems repair, price details, KI-Rechner.
+// mrlololi: navigation, run log, problem cards, path line, price details, KI-Rechner.
 // Progressive enhancement: the HTML/CSS already shows every final state; this file only
 // rewinds and plays them back. Without GSAP (or with reduced motion) nothing moves.
 import { calcSavings, formatResult, toNumber } from './calc.js';
@@ -7,7 +7,6 @@ const root = document.documentElement;
 // GSAP is loaded after the first paint (see loadMotion), so these are filled in later.
 let gsap;
 let ScrollTrigger;
-let SplitText;
 let hasGsap = false;
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
 const locale = root.lang === 'de' ? 'de-AT' : 'en-GB';
@@ -23,18 +22,24 @@ initNav();
 initHeader();
 initCalculator();
 initPriceDetails();
+initReveals();
 if (document.querySelector('.run')) loadMotion();
 else releasePending();
 
-// Drops the classes that hold H1 and run log for their entrance (set in <head>).
+// Drops the class that holds the run log for its entrance (set in <head>).
 function releasePending() {
-  root.classList.remove('h1-pending', 'run-pending');
+  root.classList.remove('run-pending');
 }
 
-// The self-hosted GSAP files are fetched only after the first frame is painted, so the
+// The self-hosted GSAP files are fetched only after the page has loaded and painted, so the
 // headline (LCP) never waits for 50 KB of animation code on a slow phone.
 async function loadMotion() {
-  await new Promise((resolve) => requestAnimationFrame(() => setTimeout(resolve, 0)));
+  // The run log sits below the fold, so the animation code can wait for load and an idle moment.
+  await new Promise((resolve) => {
+    const idle = () => ('requestIdleCallback' in window ? requestIdleCallback(() => resolve(), { timeout: 1200 }) : setTimeout(resolve, 200));
+    if (document.readyState === 'complete') idle();
+    else addEventListener('load', idle, { once: true });
+  });
   const load = (src) => new Promise((resolve, reject) => {
     const s = document.createElement('script');
     s.src = src;
@@ -44,18 +49,18 @@ async function loadMotion() {
   });
   try {
     await load('/assets/vendor/gsap.min.js');
-    await Promise.all([load('/assets/vendor/ScrollTrigger.min.js'), load('/assets/vendor/SplitText.min.js').catch(() => {})]);
+    await load('/assets/vendor/ScrollTrigger.min.js');
   } catch {
     releasePending(); // no animation library: everything stays in its final state
     return;
   }
-  ({ gsap, ScrollTrigger, SplitText } = window);
+  ({ gsap, ScrollTrigger } = window);
   hasGsap = Boolean(gsap && ScrollTrigger);
   if (!hasGsap) { releasePending(); return; }
-  gsap.registerPlugin(ScrollTrigger, ...(SplitText ? [SplitText] : []));
+  gsap.registerPlugin(ScrollTrigger);
   const mm = gsap.matchMedia();
   initRun(mm);
-  initProblems(mm);
+  initCalcCountUp();
 }
 
 /* ---------- Navigation: disclosure menu below 800 px ---------- */
@@ -100,11 +105,10 @@ function initHeader() {
   header.addEventListener('focusin', () => header.classList.remove('is-hidden'));
 }
 
-/* ---------- Hero: the automation run (the one orchestrated load moment) ---------- */
+/* ---------- «Was passiert, wenn sich jemand anmeldet»: the run log, once in view ---------- */
 function initRun(mm) {
   const run = document.querySelector('.run');
   if (!run) { releasePending(); return; }
-  const h1 = document.querySelector('.hero h1');
   const summary = run.querySelector('.run__summary');
   const replay = run.querySelector('.run__replay');
   const status = document.getElementById('run-status');
@@ -117,10 +121,10 @@ function initRun(mm) {
     time: li.querySelector('.run__time'),
     seconds: Number(li.dataset.seconds),
   }));
-  let played = false; // the load sequence runs once; later breakpoint changes only rebuild
-  let h1Done = false;
-  // After 2 s the CSS failsafe has shown H1 and the finished log. From then on the load run
-  // is not played any more, so a reader never sees finished steps rewind.
+  let played = false; // the run plays once; later breakpoint changes only rebuild
+  const inView = () => run.getBoundingClientRect().top < innerHeight * 0.85 && run.getBoundingClientRect().bottom > 0;
+  // After 2 s the CSS failsafe has shown the finished log. A reader who already sees it
+  // never watches it rewind; one who has not scrolled there yet still gets the run.
   const late = () => performance.now() > 1900;
 
   const announce = () => {
@@ -129,7 +133,7 @@ function initRun(mm) {
   };
 
   mm.add(CONDITIONS, (ctx) => {
-    const { isDesktop, reduceMotion: reduced } = ctx.conditions;
+    const { reduceMotion: reduced } = ctx.conditions;
 
     if (reduced) {
       // Final state is the CSS default. Replay just confirms the result for screen readers.
@@ -141,7 +145,7 @@ function initRun(mm) {
 
     // Built paused; its first tweens render the rewound state right away (same task, no paint).
     const tl = buildRunTimeline(steps, summary, seconds);
-    let replayed = false; // announce the result only after a replay, not on page load
+    let replayed = false; // announce the result only after a replay, not on the first run
     tl.eventCallback('onComplete', () => { if (replayed) { replayed = false; announce(); } });
 
     const onReplay = () => {
@@ -153,27 +157,17 @@ function initRun(mm) {
 
     // The replay button appears only once the run has started (or is shown finished).
     const begin = () => { played = true; replay.hidden = false; tl.restart(true); };
-    // Start now if the log is on screen, otherwise when the reader scrolls to it (any width).
-    const whenVisible = () => {
-      if (run.getBoundingClientRect().top < innerHeight * 0.85) begin();
-      else ScrollTrigger.create({ trigger: run, start: 'top 85%', once: true, onEnter: begin });
-    };
 
-    if (played) {
-      tl.progress(1);
-    } else if (late()) {
-      releasePending();
+    if (played || (late() && inView())) {
       played = true;
       replay.hidden = false;
       tl.progress(1);
-    } else if (isDesktop && h1 && SplitText && !h1Done) {
-      h1Done = true;
-      root.classList.remove('run-pending'); // steps now hold the rewound state; the frame waits for the reveal
-      revealHeadline(h1, run).then(whenVisible);
+    } else if (inView()) {
+      begin();
     } else {
-      releasePending();
-      whenVisible();
+      ScrollTrigger.create({ trigger: run, start: 'top 85%', once: true, onEnter: begin });
     }
+    releasePending();
     return () => replay.removeEventListener('click', onReplay);
   });
 }
@@ -208,72 +202,42 @@ function buildRunTimeline(steps, summary, seconds) {
   return tl; // 2.07 s of content + 0.25 s delay; with the 0.15 s hand-off from the reveal about 2.5 s
 }
 
-// Line reveal of the H1 while the log frame comes in, after fonts are ready.
-// Skipped if the fonts arrive late, so a reader never sees the headline vanish and come back.
-function revealHeadline(h1, frame) {
-  return document.fonts.ready.then(() => {
-    if (performance.now() > 1500) { root.classList.remove('h1-pending'); return; }
-    const split = SplitText.create(h1, { type: 'lines', mask: 'lines' });
-    gsap.timeline({ onComplete: () => split.revert() })
-      .from(split.lines, { yPercent: 100, duration: 0.7, stagger: 0.08, ease: 'power3.out' }, 0)
-      .from(frame, { autoAlpha: 0, y: 16, duration: 0.6, ease: 'power2.out' }, 0.1);
-    root.classList.remove('h1-pending');
-    return new Promise((resolve) => gsap.delayedCall(0.15, resolve));
-  });
+/* ---------- Problem cards and the path line: CSS transitions started once in view ---------- */
+function initReveals() {
+  if (reduceMotion.matches || !('IntersectionObserver' in window)) return; // final state stays
+  const targets = document.querySelectorAll('.pc, .path');
+  if (!targets.length) return;
+  root.classList.add('anim');
+  const io = new IntersectionObserver((entries) => {
+    for (const e of entries) {
+      if (!e.isIntersecting) continue;
+      e.target.classList.add('is-in');
+      io.unobserve(e.target);
+    }
+  }, { threshold: 0.35 });
+  targets.forEach((el) => io.observe(el));
 }
 
-/* ---------- Problems: scroll-linked repair ---------- */
-function initProblems(mm) {
-  const section = document.querySelector('.problems');
-  if (!section) return;
-  const list = section.querySelector('.pairs');
-  const pairs = [...list.children];
-  const layers = (node) => [node.querySelector('.node__broken'), node.querySelector('.node__fixed')];
-
-  mm.add(CONDITIONS, (ctx) => {
-    const { isDesktop, reduceMotion: reduced } = ctx.conditions;
-    if (reduced) return; // repaired state stays
-
-    if (isDesktop) {
-      const nodes = [...section.querySelectorAll('.flow__node')].map(layers);
-      const gaps = [...section.querySelectorAll('.flow__gap')];
-      gsap.set(nodes.map(([broken]) => broken), { autoAlpha: 1 });
-      gsap.set(nodes.map(([, fixed]) => fixed), { autoAlpha: 0 });
-      gsap.set(gaps, { scaleY: 0 });
-
-      // Viewport centre travels over the list from 0 to 1; each node repairs as its pair crosses it.
-      const tl = gsap.timeline({
-        defaults: { ease: 'none' },
-        scrollTrigger: { trigger: list, start: 'top center', end: 'bottom center', scrub: true },
-      });
-      const box = list.getBoundingClientRect();
-      pairs.forEach((pair, i) => {
-        const r = pair.getBoundingClientRect();
-        const at = Math.max(0, (r.top + r.height / 2 - box.top) / box.height - 0.1);
-        tl.to(gaps[i], { scaleY: 1, duration: 0.05 }, at)
-          .to(nodes[i][0], { autoAlpha: 0, duration: 0.04 }, at + 0.03)
-          .to(nodes[i][1], { autoAlpha: 1, duration: 0.04 }, at + 0.03);
-      });
-      tl.set({}, {}, 1); // timeline length 1 = scroll progress 0..1
-      return;
-    }
-
-    // Phones: each inline node repairs once when its pair enters the viewport.
-    const inline = pairs.map((p) => layers(p.querySelector('.pair__node')));
-    gsap.set(inline.map(([broken]) => broken), { autoAlpha: 1 });
-    gsap.set(inline.map(([, fixed]) => fixed), { autoAlpha: 0 });
-    ScrollTrigger.batch(pairs, {
-      start: 'top 70%',
-      once: true,
-      onEnter: (entered) => {
-        entered.forEach((pair, i) => {
-          const [broken, fixed] = inline[pairs.indexOf(pair)];
-          gsap.timeline({ delay: i * 0.12 })
-            .to(broken, { autoAlpha: 0, duration: 0.2 })
-            .fromTo(fixed, { autoAlpha: 0, scale: 0.85, transformOrigin: '50% 50%' }, { autoAlpha: 1, scale: 1, duration: 0.3, ease: 'power2.out' }, 0.1);
-        });
-      },
-    });
+/* ---------- KI-Rechner: the example numbers count up once in view ---------- */
+function initCalcCountUp() {
+  const form = document.getElementById('ki-rechner');
+  if (!form || reduceMotion.matches) return;
+  const out = (name) => form.querySelector(`[data-out="${name}"]`);
+  const value = (name) => Number(form.elements[name].value) || 0;
+  ScrollTrigger.create({
+    trigger: form, start: 'top 85%', once: true,
+    onEnter: () => {
+      if (form.dataset.touched) return; // the reader already typed: show their numbers
+      const target = calcSavings({ emailsPerWeek: value('emails'), minutesPerReply: value('minutes'), sharePercent: value('share'), hourlyRate: value('rate') });
+      const k = { v: 0 };
+      const render = () => {
+        const f = formatResult({ hoursPerMonth: target.hoursPerMonth * k.v, savedHours: target.savedHours * k.v, savedEur: target.savedEur * k.v }, form.dataset.locale || locale);
+        out('h').textContent = f.h;
+        out('savedH').textContent = f.savedH;
+        out('savedEur').textContent = f.savedEur;
+      };
+      gsap.fromTo(k, { v: 0 }, { v: 1, duration: 1.2, ease: 'power2.out', onUpdate: render });
+    },
   });
 }
 
@@ -346,6 +310,7 @@ function initCalculator() {
   root.classList.add('calc-ready');
   form.addEventListener('submit', (e) => e.preventDefault());
   form.addEventListener('input', () => {
+    form.dataset.touched = '1';
     const target = calcSavings(read());
     if (hasGsap && !reduceMotion.matches) {
       gsap.to(shown, { ...target, duration: 0.4, ease: 'power2.out', overwrite: true, onUpdate: () => render(shown) });

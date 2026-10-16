@@ -2,25 +2,18 @@ import { esc, fill } from './util.mjs';
 import { calcSavings, formatResult } from '../../assets/js/calc.js';
 
 function item(t, it) {
-  const tiers = it.tiers
-    ? `<ul class="item__tiers" role="list">
-${it.tiers.map(([hours, price]) => `<li><span>${esc(hours)}</span><span class="item__leader" aria-hidden="true"></span><span class="item__tier-price">${esc(price)}</span></li>`).join('\n')}
-</ul>`
-    : '';
+  const extra = it.extra ? `<p class="item__extra"><strong>${esc(it.extra.label)}</strong>, ${esc(it.extra.text)}</p>` : '';
   const details = it.details
     ? `<details class="price-details">
 <summary>${esc(t.ui.details)}<span class="sr-only">: ${esc(it.name)}</span></summary>
 <div class="price-details__body"><p>${esc(it.details)}</p></div>
 </details>`
     : '';
-  return `<li class="item${it.tiers ? ' item--tiers' : ''}">
-<div class="item__head">
+  return `<li class="item">
 <h4 class="item__name">${esc(it.name)}</h4>
-<span class="item__leader" aria-hidden="true"></span>
 <p class="item__price">${esc(it.price)}</p>
-</div>
-${tiers}
 <p class="item__summary">${esc(it.summary)}</p>
+${extra}
 ${details}
 </li>`;
 }
@@ -60,8 +53,11 @@ ${fields}
 export function pricing(t) {
   const groups = t.pricing.groups
     .map(
-      (g, gi) => `<section class="tariff__group" aria-labelledby="group-${gi}">
+      (g, gi) => `<section class="tariff__group tariff__group--${gi + 1}" aria-labelledby="group-${gi}">
+<div class="tariff__head">
 <h3 class="tariff__title" id="group-${gi}">${esc(g.title)}</h3>
+${g.note ? `<p class="tariff__note">${esc(g.note)}</p>` : ''}
+</div>
 <ul class="tariff__items" role="list">
 ${g.items.map((it) => item(t, it) + (it.calc ? '\n' + calculator(t) : '')).join('\n')}
 </ul>

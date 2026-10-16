@@ -19,15 +19,29 @@ for (const [name, t] of [['de', de], ['en', en]]) {
   });
 
   test(`${name}: section item counts match CONTENT.md`, () => {
-    assert.equal(t.problems.items.length, 4);
-    assert.deepEqual(t.problems.items.map((i) => i.severity), ['error', 'pending', 'error', 'pending']);
+    assert.equal(t.problems.items.length, 3);
     assert.equal(t.pricing.groups.length, 3);
-    assert.deepEqual(t.pricing.groups.map((g) => g.items.length), [2, 4, 1]);
+    assert.deepEqual(t.pricing.groups.map((g) => g.items.length), [2, 3, 1]);
     assert.equal(t.process.steps.length, 4);
-    assert.equal(t.faq.items.length, 6);
+    assert.equal(t.faq.items.length, 7);
+    assert.equal(t.about.path.length, 4);
+    assert.equal(t.hero.flow.nodes.length, 4);
     assert.equal(t.about.paragraphs.length, 3);
     assert.equal(t.calc.inputs.length, 4);
     assert.deepEqual(t.calc.inputs.map((i) => i.value), [120, 6, 60, 25]);
+  });
+
+  test(`${name}: offers Iva does not make (yet) are gone (16.10.2026)`, () => {
+    const all = JSON.stringify(t);
+    for (const gone of [/Zapier-(Rechnung|Kosten)|Zapier (bill|costs)/, /Retainer|retainer/, /Standby|standby/, /Express|plus 50/, /60 €|€60/, /Auftragsverarbeitung|data processing agreement/, /hunderten|hundreds/, /aufwärmen|warm up/]) {
+      assert.ok(!gone.test(all), `still on the site: ${gone}`);
+    }
+  });
+
+  test(`${name}: run log in plain words, ActiveCampaign the only tool`, () => {
+    const log = t.run.steps.map((s) => s.text).join(' ');
+    assert.ok(!/SPF|DKIM|DMARC|Leadpages|Stripe|Quaderno|Zapier|Somba/.test(log), log);
+    assert.ok(log.includes('ActiveCampaign'));
   });
 
   test(`${name}: exactly one pricing item carries the calculator`, () => {
@@ -62,4 +76,15 @@ test('en: German quotes keep the original plus a translation', () => {
   assert.equal(en.refs.case3.quote.lang, 'de');
   assert.ok(en.refs.case3.quote.translation.startsWith('For these reasons'));
   assert.equal(en.refs.quote4.lang, 'en');
+});
+
+test('prices as decided by Iva (16.10.2026)', () => {
+  const prices = (t) => t.pricing.groups.flatMap((g) => g.items.map((i) => i.price));
+  assert.deepEqual(prices(de), ['190 € fix', '290 € fix', 'ab 1.190 €', 'ab 990 €', 'ab 590 €', '45 € pro Stunde']);
+  assert.deepEqual(prices(en), ['€190 fixed', '€290 fixed', 'from €1,190', 'from €990', 'from €590', '€45 per hour']);
+  assert.equal(de.pricing.groups[1].note, 'Festpreis nach dem Briefing.');
+  assert.equal(de.pricing.hourly, 'Alles außerhalb der Pakete: 45 € pro Stunde.');
+  assert.equal(de.pricing.groups[1].items[2].extra.label, 'Optional: Pflege 90 € pro Monat');
+  assert.equal(de.faq.items[0].q, 'Muss ich mich mit Technik auskennen?');
+  assert.equal(de.faq.items[4].a, 'Ich arbeite mit eigenem Zugang in Ihren Konten und gebe nach Projektende alle Zugänge zurück.');
 });

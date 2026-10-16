@@ -1,4 +1,4 @@
-import { hero } from './hero.mjs';
+import { hero, signup } from './hero.mjs';
 import { problems } from './problems.mjs';
 import { pricing } from './pricing.mjs';
 import { references } from './references.mjs';
@@ -9,6 +9,7 @@ export function home(t, config) {
   return [
     hero(t),
     problems(t),
+    signup(t),
     pricing(t),
     processSteps(t),
     references(t, config),
