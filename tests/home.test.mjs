@@ -17,7 +17,7 @@ test('hero: H1, CTAs to contact and pricing', () => {
 test('hero: flow diagram with four nodes and a chip with the photo', () => {
   assert.match(de, /<figure class="hero__flow" aria-label="Ablauf: Formular, ActiveCampaign, Zahlung, Kurs offen">/);
   for (const n of ['Formular', 'ActiveCampaign', 'Zahlung', 'Kurs offen']) assert.match(de, new RegExp(`<text[^>]*>${n}</text>`));
-  assert.match(de, /<p class="hero__chip"><img [^>]*alt=""[^>]*>Hallo, ich bin Iva<\/p>/);
+  assert.match(de, /<p class="hero__chip"><picture><source type="image\/avif" srcset="\/assets\/img\/avatar-44\.avif 1x, \/assets\/img\/avatar-88\.avif 2x"><source type="image\/webp" srcset="\/assets\/img\/avatar-44\.webp 1x, \/assets\/img\/avatar-88\.webp 2x"><img src="\/assets\/img\/avatar-44\.jpg" srcset="\/assets\/img\/avatar-88\.jpg 2x" width="44" height="44" loading="lazy" decoding="async" alt=""><\/picture>Hallo, ich bin Iva<\/p>/);
   assert.match(en, /Hi, I'm Iva<\/p>/);
 });
 
@@ -82,9 +82,10 @@ test('references: case link opens in same tab with noopener; quotes typographic'
   assert.match(en, /“He was also highly adaptable/);
 });
 
-test('about: bigger portrait, path line, link to the own projects', () => {
-  assert.match(de, /<source type="image\/avif" srcset="\/assets\/img\/portrait-260\.avif 260w, \/assets\/img\/portrait-410\.avif 410w"/);
-  assert.match(de, /<img src="\/assets\/img\/portrait-410\.jpg"[^>]*width="410" height="512"[^>]*loading="lazy"[^>]*alt="Iva Tsatskrialashvili"/);
+test('about: Hallstatt photo 1x/2x, path line, link to the own projects', () => {
+  assert.match(de, /<source type="image\/avif" srcset="\/assets\/img\/about-340\.avif 340w, \/assets\/img\/about-680\.avif 680w"/);
+  assert.match(de, /<img src="\/assets\/img\/about-340\.jpg"[^>]*width="340" height="425"[^>]*loading="lazy"[^>]*alt="Iva Tsatskrialashvili"/);
+  assert.ok(!de.includes('portrait-'), 'the CV photo is gone');
   assert.match(de, /<ol class="path" role="list" aria-label="Mein Weg">/);
   assert.equal(count(de, /<li class="path__stop">/g), 4);
   assert.match(de, /<a href="https:\/\/mrlololi\.com\/Webprojekte\/">Eigene Projekte: GeoAPP und KittyCats<\/a>/);
@@ -96,9 +97,9 @@ test('faq: seven details, the tech question first', () => {
 });
 
 test('contact: mailto with prefilled subject, LinkedIn and Malt', () => {
-  assert.match(de, /href="mailto:ivikosha@gmail\.com\?subject=Anfrage%20%C3%BCber%20mrlololi\.com"/);
+  assert.match(de, /href="mailto:hello@mrlololi\.com\?subject=Anfrage%20%C3%BCber%20mrlololi\.com"/);
   // English subject chosen by Iva (15.10.2026): "Inquiry via mrlololi.com"
-  assert.match(en, /href="mailto:ivikosha@gmail\.com\?subject=Inquiry%20via%20mrlololi\.com"/);
+  assert.match(en, /href="mailto:hello@mrlololi\.com\?subject=Inquiry%20via%20mrlololi\.com"/);
   assert.match(de, new RegExp(`href="${config.linkedin}"`));
   assert.match(de, new RegExp(`href="${config.malt}"`));
 });

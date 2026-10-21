@@ -51,7 +51,7 @@ export function hero(t) {
 <div class="hero__visual">
 ${ribbonSvg(t.hero.ribbon)}
 <figure class="hero__flow" aria-label="${esc(t.hero.flow.label)}">
-<p class="hero__chip"><img src="/assets/img/portrait-260.webp" width="44" height="44" loading="lazy" decoding="async" alt="">${esc(t.hero.flow.chip)}</p>
+<p class="hero__chip"><picture><source type="image/avif" srcset="/assets/img/avatar-44.avif 1x, /assets/img/avatar-88.avif 2x"><source type="image/webp" srcset="/assets/img/avatar-44.webp 1x, /assets/img/avatar-88.webp 2x"><img src="/assets/img/avatar-44.jpg" srcset="/assets/img/avatar-88.jpg 2x" width="44" height="44" loading="lazy" decoding="async" alt=""></picture>${esc(t.hero.flow.chip)}</p>
 ${flowSvg(t.hero.flow.nodes)}
 ${loopButton(t)}
 </figure>

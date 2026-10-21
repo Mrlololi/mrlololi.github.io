@@ -306,7 +306,8 @@ padding: 0.3rem var(--space-4) 0.3rem 0.3rem;
 background: var(--sheet); border: 1px solid var(--line); border-radius: 999px; box-shadow: var(--shadow-soft);
 font-weight: 700; font-size: var(--step--1); line-height: 1.2;
 }
-.hero__chip img { width: 2.75rem; height: 2.75rem; border-radius: 50%; object-fit: cover; object-position: 50% 15%; }
+.hero__chip picture { flex: none; }
+.hero__chip img { width: 2.75rem; height: 2.75rem; border-radius: 50%; object-fit: cover; }
 .hf { width: 100%; height: auto; overflow: visible; }
 .hf__wire { fill: none; stroke: var(--wire); stroke-width: 2.5; }
 .hf__pulse { fill: none; stroke: var(--blue-ink); stroke-width: 9; stroke-linecap: round; stroke-dasharray: 0.1 200; opacity: 0; }
@@ -757,7 +758,7 @@ min-height: 16rem; padding: var(--space-5); border-radius: 24px; background: lin
 .bubble--visitor { justify-self: end; background: var(--ink); color: #fff; border-bottom-right-radius: 6px; font-weight: 600; }
 .bubble--typing { justify-self: start; background: var(--sheet); color: var(--ink-soft); font-style: italic; }
 .bubble-row { display: flex; align-items: flex-end; gap: var(--space-2); }
-.bubble__photo { width: 2.25rem; height: 2.25rem; border-radius: 50%; object-fit: cover; object-position: 50% 15%; flex: none; }
+.bubble__photo { width: 2.25rem; height: 2.25rem; border-radius: 50%; object-fit: cover; flex: none; }
 .bubble--iva { background: var(--sheet); border-bottom-left-radius: 6px; }
 @media (prefers-reduced-motion: no-preference) {
 .btn--primary:hover { transform: translateY(-2px); }
@@ -816,7 +817,7 @@ min-height: 16rem; padding: var(--space-5); border-radius: 24px; background: lin
 }</style>
 <script>var d=document.documentElement;d.classList.add('js');if(matchMedia('(prefers-reduced-motion: no-preference)').matches)d.classList.add('run-pending')</script>
 <script type="module">requestAnimationFrame(()=>requestAnimationFrame(()=>import('/assets/js/main.js')))</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","name":"mrlololi","alternateName":"Iva Tsatskrialashvili","description":"I build and maintain the tech behind online courses and digital products: ActiveCampaign, Zapier, landing pages and payments. Fixed prices, based in Graz, working remotely across Europe.","url":"https://mrlololi.com/en/","email":"ivikosha@gmail.com","image":"https://mrlololi.com/og-image-en.png","inLanguage":"en","areaServed":["AT","DE","CH"],"address":{"@type":"PostalAddress","addressLocality":"Graz","postalCode":"8020","addressCountry":"AT"},"founder":{"@type":"Person","name":"Iva Tsatskrialashvili","sameAs":["https://www.linkedin.com/in/tsatskrialashvili-iva","https://www.malt.de/profile/ivatsatskrialashvili"]},"priceRange":"€€"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","name":"mrlololi","alternateName":"Iva Tsatskrialashvili","description":"I build and maintain the tech behind online courses and digital products: ActiveCampaign, Zapier, landing pages and payments. Fixed prices, based in Graz, working remotely across Europe.","url":"https://mrlololi.com/en/","email":"hello@mrlololi.com","image":"https://mrlololi.com/og-image-en.png","inLanguage":"en","areaServed":["AT","DE","CH"],"address":{"@type":"PostalAddress","addressLocality":"Graz","postalCode":"8020","addressCountry":"AT"},"founder":{"@type":"Person","name":"Iva Tsatskrialashvili","sameAs":["https://www.linkedin.com/in/tsatskrialashvili-iva","https://www.malt.de/profile/ivatsatskrialashvili"]},"priceRange":"€€"}</script>
 </head>
 <body class="page-home">
 <a class="skip" href="#main">Skip to content</a>
@@ -854,7 +855,7 @@ min-height: 16rem; padding: var(--space-5); border-radius: 24px; background: lin
 <svg class="ribbon ribbon--top" viewBox="0 0 540 100" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false"><defs><path id="ribbon-top" d="M-60 70C120 10 380 30 600 52"/></defs><text class="ribbon__text"><textPath href="#ribbon-top">Sign-up received · Email confirmed · Tag added · Payment received · Access granted · Welcome email arrived · Sign-up received · Email confirmed · Tag added · Payment received · Access granted · Welcome email arrived · Sign-up received · Email confirmed · Tag added · Payment received · Access granted · Welcome email arrived ·<animate attributeName="startOffset" from="0" to="0" dur="40s" begin="indefinite" repeatCount="indefinite"/></textPath></text></svg>
 <svg class="ribbon ribbon--bottom" viewBox="0 0 540 100" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false"><defs><path id="ribbon-bottom" d="M-60 34C150 92 380 18 600 62"/></defs><text class="ribbon__text"><textPath href="#ribbon-bottom">Sign-up received · Email confirmed · Tag added · Payment received · Access granted · Welcome email arrived · Sign-up received · Email confirmed · Tag added · Payment received · Access granted · Welcome email arrived · Sign-up received · Email confirmed · Tag added · Payment received · Access granted · Welcome email arrived ·<animate attributeName="startOffset" from="0" to="0" dur="46s" begin="indefinite" repeatCount="indefinite"/></textPath></text></svg>
 <figure class="hero__flow" aria-label="Flow: form, ActiveCampaign, payment, course open">
-<p class="hero__chip"><img src="/assets/img/portrait-260.webp" width="44" height="44" loading="lazy" decoding="async" alt="">Hi, I'm Iva</p>
+<p class="hero__chip"><picture><source type="image/avif" srcset="/assets/img/avatar-44.avif 1x, /assets/img/avatar-88.avif 2x"><source type="image/webp" srcset="/assets/img/avatar-44.webp 1x, /assets/img/avatar-88.webp 2x"><img src="/assets/img/avatar-44.jpg" srcset="/assets/img/avatar-88.jpg 2x" width="44" height="44" loading="lazy" decoding="async" alt=""></picture>Hi, I'm Iva</p>
 <svg class="hf" viewBox="0 0 340 340" aria-hidden="true" focusable="false"><path class="hf__wire" d="M86 62C86 100 254 82 254 112"/><path class="hf__wire" d="M254 152C254 190 86 170 86 200"/><path class="hf__wire" d="M86 240C86 278 254 258 254 288"/><path class="hf__pulse hf__pulse--1" pathLength="100" d="M86 62C86 100 254 82 254 112"/><path class="hf__pulse hf__pulse--2" pathLength="100" d="M254 152C254 190 86 170 86 200"/><path class="hf__pulse hf__pulse--3" pathLength="100" d="M86 240C86 278 254 258 254 288"/><g class="hf__node hf__node--1"><rect x="8" y="22" width="156" height="40" rx="14"/><text x="22" y="47">Form</text><g class="hf__check"><circle cx="146" cy="42" r="9"/><path d="M142 42.5l2.8 2.8 5.2-5.6"/></g></g><g class="hf__node hf__node--2"><rect x="176" y="112" width="156" height="40" rx="14"/><text x="190" y="137">ActiveCampaign</text><g class="hf__check"><circle cx="314" cy="132" r="9"/><path d="M310 132.5l2.8 2.8 5.2-5.6"/></g></g><g class="hf__node hf__node--3"><rect x="8" y="200" width="156" height="40" rx="14"/><text x="22" y="225">Payment</text><g class="hf__check"><circle cx="146" cy="220" r="9"/><path d="M142 220.5l2.8 2.8 5.2-5.6"/></g></g><g class="hf__node hf__node--4"><rect x="176" y="288" width="156" height="40" rx="14"/><text x="190" y="313">Course open</text><g class="hf__check"><circle cx="314" cy="308" r="9"/><path d="M310 308.5l2.8 2.8 5.2-5.6"/></g></g></svg>
 <button class="loop-btn" type="button" hidden data-pause="Pause animation" data-play="Play animation">Pause animation</button>
 </figure>
@@ -1244,9 +1245,9 @@ min-height: 16rem; padding: var(--space-5); border-radius: 24px; background: lin
 <div class="wrap about__grid">
 <div class="about__photo">
 <picture>
-<source type="image/avif" srcset="/assets/img/portrait-260.avif 260w, /assets/img/portrait-410.avif 410w" sizes="(min-width: 800px) 340px, 80vw">
-<source type="image/webp" srcset="/assets/img/portrait-260.webp 260w, /assets/img/portrait-410.webp 410w" sizes="(min-width: 800px) 340px, 80vw">
-<img src="/assets/img/portrait-410.jpg" srcset="/assets/img/portrait-260.jpg 260w, /assets/img/portrait-410.jpg 410w" sizes="(min-width: 800px) 340px, 80vw" width="410" height="512" loading="lazy" decoding="async" alt="Iva Tsatskrialashvili">
+<source type="image/avif" srcset="/assets/img/about-340.avif 340w, /assets/img/about-680.avif 680w" sizes="(min-width: 800px) 21rem, 80vw">
+<source type="image/webp" srcset="/assets/img/about-340.webp 340w, /assets/img/about-680.webp 680w" sizes="(min-width: 800px) 21rem, 80vw">
+<img src="/assets/img/about-340.jpg" srcset="/assets/img/about-340.jpg 340w, /assets/img/about-680.jpg 680w" sizes="(min-width: 800px) 21rem, 80vw" width="340" height="425" loading="lazy" decoding="async" alt="Iva Tsatskrialashvili">
 </picture>
 </div>
 <div class="about__text">
@@ -1256,7 +1257,7 @@ min-height: 16rem; padding: var(--space-5); border-radius: 24px; background: lin
 <p>My business is registered in Austria. You get proper invoices and one person who is responsible.</p>
 <ol class="path" role="list" aria-label="My path">
 <li class="path__stop">Tbilisi</li>
-<li class="path__stop">DACH clients since 2020</li>
+<li class="path__stop">DACH sales since 2020</li>
 <li class="path__stop">Erasmus+ in 11 countries</li>
 <li class="path__stop">Graz since 2025</li>
 </ol>
@@ -1273,7 +1274,7 @@ min-height: 16rem; padding: var(--space-5); border-radius: 24px; background: lin
 <section class="section faq" id="faq" aria-labelledby="faq-title">
 <div class="wrap faq__grid">
 <h2 id="faq-title">Frequently asked <em class="accent">questions</em></h2>
-<div class="faq__list" data-typing="typing…" data-photo="/assets/img/portrait-260.webp">
+<div class="faq__list" data-typing="typing…" data-photo="/assets/img/avatar-88.webp">
 <details class="faq__item">
 <summary>Do I need to know about tech?</summary>
 <p>No. You tell me what should happen, I take care of the rest and explain everything in plain words.</p>
@@ -1310,11 +1311,11 @@ min-height: 16rem; padding: var(--space-5); border-radius: 24px; background: lin
 <h2 class="contact__title" id="contact-title">Tell me <em class="accent">what's not working.</em></h2>
 <p class="lead">I reply within two working days.</p>
 <div class="contact__actions">
-<a class="btn btn--primary" href="mailto:ivikosha@gmail.com?subject=Inquiry%20via%20mrlololi.com">Write an email</a>
+<a class="btn btn--primary" href="mailto:hello@mrlololi.com?subject=Inquiry%20via%20mrlololi.com">Write an email</a>
 
 </div>
 <ul class="contact__links" role="list">
-<li><a href="mailto:ivikosha@gmail.com?subject=Inquiry%20via%20mrlololi.com">ivikosha@gmail.com</a></li>
+<li><a href="mailto:hello@mrlololi.com?subject=Inquiry%20via%20mrlololi.com">hello@mrlololi.com</a></li>
 <li><a class="ext" href="https://www.linkedin.com/in/tsatskrialashvili-iva" rel="noopener">LinkedIn</a></li>
 <li><a class="ext" href="https://www.malt.de/profile/ivatsatskrialashvili" rel="noopener">Malt profile</a></li>
 </ul>

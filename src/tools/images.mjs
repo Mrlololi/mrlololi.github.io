@@ -1,5 +1,5 @@
 // Optimised images: AVIF + WebP + JPG, 1x and 2x, into assets/img/.
-// Sources live in src/images/ (portrait from Iva's CV, case 1 screenshot from capture-case.mjs).
+// Sources live in src/images/ (Iva's photos re-encoded without metadata, case 1 screenshot from capture-case.mjs).
 import { mkdir, stat } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -29,7 +29,9 @@ async function variants(input, name, sizes, { crop } = {}) {
 }
 
 await mkdir(out, { recursive: true });
-// Portrait 410x615 -> 4:5 crop that keeps the face (top 16 px trimmed), shown at 260 px.
-await variants(src('portrait-source.png'), 'portrait', [[260, 325], [410, 512]], { crop: { left: 0, top: 16, width: 410, height: 512 } });
+// Über mich: Hallstatt photo 900x1200 -> 4:5 crop (a little sky trimmed), shown at 340 px.
+await variants(src('about-hallstatt.jpg'), 'about', [[340, 425], [680, 850]], { crop: { left: 0, top: 75, width: 900, height: 1125 } });
+// Hero chip and FAQ chat avatar: the smiling face, square, shown round at 44 / 36 px.
+await variants(src('avatar-laecheln.jpg'), 'avatar', [[44, 44], [88, 88]]);
 // Case 1 screenshot 1440x900 (16:10), shown at up to 640 px.
 await variants(src('case-alexandrafry.png'), 'case-alexandrafry', [[640, 400], [1280, 800]]);

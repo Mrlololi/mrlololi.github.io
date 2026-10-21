@@ -398,7 +398,7 @@ export default {
       'My business is registered in Austria. You get proper invoices and one person who is responsible.',
     ],
     tools: 'ActiveCampaign, Zapier, Make, Google Apps Script, Leadpages, WordPress, Wix, Shopware, Stripe, Quaderno, Somba, GrooveHQ, Canva, HTML, CSS, JavaScript, Python, SQL',
-    path: ['Tbilisi', 'DACH clients since 2020', 'Erasmus+ in 11 countries', 'Graz since 2025'],
+    path: ['Tbilisi', 'DACH sales since 2020', 'Erasmus+ in 11 countries', 'Graz since 2025'],
     pathLabel: 'My path',
     projects: 'Side projects: GeoAPP and KittyCats',
   },

@@ -398,7 +398,7 @@ export default {
       'Mein Gewerbe ist in Österreich angemeldet. Sie bekommen ordentliche Rechnungen und einen festen Ansprechpartner.',
     ],
     tools: 'ActiveCampaign, Zapier, Make, Google Apps Script, Leadpages, WordPress, Wix, Shopware, Stripe, Quaderno, Somba, GrooveHQ, Canva, HTML, CSS, JavaScript, Python, SQL',
-    path: ['Tbilisi', 'DACH-Kunden ab 2020', 'Erasmus+ in 11 Ländern', 'Graz seit 2025'],
+    path: ['Tbilisi', 'DACH-Vertrieb ab 2020', 'Erasmus+ in 11 Ländern', 'Graz seit 2025'],
     pathLabel: 'Mein Weg',
     projects: 'Eigene Projekte: GeoAPP und KittyCats',
   },

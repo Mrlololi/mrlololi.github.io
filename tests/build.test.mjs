@@ -111,7 +111,7 @@ test('Impressum: facts from CONTENT.md, full address, no ODR link', () => {
   assert.match(byFile['en/legal-notice/index.html'], /Herbersteinstraße 4\/4181<br>8020 Graz, Austria/);
   assert.match(html, /Kleinunternehmer gemäß § 6 Abs\. 1 Z 27 UStG/);
   assert.match(html, /Offenlegung gemäß § 25 Mediengesetz/);
-  assert.match(html, /href="mailto:ivikosha@gmail\.com"/);
+  assert.match(html, /href="mailto:hello@mrlololi\.com"/);
   assert.ok(!/odr|online-streitbeilegung/i.test(html));
   assert.match(byFile['en/legal-notice/index.html'], /Trade register number \(GISA\)/);
   assert.match(byFile['en/legal-notice/index.html'], /Disclosure under § 25 Austrian Media Act/);

@@ -37,6 +37,6 @@ test('every <img> has width, height and alt', () => {
     }
     // Only the decorative photo in the hero chip (its text names Iva) has an empty alt.
     const empty = html.match(/<img\b[^>]*\salt=""[^>]*>/g) || [];
-    assert.ok(empty.length <= 1 && empty.every((img) => img.includes('portrait-260.webp')), empty.join(' '));
+    assert.ok(empty.length <= 1 && empty.every((img) => img.includes('avatar-44.jpg')), empty.join(' '));
   }
 });

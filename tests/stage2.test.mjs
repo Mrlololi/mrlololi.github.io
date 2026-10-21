@@ -179,6 +179,19 @@ test('«Was ich nicht mache» right before the FAQ', () => {
 
 test('FAQ chat: still seven details, chat texts for the script', () => {
   assert.equal(count(de, /<details class="faq__item">/g), 7);
-  assert.match(de, /<div class="faq__list" data-typing="tippt…" data-photo="\/assets\/img\/portrait-260\.webp">/);
+  assert.match(de, /<div class="faq__list" data-typing="tippt…" data-photo="\/assets\/img\/avatar-88\.webp">/);
   assert.match(en, /data-typing="typing…"/);
+});
+
+test('final touches (21.10.2026): hello@ address everywhere, path line «DACH-Vertrieb ab 2020», image files exist', () => {
+  for (const p of all) assert.ok(!p.html.includes('ivikosha@gmail.com'), p.file);
+  const imp = all.find((p) => p.file === 'impressum/index.html').html;
+  const dsg = all.find((p) => p.file === 'datenschutz/index.html').html;
+  assert.match(imp, /hello@mrlololi\.com/);
+  assert.match(dsg, /hello@mrlololi\.com/);
+  assert.match(de, /<li class="path__stop">DACH-Vertrieb ab 2020<\/li>/);
+  assert.match(en, /<li class="path__stop">DACH sales since 2020<\/li>/);
+  for (const f of ['about-340', 'about-680', 'avatar-44', 'avatar-88']) {
+    for (const ext of ['avif', 'webp', 'jpg']) assert.ok(existsSync(new URL(`../assets/img/${f}.${ext}`, import.meta.url)), `${f}.${ext}`);
+  }
 });
