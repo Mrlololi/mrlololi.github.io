@@ -48,16 +48,25 @@
   size-adjust: 99.21%; ascent-override: 98.78%; descent-override: 32.26%; line-gap-override: 0%;
 }
 
-/* Accent face (Stage 2): EB Garamond italic, Latin subset, not preloaded. */
+/* Accent face (Stage 2): EB Garamond italic, Latin subset, not preloaded. "optional": if it misses the first ~100 ms the matched fallback stays, so headings never reflow. */
 @font-face {
   font-family: "EB Garamond";
   src: url("/assets/fonts/eb-garamond-italic-400.woff2") format("woff2");
-  font-weight: 400; font-style: italic; font-display: swap;
+  font-weight: 400; font-style: italic; font-display: optional;
 }
 @font-face {
   font-family: "EB Garamond";
   src: url("/assets/fonts/eb-garamond-italic-500.woff2") format("woff2");
-  font-weight: 500; font-style: italic; font-display: swap;
+  font-weight: 500; font-style: italic; font-display: optional;
+}
+
+/* Measured by src/tools/fallback-metrics.mjs: Georgia italic takes the space of EB Garamond italic,
+   so the headings do not reflow when the accent face arrives. */
+@font-face {
+  font-family: "EB Garamond Fallback";
+  src: local("Georgia Italic"), local("Georgia-Italic"), local("Georgia");
+  font-style: italic; font-weight: 100 900;
+  size-adjust: 85.58%; ascent-override: 118.02%; descent-override: 35.06%; line-gap-override: 0%;
 }
 
 /* ---------- Tokens (pastel redesign, 16.10.2026; see docs/superpowers/specs) ---------- */
@@ -78,7 +87,7 @@
 
   --font-display: "Bricolage Grotesque", "Bricolage Fallback", Arial, sans-serif;
   --font-body: "Atkinson Hyperlegible Next", "Atkinson Fallback", Arial, sans-serif;
-  --font-accent: "EB Garamond", Georgia, "Times New Roman", serif;
+  --font-accent: "EB Garamond", "EB Garamond Fallback", Georgia, "Times New Roman", serif;
 
   /* fluid type, 360 px -> 1440 px */
   --step--1: clamp(0.875rem, 0.8542rem + 0.0926vw, 0.9375rem);
