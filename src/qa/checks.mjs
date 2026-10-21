@@ -232,7 +232,8 @@ export async function keyboard(browser, base) {
 
 /* Budget: total JS <= 90 KB gzip incl. GSAP. */
 export async function budget() {
-  const files = ['assets/vendor/gsap.min.js', 'assets/vendor/ScrollTrigger.min.js', 'assets/js/main.js', 'assets/js/calc.js'];
+  const own = (await readdir(path.join(repoRoot, 'assets/js'))).filter((f) => f.endsWith('.js')).map((f) => `assets/js/${f}`);
+  const files = ['assets/vendor/gsap.min.js', 'assets/vendor/ScrollTrigger.min.js', ...own];
   let total = 0;
   const parts = [];
   for (const f of files) {

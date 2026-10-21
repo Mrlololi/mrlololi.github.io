@@ -41,3 +41,32 @@ test('EB Garamond italic is self-hosted and not preloaded', () => {
   assert.equal(count(de, /<link rel="preload"[^>]*as="font"/g), 2);
   assert.match(de, /font-family:\s*"EB Garamond"/);
 });
+
+test('hero: proof line under the buttons', () => {
+  assert.match(de, /<p class="hero__proof">Seit 2023 für Kursanbieter und Onlineshops in Deutschland, der Schweiz, Österreich und Italien · Gewerbe in Österreich<\/p>/);
+  assert.match(en, /<p class="hero__proof">Since 2023 for course creators and online shops in Germany, Switzerland, Austria and Italy · Business registered in Austria<\/p>/);
+});
+
+test('hero: ribbon along two curves, started only by JS, with a pause button', () => {
+  const svgs = de.match(/<svg class="ribbon[^"]*"[\s\S]*?<\/svg>/g);
+  assert.equal(svgs.length, 2);
+  for (const svg of svgs) assert.match(svg, /aria-hidden="true"/);
+  const ribbon = svgs.join('');
+  assert.equal(count(ribbon, /<textPath /g), 2);
+  assert.equal(count(ribbon, /<animate attributeName="startOffset"[^>]*begin="indefinite"/g), 2);
+  assert.ok(ribbon.includes('Anmeldung eingegangen · E-Mail bestätigt · Tag gesetzt · Zahlung erhalten · Zugang frei · Willkommens-Mail angekommen ·'));
+  assert.match(de, /<button class="loop-btn" type="button" hidden data-pause="Animation anhalten" data-play="Animation fortsetzen">Animation anhalten<\/button>/);
+});
+
+test('tool marquee: ten text pills, one aria-hidden copy, never «Partner»', () => {
+  const tools = ['ActiveCampaign', 'Zapier', 'Make', 'Leadpages', 'Stripe', 'Quaderno', 'Somba', 'WordPress', 'Wix', 'Google Apps Script'];
+  const sec = de.match(/<section class="tools"[\s\S]*?<\/section>/)[0];
+  assert.match(sec, /<p class="tools__label" id="tools-title">Ich arbeite mit<\/p>/);
+  const lists = sec.match(/<ul class="marquee__list"[^>]*>[\s\S]*?<\/ul>/g);
+  assert.equal(lists.length, 2);
+  assert.deepEqual([...lists[0].matchAll(/<li>([^<]+)<\/li>/g)].map((m) => m[1]), tools);
+  assert.match(lists[1], /aria-hidden="true"/);
+  assert.ok(!lists[0].includes('aria-hidden'));
+  assert.ok(de.indexOf('class="hero"') < de.indexOf('class="tools"') && de.indexOf('class="tools"') < de.indexOf('id="problems"'));
+  for (const html of [de, en]) assert.ok(!/Partner/.test(body(html)));
+});

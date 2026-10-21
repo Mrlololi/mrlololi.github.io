@@ -5,6 +5,20 @@ import { esc, seconds, accent, headline } from './util.mjs';
 const runNode = `<span class="run__node" aria-hidden="true"><svg viewBox="0 0 20 20" focusable="false"><circle class="run__idle" cx="10" cy="10" r="9"/><circle class="run__wait" cx="10" cy="10" r="9"/><circle class="run__done" cx="10" cy="10" r="9"/><path class="run__check" pathLength="1" d="M5.6 10.3l2.9 2.9 5.9-6.4"/></svg></span>`;
 const runLink = `<svg class="run__link" aria-hidden="true" focusable="false" viewBox="0 0 2 10" preserveAspectRatio="none"><path pathLength="1" d="M1 0V10"/></svg>`;
 
+// Small pill that pauses a looping demo; shown and wired by assets/js/loops.js.
+export const loopButton = (t) => `<button class="loop-btn" type="button" hidden data-pause="${esc(t.ui.pause)}" data-play="${esc(t.ui.play)}">${esc(t.ui.pause)}</button>`;
+
+// Ribbon: the run's steps flowing along two soft arcs, one above and one below the diagram
+// card (each SVG is pinned to its edge, so the card's height never matters). SMIL moves the
+// text; it starts only from JS (begin="indefinite"), so without JS or with reduced motion it rests.
+const RIBBON = { top: 'M-60 70C120 10 380 30 600 52', bottom: 'M-60 34C150 92 380 18 600 62' };
+function ribbonSvg(text) {
+  const words = esc(`${text} ${text} ${text}`);
+  return Object.entries(RIBBON)
+    .map(([edge, d], i) => `<svg class="ribbon ribbon--${edge}" viewBox="0 0 540 100" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false"><defs><path id="ribbon-${edge}" d="${d}"/></defs><text class="ribbon__text"><textPath href="#ribbon-${edge}">${words}<animate attributeName="startOffset" from="0" to="0" dur="${i ? 46 : 40}s" begin="indefinite" repeatCount="indefinite"/></textPath></text></svg>`)
+    .join('\n');
+}
+
 // Hero diagram: four nodes on a zigzag, three wires. CSS plays it once (pulses travel the
 // wires, nodes light up with a check); the static state is all nodes lit.
 const NODES = [[8, 22], [176, 112], [8, 200], [176, 288]];
@@ -31,12 +45,17 @@ export function hero(t) {
 <a class="btn btn--primary" href="#contact">${esc(t.hero.primary)}</a>
 <a class="text-link" href="#pricing">${esc(t.hero.secondary)}</a>
 </div>
+<p class="hero__proof">${esc(t.hero.proof)}</p>
 <p class="hero__small small">${esc(t.hero.small)}</p>
 </div>
+<div class="hero__visual">
+${ribbonSvg(t.hero.ribbon)}
 <figure class="hero__flow" aria-label="${esc(t.hero.flow.label)}">
 <p class="hero__chip"><img src="/assets/img/portrait-260.webp" width="44" height="44" loading="lazy" decoding="async" alt="">${esc(t.hero.flow.chip)}</p>
 ${flowSvg(t.hero.flow.nodes)}
+${loopButton(t)}
 </figure>
+</div>
 </div>
 </section>`;
 }

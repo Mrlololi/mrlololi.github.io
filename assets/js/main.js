@@ -2,6 +2,7 @@
 // Progressive enhancement: the HTML/CSS already shows every final state; this file only
 // rewinds and plays them back. Without GSAP (or with reduced motion) nothing moves.
 import { calcSavings, formatResult, toNumber } from './calc.js';
+import { initRibbon, initMarquee } from './demos.js';
 
 const root = document.documentElement;
 // GSAP is loaded after the first paint (see loadMotion), so these are filled in later.
@@ -23,6 +24,8 @@ initHeader();
 initCalculator();
 initPriceDetails();
 initReveals();
+initRibbon();
+initMarquee();
 if (document.querySelector('.run')) loadMotion();
 else releasePending();
 

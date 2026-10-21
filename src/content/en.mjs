@@ -40,6 +40,9 @@ export default {
     caseImageAlt: 'Home page of alexandrafry.ch',
     translation: 'Translation:',
     priceListLabel: 'Price list',
+    pause: 'Pause animation',
+    play: 'Play animation',
+    example: 'Example',
   },
 
   nav: [
@@ -56,7 +59,14 @@ export default {
     primary: 'Ask for a first call',
     secondary: 'See pricing',
     small: 'Based in Graz, working remotely across Europe. German, English, Russian and Georgian.',
+    proof: 'Since 2023 for course creators and online shops in Germany, Switzerland, Austria and Italy · Business registered in Austria',
+    ribbon: 'Sign-up received · Email confirmed · Tag added · Payment received · Access granted · Welcome email arrived ·',
     flow: {"label":"Flow: form, ActiveCampaign, payment, course open","nodes":["Form","ActiveCampaign","Payment","Course open"],"chip":"Hi, I'm Iva"},
+  },
+
+  tools: {
+    label: 'I work with',
+    items: ["ActiveCampaign","Zapier","Make","Leadpages","Stripe","Quaderno","Somba","WordPress","Wix","Google Apps Script"],
   },
 
   run: {

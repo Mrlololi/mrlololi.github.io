@@ -286,7 +286,7 @@ radial-gradient(24rem 24rem at 0% 100%, rgb(207 227 194 / 0.7), transparent 68%)
 .hero__flow {
 position: relative; justify-self: center; width: 100%; max-width: 26rem;
 padding: var(--space-6) var(--space-4) var(--space-4);
-background: rgb(255 255 255 / 0.75); border: 1px solid var(--line); border-radius: var(--radius-big);
+background: var(--sheet); border: 1px solid var(--line); border-radius: var(--radius-big);
 box-shadow: var(--shadow-soft);
 }
 .hero__chip {
@@ -537,9 +537,46 @@ background: linear-gradient(135deg, var(--pink-tint), var(--lav-tint) 50%, var(-
 .contact__actions { display: flex; flex-wrap: wrap; gap: var(--space-4); margin-top: var(--space-6); }
 .contact__links { display: flex; flex-wrap: wrap; gap: 0 var(--space-6); margin-top: var(--space-4); }
 .contact__links a { display: inline-flex; align-items: center; min-height: 2.75rem; font-weight: 600; }
+.loop-btn {
+display: inline-flex; align-items: center; min-height: 2.75rem; padding: 0 var(--space-4);
+border: 1px solid var(--line); border-radius: 999px; background: var(--sheet); color: var(--ink);
+font-size: var(--step--1); font-weight: 700; cursor: pointer;
+}
+.loop-btn:hover { border-color: var(--field); }
+.loop-btn[hidden] { display: none; }
+.hero__proof {
+max-width: 34rem; padding-inline-start: 1.6rem; font-size: var(--step--1); font-weight: 700; line-height: 1.5; color: var(--pist-ink);
+background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='8' fill='%234E8A3E'/%3E%3Cpath d='M4.6 8.3l2.2 2.2 4.6-5' fill='none' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 0 0.2em / 1.05rem no-repeat;
+}
+.hero__visual { position: relative; justify-self: center; width: 100%; max-width: 26rem; isolation: isolate; }
+.hero__visual .hero__flow { max-width: none; }
+.hero__flow .loop-btn { position: absolute; left: var(--space-4); bottom: var(--space-4); min-height: 2.25rem; font-size: 0.8125rem; }
+.ribbon { position: absolute; z-index: -1; left: -4rem; width: calc(100% + 8rem); height: auto; aspect-ratio: 540 / 100; overflow: visible; pointer-events: none; }
+.ribbon--top { bottom: calc(100% - 0.5rem); }
+.ribbon--bottom { top: calc(100% - 0.5rem); }
+.ribbon path { fill: none; }
+.ribbon__text { font-family: var(--font-body); font-size: 15px; font-weight: 700; letter-spacing: 0.02em; opacity: 0.8; fill: var(--pink-ink); }
+.ribbon--bottom .ribbon__text { fill: var(--lav-ink); }
+.tools { padding-block: var(--space-6) var(--space-4); }
+.tools__in { display: grid; gap: var(--space-3); justify-items: start; }
+.tools__label { font-size: var(--step--1); font-weight: 700; color: var(--ink-soft); }
+.marquee { width: 100%; }
+.marquee__track { display: flex; }
+.marquee__list { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.marquee__list li {
+padding: 0.4rem 1rem; border-radius: 999px; background: var(--sheet); border: 1px solid var(--line);
+font-weight: 600; font-size: var(--step--1); white-space: nowrap;
+}
+.marquee__list[aria-hidden="true"] { display: none; }
 @media (prefers-reduced-motion: no-preference) {
 .btn--primary:hover { transform: translateY(-2px); }
 .item:hover { transform: translateY(-4px); box-shadow: var(--shadow-soft); }
+.js .marquee { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent); mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent); }
+.js .marquee__track { width: max-content; animation: marquee 40s linear infinite paused; }
+.js .marquee.is-running .marquee__track { animation-play-state: running; }
+.js .marquee.is-running:hover .marquee__track { animation-play-state: paused; }
+.js .marquee__list { flex-wrap: nowrap; padding-inline-end: var(--space-2); }
+.js .marquee__list[aria-hidden="true"] { display: flex; }
 .hf__node rect { animation: hf-lit 0.45s ease both; }
 .hf__check { transform-box: fill-box; transform-origin: center; animation: hf-check 0.35s var(--ease-soft) both; }
 .hf__node--1 rect, .hf__node--1 .hf__check { animation-delay: 0.3s; }
@@ -560,6 +597,7 @@ background: linear-gradient(135deg, var(--pink-tint), var(--lav-tint) 50%, var(-
 @media (prefers-reduced-motion: no-preference) and (min-width: 600px) {
 .anim .path:not(.is-in)::after { transform: scaleX(0); }
 }
+@keyframes marquee { to { transform: translateX(-50%); } }
 @keyframes hf-lit { from { fill: var(--t); stroke: var(--c); } to { fill: var(--c); stroke: var(--k); } }
 @keyframes hf-check { from { opacity: 0; transform: scale(0.5); } to { opacity: 1; transform: none; } }
 @keyframes hf-travel {

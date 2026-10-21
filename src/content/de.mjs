@@ -42,6 +42,9 @@ export default {
     caseImageAlt: 'Startseite von alexandrafry.ch',
     translation: 'Übersetzung:',
     priceListLabel: 'Preisliste',
+    pause: 'Animation anhalten',
+    play: 'Animation fortsetzen',
+    example: 'Beispiel',
   },
 
   nav: [
@@ -58,7 +61,14 @@ export default {
     primary: 'Erstgespräch anfragen',
     secondary: 'Preise ansehen',
     small: 'Aus Graz, remote im ganzen DACH-Raum. Deutsch, Englisch, Russisch und Georgisch.',
+    proof: 'Seit 2023 für Kursanbieter und Onlineshops in Deutschland, der Schweiz, Österreich und Italien · Gewerbe in Österreich',
+    ribbon: 'Anmeldung eingegangen · E-Mail bestätigt · Tag gesetzt · Zahlung erhalten · Zugang frei · Willkommens-Mail angekommen ·',
     flow: {"label":"Ablauf: Formular, ActiveCampaign, Zahlung, Kurs offen","nodes":["Formular","ActiveCampaign","Zahlung","Kurs offen"],"chip":"Hallo, ich bin Iva"},
+  },
+
+  tools: {
+    label: 'Ich arbeite mit',
+    items: ["ActiveCampaign","Zapier","Make","Leadpages","Stripe","Quaderno","Somba","WordPress","Wix","Google Apps Script"],
   },
 
   run: {
