@@ -165,6 +165,21 @@ export async function checkDemos(browser, base) {
     await page.close();
   }
 
+  // Slow web fonts (1.5 s): the hero must not reflow when they arrive.
+  for (const p of ['/', '/en/']) {
+    const page = await browser.newPage({ viewport: { width: 412, height: 823 }, deviceScaleFactor: 2 });
+    await page.addInitScript(() => {
+      window.__cls = 0;
+      new PerformanceObserver((l) => l.getEntries().forEach((e) => { if (!e.hadRecentInput) window.__cls += e.value; })).observe({ type: 'layout-shift', buffered: true });
+    });
+    await page.route('**/*.woff2', async (route) => { await new Promise((r) => setTimeout(r, 1500)); await route.continue(); });
+    await page.goto(base + p, { waitUntil: 'load' });
+    await page.waitForTimeout(2500);
+    const cls = await page.evaluate(() => window.__cls);
+    check(`slow fonts ${p}: CLS under 0.05 while fonts arrive late (${cls.toFixed(3)})`, cls < 0.05, cls.toFixed(3));
+    await page.close();
+  }
+
   // Reduced motion: nothing loops, no pause buttons needed.
   {
     const page = await browser.newPage({ viewport: { width: 1280, height: 900 }, reducedMotion: 'reduce' });
