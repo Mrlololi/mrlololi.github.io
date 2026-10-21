@@ -6,7 +6,8 @@ const runNode = `<span class="run__node" aria-hidden="true"><svg viewBox="0 0 20
 const runLink = `<svg class="run__link" aria-hidden="true" focusable="false" viewBox="0 0 2 10" preserveAspectRatio="none"><path pathLength="1" d="M1 0V10"/></svg>`;
 
 // Small pill that pauses a looping demo; shown and wired by assets/js/loops.js.
-export const loopButton = (t) => `<button class="loop-btn" type="button" hidden data-pause="${esc(t.ui.pause)}" data-play="${esc(t.ui.play)}">${esc(t.ui.pause)}</button>`;
+// Small round icon button (pause / play) with a visible tooltip; WCAG 2.2.2 wants it for long loops.
+export const loopButton = (t) => `<button class="loop-btn" type="button" hidden aria-label="${esc(t.ui.pause)}" data-pause="${esc(t.ui.pause)}" data-play="${esc(t.ui.play)}"><svg class="loop-btn__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path class="loop-btn__pause" d="M9 6v12M15 6v12"/><path class="loop-btn__play" d="M9 6.5v11l9-5.5z"/></svg><span class="loop-btn__tip" aria-hidden="true">${esc(t.ui.pause)}</span></button>`;
 
 // Ribbon: the run's steps flowing along two soft arcs, one above and one below the diagram
 // card (each SVG is pinned to its edge, so the card's height never matters). SMIL moves the
@@ -36,7 +37,7 @@ function flowSvg(nodes) {
 }
 
 export function hero(t) {
-  return `<section class="hero" aria-labelledby="hero-title">
+  return `<section class="hero bg-hero" aria-labelledby="hero-title">
 <div class="wrap hero__grid">
 <div class="hero__text">
 <h1 id="hero-title">${headline(t.hero.h1)}</h1>
@@ -51,8 +52,12 @@ export function hero(t) {
 <div class="hero__visual">
 ${ribbonSvg(t.hero.ribbon)}
 <figure class="hero__flow" aria-label="${esc(t.hero.flow.label)}">
-<p class="hero__chip"><picture><source type="image/avif" srcset="/assets/img/avatar-44.avif 1x, /assets/img/avatar-88.avif 2x"><source type="image/webp" srcset="/assets/img/avatar-44.webp 1x, /assets/img/avatar-88.webp 2x"><img src="/assets/img/avatar-44.jpg" srcset="/assets/img/avatar-88.jpg 2x" width="44" height="44" loading="lazy" decoding="async" alt=""></picture>${esc(t.hero.flow.chip)}</p>
+<a class="hero__chip" href="#about"><picture><source type="image/avif" srcset="/assets/img/avatar-44.avif 1x, /assets/img/avatar-88.avif 2x"><source type="image/webp" srcset="/assets/img/avatar-44.webp 1x, /assets/img/avatar-88.webp 2x"><img src="/assets/img/avatar-44.jpg" srcset="/assets/img/avatar-88.jpg 2x" width="44" height="44" loading="lazy" decoding="async" alt=""></picture>${esc(t.hero.flow.chip)}</a>
+<div class="hf-wrap">
 ${flowSvg(t.hero.flow.nodes)}
+${t.hero.flow.nodes.map((n, i) => `<button class="hf__btn hf__btn--${i + 1}" type="button" aria-expanded="false" aria-controls="hf-line-${i + 1}">${esc(n)}</button>`).join('')}
+</div>
+<ul class="hf__lines" role="list">${t.hero.flow.lines.map((l, i) => `<li id="hf-line-${i + 1}">${esc(l)}</li>`).join('')}</ul>
 ${loopButton(t)}
 </figure>
 </div>
@@ -75,7 +80,7 @@ ${i < t.run.steps.length - 1 ? runLink : ''}
     )
     .join('\n');
   return `<figure class="run instrument" aria-labelledby="run-title">
-<figcaption class="run__bar"><span class="run__title" id="run-title">${esc(t.run.title)}</span><span class="demo-tag">${esc(t.story.runLabel)}</span></figcaption>
+<figcaption class="run__bar"><span class="run__title" id="run-title">${esc(t.run.title)}</span><span class="label">${esc(t.story.runLabel)}</span></figcaption>
 <ol class="run__steps" role="list">
 ${steps}
 </ol>
@@ -87,26 +92,32 @@ ${steps}
 </figure>`;
 }
 
+// A real local form: nothing is sent (method "dialog" does nothing outside a dialog, also
+// without JS); demos.js checks the e-mail, then plays steps 2 and 3 with the typed name.
 function formCard(t) {
   const f = t.story.form;
-  const fields = f.fields.map(([k, v]) => `<div class="story__field"><dt>${esc(k)}</dt><dd class="story__value">${esc(v)}</dd></div>`).join('');
-  return `<div class="story__card story__form">
-<p class="story__card-title">${esc(f.title)}<span class="demo-tag">${esc(t.ui.example)}</span></p>
-<dl>${fields}</dl>
-<span class="story__button" aria-hidden="true">${esc(f.button)}</span>
+  const [[nameLabel, name], [mailLabel, mail]] = f.fields;
+  return `<div class="story__card">
+<form class="story__form" method="dialog" novalidate>
+<p class="story__card-title">${esc(f.title)}<span class="label">${esc(t.ui.example)}</span></p>
+<div class="story__field"><label for="story-name">${esc(nameLabel)}</label><input id="story-name" name="name" type="text" value="${esc(name)}" autocomplete="off"></div>
+<div class="story__field"><label for="story-email">${esc(mailLabel)}</label><input id="story-email" name="email" type="email" value="${esc(mail)}" autocomplete="off" aria-describedby="story-email-error"><p class="story__error" id="story-email-error" hidden>${esc(f.error)}</p></div>
+<button class="btn btn--primary" type="submit">${esc(f.button)}</button>
+<p class="story__note small">${esc(f.note)}</p>
+</form>
 </div>`;
 }
 
 function welcomeCard(t) {
   const w = t.story.welcome;
   return `<div class="story__card story__welcome">
-<p class="story__card-title">${esc(w.subject)}<span class="demo-tag">${esc(t.ui.example)}</span></p>
+<p class="story__card-title">${esc(w.subject).replace('{first}', `<span class="js-first">${esc(t.story.form.fields[0][1].split(' ')[0])}</span>`)}<span class="label">${esc(t.ui.example)}</span></p>
 <p>${esc(w.text)}</p>
 <p class="story__access">${esc(w.access)}</p>
 </div>
 <div class="toasts">
-<ul class="toasts__list" role="list">${t.story.toasts.map((x) => `<li class="toast">${esc(x)}</li>`).join('')}</ul>
 ${loopButton(t)}
+<ul class="toasts__list" role="list">${t.story.toasts.map((x) => `<li class="toast">${esc(x).replace('{name}', `<span class="js-name">${esc(t.story.form.fields[0][1])}</span>`)}</li>`).join('')}</ul>
 </div>`;
 }
 
@@ -119,7 +130,7 @@ export function signup(t) {
 ${bodies[i]}
 </div>`)
     .join('\n');
-  return `<section class="section signup" id="signup" aria-labelledby="signup-title">
+  return `<section class="section signup bg-pist edge" id="signup" aria-labelledby="signup-title">
 <div class="wrap">
 <div class="section__head">
 <h2 id="signup-title">${accent(t.run.h2)}</h2>

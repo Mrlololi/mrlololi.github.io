@@ -9,6 +9,7 @@ import { checkOverflow } from './overflow.mjs';
 import { checkBehaviour } from './behaviour.mjs';
 import { checkReviewFixes } from './review-fixes.mjs';
 import { checkDemos } from './demos.mjs';
+import { checkClickable } from './clickable.mjs';
 import { screenshots, network, accessibility, links, copy, keyboard, budget } from './checks.mjs';
 import { lighthouseCheck } from './lighthouse.mjs';
 
@@ -31,6 +32,7 @@ await run('Screenshots', () => screenshots(browser, server.url));
 await run('Motion, reduced motion, no JS, calculator', () => checkBehaviour(browser, server.url));
 await run('Final-review cases (late scripts, failed main.js, timing)', () => checkReviewFixes(browser, server.url));
 await run('Stage 2 demos (motion, reduced motion, no JS, keyboard, mobile)', () => checkDemos(browser, server.url));
+await run('Stage 3 clickable guard (DE, EN, 360, 1280)', () => checkClickable(browser, server.url));
 await run('Network', () => network(browser, server.url));
 await run('Accessibility (axe)', () => accessibility(browser, server.url));
 await run('Keyboard', () => keyboard(browser, server.url));

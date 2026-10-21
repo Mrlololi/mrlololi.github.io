@@ -18,7 +18,10 @@ export function loop({ root, button, play, pause, when = () => true, threshold =
     button.hidden = false;
     button.addEventListener('click', () => {
       paused = !paused;
-      button.textContent = paused ? button.dataset.play : button.dataset.pause;
+      const label = paused ? button.dataset.play : button.dataset.pause;
+      button.setAttribute('aria-label', label);
+      button.querySelector('.loop-btn__tip').textContent = label;
+      button.classList.toggle('is-paused', paused);
       sync();
     });
   }

@@ -39,7 +39,7 @@ export function layout({ t, other, config, page, main }) {
     `<meta name="twitter:title" content="${esc(page.title)}">`,
     `<meta name="twitter:description" content="${esc(page.description)}">`,
     `<meta name="twitter:image" content="${ogImage}">`,
-    '<meta name="theme-color" content="#FBF8F5">',
+    '<meta name="theme-color" content="#F4C9D3">',
     '<link rel="icon" href="/assets/icons/favicon.ico" sizes="32x32">',
     '<link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">',
     '<link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">',
@@ -98,7 +98,7 @@ ${items}
 function footer({ t, page }) {
   const base = page.key === 'home' ? '' : t.paths.home;
   const sections = t.nav.map((n) => `<li><a href="${base}${n.href}">${esc(n.label)}</a></li>`).join('\n');
-  return `<footer class="site-footer">
+  return `<footer class="site-footer bg-ink edge">
 <div class="site-footer__in">
 <p class="site-footer__copy">${esc(t.footer.copyright)}</p>
 <nav id="footer-nav" aria-label="${esc(t.ui.footerNavLabel)}">

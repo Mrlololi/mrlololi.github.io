@@ -84,7 +84,7 @@ export async function checkDemos(browser, base) {
     await page.waitForTimeout(1200);
     const mid = await page.$eval('.kidemo', (el) => ({ playing: el.classList.contains('is-playing'), done: el.classList.contains('is-done') }));
     await page.waitForTimeout(4200);
-    const end = await page.$eval('.kidemo', (el) => ({ done: el.classList.contains('is-done'), replay: !el.querySelector('.kidemo__replay').hidden, chips: el.querySelectorAll('.chip.is-on').length }));
+    const end = await page.$eval('.kidemo', (el) => ({ done: el.classList.contains('is-done'), replay: !el.querySelector('.kidemo__replay').hidden, chips: el.querySelectorAll('.chips .label.is-on').length }));
     check('KI demo: plays once in view and ends with the draft (under 5 s)', mid.playing && !mid.done && end.done && end.replay && end.chips === 4, JSON.stringify({ mid, end }));
     await page.click('.kidemo__replay');
     await page.waitForTimeout(300);
@@ -162,6 +162,65 @@ export async function checkDemos(browser, base) {
     await page.waitForTimeout(800);
     const wide = await page.evaluate(() => ({ pinned: document.querySelector('.story').classList.contains('is-pinned'), overflow: document.documentElement.scrollWidth - innerWidth }));
     check('story: resize 390 -> 1280 pins again, no horizontal scroll', wide.pinned && wide.overflow <= 0, JSON.stringify(wide));
+    await page.close();
+  }
+
+  // Stage 3: the things that look clickable work (desktop and phone).
+  for (const width of [1280, 390]) {
+    const page = await browser.newPage({ viewport: { width, height: 900 } });
+    await page.goto(base + '/', { waitUntil: 'load' });
+    await page.waitForTimeout(1600);
+    // Flow nodes: one line at a time.
+    await page.click('.hf__btn--3');
+    const flow = await page.evaluate(() => ({
+      expanded: [...document.querySelectorAll('.hf__btn')].map((b) => b.getAttribute('aria-expanded')).join(),
+      line: [...document.querySelectorAll('.hf__lines li')].filter((li) => getComputedStyle(li).display !== 'none').map((li) => li.textContent),
+    }));
+    check(`${width}: flow node «Zahlung» shows its one line`, flow.expanded === 'false,false,true,false' && flow.line.length === 1 && flow.line[0].startsWith('Zahlung oder Rate'), JSON.stringify(flow));
+    // Story form: a bad e-mail shows the inline error, a good one plays the story with the typed name.
+    await page.$eval('.story', (el) => el.scrollIntoView({ block: 'center' }));
+    await page.click('#story-tab-1');
+    await page.waitForTimeout(400);
+    await page.fill('#story-email', 'kein-at-zeichen');
+    await page.click('.story__form button[type="submit"]');
+    const bad = await page.evaluate(() => ({ error: !document.getElementById('story-email-error').hidden, invalid: document.getElementById('story-email').getAttribute('aria-invalid'), focus: document.activeElement.id }));
+    check(`${width}: story form shows the e-mail error inline and keeps focus`, bad.error && bad.invalid === 'true' && bad.focus === 'story-email', JSON.stringify(bad));
+    await page.fill('#story-name', 'Maria Muster');
+    await page.fill('#story-email', 'maria@example.com');
+    const url = page.url();
+    await page.click('.story__form button[type="submit"]');
+    await page.waitForTimeout(600);
+    const step2 = await page.$$eval('.story__panel', (ps) => ps.findIndex((p) => p.classList.contains('is-active')));
+    await page.waitForTimeout(3000);
+    const after = await page.evaluate(() => ({
+      step: [...document.querySelectorAll('.story__panel')].findIndex((p) => p.classList.contains('is-active')),
+      first: document.querySelector('.js-first').textContent,
+      toast: document.querySelector('.js-name').textContent,
+    }));
+    check(`${width}: story form plays step 2, then step 3 with «Maria»; nothing in the URL`, step2 === 1 && after.step === 2 && after.first === 'Maria' && after.toast === 'Maria Muster' && page.url() === url, JSON.stringify({ step2, ...after, url: page.url() }));
+    // KI buttons: approve, edit, reset by tone switch.
+    await page.$eval('.kidemo', (el) => el.scrollIntoView({ block: 'center' }));
+    await page.waitForTimeout(5200);
+    await page.click('.kidemo__approve');
+    const approved = await page.evaluate(() => ({ text: document.querySelector('.kidemo__approve').textContent.trim(), dis: document.querySelector('.kidemo__approve').getAttribute('aria-disabled'), sent: !document.querySelector('.kidemo__sent').hidden }));
+    await page.click('.kidemo__edit');
+    const editing = await page.evaluate(() => ({ area: document.activeElement.tagName, btn: document.querySelector('.kidemo__edit').textContent }));
+    await page.click('#tone-tab-2');
+    const reset = await page.evaluate(() => ({ area: Boolean(document.querySelector('.tone__edit')), approve: document.querySelector('.kidemo__approve').textContent, edit: document.querySelector('.kidemo__edit').textContent }));
+    check(`${width}: «Freigeben» / «Bearbeiten» work and a tone switch resets them`,
+      approved.text === 'Freigegeben' && approved.dis === 'true' && approved.sent && editing.area === 'TEXTAREA' && editing.btn === 'Fertig' && !reset.area && reset.approve === 'Freigeben' && reset.edit === 'Bearbeiten',
+      JSON.stringify({ approved, editing, reset }));
+    // Before/after: dragging the picture moves the divider.
+    await page.$eval('.ba__stage', (el) => el.scrollIntoView({ block: 'center' }));
+    const box = await page.$eval('.ba__stage', (el) => { const r = el.getBoundingClientRect(); return { x: r.left, y: r.top, w: r.width, h: r.height }; });
+    await page.mouse.move(box.x + box.w * 0.5, box.y + box.h / 2);
+    await page.mouse.down();
+    await page.mouse.move(box.x + box.w * 0.2, box.y + box.h / 2, { steps: 5 });
+    await page.mouse.up();
+    const pos = await page.$eval('.ba__range', (r) => Number(r.value));
+    check(`${width}: dragging the before/after picture moves the divider`, pos >= 15 && pos <= 25, String(pos));
+    // Finder: with JS only the questions, not the static list.
+    check(`${width}: finder shows questions only (static list hidden with JS)`, await page.$eval('.finder__static', (el) => getComputedStyle(el).display === 'none'));
     await page.close();
   }
 

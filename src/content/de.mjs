@@ -42,6 +42,7 @@ export default {
     caseImageAlt: 'Startseite von alexandrafry.ch',
     translation: 'Übersetzung:',
     priceListLabel: 'Preisliste',
+    matching: "Passendes Paket:",
     pause: 'Animation anhalten',
     play: 'Animation fortsetzen',
     example: 'Beispiel',
@@ -63,7 +64,7 @@ export default {
     small: 'Aus Graz, remote im ganzen DACH-Raum. Deutsch, Englisch, Russisch und Georgisch.',
     proof: 'Seit 2023 für Kursanbieter und Onlineshops in Deutschland, der Schweiz, Österreich und Italien · Gewerbe in Österreich',
     ribbon: 'Anmeldung eingegangen · E-Mail bestätigt · Tag gesetzt · Zahlung erhalten · Zugang frei · Willkommens-Mail angekommen ·',
-    flow: {"label":"Ablauf: Formular, ActiveCampaign, Zahlung, Kurs offen","nodes":["Formular","ActiveCampaign","Zahlung","Kurs offen"],"chip":"Hallo, ich bin Iva"},
+    flow: {"label":"Ablauf: Formular, ActiveCampaign, Zahlung, Kurs offen","nodes":["Formular","ActiveCampaign","Zahlung","Kurs offen"],"lines":["Die Anmeldung kommt herein und wird geprüft.","Kontakt, Tag und Willkommens-Mail werden gesetzt.","Zahlung oder Rate wird erkannt, die Rechnung geht raus.","Der Zugang wird freigeschaltet, ohne Handarbeit."],"chip":"Hallo, ich bin Iva"},
   },
 
   tools: {
@@ -90,16 +91,18 @@ export default {
           "anna@example.com"
         ]
       ],
+      "note": "Nur eine Vorschau: Es wird nichts gesendet oder gespeichert.",
+      "error": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
       "button": "Jetzt anmelden"
     },
     "runLabel": "Beispiel-Durchlauf",
     "welcome": {
-      "subject": "Willkommen im Kurs, Anna!",
+      "subject": "Willkommen im Kurs, {first}!",
       "text": "Ihr Zugang ist bereit. Viel Freude beim Lernen.",
       "access": "Kurszugang: freigeschaltet"
     },
     "toasts": [
-      "Neue Anmeldung: Anna K.",
+      "Neue Anmeldung: {name}",
       "Zahlung erhalten: 297 €",
       "Kurszugang freigeschaltet",
       "Willkommens-Mail zugestellt"
@@ -132,9 +135,9 @@ export default {
       nodes: ['Formular', 'ActiveCampaign', 'Zapier', 'Stripe', 'Kurs'],
     },
     items: [
-      { problem: "Anmeldungen verschwinden zwischen Formular und CRM.", fix: "Ich baue Strecken mit Prüfung und Wiederholung, die auch bei vielen gleichzeitigen Anmeldungen sauber laufen." },
-      { problem: "Launch-Mails landen im Spam.", fix: "SPF, DKIM und DMARC richtig einrichten und die Zustellung testen." },
-      { problem: "Die Ratenzahlung ist fehlgeschlagen, der Zugang bleibt trotzdem offen.", fix: "Automatische Erinnerungen, Sperre und Freischaltung, abgestimmt mit Quaderno, Somba oder Stripe." },
+      { problem: "Anmeldungen verschwinden zwischen Formular und CRM.", fix: "Ich baue Strecken mit Prüfung und Wiederholung, die auch bei vielen gleichzeitigen Anmeldungen sauber laufen.", pkg: "check" },
+      { problem: "Launch-Mails landen im Spam.", fix: "SPF, DKIM und DMARC richtig einrichten und die Zustellung testen.", pkg: "quick" },
+      { problem: "Die Ratenzahlung ist fehlgeschlagen, der Zugang bleibt trotzdem offen.", fix: "Automatische Erinnerungen, Sperre und Freischaltung, abgestimmt mit Quaderno, Somba oder Stripe.", pkg: "launch" },
     ],
   },
 
@@ -201,6 +204,8 @@ export default {
         ]
       }
     ],
+    cta: "Anfragen",
+    subjectPrefix: "Anfrage: ",
     hourly: "Alles außerhalb der Pakete: 45 € pro Stunde.",
     promise: "Meine Zusage: Läuft eine von mir gebaute Strecke in den ersten 30 Tagen nicht wie vereinbart, behebe ich das ohne Berechnung. Das gilt für meine Arbeit, nicht für Ausfälle der Tools selbst.",
     smallPrint: 'Alle Preise sind Endpreise. Als Kleinunternehmer gemäß § 6 Abs. 1 Z 27 UStG weise ich keine Umsatzsteuer aus. Bei Unternehmen mit gültiger UID in einem anderen EU-Mitgliedstaat geht die Steuerschuld auf den Leistungsempfänger über (Reverse Charge).',
@@ -243,6 +248,10 @@ export default {
       "Bearbeiten"
     ],
     "note": "Versendet wird erst nach Freigabe durch Ihr Team.",
+    "approved": "Freigegeben",
+    "sent": "Antwort an Anna gesendet (Beispiel)",
+    "done": "Fertig",
+    "editLabel": "Antwort bearbeiten",
     "replay": "Nochmal",
     "caption": "Die Entwürfe klingen wie Ihre Schule.",
     "speed": {

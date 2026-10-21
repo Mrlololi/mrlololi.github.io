@@ -48,6 +48,23 @@ export function initBeforeAfter() {
   const set = () => stage.style.setProperty('--pos', `${range.value}%`);
   range.addEventListener('input', set);
   set();
+  // The picture itself can be dragged (mouse, pen, finger); vertical swipes still scroll the page.
+  let dragging = false;
+  const fromPointer = (e) => {
+    const r = stage.getBoundingClientRect();
+    range.value = String(Math.round(Math.min(100, Math.max(0, ((e.clientX - r.left) / r.width) * 100))));
+    set();
+  };
+  stage.addEventListener('pointerdown', (e) => {
+    if (e.button !== 0) return;
+    dragging = true;
+    stage.setPointerCapture(e.pointerId);
+    fromPointer(e);
+  });
+  stage.addEventListener('pointermove', (e) => { if (dragging) fromPointer(e); });
+  const stop = () => { dragging = false; };
+  stage.addEventListener('pointerup', stop);
+  stage.addEventListener('pointercancel', stop);
 }
 
 /* ---------- 3-step story: tabs everywhere, pinned and scroll-driven on wide screens ---------- */
@@ -87,7 +104,7 @@ export function initStory() {
   };
   const choose = (i) => (pick ? pick(i) : show(i));
   tabs.forEach((tab, i) => {
-    tab.addEventListener('click', () => choose(i));
+    tab.addEventListener('click', () => { choose(i); tab.focus({ preventScroll: true }); });
     tab.addEventListener('keydown', (e) => {
       const step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
       const n = e.key === 'Home' ? 0 : e.key === 'End' ? tabs.length - 1 : step ? (current + step + tabs.length) % tabs.length : -1;
@@ -100,11 +117,11 @@ export function initStory() {
   root.classList.add('is-tabs');
   show(0);
   story = {
-    root, show, panels,
+    root, show, panels, go: choose,
     get current() { return current; },
     pin(fn) { pick = fn; pinned = Boolean(fn); root.classList.toggle('is-pinned', pinned); },
   };
-  initFormFill();
+  initStoryForm(choose);
   initToasts();
 }
 
@@ -130,24 +147,39 @@ export function pinStory(gsap, ScrollTrigger) {
   });
 }
 
-// Step 1: the form fills itself each time the step is shown (motion allowed).
-function initFormFill() {
-  const values = [...document.querySelectorAll('.story__form .story__value')];
-  if (!values.length || reduceMotion.matches) return;
-  const texts = values.map((v) => v.textContent);
+// Step 1: a real local form. Submitting sends nothing: it checks the e-mail, puts the typed
+// name into step 3 and plays the story (step 2, the run log, then step 3).
+function initStoryForm(go) {
+  const form = document.querySelector('.story__form');
+  if (!form) return;
+  const { name, email } = form.elements;
+  const error = document.getElementById(email.getAttribute('aria-describedby'));
+  const valid = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
   let timer;
-  document.addEventListener('story:show', (e) => {
-    if (e.detail !== 0) return;
-    clearInterval(timer);
-    values.forEach((v) => { v.textContent = ''; });
-    let field = 0;
-    let n = 0;
-    timer = setInterval(() => {
-      n += 1;
-      values[field].textContent = texts[field].slice(0, n);
-      if (n >= texts[field].length) { field += 1; n = 0; }
-      if (field >= values.length) clearInterval(timer);
-    }, 55);
+  email.addEventListener('input', () => {
+    if (!error.hidden && valid(email.value)) { error.hidden = true; email.removeAttribute('aria-invalid'); }
+  });
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!valid(email.value)) {
+      error.hidden = false;
+      email.setAttribute('aria-invalid', 'true');
+      email.focus();
+      return;
+    }
+    error.hidden = true;
+    email.removeAttribute('aria-invalid');
+    const full = name.value.trim() || name.defaultValue;
+    document.querySelectorAll('.js-first').forEach((el) => { el.textContent = full.split(/\s+/)[0]; });
+    document.querySelectorAll('.js-name').forEach((el) => { el.textContent = full; });
+    go(1);
+    document.getElementById('story-tab-2')?.focus({ preventScroll: true });
+    document.dispatchEvent(new CustomEvent('story:replay'));
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      go(2);
+      if (document.activeElement?.id === 'story-tab-2') document.getElementById('story-tab-3')?.focus({ preventScroll: true });
+    }, reduceMotion.matches ? 800 : 2900);
   });
 }
 
@@ -204,6 +236,7 @@ export function initTone() {
   tone.append(list, wrap);
   tone.classList.add('is-tabs');
   const show = (i) => {
+    document.dispatchEvent(new CustomEvent('kidemo:reset'));
     tabs.forEach((tab, k) => { tab.setAttribute('aria-selected', String(k === i)); tab.tabIndex = k === i ? 0 : -1; });
     panels.forEach((p, k) => p.classList.toggle('is-active', k === i));
   };
@@ -244,11 +277,12 @@ export function initKiDemo() {
   }
   const words = [...text.querySelectorAll('.w')];
   const marks = [...demo.querySelectorAll('.hl')];
-  const chips = [...demo.querySelectorAll('.chip')];
+  const chips = [...demo.querySelectorAll('.chips .label')];
   const replay = demo.querySelector('.kidemo__replay');
   let timers = [];
   const at = (ms, fn) => timers.push(setTimeout(fn, ms));
   const play = () => {
+    document.dispatchEvent(new CustomEvent('kidemo:reset'));
     timers.forEach(clearTimeout);
     timers = [];
     demo.classList.remove('is-done', 'is-drafting');
@@ -421,4 +455,69 @@ export function initFaqChat() {
   };
   wide.addEventListener('change', apply);
   apply();
+}
+
+/* ---------- KI demo: «Freigeben» and «Bearbeiten» work (locally, nothing is sent) ---------- */
+export function initKiActions() {
+  const demo = document.querySelector('.kidemo');
+  if (!demo) return;
+  const approve = demo.querySelector('.kidemo__approve');
+  const edit = demo.querySelector('.kidemo__edit');
+  const sent = demo.querySelector('.kidemo__sent');
+  const labels = { approve: approve.textContent, edit: edit.textContent };
+  demo.querySelectorAll('.tone__text').forEach((p) => { p.dataset.original = p.textContent; });
+  let editing = null;
+  const finishEdit = (keep) => {
+    if (!editing) return;
+    const { area, p } = editing;
+    if (keep) p.textContent = area.value;
+    area.replaceWith(p);
+    editing = null;
+    edit.textContent = labels.edit;
+  };
+  const unapprove = () => {
+    approve.removeAttribute('aria-disabled');
+    approve.textContent = labels.approve;
+    sent.hidden = true;
+  };
+  approve.addEventListener('click', () => {
+    if (approve.getAttribute('aria-disabled') === 'true') return;
+    finishEdit(true);
+    approve.setAttribute('aria-disabled', 'true'); // stays focusable, unlike disabled
+    approve.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12.5l4.2 4.2L19 7"/></svg> ';
+    approve.append(approve.dataset.done);
+    sent.hidden = false;
+  });
+  edit.addEventListener('click', () => {
+    if (editing) { finishEdit(true); edit.focus(); return; }
+    const p = demo.querySelector('.tone__panel.is-active .tone__text') || demo.querySelector('.tone__text');
+    const area = document.createElement('textarea');
+    area.className = 'tone__edit';
+    area.value = p.textContent;
+    area.setAttribute('aria-label', edit.dataset.label);
+    p.replaceWith(area);
+    editing = { area, p };
+    edit.textContent = edit.dataset.done;
+    unapprove(); // an edited reply needs a new approval
+    area.focus();
+  });
+  document.addEventListener('kidemo:reset', () => {
+    finishEdit(false);
+    demo.querySelectorAll('.tone__text').forEach((p) => { p.textContent = p.dataset.original; });
+    unapprove();
+  });
+}
+
+/* ---------- Hero flow: each node explains its step in one line under the diagram ---------- */
+export function initFlowNodes() {
+  const buttons = [...document.querySelectorAll('.hf__btn')];
+  if (!buttons.length) return;
+  const show = (i) => buttons.forEach((b, k) => {
+    b.setAttribute('aria-expanded', String(k === i));
+    document.getElementById(b.getAttribute('aria-controls')).classList.toggle('is-active', k === i);
+  });
+  buttons.forEach((b, i) => {
+    b.addEventListener('click', () => show(i));
+    b.addEventListener('focus', () => show(i));
+  });
 }

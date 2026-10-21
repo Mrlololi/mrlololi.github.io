@@ -26,7 +26,7 @@ function study(t, s) {
 
 export function references(t, config) {
   const c1 = t.refs.case1;
-  return `<section class="section refs" id="references" aria-labelledby="refs-title">
+  return `<section class="section refs bg-pist edge" id="references" aria-labelledby="refs-title">
 <div class="wrap">
 <div class="section__head">
 <h2 id="refs-title">${accent(t.refs.h2)}</h2>

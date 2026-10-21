@@ -204,6 +204,7 @@ export async function keyboard(browser, base) {
         // The skip link sits above the header on purpose (z-index), so it is never covered.
         covered: !inHeader && !el.matches('.skip') && r.top < header.bottom - 2 && getComputedStyle(document.querySelector('.site-header')).transform === 'none',
         y: r.top + scrollY,
+        x: r.left,
       };
     });
     if (!s) break;
@@ -212,7 +213,8 @@ export async function keyboard(browser, base) {
   const noOutline = stops.filter((s) => !s.outline).map((s) => s.label);
   const hidden = stops.filter((s) => !s.visible || s.covered).map((s) => s.label);
   let backwards = 0;
-  for (let i = 1; i < stops.length; i++) if (stops[i].y < stops[i - 1].y - 40) backwards++;
+  // Reading order: left to right, then down. Moving up into the next column to the right is fine.
+  for (let i = 1; i < stops.length; i++) if (stops[i].y < stops[i - 1].y - 40 && stops[i].x <= stops[i - 1].x + 40) backwards++;
   // Accordions and replay with keys.
   await page.focus('.faq__item summary');
   await page.keyboard.press('Space');

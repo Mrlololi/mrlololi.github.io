@@ -40,6 +40,7 @@ export default {
     caseImageAlt: 'Home page of alexandrafry.ch',
     translation: 'Translation:',
     priceListLabel: 'Price list',
+    matching: "Matching package:",
     pause: 'Pause animation',
     play: 'Play animation',
     example: 'Example',
@@ -61,7 +62,7 @@ export default {
     small: 'Based in Graz, working remotely across Europe. German, English, Russian and Georgian.',
     proof: 'Since 2023 for course creators and online shops in Germany, Switzerland, Austria and Italy · Business registered in Austria',
     ribbon: 'Sign-up received · Email confirmed · Tag added · Payment received · Access granted · Welcome email arrived ·',
-    flow: {"label":"Flow: form, ActiveCampaign, payment, course open","nodes":["Form","ActiveCampaign","Payment","Course open"],"chip":"Hi, I'm Iva"},
+    flow: {"label":"Flow: form, ActiveCampaign, payment, course open","nodes":["Form","ActiveCampaign","Payment","Course open"],"lines":["The sign-up comes in and is checked.","Contact, tag and welcome email are set.","Payment or instalment is recognised, the invoice goes out.","Access is granted, with no manual work."],"chip":"Hi, I'm Iva"},
   },
 
   tools: {
@@ -88,16 +89,18 @@ export default {
           "anna@example.com"
         ]
       ],
+      "note": "Preview only: nothing is sent or stored.",
+      "error": "Please enter a valid email address.",
       "button": "Sign up now"
     },
     "runLabel": "Example run",
     "welcome": {
-      "subject": "Welcome to the course, Anna!",
+      "subject": "Welcome to the course, {first}!",
       "text": "Your access is ready. Enjoy learning.",
       "access": "Course access: granted"
     },
     "toasts": [
-      "New sign-up: Anna K.",
+      "New sign-up: {name}",
       "Payment received: €297",
       "Course access granted",
       "Welcome email delivered"
@@ -130,9 +133,9 @@ export default {
       nodes: ['Form', 'ActiveCampaign', 'Zapier', 'Stripe', 'Course'],
     },
     items: [
-      { problem: "Sign-ups get lost between the form and the CRM.", fix: "Flows with checks and retries that stay reliable even when many people sign up at once." },
-      { problem: "Launch emails land in spam.", fix: "Set up SPF, DKIM and DMARC correctly and test delivery." },
-      { problem: "The instalment payment failed, but access is still open.", fix: "Automatic reminders, suspension and reactivation, in sync with Quaderno, Somba or Stripe." },
+      { problem: "Sign-ups get lost between the form and the CRM.", fix: "Flows with checks and retries that stay reliable even when many people sign up at once.", pkg: "check" },
+      { problem: "Launch emails land in spam.", fix: "Set up SPF, DKIM and DMARC correctly and test delivery.", pkg: "quick" },
+      { problem: "The instalment payment failed, but access is still open.", fix: "Automatic reminders, suspension and reactivation, in sync with Quaderno, Somba or Stripe.", pkg: "launch" },
     ],
   },
 
@@ -199,6 +202,8 @@ export default {
         ]
       }
     ],
+    cta: "Enquire",
+    subjectPrefix: "Enquiry: ",
     hourly: "Anything outside the packages: €45 per hour.",
     promise: "My promise: if a flow I built does not work as agreed within the first 30 days, I fix it free of charge. This covers my work, not outages of the tools themselves.",
     smallPrint: 'All prices are final. As a small business under Austrian VAT law (§ 6 (1) Z 27 UStG) I do not charge VAT. For businesses with a valid VAT ID in another EU member state, the reverse charge applies.',
@@ -241,6 +246,10 @@ export default {
       "Edit"
     ],
     "note": "Nothing is sent until your team approves it.",
+    "approved": "Approved",
+    "sent": "Reply to Anna sent (example)",
+    "done": "Done",
+    "editLabel": "Edit reply",
     "replay": "Play again",
     "caption": "The drafts sound like your school.",
     "speed": {

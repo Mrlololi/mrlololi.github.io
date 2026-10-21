@@ -4,16 +4,16 @@ import { loopButton } from './hero.mjs';
 // «Ich arbeite mit»: text pills (no logos). The second list is the marquee's seamless copy.
 export function tools(t) {
   const pills = t.tools.items.map((name) => `<li>${esc(name)}</li>`).join('');
-  return `<section class="tools" aria-labelledby="tools-title">
+  return `<section class="tools bg-peach edge" aria-labelledby="tools-title">
 <div class="wrap tools__in">
 <p class="tools__label" id="tools-title">${esc(t.tools.label)}</p>
+${loopButton(t)}
 <div class="marquee">
 <div class="marquee__track">
 <ul class="marquee__list" role="list">${pills}</ul>
 <ul class="marquee__list" role="list" aria-hidden="true">${pills}</ul>
 </div>
 </div>
-${loopButton(t)}
 </div>
 </section>`;
 }
@@ -51,8 +51,8 @@ export function beforeAfter(t) {
   const s = t.problems.slider;
   return `<figure class="ba">
 <div class="ba__stage">
-<div class="ba__side ba__side--before"><span class="ba__tag ba__tag--before">${esc(s.before)}</span>${chaosSvg(s.nodes)}</div>
-<div class="ba__side ba__side--after"><span class="ba__tag ba__tag--after">${esc(s.after)}</span>${orderSvg(s.nodes)}</div>
+<div class="ba__side ba__side--before"><span class="label label--pink ba__tag--before">${esc(s.before)}</span>${chaosSvg(s.nodes)}</div>
+<div class="ba__side ba__side--after"><span class="label label--pist ba__tag--after">${esc(s.after)}</span>${orderSvg(s.nodes)}</div>
 <span class="ba__divider" aria-hidden="true"></span>
 </div>
 <label class="ba__control"><span>${esc(s.label)}</span><input class="ba__range" type="range" min="0" max="100" step="1" value="50"></label>
@@ -66,11 +66,11 @@ export function kiDemo(t) {
   const k = t.ki;
   let text = esc(k.mail);
   k.marks.forEach((m, i) => { text = text.replace(esc(m), `<mark class="hl hl--${i + 1}">${esc(m)}</mark>`); });
-  const chips = k.chips.map((c, i) => `<li class="chip chip--${i + 1}">${esc(c)}</li>`).join('');
+  const chips = k.chips.map((c, i) => `<li class="label label--${['blue', 'pink', 'lav', 'peach'][i]}">${esc(c)}</li>`).join('');
   const tones = k.tones.map(([name, reply]) => `<div class="tone__panel"><p class="tone__label">${esc(name)}</p><p class="tone__text">${esc(reply)}</p></div>`).join('\n');
   return `<li class="tariff__ki">
 <section class="kidemo" aria-labelledby="kidemo-title">
-<div class="kidemo__head"><h3 class="kidemo__title" id="kidemo-title">${accent(k.h3)}</h3><span class="demo-tag">${esc(t.ui.example)}</span></div>
+<div class="kidemo__head"><h3 class="kidemo__title" id="kidemo-title">${accent(k.h3)}</h3><span class="label">${esc(t.ui.example)}</span></div>
 <div class="kidemo__grid">
 <div class="kidemo__mail">
 <p class="kidemo__from">${esc(k.from)}</p>
@@ -82,7 +82,8 @@ export function kiDemo(t) {
 <div class="tone" data-label="${esc(k.toneLabel)}">
 ${tones}
 </div>
-<div class="kidemo__actions" aria-hidden="true"><span class="fake-btn fake-btn--primary">${esc(k.buttons[0])}</span><span class="fake-btn">${esc(k.buttons[1])}</span></div>
+<div class="kidemo__actions"><button class="btn btn--primary btn--sm kidemo__approve" type="button" data-done="${esc(k.approved)}">${esc(k.buttons[0])}</button><button class="btn btn--ghost btn--sm kidemo__edit" type="button" data-done="${esc(k.done)}" data-label="${esc(k.editLabel)}">${esc(k.buttons[1])}</button></div>
+<p class="kidemo__sent" role="status" hidden>${esc(k.sent)}</p>
 <p class="kidemo__note small">${esc(k.note)}</p>
 </div>
 </div>
@@ -102,7 +103,7 @@ export function speed(t) {
 <span class="speed__bar" aria-hidden="true"><span></span></span>
 </div>`;
   return `<div class="speed">
-<span class="demo-tag">${esc(s.label)}</span>
+<span class="label">${esc(s.label)}</span>
 ${card('slow', s.slow)}
 ${card('fast', s.fast)}
 ${loopButton(t)}
@@ -120,7 +121,7 @@ export function finder(t) {
       .join('')}</div></fieldset>`)
     .join('\n');
   const data = { result: f.result, link: f.link, restart: f.restart, soon: f.closing.soon, later: f.closing.later, names };
-  return `<section class="section finder" id="finder" aria-labelledby="finder-title">
+  return `<section class="section finder bg-lav edge" id="finder" aria-labelledby="finder-title">
 <div class="wrap">
 <div class="finder__card">
 <h2 id="finder-title">${accent(f.h2)}</h2>

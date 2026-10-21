@@ -2,7 +2,7 @@ import { esc, fill, accent } from './util.mjs';
 import { calcSavings, formatResult } from '../../assets/js/calc.js';
 import { kiDemo, speed } from './demos.mjs';
 
-function item(t, it) {
+function item(t, it, email) {
   const extra = it.extra ? `<p class="item__extra"><strong>${esc(it.extra.label)}</strong>, ${esc(it.extra.text)}</p>` : '';
   const details = it.details
     ? `<details class="price-details">
@@ -16,6 +16,7 @@ function item(t, it) {
 <p class="item__summary">${esc(it.summary)}</p>
 ${extra}
 ${details}
+<a class="btn btn--sm item__cta" href="mailto:${email}?subject=${encodeURIComponent(t.pricing.subjectPrefix + it.name)}">${esc(t.pricing.cta)}<span class="sr-only">: ${esc(it.name)}</span></a>
 </li>`;
 }
 
@@ -52,7 +53,7 @@ ${speed(t)}
 </li>`;
 }
 
-export function pricing(t) {
+export function pricing(t, config) {
   const groups = t.pricing.groups
     .map(
       (g, gi) => `<section class="tariff__group tariff__group--${gi + 1}" aria-labelledby="group-${gi}">
@@ -61,13 +62,13 @@ export function pricing(t) {
 ${g.note ? `<p class="tariff__note">${esc(g.note)}</p>` : ''}
 </div>
 <ul class="tariff__items" role="list">
-${g.items.map((it) => item(t, it) + (it.calc ? '\n' + kiDemo(t) + '\n' + calculator(t) : '')).join('\n')}
+${g.items.map((it) => item(t, it, config.contact_email) + (it.calc ? '\n' + kiDemo(t) + '\n' + calculator(t) : '')).join('\n')}
 </ul>
 </section>`
     )
     .join('\n');
 
-  return `<section class="section services" id="services" aria-labelledby="services-title">
+  return `<section class="section services bg-pink edge" id="services" aria-labelledby="services-title">
 <div class="wrap">
 <div class="section__head">
 <h2 id="services-title">${accent(t.pricing.h2)}</h2>

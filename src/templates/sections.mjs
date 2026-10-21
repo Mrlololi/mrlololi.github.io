@@ -10,7 +10,7 @@ export function processSteps(t) {
 </li>`
     )
     .join('\n');
-  return `<section class="section process" id="process" aria-labelledby="process-title">
+  return `<section class="section process bg-blue edge" id="process" aria-labelledby="process-title">
 <div class="wrap">
 <div class="section__head">
 <h2 id="process-title">${accent(t.process.h2)}</h2>
@@ -23,7 +23,7 @@ ${steps}
 }
 
 export function about(t, config) {
-  return `<section class="section about" id="about" aria-labelledby="about-title">
+  return `<section class="section about bg-peach edge" id="about" aria-labelledby="about-title">
 <div class="wrap about__grid">
 <div class="about__photo">
 <picture>
@@ -54,7 +54,7 @@ export function faq(t) {
 </details>`
     )
     .join('\n');
-  return `<section class="section faq" id="faq" aria-labelledby="faq-title">
+  return `<section class="section faq bg-lav edge" id="faq" aria-labelledby="faq-title">
 <div class="wrap faq__grid">
 <h2 id="faq-title">${accent(t.faq.h2)}</h2>
 <div class="faq__list" data-typing="${esc(t.faq.typing)}" data-photo="/assets/img/avatar-88.webp">
@@ -65,7 +65,7 @@ ${items}
 }
 
 export function notDo(t) {
-  return `<aside class="notdo">
+  return `<aside class="notdo bg-peach">
 <div class="wrap">
 <p class="notdo__text"><strong>${esc(t.notdo.label)}</strong> ${esc(t.notdo.text)}</p>
 </div>
@@ -77,7 +77,7 @@ export function contact(t, config) {
   const booking = config.booking_url
     ? `<a class="btn btn--ghost" href="${esc(config.booking_url)}" rel="noopener">${esc(t.contact.booking)}</a>`
     : '';
-  return `<section class="section contact" id="contact" aria-labelledby="contact-title">
+  return `<section class="section contact bg-pink edge" id="contact" aria-labelledby="contact-title">
 <div class="wrap">
 <h2 class="contact__title" id="contact-title">${accent(t.contact.h2)}</h2>
 <p class="lead">${esc(t.contact.text)}</p>

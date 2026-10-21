@@ -12,6 +12,8 @@ const page = await browser.newPage({ viewport: { width: 1200, height: 630 }, dev
 for (const t of [de, en]) {
   await page.goto(`${server.url}/404.html`);
   await page.setContent(ogHtml(t), { waitUntil: 'load' });
+  // The headline faces are font-display optional: load them explicitly before the screenshot.
+  await page.evaluate(() => Promise.all(['680 60px "Bricolage Grotesque"', 'italic 500 60px "EB Garamond"', '400 19px "Atkinson Hyperlegible Next"'].map((f) => document.fonts.load(f))));
   await page.evaluate(() => document.fonts.ready);
   const file = path.join(repoRoot, `og-image-${t.lang}.png`);
   await page.screenshot({ path: file });

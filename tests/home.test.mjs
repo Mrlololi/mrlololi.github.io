@@ -17,12 +17,12 @@ test('hero: H1, CTAs to contact and pricing', () => {
 test('hero: flow diagram with four nodes and a chip with the photo', () => {
   assert.match(de, /<figure class="hero__flow" aria-label="Ablauf: Formular, ActiveCampaign, Zahlung, Kurs offen">/);
   for (const n of ['Formular', 'ActiveCampaign', 'Zahlung', 'Kurs offen']) assert.match(de, new RegExp(`<text[^>]*>${n}</text>`));
-  assert.match(de, /<p class="hero__chip"><picture><source type="image\/avif" srcset="\/assets\/img\/avatar-44\.avif 1x, \/assets\/img\/avatar-88\.avif 2x"><source type="image\/webp" srcset="\/assets\/img\/avatar-44\.webp 1x, \/assets\/img\/avatar-88\.webp 2x"><img src="\/assets\/img\/avatar-44\.jpg" srcset="\/assets\/img\/avatar-88\.jpg 2x" width="44" height="44" loading="lazy" decoding="async" alt=""><\/picture>Hallo, ich bin Iva<\/p>/);
-  assert.match(en, /Hi, I'm Iva<\/p>/);
+  assert.match(de, /<a class="hero__chip" href="#about"><picture><source type="image\/avif" srcset="\/assets\/img\/avatar-44\.avif 1x, \/assets\/img\/avatar-88\.avif 2x"><source type="image\/webp" srcset="\/assets\/img\/avatar-44\.webp 1x, \/assets\/img\/avatar-88\.webp 2x"><img src="\/assets\/img\/avatar-44\.jpg" srcset="\/assets\/img\/avatar-88\.jpg 2x" width="44" height="44" loading="lazy" decoding="async" alt=""><\/picture>Hallo, ich bin Iva<\/a>/);
+  assert.match(en, /Hi, I'm Iva<\/a>/);
 });
 
 test('run log: own section after the problems, six steps, replay', () => {
-  assert.match(de, /<section class="section signup" id="signup" aria-labelledby="signup-title">/);
+  assert.match(de, /<section class="section signup[^"]*" id="signup" aria-labelledby="signup-title">/);
   assert.match(de, /<h2 id="signup-title">Was passiert, wenn sich jemand <em class="accent">anmeldet<\/em><\/h2>/);
   assert.ok(de.indexOf('id="problems"') < de.indexOf('id="signup"') && de.indexOf('id="signup"') < de.indexOf('id="services"'), 'order: problems, signup, services');
   assert.equal(count(de, /<li class="run__step" data-seconds="[\d.]+">/g), 6);
@@ -36,9 +36,9 @@ test('run log: own section after the problems, six steps, replay', () => {
 
 test('problems: three cards, problem first, then the solution panel', () => {
   assert.equal(count(de, /<li class="pc">/g), 3);
-  assert.equal(count(de, /<span class="pc__tag pc__tag--problem">Problem<\/span>/g), 3);
-  assert.equal(count(de, /<div class="pc__fix"><span class="pc__tag pc__tag--fix">Lösung<\/span>/g), 3);
-  assert.equal(count(en, /<span class="pc__tag pc__tag--fix">Fix<\/span>/g), 3);
+  assert.equal(count(de, /<span class="label label--pink">Problem<\/span>/g), 3);
+  assert.equal(count(de, /<div class="pc__fix"><span class="label label--pist">Lösung<\/span>/g), 3);
+  assert.equal(count(en, /<span class="label label--pist">Fix<\/span>/g), 3);
   assert.ok(!de.includes('flow__node'), 'old repair diagram gone');
 });
 
