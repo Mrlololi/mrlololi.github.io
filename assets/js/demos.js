@@ -357,3 +357,68 @@ export function initFinder() {
   });
   reset();
 }
+
+/* ---------- Quote cards: a small drift with the scroll (wide screens, motion allowed) ---------- */
+export function driftQuotes(gsap) {
+  const cards = [...document.querySelectorAll('.qcard')];
+  if (!cards.length) return;
+  gsap.matchMedia().add('(min-width: 768px) and (prefers-reduced-motion: no-preference)', () => {
+    const range = [24, -18, 30];
+    cards.forEach((card, i) => {
+      gsap.fromTo(card, { '--drift': `${range[i]}px` }, {
+        '--drift': `${-range[i]}px`, ease: 'none',
+        scrollTrigger: { trigger: '.qcards', start: 'top bottom', end: 'bottom top', scrub: true },
+      });
+    });
+  });
+}
+
+/* ---------- FAQ as a chat (wide screens): the open question and its answer as bubbles ---------- */
+export function initFaqChat() {
+  const list = document.querySelector('.faq__list');
+  if (!list) return;
+  const faq = list.closest('.faq');
+  const items = [...list.querySelectorAll('.faq__item')];
+  const chat = document.createElement('div');
+  chat.className = 'faq__chat';
+  chat.setAttribute('aria-hidden', 'true'); // a visual copy: the answers stay in the details
+  list.after(chat);
+  const wide = matchMedia('(min-width: 960px)');
+  let timer;
+  const bubble = (kind, text) => {
+    const p = document.createElement('p');
+    p.className = `bubble bubble--${kind}`;
+    p.textContent = text;
+    return p;
+  };
+  const say = (item) => {
+    clearTimeout(timer);
+    chat.textContent = '';
+    chat.append(bubble('visitor', item.querySelector('summary').textContent));
+    const answer = () => {
+      chat.querySelector('.bubble--typing')?.remove();
+      const row = document.createElement('div');
+      row.className = 'bubble-row';
+      const img = new Image(36, 36);
+      img.src = list.dataset.photo;
+      img.alt = '';
+      img.className = 'bubble__photo';
+      row.append(img, bubble('iva', item.querySelector('p').textContent));
+      chat.append(row);
+    };
+    if (reduceMotion.matches) { answer(); return; }
+    chat.append(bubble('typing', list.dataset.typing));
+    timer = setTimeout(answer, 900);
+  };
+  items.forEach((d) => d.addEventListener('toggle', () => {
+    if (!faq.classList.contains('is-chat') || !d.open) return;
+    items.forEach((o) => { if (o !== d) o.open = false; });
+    say(d);
+  }));
+  const apply = () => {
+    faq.classList.toggle('is-chat', wide.matches);
+    if (wide.matches) say(items.find((i) => i.open) || items[0]);
+  };
+  wide.addEventListener('change', apply);
+  apply();
+}

@@ -3,7 +3,7 @@ import { problems } from './problems.mjs';
 import { pricing } from './pricing.mjs';
 import { tools, finder } from './demos.mjs';
 import { references } from './references.mjs';
-import { processSteps, about, faq, contact } from './sections.mjs';
+import { processSteps, about, notDo, faq, contact } from './sections.mjs';
 
 // Section order per brief section 4.
 export function home(t, config) {
@@ -17,6 +17,7 @@ export function home(t, config) {
     processSteps(t),
     references(t, config),
     about(t, config),
+    notDo(t),
     faq(t),
     contact(t, config),
   ].join('\n');

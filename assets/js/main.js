@@ -2,7 +2,7 @@
 // Progressive enhancement: the HTML/CSS already shows every final state; this file only
 // rewinds and plays them back. Without GSAP (or with reduced motion) nothing moves.
 import { calcSavings, formatResult, toNumber } from './calc.js';
-import { initRibbon, initMarquee, initBeforeAfter, initStory, pinStory, initTone, initKiDemo, initSpeed, initFinder } from './demos.js';
+import { initRibbon, initMarquee, initBeforeAfter, initStory, pinStory, initTone, initKiDemo, initSpeed, initFinder, initFaqChat, driftQuotes } from './demos.js';
 
 const root = document.documentElement;
 // GSAP is loaded after the first paint (see loadMotion), so these are filled in later.
@@ -32,6 +32,7 @@ initTone();
 initKiDemo();
 initSpeed();
 initFinder();
+initFaqChat();
 if (document.querySelector('.run')) loadMotion();
 else releasePending();
 
@@ -70,6 +71,7 @@ async function loadMotion() {
   const mm = gsap.matchMedia();
   initRun(mm);
   pinStory(gsap, ScrollTrigger);
+  driftQuotes(gsap);
   initCalcCountUp();
 }
 

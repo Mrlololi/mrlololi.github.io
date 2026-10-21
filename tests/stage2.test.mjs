@@ -154,3 +154,31 @@ test('Zusage under the prices, never «Garantie»', () => {
   assert.match(en, /<p class="tariff__promise small">My promise: if a flow I built does not work as agreed within the first 30 days, I fix it free of charge\./);
   for (const html of [de, en]) assert.ok(!/Garantie|guarantee/i.test(body(html)));
 });
+
+test('references: the three quotes as pastel cards', () => {
+  const refs = de.match(/<section class="section refs"[\s\S]*?<\/section>/)[0];
+  const cards = [...refs.matchAll(/<li class="qcard qcard--(\w+)">/g)].map((m) => m[1]);
+  assert.deepEqual(cards, ['pink', 'blue', 'pist']);
+  assert.equal(count(refs, /<figure class="quote/g), 3);
+  assert.ok(!/<article class="case[^"]*">[\s\S]*?<figure class="quote[\s\S]*?<\/article>/.test(refs), 'quotes left the case cards');
+});
+
+test('case study stays hidden until Iva sends real numbers (config.case_study)', () => {
+  assert.equal(config.case_study, null);
+  assert.ok(!de.includes('class="study"'));
+  const withStudy = pages({ ...config, case_study: { before: 'Vorher-Text', after: 'Nachher-Text', tiles: [{ value: '12', label: 'Test' }] } }, { buildDate: new Date('2026-10-21T12:00:00Z') });
+  const html = withStudy.find((p) => p.file === 'index.html').html;
+  assert.match(html, /<article class="study"[\s\S]*Fallbeispiel: Online-Kursanbieterin[\s\S]*Vorher-Text[\s\S]*Nachher-Text[\s\S]*<span class="study__value">12<\/span>/);
+});
+
+test('«Was ich nicht mache» right before the FAQ', () => {
+  assert.match(de, /<p class="notdo__text"><strong>Was ich nicht mache:<\/strong> Werbetexte schreiben, Ads schalten oder Ihren Kundensupport übernehmen\. Dafür empfehle ich Ihnen gern Kolleg:innen\.<\/p>/);
+  assert.ok(de.indexOf('class="notdo__text"') < de.indexOf('id="faq"') && de.indexOf('class="notdo__text"') > de.indexOf('id="about"'));
+  assert.match(en, /<strong>What I don't do:<\/strong> write ad copy, run ads or take over your customer support\./);
+});
+
+test('FAQ chat: still seven details, chat texts for the script', () => {
+  assert.equal(count(de, /<details class="faq__item">/g), 7);
+  assert.match(de, /<div class="faq__list" data-typing="tippt…" data-photo="\/assets\/img\/portrait-260\.webp">/);
+  assert.match(en, /data-typing="typing…"/);
+});

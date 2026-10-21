@@ -11,6 +11,19 @@ function quote(t, q, extraClass = '') {
 </figure>`;
 }
 
+// Case study with real, documented numbers only: rendered when config.case_study is set.
+function study(t, s) {
+  const tiles = (s.tiles || []).map((x) => `<li><span class="study__value">${esc(x.value)}</span><span class="study__label">${esc(x.label)}</span></li>`).join('');
+  return `<article class="study">
+<h3>${esc(t.refs.study.title)}</h3>
+<div class="study__cols">
+<div><p class="study__label">${esc(t.refs.study.before)}</p><p>${esc(s.before)}</p></div>
+<div><p class="study__label">${esc(t.refs.study.after)}</p><p>${esc(s.after)}</p></div>
+</div>
+<ul class="study__tiles" role="list">${tiles}</ul>
+</article>`;
+}
+
 export function references(t, config) {
   const c1 = t.refs.case1;
   return `<section class="section refs" id="references" aria-labelledby="refs-title">
@@ -27,7 +40,6 @@ export function references(t, config) {
 <div class="case__body">
 <h3><a class="ext" href="${esc(config.case1_url)}" rel="noopener">${esc(c1.domain)}</a>${esc(c1.titleRest)}</h3>
 <p>${esc(c1.text)}</p>
-${quote(t, c1.quote)}
 </div>
 </article>
 <div class="cases">
@@ -38,10 +50,14 @@ ${quote(t, c1.quote)}
 <article class="case">
 <h3>${esc(t.refs.case3.title)}</h3>
 <p>${esc(t.refs.case3.text)}</p>
-${quote(t, t.refs.case3.quote)}
 </article>
 </div>
-${quote(t, t.refs.quote4, ' quote--big')}
+${config.case_study ? study(t, config.case_study) : ''}
+<ul class="qcards" role="list">
+<li class="qcard qcard--pink">${quote(t, c1.quote)}</li>
+<li class="qcard qcard--blue">${quote(t, t.refs.case3.quote)}</li>
+<li class="qcard qcard--pist">${quote(t, t.refs.quote4)}</li>
+</ul>
 </div>
 </section>`;
 }

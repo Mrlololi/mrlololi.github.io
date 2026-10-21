@@ -492,8 +492,6 @@ html:not(.calc-ready) .calc__fields { display: none; }
 .quote blockquote { margin: 0; }
 .quote blockquote p { font-family: var(--font-display); font-size: var(--step-1); font-weight: 500; line-height: 1.35; text-indent: -0.4em; hyphens: manual; }
 .quote__translation, .quote figcaption { font-size: var(--step--1); color: var(--ink-soft); }
-.quote--big { margin-top: var(--space-7); max-width: 50rem; gap: var(--space-4); padding: var(--space-6); background: var(--pist-tint); }
-.quote--big blockquote p { font-size: var(--step-2); line-height: 1.2; letter-spacing: -0.01em; }
 @media (min-width: 800px) {
   .cases { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
@@ -780,6 +778,42 @@ html:not(.calc-ready) .calc__fields { display: none; }
 .finder__restart { min-height: 2.75rem; padding: 0 var(--space-4); border: 1px solid var(--line); border-radius: 999px; background: var(--sheet); font-weight: 700; cursor: pointer; }
 .tariff__promise { padding: var(--space-3) var(--space-4); border-radius: var(--radius-field); background: var(--pist-tint); color: var(--ink); }
 
+/* ---------- Stage 2: quote cards, case study, «Was ich nicht mache», FAQ chat ---------- */
+.qcards { display: grid; gap: var(--space-5); margin-top: var(--space-7); }
+@media (min-width: 768px) { .qcards { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; } }
+.qcard .quote { margin: 0; height: 100%; padding: var(--space-5); border-radius: 22px; box-shadow: var(--shadow-soft); }
+.qcard--pink .quote { background: var(--pink-tint); }
+.qcard--blue .quote { background: var(--blue-tint); }
+.qcard--pist .quote { background: var(--pist-tint); }
+.qcard .quote blockquote p { font-family: var(--font-accent); font-style: italic; font-weight: 400; font-size: var(--step-1); line-height: 1.4; }
+.study { display: grid; gap: var(--space-4); margin-top: var(--space-6); padding: var(--space-5); border-radius: 24px; background: var(--sheet); border: 1px solid var(--line); }
+.study__cols { display: grid; gap: var(--space-4); }
+@media (min-width: 768px) { .study__cols { grid-template-columns: 1fr 1fr; } }
+.study__label { font-size: var(--step--1); font-weight: 700; color: var(--ink-soft); }
+.study__tiles { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+.study__tiles li { display: grid; padding: var(--space-3) var(--space-4); border-radius: 16px; background: var(--lav-tint); }
+.study__value { font-family: var(--font-display); font-size: var(--step-2); font-weight: 750; }
+.notdo { padding-block: var(--space-6) 0; }
+.notdo__text { max-width: 46rem; padding: var(--space-4) var(--space-5); border-radius: var(--radius-card); background: var(--sheet); border: 1px dashed var(--field); }
+.faq__chat { display: none; }
+@media (min-width: 960px) {
+  .faq.is-chat .faq__grid { grid-template-columns: minmax(0, 4fr) minmax(0, 5fr) minmax(0, 5fr); align-items: start; }
+  .faq.is-chat .faq__item p { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .faq.is-chat .faq__item summary::after { content: "\2192"; }
+  .faq.is-chat .faq__item[open] { border-color: var(--lav-ink); }
+  .faq.is-chat .faq__item[open] summary { color: var(--lav-ink); }
+  .faq.is-chat .faq__chat {
+    display: grid; align-content: start; gap: var(--space-3); position: sticky; top: calc(var(--header-h) + var(--space-5));
+    min-height: 16rem; padding: var(--space-5); border-radius: 24px; background: linear-gradient(135deg, var(--lav-tint), var(--blue-tint));
+  }
+}
+.bubble { max-width: 90%; padding: var(--space-3) var(--space-4); border-radius: 18px; line-height: 1.5; }
+.bubble--visitor { justify-self: end; background: var(--ink); color: #fff; border-bottom-right-radius: 6px; font-weight: 600; }
+.bubble--typing { justify-self: start; background: var(--sheet); color: var(--ink-soft); font-style: italic; }
+.bubble-row { display: flex; align-items: flex-end; gap: var(--space-2); }
+.bubble__photo { width: 2.25rem; height: 2.25rem; border-radius: 50%; object-fit: cover; object-position: 50% 15%; flex: none; }
+.bubble--iva { background: var(--sheet); border-bottom-left-radius: 6px; }
+
 /* ---------- Motion: one calm effect per section, each once, never under reduced motion ---------- */
 @media (prefers-reduced-motion: no-preference) {
   .btn--primary:hover { transform: translateY(-2px); }
@@ -797,6 +831,15 @@ html:not(.calc-ready) .calc__fields { display: none; }
   /* 6 vs 1: one line each, moved by demos.js while in view. */
   .js .speed__text { white-space: nowrap; overflow: hidden; }
   .js .speed__text span { display: inline-block; transform: translateX(var(--x, 0)); }
+
+  /* Quote cards: a slight tilt on wide screens; demos.js lets them drift a little with the scroll. */
+  @media (min-width: 768px) {
+    .qcard { transform: rotate(var(--tilt, 0deg)) translateY(var(--drift, 0px)); }
+    .qcard--pink { --tilt: -2.5deg; }
+    .qcard--blue { --tilt: 2deg; margin-top: var(--space-6); }
+    .qcard--pist { --tilt: -1.5deg; }
+  }
+  .bubble { animation: bubble-in 0.35s var(--ease-soft) both; }
 
   /* Toasts: pop in one by one while the stack is live (demos.js). */
   .toasts.is-live .toast { opacity: 0; transform: translateY(0.75rem) scale(0.98); transition: opacity 0.45s var(--ease-soft), transform 0.45s var(--ease-soft); }
@@ -828,6 +871,7 @@ html:not(.calc-ready) .calc__fields { display: none; }
   .anim .path:not(.is-in)::after { transform: scaleX(0); }
 }
 @keyframes sparkle { to { transform: rotate(360deg); } }
+@keyframes bubble-in { from { opacity: 0; transform: translateY(0.5rem); } }
 @keyframes marquee { to { transform: translateX(-50%); } }
 @keyframes hf-lit { from { fill: var(--t); stroke: var(--c); } to { fill: var(--c); stroke: var(--k); } }
 @keyframes hf-check { from { opacity: 0; transform: scale(0.5); } to { opacity: 1; transform: none; } }

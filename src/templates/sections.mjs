@@ -57,11 +57,19 @@ export function faq(t) {
   return `<section class="section faq" id="faq" aria-labelledby="faq-title">
 <div class="wrap faq__grid">
 <h2 id="faq-title">${accent(t.faq.h2)}</h2>
-<div class="faq__list">
+<div class="faq__list" data-typing="${esc(t.faq.typing)}" data-photo="/assets/img/portrait-260.webp">
 ${items}
 </div>
 </div>
 </section>`;
+}
+
+export function notDo(t) {
+  return `<aside class="notdo">
+<div class="wrap">
+<p class="notdo__text"><strong>${esc(t.notdo.label)}</strong> ${esc(t.notdo.text)}</p>
+</div>
+</aside>`;
 }
 
 export function contact(t, config) {

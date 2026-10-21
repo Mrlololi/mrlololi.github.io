@@ -357,6 +357,7 @@ export default {
   },
 
   refs: {
+    study: {"title":"Fallbeispiel: Online-Kursanbieterin","before":"Vorher","after":"Nachher"},
     h2: '*Referenzen*',
     case1: {
       domain: 'alexandrafry.ch',
@@ -402,7 +403,10 @@ export default {
     projects: 'Eigene Projekte: GeoAPP und KittyCats',
   },
 
+  notdo: {"label":"Was ich nicht mache:","text":"Werbetexte schreiben, Ads schalten oder Ihren Kundensupport übernehmen. Dafür empfehle ich Ihnen gern Kolleg:innen."},
+
   faq: {
+    typing: "tippt…",
     h2: 'Häufige *Fragen*',
     items: [
       { q: 'Muss ich mich mit Technik auskennen?', a: 'Nein. Sie sagen mir, was passieren soll, ich kümmere mich um den Rest und erkläre alles in einfachen Worten.' },

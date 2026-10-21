@@ -118,6 +118,23 @@ export async function checkDemos(browser, base) {
     await page.click('.finder__restart');
     const cleared = await page.$eval('.finder__app', (app) => app.querySelector('.finder__result').textContent === '' && app.querySelector('[data-q="2"]').hidden);
     check('finder: all 8 answer paths pick the package from the brief, restart clears', wrong.length === 0 && cleared, wrong.join(', '));
+    // Quote cards tilt on wide screens; FAQ shows the chosen question as a chat.
+    const tilt = await page.$eval('.qcard--pink', (el) => getComputedStyle(el).transform);
+    check('quote cards: tilted at 1280 with motion', tilt !== 'none', tilt);
+    await page.$eval('#faq', (el) => el.scrollIntoView({ block: 'start' }));
+    await page.click('.faq__item:nth-child(3) summary');
+    await page.waitForTimeout(200);
+    const typing = await page.$eval('.faq__chat', (c) => ({ q: c.querySelector('.bubble--visitor')?.textContent, typing: Boolean(c.querySelector('.bubble--typing')) }));
+    await page.waitForTimeout(1000);
+    const chat = await page.evaluate(() => ({
+      answer: document.querySelector('.faq__chat .bubble--iva')?.textContent,
+      expected: document.querySelector('.faq__item:nth-child(3) p').textContent,
+      open: [...document.querySelectorAll('.faq__item')].map((d) => d.open).join(),
+      hidden: document.querySelector('.faq__chat').getAttribute('aria-hidden'),
+    }));
+    check('FAQ chat: question bubble, «tippt…», then the answer; one item open; chat hidden from screen readers',
+      typing.q === 'Wie schnell können Sie starten?' && typing.typing && chat.answer === chat.expected && chat.open === 'false,false,true,false,false,false,false' && chat.hidden === 'true',
+      JSON.stringify({ typing, chat }));
     check('demos: no console errors', errors.length === 0, errors.join(' | '));
     await page.close();
   }
@@ -134,6 +151,13 @@ export async function checkDemos(browser, base) {
     const third = await page.$eval('#story-panel-3', (p) => p.classList.contains('is-active') && getComputedStyle(p).visibility === 'visible');
     await page.screenshot({ path: path.join(shots, 'story-390.png') });
     check('story 390: tabs, no pin, tab 3 shows step 3', !pinned && third, JSON.stringify({ pinned, third }));
+    const phone = await page.evaluate(() => ({
+      tilt: getComputedStyle(document.querySelector('.qcard--pink')).transform,
+      chat: getComputedStyle(document.querySelector('.faq__chat')).display,
+    }));
+    await page.$eval('.faq__item summary', (s) => s.click());
+    const answerShown = await page.$eval('.faq__item p', (p) => p.getBoundingClientRect().height > 20 && getComputedStyle(p).position !== 'absolute');
+    check('390: quote cards straight, no chat, FAQ answers open inline', phone.tilt === 'none' && phone.chat === 'none' && answerShown, JSON.stringify({ ...phone, answerShown }));
     await page.setViewportSize({ width: 1280, height: 900 });
     await page.waitForTimeout(800);
     const wide = await page.evaluate(() => ({ pinned: document.querySelector('.story').classList.contains('is-pinned'), overflow: document.documentElement.scrollWidth - innerWidth }));
@@ -164,6 +188,7 @@ export async function checkDemos(browser, base) {
       speed: getComputedStyle(document.querySelector('.speed__text')).whiteSpace !== 'nowrap',
     }));
     check('reduced motion: KI demo shows the finished draft, 6 vs 1 shows full text', !kr.playing && kr.draft && kr.speed, JSON.stringify(kr));
+    check('reduced motion: quote cards straight', (await page.$eval('.qcard--pink', (el) => getComputedStyle(el).transform)) === 'none');
     await page.close();
   }
 

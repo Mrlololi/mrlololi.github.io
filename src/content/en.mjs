@@ -355,6 +355,7 @@ export default {
   },
 
   refs: {
+    study: {"title":"Case study: online course creator","before":"Before","after":"After"},
     h2: '*References*',
     case1: {
       domain: 'alexandrafry.ch',
@@ -402,7 +403,10 @@ export default {
     projects: 'Side projects: GeoAPP and KittyCats',
   },
 
+  notdo: {"label":"What I don't do:","text":"write ad copy, run ads or take over your customer support. I'm happy to recommend colleagues for that."},
+
   faq: {
+    typing: "typing…",
     h2: 'Frequently asked *questions*',
     items: [
       { q: 'Do I need to know about tech?', a: 'No. You tell me what should happen, I take care of the rest and explain everything in plain words.' },
