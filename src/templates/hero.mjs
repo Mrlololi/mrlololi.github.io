@@ -60,8 +60,10 @@ ${loopButton(t)}
 </section>`;
 }
 
-// «Was passiert, wenn sich jemand anmeldet»: the run log as a card, played once in view.
-export function signup(t) {
+// «Was passiert, wenn sich jemand anmeldet»: a 3-step story. Without JS the three panels
+// stand one under the other; assets/js/demos.js turns the step list into tabs, and on wide
+// screens with motion allowed pins the story and moves through the steps with the scroll.
+function runLog(t) {
   const steps = t.run.steps
     .map(
       (s, i) => `<li class="run__step" data-seconds="${s.seconds}">
@@ -72,14 +74,8 @@ ${i < t.run.steps.length - 1 ? runLink : ''}
 </li>`
     )
     .join('\n');
-
-  return `<section class="section signup" id="signup" aria-labelledby="signup-title">
-<div class="wrap signup__grid">
-<div class="section__head">
-<h2 id="signup-title">${accent(t.run.h2)}</h2>
-</div>
-<figure class="run instrument" aria-labelledby="run-title">
-<figcaption class="run__bar"><span class="run__title" id="run-title">${esc(t.run.title)}</span></figcaption>
+  return `<figure class="run instrument" aria-labelledby="run-title">
+<figcaption class="run__bar"><span class="run__title" id="run-title">${esc(t.run.title)}</span><span class="demo-tag">${esc(t.story.runLabel)}</span></figcaption>
 <ol class="run__steps" role="list">
 ${steps}
 </ol>
@@ -88,7 +84,57 @@ ${steps}
 <button class="run__replay" type="button" hidden>${esc(t.run.replay)}</button>
 </div>
 <p class="sr-only" id="run-status" role="status" aria-live="polite"></p>
-</figure>
+</figure>`;
+}
+
+function formCard(t) {
+  const f = t.story.form;
+  const fields = f.fields.map(([k, v]) => `<div class="story__field"><dt>${esc(k)}</dt><dd class="story__value">${esc(v)}</dd></div>`).join('');
+  return `<div class="story__card story__form">
+<p class="story__card-title">${esc(f.title)}<span class="demo-tag">${esc(t.ui.example)}</span></p>
+<dl>${fields}</dl>
+<span class="story__button" aria-hidden="true">${esc(f.button)}</span>
+</div>`;
+}
+
+function welcomeCard(t) {
+  const w = t.story.welcome;
+  return `<div class="story__card story__welcome">
+<p class="story__card-title">${esc(w.subject)}<span class="demo-tag">${esc(t.ui.example)}</span></p>
+<p>${esc(w.text)}</p>
+<p class="story__access">${esc(w.access)}</p>
+</div>
+<div class="toasts">
+<ul class="toasts__list" role="list">${t.story.toasts.map((x) => `<li class="toast">${esc(x)}</li>`).join('')}</ul>
+${loopButton(t)}
+</div>`;
+}
+
+export function signup(t) {
+  const s = t.story;
+  const bodies = [formCard(t), runLog(t), welcomeCard(t)];
+  const panels = s.steps
+    .map((title, i) => `<div class="story__panel" id="story-panel-${i + 1}">
+<h3 class="story__title">${esc(title)}</h3>
+${bodies[i]}
+</div>`)
+    .join('\n');
+  return `<section class="section signup" id="signup" aria-labelledby="signup-title">
+<div class="wrap">
+<div class="section__head">
+<h2 id="signup-title">${accent(t.run.h2)}</h2>
+</div>
+<div class="story">
+<div class="story__nav">
+<span class="story__progress" aria-hidden="true"><span></span></span>
+<ol class="story__steps" role="list" aria-label="${esc(s.label)}">
+${s.steps.map((title, i) => `<li class="story__step"><span class="story__n" aria-hidden="true">${i + 1}</span>${esc(title)}</li>`).join('\n')}
+</ol>
+</div>
+<div class="story__panels">
+${panels}
+</div>
+</div>
 </div>
 </section>`;
 }

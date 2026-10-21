@@ -2,7 +2,7 @@
 // Progressive enhancement: the HTML/CSS already shows every final state; this file only
 // rewinds and plays them back. Without GSAP (or with reduced motion) nothing moves.
 import { calcSavings, formatResult, toNumber } from './calc.js';
-import { initRibbon, initMarquee, initBeforeAfter } from './demos.js';
+import { initRibbon, initMarquee, initBeforeAfter, initStory, pinStory } from './demos.js';
 
 const root = document.documentElement;
 // GSAP is loaded after the first paint (see loadMotion), so these are filled in later.
@@ -27,6 +27,7 @@ initReveals();
 initRibbon();
 initMarquee();
 initBeforeAfter();
+initStory();
 if (document.querySelector('.run')) loadMotion();
 else releasePending();
 
@@ -64,6 +65,7 @@ async function loadMotion() {
   gsap.registerPlugin(ScrollTrigger);
   const mm = gsap.matchMedia();
   initRun(mm);
+  pinStory(gsap, ScrollTrigger);
   initCalcCountUp();
 }
 
@@ -126,7 +128,10 @@ function initRun(mm) {
     seconds: Number(li.dataset.seconds),
   }));
   let played = false; // the run plays once; later breakpoint changes only rebuild
-  const inView = () => run.getBoundingClientRect().top < innerHeight * 0.85 && run.getBoundingClientRect().bottom > 0;
+  // The log is step 2 of the story: it counts as seen only while that step is shown and on screen.
+  const panel = run.closest('.story__panel');
+  const inView = () => (!panel || !panel.closest('.is-tabs') || panel.classList.contains('is-active'))
+    && run.getBoundingClientRect().top < innerHeight * 0.85 && run.getBoundingClientRect().bottom > 0;
   // After 2 s the CSS failsafe has shown the finished log. A reader who already sees it
   // never watches it rewind; one who has not scrolled there yet still gets the run.
   const late = () => performance.now() > 1900;
@@ -168,11 +173,17 @@ function initRun(mm) {
       tl.progress(1);
     } else if (inView()) {
       begin();
-    } else {
-      ScrollTrigger.create({ trigger: run, start: 'top 85%', once: true, onEnter: begin });
     }
+    // Otherwise wait until the reader reaches it: by scrolling, or by choosing step 2.
+    const tryBegin = () => { if (!played && inView()) begin(); };
+    const st = played ? null : ScrollTrigger.create({ trigger: run, start: 'top 85%', onEnter: tryBegin });
+    document.addEventListener('story:show', tryBegin);
     releasePending();
-    return () => replay.removeEventListener('click', onReplay);
+    return () => {
+      replay.removeEventListener('click', onReplay);
+      document.removeEventListener('story:show', tryBegin);
+      st?.kill();
+    };
   });
 }
 

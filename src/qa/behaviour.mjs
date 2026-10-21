@@ -22,6 +22,12 @@ const allDone = (s) => s.every((x) => x.done === 1 && x.check === 0);
 const fixesIn = (page) => page.$$eval('.pc__fix', (els) => els.map((e) => getComputedStyle(e).transform === 'none'));
 // Hero flow: opacity of each node's check.
 const flowChecks = (page) => page.$$eval('.hf__check', (els) => els.map((e) => Number(getComputedStyle(e).opacity)));
+// The run log is step 2 of the story: scroll the story into view and choose that step.
+const showRun = async (page) => {
+  await page.$eval('.story', (el) => el.scrollIntoView({ block: 'center' }));
+  await page.waitForTimeout(150);
+  await page.click('#story-tab-2');
+};
 const pathDrawn = (page) => page.$eval('.path', (el) => getComputedStyle(el, '::after').transform === 'none');
 
 export async function checkBehaviour(browser, base) {
@@ -56,15 +62,15 @@ export async function checkBehaviour(browser, base) {
     await page.screenshot({ path: path.join(shots, 'problems-1280.png') });
     check('problems: all solution panels in place after entering the view', fixesAfter.every(Boolean), JSON.stringify(fixesAfter));
 
-    // 3. Run log: plays when scrolled to, times count up.
-    await page.$eval('.run', (el) => el.scrollIntoView({ block: 'center' }));
+    // 3. Run log: plays when its story step is shown, times count up.
+    await showRun(page);
     await page.waitForTimeout(1000);
     const mid = await runState(page);
     await page.waitForTimeout(2600);
     const end = await runState(page);
     await page.screenshot({ path: path.join(shots, 'run-end-1280.png') });
-    check('desktop: run is mid-way 1.0 s after scrolling to it', !allDone(mid), JSON.stringify(mid.map((x) => x.done)));
-    check('desktop: all six steps done 3.6 s after scrolling to it', allDone(end), JSON.stringify(end));
+    check('desktop: run is mid-way 1.0 s after showing step 2', !allDone(mid), JSON.stringify(mid.map((x) => x.done)));
+    check('desktop: all six steps done 3.6 s after showing step 2', allDone(end), JSON.stringify(end));
     check('desktop: times count up to their final values', end.map((x) => x.time).join('|') === '0,2 s|0,6 s|0,9 s|1,4 s|1,9 s|2,3 s', end.map((x) => x.time).join('|'));
 
     // 4. Replay: double click mid-run must not leave half states.
@@ -123,6 +129,7 @@ export async function checkBehaviour(browser, base) {
     check('reduced motion: run complete at load', allDone(await runState(page)));
     check('reduced motion: solution panels in place at load', (await fixesIn(page)).every(Boolean));
     check('reduced motion: path line drawn at load', await pathDrawn(page));
+    await showRun(page);
     await page.click('.run__replay');
     await page.waitForTimeout(200);
     const status = await page.$eval('#run-status', (s) => s.textContent);
@@ -142,10 +149,10 @@ export async function checkBehaviour(browser, base) {
     const cards = await fixesIn(page);
     await page.screenshot({ path: path.join(shots, 'problems-390.png') });
     check('phone: first card solved on enter, last card still waiting', cards[0] && !cards[2], JSON.stringify(cards));
-    await page.$eval('.run', (el) => el.scrollIntoView({ block: 'center' }));
+    await showRun(page);
     await page.waitForTimeout(3200);
     const done = await runState(page);
-    check('phone: run waits below the fold, then completes', !allDone(waiting) && allDone(done));
+    check('phone: run waits until step 2 is shown, then completes', !allDone(waiting) && allDone(done));
     await page.close();
   }
 

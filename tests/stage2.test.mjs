@@ -82,3 +82,21 @@ test('problems: before/after slider above the cards, keyboard ready, with a text
   assert.match(en, /<span>Drag before \/ after<\/span>/);
   assert.match(en, /<span class="ba__tag ba__tag--after">Sorted<\/span>/);
 });
+
+test('3-step story: three panels with titles, the run log as step 2, toasts in step 3, example labels', () => {
+  const sec = de.match(/<section class="section signup"[\s\S]*?<\/section>\n<section class="section services"/)[0];
+  const titles = ['Eine Anmeldung kommt herein', 'Die Automation läuft', 'Ihre Teilnehmerin ist drin'];
+  assert.deepEqual([...sec.matchAll(/<li class="story__step"><span class="story__n" aria-hidden="true">\d<\/span>([^<]+)<\/li>/g)].map((m) => m[1]), titles);
+  assert.deepEqual([...sec.matchAll(/<h3 class="story__title">([^<]+)<\/h3>/g)].map((m) => m[1]), titles);
+  assert.equal(count(sec, /<div class="story__panel" id="story-panel-\d"/g), 3);
+  const p2 = sec.match(/id="story-panel-2"[\s\S]*?(?=<div class="story__panel" id="story-panel-3")/)[0];
+  assert.match(p2, /<figure class="run instrument"/);
+  assert.match(p2, /<span class="demo-tag">Beispiel-Durchlauf<\/span>/);
+  assert.match(sec, /<dd class="story__value">anna@example\.com<\/dd>/);
+  assert.match(sec, /Willkommen im Kurs, Anna!/);
+  const toasts = [...sec.matchAll(/<li class="toast">([^<]+)<\/li>/g)].map((m) => m[1]);
+  assert.deepEqual(toasts, ['Neue Anmeldung: Anna K.', 'Zahlung erhalten: 297 €', 'Kurszugang freigeschaltet', 'Willkommens-Mail zugestellt']);
+  assert.ok(count(sec, /<span class="demo-tag">Beispiel<\/span>/g) >= 2);
+  assert.match(en, /<li class="toast">Payment received: €297<\/li>/);
+  assert.match(en, /<span class="demo-tag">Example run<\/span>/);
+});

@@ -71,6 +71,41 @@ export default {
     items: ["ActiveCampaign","Zapier","Make","Leadpages","Stripe","Quaderno","Somba","WordPress","Wix","Google Apps Script"],
   },
 
+  story: {
+    "label": "Ablauf in drei Schritten",
+    "steps": [
+      "Eine Anmeldung kommt herein",
+      "Die Automation läuft",
+      "Ihre Teilnehmerin ist drin"
+    ],
+    "form": {
+      "title": "Anmeldung zum Herbst-Kurs",
+      "fields": [
+        [
+          "Name",
+          "Anna K."
+        ],
+        [
+          "E-Mail",
+          "anna@example.com"
+        ]
+      ],
+      "button": "Jetzt anmelden"
+    },
+    "runLabel": "Beispiel-Durchlauf",
+    "welcome": {
+      "subject": "Willkommen im Kurs, Anna!",
+      "text": "Ihr Zugang ist bereit. Viel Freude beim Lernen.",
+      "access": "Kurszugang: freigeschaltet"
+    },
+    "toasts": [
+      "Neue Anmeldung: Anna K.",
+      "Zahlung erhalten: 297 €",
+      "Kurszugang freigeschaltet",
+      "Willkommens-Mail zugestellt"
+    ]
+  },
+
   run: {
     h2: "Was passiert, wenn sich jemand *anmeldet*",
     title: "Ablauf: Neue Kursanmeldung",

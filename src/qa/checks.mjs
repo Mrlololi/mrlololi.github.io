@@ -217,6 +217,9 @@ export async function keyboard(browser, base) {
   await page.focus('.faq__item summary');
   await page.keyboard.press('Space');
   const faqOpen = await page.$eval('.faq__item', (d) => d.open);
+  await page.focus('#story-tab-2');
+  await page.keyboard.press('Enter');
+  await page.waitForTimeout(3200);
   await page.focus('.run__replay');
   await page.keyboard.press('Enter');
   await page.waitForTimeout(400);

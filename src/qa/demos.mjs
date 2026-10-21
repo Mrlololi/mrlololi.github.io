@@ -56,7 +56,49 @@ export async function checkDemos(browser, base) {
     const pos = await page.$eval('.ba__stage', (el) => el.style.getPropertyValue('--pos'));
     const clip = await page.$eval('.ba__side--after', (el) => getComputedStyle(el).clipPath);
     check('before/after: arrow keys move the divider and the clip', pos === '60%' && clip.includes('60%'), `${pos} | ${clip}`);
+    // Story: pinned on wide screens, the scroll moves through the three steps.
+    const active = () => page.$$eval('.story__panel', (ps) => ps.findIndex((p) => p.classList.contains('is-active')));
+    const pinned = await page.$eval('.story', (el) => el.classList.contains('is-pinned'));
+    const stStart = await page.$eval('.story', (el) => el.getBoundingClientRect().top + scrollY + el.offsetHeight / 2 - innerHeight / 2);
+    const states = [];
+    for (const f of [0.1, 0.5, 0.9]) {
+      await page.evaluate((y) => window.scrollTo(0, y), stStart + 900 * 1.5 * f);
+      await page.waitForTimeout(350);
+      states.push(await active());
+    }
+    check('story: pinned at 1280 and the scroll walks through steps 1, 2, 3', pinned && states.join() === '0,1,2', `pinned ${pinned}, ${states}`);
+    await page.waitForTimeout(800);
+    const live = await page.$eval('.toasts', (el) => el.classList.contains('is-live'));
+    const shownToasts = await page.$$eval('.toast.is-in', (ts) => ts.length);
+    check('toasts: stack plays while step 3 is shown', live && shownToasts >= 1, `live ${live}, ${shownToasts} in`);
+    await page.click('.toasts .loop-btn');
+    const pausedLive = await page.$eval('.toasts', (el) => el.classList.contains('is-live'));
+    check('toasts: pause button stops the loop and shows all four', !pausedLive && (await page.$$eval('.toast', (ts) => ts.every((t) => getComputedStyle(t).opacity === '1'))));
+    await page.click('.toasts .loop-btn');
+    await page.focus('#story-tab-3');
+    await page.keyboard.press('ArrowLeft');
+    await page.waitForTimeout(350);
+    check('story: arrow keys on the tabs move to the previous step', (await active()) === 1 && (await page.evaluate(() => document.activeElement.id)) === 'story-tab-2');
     check('demos: no console errors', errors.length === 0, errors.join(' | '));
+    await page.close();
+  }
+
+  // Phone: tabs, no pin; resize back to desktop pins again without horizontal scroll.
+  {
+    const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
+    await page.goto(base + '/', { waitUntil: 'load' });
+    await page.waitForTimeout(1500);
+    await page.$eval('.story', (el) => el.scrollIntoView({ block: 'start' }));
+    const pinned = await page.$eval('.story', (el) => el.classList.contains('is-pinned'));
+    await page.click('#story-tab-3');
+    await page.waitForTimeout(400);
+    const third = await page.$eval('#story-panel-3', (p) => p.classList.contains('is-active') && getComputedStyle(p).visibility === 'visible');
+    await page.screenshot({ path: path.join(shots, 'story-390.png') });
+    check('story 390: tabs, no pin, tab 3 shows step 3', !pinned && third, JSON.stringify({ pinned, third }));
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.waitForTimeout(800);
+    const wide = await page.evaluate(() => ({ pinned: document.querySelector('.story').classList.contains('is-pinned'), overflow: document.documentElement.scrollWidth - innerWidth }));
+    check('story: resize 390 -> 1280 pins again, no horizontal scroll', wide.pinned && wide.overflow <= 0, JSON.stringify(wide));
     await page.close();
   }
 
@@ -69,6 +111,12 @@ export async function checkDemos(browser, base) {
     const wrapped = await page.$eval('.marquee__list[aria-hidden="true"]', (el) => getComputedStyle(el).display === 'none');
     const buttons = await page.$$eval('.loop-btn', (bs) => bs.every((b) => b.hidden));
     check('reduced motion: ribbon rests, marquee is a static list, no pause buttons', r === 0 && wrapped && buttons, JSON.stringify({ r, wrapped, buttons }));
+    const rm = await page.evaluate(() => ({
+      pinned: document.querySelector('.story').classList.contains('is-pinned'),
+      tabs: document.querySelector('.story').classList.contains('is-tabs'),
+      toasts: [...document.querySelectorAll('.toast')].every((t) => getComputedStyle(t).opacity === '1'),
+    }));
+    check('reduced motion: story uses tabs without pin, all toasts listed', !rm.pinned && rm.tabs && rm.toasts, JSON.stringify(rm));
     await page.close();
   }
 
@@ -85,6 +133,8 @@ export async function checkDemos(browser, base) {
       buttons: [...document.querySelectorAll('.loop-btn')].every((b) => getComputedStyle(b).display === 'none'),
       baBoth: [...document.querySelectorAll('.ba__side')].every((el) => getComputedStyle(el).clipPath === 'none' && el.getBoundingClientRect().height > 100),
       baNoRange: getComputedStyle(document.querySelector('.ba__control')).display === 'none',
+      storyStacked: [...document.querySelectorAll('.story__panel')].every((p) => getComputedStyle(p).visibility === 'visible' && p.getBoundingClientRect().height > 50),
+      toasts: document.querySelectorAll('.toast').length === 4,
     }));
     check('no JS: ribbon rests, tool list wraps, no pause buttons, before and after both shown', r === 0 && Object.values(s).every(Boolean), JSON.stringify({ r, ...s }));
     await page.screenshot({ path: path.join(shots, 'nojs-390.png'), fullPage: true });

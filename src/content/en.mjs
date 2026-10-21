@@ -69,6 +69,41 @@ export default {
     items: ["ActiveCampaign","Zapier","Make","Leadpages","Stripe","Quaderno","Somba","WordPress","Wix","Google Apps Script"],
   },
 
+  story: {
+    "label": "The flow in three steps",
+    "steps": [
+      "A sign-up comes in",
+      "The automation runs",
+      "Your student is in"
+    ],
+    "form": {
+      "title": "Sign up for the autumn course",
+      "fields": [
+        [
+          "Name",
+          "Anna K."
+        ],
+        [
+          "Email",
+          "anna@example.com"
+        ]
+      ],
+      "button": "Sign up now"
+    },
+    "runLabel": "Example run",
+    "welcome": {
+      "subject": "Welcome to the course, Anna!",
+      "text": "Your access is ready. Enjoy learning.",
+      "access": "Course access: granted"
+    },
+    "toasts": [
+      "New sign-up: Anna K.",
+      "Payment received: €297",
+      "Course access granted",
+      "Welcome email delivered"
+    ]
+  },
+
   run: {
     h2: "What happens when someone *signs up*",
     title: "Run: new course sign-up",

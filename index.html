@@ -332,16 +332,12 @@ font-size: 0.8125rem; font-weight: 700; line-height: 1.5;
 }
 .pc__tag--problem { background: #FBE7EC; color: var(--pink-ink); }
 .pc__tag--fix { background: #E6F1DF; color: var(--pist-ink); }
-.signup__grid { display: grid; gap: var(--space-6); align-items: center; }
-.signup .section__head { margin-bottom: 0; }
-@media (min-width: 860px) {
-.signup__grid { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: var(--space-8); }
-}
 .run-pending .run__steps, .run-pending .run__foot { visibility: hidden; animation: failsafe-show 0s linear 2s forwards; }
 @keyframes failsafe-show { to { visibility: visible; } }
 .run { margin: 0; overflow: hidden; border-radius: 24px; }
 .run__bar {
-display: block; padding: var(--space-4) var(--space-5) var(--space-3);
+display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2);
+padding: var(--space-4) var(--space-5) var(--space-3);
 font-size: var(--step--1); font-weight: 700; color: var(--ink-soft); hyphens: manual;
 }
 .run__steps { padding: 0 var(--space-5) var(--space-2); }
@@ -607,6 +603,53 @@ border-radius: 50%; background: var(--ink) url("data:image/svg+xml,%3Csvg xmlns=
 }
 .js .ba__control { display: grid; justify-items: center; gap: var(--space-1); font-size: var(--step--1); font-weight: 700; color: var(--ink-soft); }
 .ba__range { width: min(100%, 34rem); min-height: 2.75rem; accent-color: var(--ink); cursor: ew-resize; }
+.demo-tag {
+display: inline-block; margin-inline-start: var(--space-2); padding: 0.1rem 0.6rem; border-radius: 999px;
+background: var(--lav-tint); color: var(--lav-ink); font-family: var(--font-body); font-size: 0.75rem; font-weight: 700; line-height: 1.6; vertical-align: middle; white-space: nowrap;
+}
+.story { display: grid; gap: var(--space-6); }
+.story__nav { display: none; }
+.story__panels { display: grid; gap: var(--space-7); }
+.story__panel { display: grid; gap: var(--space-4); align-content: start; }
+.story__title { font-size: var(--step-1); }
+.story__card { padding: var(--space-5); background: var(--sheet); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-soft); }
+.story__card-title { font-weight: 700; margin-bottom: var(--space-3); }
+.story__form dl { display: grid; gap: var(--space-3); margin: 0 0 var(--space-4); }
+.story__field { display: grid; gap: var(--space-1); }
+.story__field dt { font-size: var(--step--1); color: var(--ink-soft); font-weight: 600; }
+.story__value { margin: 0; min-height: 2.75rem; padding: var(--space-2) var(--space-3); border: 1px solid var(--field); border-radius: var(--radius-field); background: #fff; font-weight: 600; }
+.story__button { display: inline-flex; align-items: center; min-height: 2.75rem; padding: 0 var(--space-5); border-radius: 999px; background: var(--ink); color: #fff; font-weight: 700; }
+.story__welcome { background: linear-gradient(135deg, var(--pink-tint), var(--lav-tint)); }
+.story__access { margin-top: var(--space-3); padding-inline-start: 1.6rem; font-weight: 700; color: var(--pist-ink); background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='8' fill='%234E8A3E'/%3E%3Cpath d='M4.6 8.3l2.2 2.2 4.6-5' fill='none' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 0 0.2em / 1.05rem no-repeat; }
+.toasts { display: grid; gap: var(--space-3); justify-items: start; }
+.toasts__list { display: flex; flex-direction: column-reverse; gap: var(--space-2); width: 100%; max-width: 22rem; }
+.toast {
+padding: var(--space-3) var(--space-4) var(--space-3) 2.4rem; border-radius: 14px; background: var(--sheet); border: 1px solid var(--line); box-shadow: var(--shadow-soft);
+font-size: var(--step--1); font-weight: 700; position: relative;
+}
+.toast::before { content: ""; position: absolute; left: var(--space-4); top: 50%; width: 0.6rem; height: 0.6rem; margin-top: -0.3rem; border-radius: 50%; background: var(--done); }
+.story.is-tabs .story__nav { display: grid; gap: var(--space-4); align-content: center; }
+.story.is-tabs .story__panels { gap: 0; }
+.story.is-tabs .story__panel { grid-area: 1 / 1; transition: opacity 0.45s var(--ease-soft), visibility 0.45s; }
+.story.is-tabs .story__panel:not(.is-active) { opacity: 0; visibility: hidden; }
+.story.is-tabs .story__title { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.story__progress { display: block; height: 4px; border-radius: 4px; background: var(--line); overflow: hidden; }
+.story__progress span { display: block; height: 100%; background: linear-gradient(90deg, var(--pink-ink), var(--lav-ink), var(--blue-ink)); transform-origin: left; transform: scaleX(var(--progress, 0.333)); }
+.story__steps { display: grid; gap: var(--space-2); list-style: none; margin: 0; padding: 0; }
+.story__tab {
+display: flex; align-items: center; gap: var(--space-3); width: 100%; min-height: 3rem; padding: var(--space-3) var(--space-4);
+border: 1px solid transparent; border-radius: 16px; background: transparent; color: var(--ink-soft);
+font-size: var(--step-0); font-weight: 700; text-align: left; cursor: pointer;
+}
+.story__tab[aria-selected="true"] { background: var(--sheet); border-color: var(--line); box-shadow: var(--shadow-soft); color: var(--ink); }
+.story__n { flex: none; display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: 50%; background: var(--pink); color: var(--ink); font-family: var(--font-display); font-weight: 750; }
+.story__step:nth-child(2) .story__n { background: var(--blue); }
+.story__step:nth-child(3) .story__n { background: var(--pist); }
+@media (min-width: 768px) {
+.story.is-tabs { grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: var(--space-8); align-items: center; }
+.story__panels .story__panel { grid-template-columns: minmax(0, 1fr); }
+#story-panel-3 { grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr); align-items: start; }
+}
 @media (prefers-reduced-motion: no-preference) {
 .btn--primary:hover { transform: translateY(-2px); }
 .item:hover { transform: translateY(-4px); box-shadow: var(--shadow-soft); }
@@ -616,6 +659,8 @@ border-radius: 50%; background: var(--ink) url("data:image/svg+xml,%3Csvg xmlns=
 .js .marquee.is-running:hover .marquee__track { animation-play-state: paused; }
 .js .marquee__list { flex-wrap: nowrap; padding-inline-end: var(--space-2); }
 .js .marquee__list[aria-hidden="true"] { display: flex; }
+.toasts.is-live .toast { opacity: 0; transform: translateY(0.75rem) scale(0.98); transition: opacity 0.45s var(--ease-soft), transform 0.45s var(--ease-soft); }
+.toasts.is-live .toast.is-in { opacity: 1; transform: none; }
 .hf__node rect { animation: hf-lit 0.45s ease both; }
 .hf__check { transform-box: fill-box; transform-origin: center; animation: hf-check 0.35s var(--ease-soft) both; }
 .hf__node--1 rect, .hf__node--1 .hf__check { animation-delay: 0.3s; }
@@ -745,12 +790,32 @@ border-radius: 50%; background: var(--ink) url("data:image/svg+xml,%3Csvg xmlns=
 </div>
 </section>
 <section class="section signup" id="signup" aria-labelledby="signup-title">
-<div class="wrap signup__grid">
+<div class="wrap">
 <div class="section__head">
 <h2 id="signup-title">Was passiert, wenn sich jemand <em class="accent">anmeldet</em></h2>
 </div>
+<div class="story">
+<div class="story__nav">
+<span class="story__progress" aria-hidden="true"><span></span></span>
+<ol class="story__steps" role="list" aria-label="Ablauf in drei Schritten">
+<li class="story__step"><span class="story__n" aria-hidden="true">1</span>Eine Anmeldung kommt herein</li>
+<li class="story__step"><span class="story__n" aria-hidden="true">2</span>Die Automation läuft</li>
+<li class="story__step"><span class="story__n" aria-hidden="true">3</span>Ihre Teilnehmerin ist drin</li>
+</ol>
+</div>
+<div class="story__panels">
+<div class="story__panel" id="story-panel-1">
+<h3 class="story__title">Eine Anmeldung kommt herein</h3>
+<div class="story__card story__form">
+<p class="story__card-title">Anmeldung zum Herbst-Kurs<span class="demo-tag">Beispiel</span></p>
+<dl><div class="story__field"><dt>Name</dt><dd class="story__value">Anna K.</dd></div><div class="story__field"><dt>E-Mail</dt><dd class="story__value">anna@example.com</dd></div></dl>
+<span class="story__button" aria-hidden="true">Jetzt anmelden</span>
+</div>
+</div>
+<div class="story__panel" id="story-panel-2">
+<h3 class="story__title">Die Automation läuft</h3>
 <figure class="run instrument" aria-labelledby="run-title">
-<figcaption class="run__bar"><span class="run__title" id="run-title">Ablauf: Neue Kursanmeldung</span></figcaption>
+<figcaption class="run__bar"><span class="run__title" id="run-title">Ablauf: Neue Kursanmeldung</span><span class="demo-tag">Beispiel-Durchlauf</span></figcaption>
 <ol class="run__steps" role="list">
 <li class="run__step" data-seconds="0.2">
 <span class="run__node" aria-hidden="true"><svg viewBox="0 0 20 20" focusable="false"><circle class="run__idle" cx="10" cy="10" r="9"/><circle class="run__wait" cx="10" cy="10" r="9"/><circle class="run__done" cx="10" cy="10" r="9"/><path class="run__check" pathLength="1" d="M5.6 10.3l2.9 2.9 5.9-6.4"/></svg></span>
@@ -795,6 +860,21 @@ border-radius: 50%; background: var(--ink) url("data:image/svg+xml,%3Csvg xmlns=
 </div>
 <p class="sr-only" id="run-status" role="status" aria-live="polite"></p>
 </figure>
+</div>
+<div class="story__panel" id="story-panel-3">
+<h3 class="story__title">Ihre Teilnehmerin ist drin</h3>
+<div class="story__card story__welcome">
+<p class="story__card-title">Willkommen im Kurs, Anna!<span class="demo-tag">Beispiel</span></p>
+<p>Ihr Zugang ist bereit. Viel Freude beim Lernen.</p>
+<p class="story__access">Kurszugang: freigeschaltet</p>
+</div>
+<div class="toasts">
+<ul class="toasts__list" role="list"><li class="toast">Neue Anmeldung: Anna K.</li><li class="toast">Zahlung erhalten: 297 €</li><li class="toast">Kurszugang freigeschaltet</li><li class="toast">Willkommens-Mail zugestellt</li></ul>
+<button class="loop-btn" type="button" hidden data-pause="Animation anhalten" data-play="Animation fortsetzen">Animation anhalten</button>
+</div>
+</div>
+</div>
+</div>
 </div>
 </section>
 <section class="section services" id="services" aria-labelledby="services-title">

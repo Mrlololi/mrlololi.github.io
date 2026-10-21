@@ -3,13 +3,13 @@
 // its button. Without this file nothing loops at all.
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
 
-export function loop({ root, button, play, pause, threshold = 0.15 }) {
+export function loop({ root, button, play, pause, when = () => true, threshold = 0.15 }) {
   if (!root || reduceMotion.matches) return null;
   let visible = false;
   let paused = false;
   let running = false;
   const sync = () => {
-    const should = visible && !paused && !document.hidden;
+    const should = visible && !paused && !document.hidden && when();
     if (should === running) return;
     running = should;
     (should ? play : pause)();
