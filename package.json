@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "node src/build.mjs",
-    "assets": "node src/tools/vendor.mjs && node src/tools/fonts.mjs && node src/tools/images.mjs && node src/tools/icons.mjs && node src/tools/og.mjs",
+    "assets": "node src/tools/vendor.mjs && node src/tools/fonts.mjs && node src/tools/images.mjs && node src/tools/brand.mjs && node src/tools/og.mjs",
     "browsers": "node src/qa/install-browsers.mjs",
     "test": "node --test tests/*.test.mjs",
     "qa": "node src/qa/run-all.mjs"

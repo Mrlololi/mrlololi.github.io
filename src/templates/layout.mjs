@@ -1,6 +1,8 @@
 import { readFileSync } from 'node:fs';
 import { esc, absUrl, join } from './util.mjs';
 import { alternatesFor, jsonLd } from './seo.mjs';
+import { lockup, wordmark, iconTight, taglineHtml, WHITE } from './brand.mjs';
+import { footerMascots } from './mascots.mjs';
 
 // Source of truth stays assets/css/main.css; comments and indentation are stripped when inlined.
 const css = readFileSync(new URL('../../assets/css/main.css', import.meta.url), 'utf8')
@@ -40,9 +42,9 @@ export function layout({ t, other, config, page, main }) {
     `<meta name="twitter:description" content="${esc(page.description)}">`,
     `<meta name="twitter:image" content="${ogImage}">`,
     '<meta name="theme-color" content="#F4C9D3">',
-    '<link rel="icon" href="/assets/icons/favicon.ico" sizes="32x32">',
-    '<link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">',
-    '<link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">',
+    '<link rel="icon" href="/assets/brand/favicon.ico" sizes="16x16 32x32 48x48">',
+    '<link rel="icon" href="/assets/brand/favicon.svg" type="image/svg+xml">',
+    '<link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png">',
     '<link rel="manifest" href="/site.webmanifest">',
     '<link rel="preload" href="/assets/fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin>',
     '<link rel="preload" href="/assets/fonts/atkinson-hyperlegible-next-latin.woff2" as="font" type="font/woff2" crossorigin>',
@@ -58,7 +60,7 @@ export function layout({ t, other, config, page, main }) {
     // main.js in turn loads the GSAP files after load (home pages only).
     `<script type="module">requestAnimationFrame(()=>requestAnimationFrame(()=>import('/assets/js/main.js')))</script>`,
     // main.js's own imports are fetched early at low priority, so they are ready when it runs.
-    ...['demos', 'calc', 'loops', 'finder'].map((m) => `<link rel="modulepreload" href="/assets/js/${m}.js" fetchpriority="low">`),
+    ...['demos', 'calc', 'loops', 'finder', ...(isHome ? ['mascots', 'mascot-art'] : [])].map((m) => `<link rel="modulepreload" href="/assets/js/${m}.js" fetchpriority="low">`),
     isHome && jsonLd(t, config),
   ]);
 
@@ -85,7 +87,7 @@ function header({ t, page, isHome }) {
   const altPath = page.altPath;
   return `<header class="site-header" data-header>
 <div class="site-header__in">
-<a class="wordmark" href="${t.paths.home}">mrlololi<span class="sr-only"> ${esc(t.ui.wordmarkName)}</span></a>
+<a class="wordmark" href="${t.paths.home}">${lockup({ kind: 'header', class: 'logo', wordId: 'mrl-word' })}<span class="sr-only">mrlololi ${esc(t.ui.wordmarkName)}</span></a>
 <nav class="site-nav" aria-label="${esc(t.ui.navLabel)}">
 <a class="site-nav__jump" href="#footer-nav">${esc(t.ui.menu)}</a>
 <button class="site-nav__toggle" type="button" aria-expanded="false" aria-controls="site-nav-list" hidden>${esc(t.ui.menu)}</button>
@@ -98,6 +100,16 @@ ${items}
 </header>`;
 }
 
+// Home pages: the dark lockup with the live tagline (EB Garamond italic, initials in the
+// pastels of the three balls) and the three mascots waving next to it.
+function footerBrand(t) {
+  return `<div class="site-footer__brand">
+<div class="brand-lockup">${iconTight({ line: WHITE, class: 'brand-lockup__icon' })}${wordmark({ dark: true, use: 'mrl-word', class: 'brand-lockup__word' })}<span class="sr-only">mrlololi</span>
+<p class="tagline tagline--dark">${taglineHtml(esc(t.brand.tagline))}</p></div>
+${footerMascots()}
+</div>`;
+}
+
 // The footer repeats the section links: it is also where the phone "Menü" link leads
 // when main.js has not (yet) loaded.
 function footer({ t, page }) {
@@ -105,7 +117,7 @@ function footer({ t, page }) {
   const sections = t.nav.map((n) => `<li><a href="${base}${n.href}">${esc(n.label)}</a></li>`).join('\n');
   return `<footer class="site-footer bg-ink edge">
 <div class="site-footer__in">
-<p class="site-footer__copy">${esc(t.footer.copyright)}</p>
+${page.key === 'home' ? footerBrand(t) : ''}<p class="site-footer__copy">${esc(t.footer.copyright)}</p>
 <nav id="footer-nav" aria-label="${esc(t.ui.footerNavLabel)}">
 <ul class="site-footer__links">
 ${sections}

@@ -16,14 +16,19 @@ export function initRibbon() {
     return a;
   });
   let begun = false;
+  // The hero's mascots follow the same switch (on screen, tab visible, not paused): mascots.js
+  // reads data-motion and listens for «hero:motion».
+  const visual = document.querySelector('.hero__visual');
+  const tell = (on) => { visual.dataset.motion = on ? 'on' : 'off'; document.dispatchEvent(new CustomEvent('hero:motion', { detail: on })); };
   loop({
-    root: document.querySelector('.hero__visual'),
+    root: visual,
     button: document.querySelector('.hero .loop-btn'),
     play: () => {
       if (!begun) { begun = true; anims.forEach((a) => a.beginElement()); }
       svgs.forEach((svg) => svg.unpauseAnimations());
+      tell(true);
     },
-    pause: () => svgs.forEach((svg) => svg.pauseAnimations()),
+    pause: () => { svgs.forEach((svg) => svg.pauseAnimations()); tell(false); },
   });
 }
 

@@ -1,6 +1,8 @@
 import { esc, seconds, accent } from './util.mjs';
+import { lockup } from './brand.mjs';
 
-// 1200x630 social image (colour variant B): name, the hero promise and a completed run-log excerpt.
+// 1200x630 social image (colour variant B): the large lockup with the tagline, name, the hero
+// promise and a completed run-log excerpt.
 // Rendered by src/tools/og.mjs on the local server, so fonts load from /assets/fonts.
 export function ogHtml(t) {
   const steps = [t.run.steps[0], t.run.steps[2], t.run.steps[3], t.run.steps[5]]
@@ -13,8 +15,8 @@ export function ogHtml(t) {
 <style>
   html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; background: linear-gradient(135deg, #F4C9D3, #DCD3F0); }
   .og { box-sizing: border-box; width: 1200px; height: 630px; padding: 64px 72px; display: grid; grid-template-columns: 1fr 470px; gap: 56px; align-items: center; }
-  .mark { font-family: var(--font-display); font-weight: 720; font-size: 30px; letter-spacing: -0.03em; color: #2B2A33; }
-  .name { margin-top: 36px; font-family: var(--font-body); font-size: 26px; color: #4A4753; }
+  .mark { display: block; height: 92px; width: auto; }
+  .name { margin-top: 34px; font-family: var(--font-body); font-size: 26px; color: #4A4753; }
   .claim { margin-top: 14px; font-family: var(--font-display); font-weight: 680; font-size: 60px; line-height: 1.03; letter-spacing: -0.025em; color: #2B2A33; }
   .claim .accent { font-weight: 500; }
   .log { background: rgb(255 255 255 / 0.6); border: 1px solid rgb(43 42 51 / 0.08); border-radius: 24px; }
@@ -26,7 +28,7 @@ export function ogHtml(t) {
   .sum { padding: 14px 24px 18px; border-top: 1px solid rgb(43 42 51 / 0.08); font-family: var(--font-body); font-weight: 700; font-size: 17px; color: #3F6B31; }
 </style></head>
 <body><div class="og">
-<div><div class="mark">mrlololi</div><div class="name">Iva Tsatskrialashvili</div><div class="claim">${accent(t.hero.h1)}</div></div>
+<div>${lockup({ kind: 'full', lang: t.lang, class: 'mark' })}<div class="name">Iva Tsatskrialashvili</div><div class="claim">${accent(t.hero.h1)}</div></div>
 <div class="log"><h2>${esc(t.run.title)}</h2><ol>${steps}</ol><div class="sum">${esc(t.run.summary)}</div></div>
 </div></body></html>`;
 }

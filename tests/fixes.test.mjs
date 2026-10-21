@@ -24,7 +24,7 @@ test('JSON-LD: business with @id, street, logo, sameAs, IT; a WebSite node; no i
   assert.equal(biz.inLanguage, undefined);
   assert.equal(biz.address.streetAddress, 'Herbersteinstraße 4/4181');
   assert.equal(biz.address.postalCode, '8020');
-  assert.match(biz.logo, /^https:\/\/mrlololi\.com\/assets\/icons\/.+\.(png|svg)$/);
+  assert.match(biz.logo, /^https:\/\/mrlololi\.com\/assets\/brand\/.+\.(png|svg)$/);
   assert.deepEqual(biz.sameAs, [config.linkedin, config.malt]);
   assert.deepEqual(biz.areaServed, ['AT', 'DE', 'CH', 'IT']);
   assert.equal(site['@id'], 'https://mrlololi.com/#website');

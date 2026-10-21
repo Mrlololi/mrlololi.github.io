@@ -37,6 +37,8 @@ initFinder();
 initFaqChat();
 initKiActions();
 initFlowNodes();
+// Mascots (home pages): their own module, so the legal pages never load it.
+const mascots = document.querySelector('.mascot') ? import('./mascots.js').then((m) => { m.initMascots(); return m; }).catch(() => null) : null;
 if (document.querySelector('.run')) loadMotion();
 else releasePending();
 
@@ -77,6 +79,7 @@ async function loadMotion() {
   pinStory(gsap, ScrollTrigger);
   driftQuotes(gsap);
   initCalcCountUp();
+  mascots?.then((m) => m?.startMascotMotion(gsap));
 }
 
 /* ---------- Navigation: disclosure menu below 800 px ---------- */

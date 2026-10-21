@@ -27,7 +27,7 @@ export function jsonLd(t, config) {
         url: absUrl(config, t.paths.home),
         email: config.contact_email,
         image: absUrl(config, `/og-image-${t.lang}.png`),
-        logo: absUrl(config, '/assets/icons/apple-touch-icon.png'),
+        logo: absUrl(config, '/assets/brand/apple-touch-icon.png'),
         sameAs: [config.linkedin, config.malt],
         areaServed: ['AT', 'DE', 'CH', 'IT'],
         address: { '@type': 'PostalAddress', streetAddress: 'Herbersteinstraße 4/4181', addressLocality: 'Graz', postalCode: '8020', addressCountry: 'AT' },
@@ -68,8 +68,8 @@ export const manifest = () => `${JSON.stringify({
   background_color: '#F4C9D3',
   theme_color: '#F4C9D3',
   icons: [
-    { src: '/assets/icons/favicon.svg', type: 'image/svg+xml', sizes: 'any' },
-    { src: '/assets/icons/apple-touch-icon.png', type: 'image/png', sizes: '180x180' },
+    { src: '/assets/brand/favicon.svg', type: 'image/svg+xml', sizes: 'any' },
+    { src: '/assets/brand/apple-touch-icon.png', type: 'image/png', sizes: '180x180' },
   ],
 }, null, 2)}\n`;
 

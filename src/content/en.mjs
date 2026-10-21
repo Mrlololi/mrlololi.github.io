@@ -442,6 +442,13 @@ export default {
     malt: 'Malt profile',
   },
 
+  // Identity 21.10.2026: mrlololi = Lo-Lo-Li. The first two letters of each word take the colour of its ball.
+  brand: {
+    tagline: 'Logic, Loop, Live.',
+    // Accessible name of a mascot button in the hero ({name}: Logik, Lösung, Live).
+    mascotJump: '{name} jumps',
+  },
+
   footer: {
     copyright: '© 2026 Iva Tsatskrialashvili · Advertising agency (Werbeagentur) · Graz, Austria',
     legal: 'Legal notice',

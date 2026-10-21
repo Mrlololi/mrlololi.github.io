@@ -1,4 +1,5 @@
 import { esc, seconds, accent, headline } from './util.mjs';
+import { heroMascots } from './mascots.mjs';
 
 // One status node of the run log: idle (grey), wait (amber), done (green) + check.
 // Default CSS shows the finished state; main.js rewinds it when the log comes into view.
@@ -56,6 +57,7 @@ ${ribbonSvg(t.hero.ribbon)}
 <div class="hf-wrap">
 ${flowSvg(t.hero.flow.nodes)}
 ${t.hero.flow.nodes.map((n, i) => `<button class="hf__btn hf__btn--${i + 1}" type="button" aria-expanded="false" aria-controls="hf-line-${i + 1}">${esc(n)}</button>`).join('')}
+${heroMascots(t)}
 </div>
 <ul class="hf__lines" role="list">${t.hero.flow.lines.map((l, i) => `<li id="hf-line-${i + 1}">${esc(l)}</li>`).join('')}</ul>
 ${loopButton(t)}

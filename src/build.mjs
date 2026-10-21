@@ -56,7 +56,7 @@ export async function build({ outDir = root } = {}) {
   await writeFile(path.join(outDir, 'sitemap.xml'), sitemap(config), 'utf8');
   await writeFile(path.join(outDir, 'site.webmanifest'), manifest(), 'utf8');
   // Browsers ask for /favicon.ico at the root no matter what the page links.
-  await copyFile(path.join(root, 'assets/icons/favicon.ico'), path.join(outDir, 'favicon.ico'));
+  await copyFile(path.join(root, 'assets/brand/favicon.ico'), path.join(outDir, 'favicon.ico'));
   console.log('page: robots.txt, sitemap.xml, site.webmanifest, favicon.ico');
   const domain = cname(config);
   if (domain) {
