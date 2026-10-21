@@ -705,6 +705,22 @@ font-size: var(--step-0); font-weight: 700; text-align: left; cursor: pointer;
 .speed__bar span { display: block; height: 100%; background: var(--ink-soft); transform-origin: left; transform: scaleX(var(--p, 1)); }
 .speed__card--fast .speed__bar span { background: var(--done); }
 .speed .loop-btn { min-height: 2.25rem; font-size: 0.8125rem; }
+.finder__card { display: grid; gap: var(--space-5); padding: clamp(1.5rem, 4vw, 3rem); border-radius: 28px; background: linear-gradient(135deg, var(--blue-tint), var(--lav-tint)); }
+.finder__static { display: grid; gap: var(--space-2); }
+.finder__static a { display: inline-flex; flex-wrap: wrap; gap: 0.3em; align-items: center; min-height: 2.75rem; color: var(--ink); }
+.finder__app { display: grid; gap: var(--space-5); }
+.finder__app[hidden], .finder__q[hidden] { display: none; }
+.finder__q { margin: 0; padding: 0; border: 0; display: grid; gap: var(--space-3); }
+.finder__q legend { padding: 0; margin-bottom: var(--space-3); font-family: var(--font-display); font-size: var(--step-1); font-weight: 650; }
+.finder__opts { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.finder__opt { min-height: 2.75rem; padding: 0 var(--space-4); border: 1px solid var(--line); border-radius: 999px; background: var(--sheet); font-weight: 700; color: var(--ink); cursor: pointer; }
+.finder__opt:hover { border-color: var(--field); }
+.finder__opt[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
+.finder__result:not(:empty) { display: grid; gap: var(--space-3); padding: var(--space-5); border-radius: var(--radius-card); background: var(--sheet); box-shadow: var(--shadow-soft); }
+.finder__pick { font-family: var(--font-display); font-size: var(--step-2); line-height: 1.2; }
+.finder__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
+.finder__restart { min-height: 2.75rem; padding: 0 var(--space-4); border: 1px solid var(--line); border-radius: 999px; background: var(--sheet); font-weight: 700; cursor: pointer; }
+.tariff__promise { padding: var(--space-3) var(--space-4); border-radius: var(--radius-field); background: var(--pist-tint); color: var(--ink); }
 @media (prefers-reduced-motion: no-preference) {
 .btn--primary:hover { transform: translateY(-2px); }
 .item:hover { transform: translateY(-4px); box-shadow: var(--shadow-soft); }
@@ -949,14 +965,14 @@ font-size: var(--step-0); font-weight: 700; text-align: left; cursor: pointer;
 
 </div>
 <ul class="tariff__items" role="list">
-<li class="item">
+<li class="item" id="pkg-quick">
 <h4 class="item__name">Quick-Fix</h4>
 <p class="item__price">190 € fix</p>
 <p class="item__summary">Eine konkrete Aufgabe in bis zu 4 Stunden: DNS, SPF und DMARC, defekte Links oder Formulare, Termine oder eine Automation.</p>
 
 
 </li>
-<li class="item">
+<li class="item" id="pkg-check">
 <h4 class="item__name">Technik-Check</h4>
 <p class="item__price">290 € fix</p>
 <p class="item__summary">Ein Tag Analyse mit Lesezugriff: ActiveCampaign, Zapier oder Make, Zahlung, Landingpages, Double-Opt-In und Einwilligungen.</p>
@@ -974,21 +990,21 @@ font-size: var(--step-0); font-weight: 700; text-align: left; cursor: pointer;
 <p class="tariff__note">Festpreis nach dem Briefing.</p>
 </div>
 <ul class="tariff__items" role="list">
-<li class="item">
+<li class="item" id="pkg-launch">
 <h4 class="item__name">Launch-Setup</h4>
 <p class="item__price">ab 1.190 €</p>
 <p class="item__summary">Landingpages und Checkout, ActiveCampaign-Abläufe für Anmeldung, Erinnerung, Start, Onboarding und Zahlungsausfall, Formulare mit Double-Opt-In und Tags, Verbindungen über Zapier oder Apps Script zu CRM und Mitgliederbereich, Kurs-Einrichtung in Somba, Skool oder Circle, Zoom und Kalender. Zum Verkaufsstart ist alles startklar.</p>
 
 
 </li>
-<li class="item">
+<li class="item" id="pkg-website">
 <h4 class="item__name">Website als One-Pager</h4>
 <p class="item__price">ab 990 €</p>
 <p class="item__summary">Wix, Leadpages oder eigenes HTML, responsiv, mit Calendly, Cookie-Banner, SEO-Grundlagen, Impressum und Datenschutz, Domain, Veröffentlichung, Übergabe-Gespräch und drei Korrekturschleifen.</p>
 
 
 </li>
-<li class="item">
+<li class="item" id="pkg-ki">
 <h4 class="item__name">KI im Kundenservice</h4>
 <p class="item__price">ab 590 €</p>
 <p class="item__summary">Wissensbasis aus Ihren FAQ und Kursregeln, Ablauf in Make oder Zapier, Antwortentwürfe mit Thema und Dringlichkeit in GrooveHQ, Gmail oder Help Scout, Test mit 50 echten E-Mails, Übergabe. Es entstehen nur Entwürfe: versendet wird erst nach Freigabe durch Ihr Team (DSGVO).</p>
@@ -1067,7 +1083,7 @@ font-size: var(--step-0); font-weight: 700; text-align: left; cursor: pointer;
 
 </div>
 <ul class="tariff__items" role="list">
-<li class="item">
+<li class="item" id="pkg-support">
 <h4 class="item__name">Betreuung nach Stunden</h4>
 <p class="item__price">45 € pro Stunde</p>
 <p class="item__summary">Ab 5 Stunden im Monat: Pflege Ihrer Automationen, kleine Landingpages, Fehlerbehebung. Abrechnung am Monatsende nach Stunden.</p>
@@ -1079,6 +1095,27 @@ font-size: var(--step-0); font-weight: 700; text-align: left; cursor: pointer;
 <div class="tariff__notes">
 <p class="tariff__hourly">Alles außerhalb der Pakete: 45 € pro Stunde.</p>
 <p class="small">Alle Preise sind Endpreise. Als Kleinunternehmer gemäß § 6 Abs. 1 Z 27 UStG weise ich keine Umsatzsteuer aus. Bei Unternehmen mit gültiger UID in einem anderen EU-Mitgliedstaat geht die Steuerschuld auf den Leistungsempfänger über (Reverse Charge).</p>
+<p class="tariff__promise small">Meine Zusage: Läuft eine von mir gebaute Strecke in den ersten 30 Tagen nicht wie vereinbart, behebe ich das ohne Berechnung. Das gilt für meine Arbeit, nicht für Ausfälle der Tools selbst.</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section finder" id="finder" aria-labelledby="finder-title">
+<div class="wrap">
+<div class="finder__card">
+<h2 id="finder-title">Welches Paket <em class="accent">passt?</em></h2>
+<ul class="finder__static" role="list">
+<li><a href="#pkg-quick">Etwas funktioniert nicht und Sie wissen, wo: <strong>Quick-Fix</strong></a></li>
+<li><a href="#pkg-check">Sie wissen nicht, wo das Problem liegt: <strong>Technik-Check</strong></a></li>
+<li><a href="#pkg-launch">Sie planen einen Launch: <strong>Launch-Setup</strong></a></li>
+<li><a href="#pkg-website">Sie brauchen eine Website: <strong>Website als One-Pager</strong></a></li>
+<li><a href="#pkg-ki">Ihr Postfach ist zu voll: <strong>KI im Kundenservice</strong></a></li>
+</ul>
+<div class="finder__app" hidden>
+<fieldset class="finder__q" data-q="1"><legend>Worum geht es?</legend><div class="finder__opts"><button class="finder__opt" type="button" data-value="broken" aria-pressed="false">Etwas funktioniert nicht</button><button class="finder__opt" type="button" data-value="launch" aria-pressed="false">Ich plane einen Launch</button><button class="finder__opt" type="button" data-value="website" aria-pressed="false">Ich brauche eine Website</button><button class="finder__opt" type="button" data-value="inbox" aria-pressed="false">Mein Postfach ist zu voll</button></div></fieldset>
+<fieldset class="finder__q" data-q="2"><legend>Wissen Sie, wo das Problem liegt?</legend><div class="finder__opts"><button class="finder__opt" type="button" data-value="yes" aria-pressed="false">Ja, ziemlich genau</button><button class="finder__opt" type="button" data-value="no" aria-pressed="false">Nein, nicht wirklich</button></div></fieldset>
+<fieldset class="finder__q" data-q="3"><legend>Wann?</legend><div class="finder__opts"><button class="finder__opt" type="button" data-value="soon" aria-pressed="false">In den nächsten 2 Wochen</button><button class="finder__opt" type="button" data-value="later" aria-pressed="false">Später</button></div></fieldset>
+<div class="finder__result" aria-live="polite" data-text="{&quot;result&quot;:&quot;Passt am besten: {pkg}&quot;,&quot;link&quot;:&quot;Zum Paket&quot;,&quot;restart&quot;:&quot;Neu starten&quot;,&quot;soon&quot;:&quot;Schreiben Sie mir gleich.&quot;,&quot;later&quot;:&quot;Gern auch für einen späteren Termin.&quot;,&quot;names&quot;:{&quot;quick&quot;:&quot;Quick-Fix&quot;,&quot;check&quot;:&quot;Technik-Check&quot;,&quot;launch&quot;:&quot;Launch-Setup&quot;,&quot;website&quot;:&quot;Website als One-Pager&quot;,&quot;ki&quot;:&quot;KI im Kundenservice&quot;,&quot;support&quot;:&quot;Betreuung nach Stunden&quot;}}"></div>
 </div>
 </div>
 </div>

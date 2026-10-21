@@ -10,7 +10,7 @@ function item(t, it) {
 <div class="price-details__body"><p>${esc(it.details)}</p></div>
 </details>`
     : '';
-  return `<li class="item">
+  return `<li class="item"${it.id ? ` id="pkg-${it.id}"` : ''}>
 <h4 class="item__name">${esc(it.name)}</h4>
 <p class="item__price">${esc(it.price)}</p>
 <p class="item__summary">${esc(it.summary)}</p>
@@ -78,6 +78,7 @@ ${groups}
 <div class="tariff__notes">
 <p class="tariff__hourly">${esc(t.pricing.hourly)}</p>
 <p class="small">${esc(t.pricing.smallPrint)}</p>
+<p class="tariff__promise small">${esc(t.pricing.promise)}</p>
 </div>
 </div>
 </div>

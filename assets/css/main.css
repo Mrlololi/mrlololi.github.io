@@ -762,6 +762,24 @@ html:not(.calc-ready) .calc__fields { display: none; }
 .speed__card--fast .speed__bar span { background: var(--done); }
 .speed .loop-btn { min-height: 2.25rem; font-size: 0.8125rem; }
 
+/* ---------- Stage 2: package finder and promise ---------- */
+.finder__card { display: grid; gap: var(--space-5); padding: clamp(1.5rem, 4vw, 3rem); border-radius: 28px; background: linear-gradient(135deg, var(--blue-tint), var(--lav-tint)); }
+.finder__static { display: grid; gap: var(--space-2); }
+.finder__static a { display: inline-flex; flex-wrap: wrap; gap: 0.3em; align-items: center; min-height: 2.75rem; color: var(--ink); }
+.finder__app { display: grid; gap: var(--space-5); }
+.finder__app[hidden], .finder__q[hidden] { display: none; }
+.finder__q { margin: 0; padding: 0; border: 0; display: grid; gap: var(--space-3); }
+.finder__q legend { padding: 0; margin-bottom: var(--space-3); font-family: var(--font-display); font-size: var(--step-1); font-weight: 650; }
+.finder__opts { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.finder__opt { min-height: 2.75rem; padding: 0 var(--space-4); border: 1px solid var(--line); border-radius: 999px; background: var(--sheet); font-weight: 700; color: var(--ink); cursor: pointer; }
+.finder__opt:hover { border-color: var(--field); }
+.finder__opt[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
+.finder__result:not(:empty) { display: grid; gap: var(--space-3); padding: var(--space-5); border-radius: var(--radius-card); background: var(--sheet); box-shadow: var(--shadow-soft); }
+.finder__pick { font-family: var(--font-display); font-size: var(--step-2); line-height: 1.2; }
+.finder__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
+.finder__restart { min-height: 2.75rem; padding: 0 var(--space-4); border: 1px solid var(--line); border-radius: 999px; background: var(--sheet); font-weight: 700; cursor: pointer; }
+.tariff__promise { padding: var(--space-3) var(--space-4); border-radius: var(--radius-field); background: var(--pist-tint); color: var(--ink); }
+
 /* ---------- Motion: one calm effect per section, each once, never under reduced motion ---------- */
 @media (prefers-reduced-motion: no-preference) {
   .btn--primary:hover { transform: translateY(-2px); }

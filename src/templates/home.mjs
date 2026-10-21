@@ -1,7 +1,7 @@
 import { hero, signup } from './hero.mjs';
 import { problems } from './problems.mjs';
 import { pricing } from './pricing.mjs';
-import { tools } from './demos.mjs';
+import { tools, finder } from './demos.mjs';
 import { references } from './references.mjs';
 import { processSteps, about, faq, contact } from './sections.mjs';
 
@@ -13,6 +13,7 @@ export function home(t, config) {
     problems(t),
     signup(t),
     pricing(t),
+    finder(t),
     processSteps(t),
     references(t, config),
     about(t, config),

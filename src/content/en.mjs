@@ -144,11 +144,13 @@ export default {
         "title": "Getting started",
         "items": [
           {
+            "id": "quick",
             "name": "Quick fix",
             "price": "€190 fixed",
             "summary": "One specific task in up to 4 hours: DNS, SPF and DMARC, broken links or forms, bookings or an automation."
           },
           {
+            "id": "check",
             "name": "Tech check",
             "price": "€290 fixed",
             "summary": "One day of analysis with read access: ActiveCampaign, Zapier or Make, payments, landing pages, double opt-in and consents.",
@@ -161,16 +163,19 @@ export default {
         "note": "Fixed price after the briefing.",
         "items": [
           {
+            "id": "launch",
             "name": "Launch setup",
             "price": "from €1,190",
             "summary": "Landing pages and checkout, ActiveCampaign flows for sign-up, reminders, launch, onboarding and failed payments, forms with double opt-in and tags, connections via Zapier or Apps Script to your CRM and members area, course setup in Somba, Skool or Circle, Zoom and calendar. Everything is ready when sales open."
           },
           {
+            "id": "website",
             "name": "One-page website",
             "price": "from €990",
             "summary": "Wix, Leadpages or custom HTML, responsive, with Calendly, cookie banner, SEO basics, legal notice and privacy policy, domain, publishing, a handover call and three rounds of revisions."
           },
           {
+            "id": "ki",
             "name": "AI in customer support",
             "price": "from €590",
             "summary": "A knowledge base from your FAQ and course rules, a flow in Make or Zapier, draft replies with topic and urgency in GrooveHQ, Gmail or Help Scout, a test with 50 real emails, handover. Only drafts are created: nothing is sent until your team approves it (GDPR).",
@@ -186,6 +191,7 @@ export default {
         "title": "Ongoing support",
         "items": [
           {
+            "id": "support",
             "name": "Support by the hour",
             "price": "€45 per hour",
             "summary": "From 5 hours a month: care for your automations, small landing pages, troubleshooting. Billed by the hour at the end of the month."
@@ -194,6 +200,7 @@ export default {
       }
     ],
     hourly: "Anything outside the packages: €45 per hour.",
+    promise: "My promise: if a flow I built does not work as agreed within the first 30 days, I fix it free of charge. This covers my work, not outages of the tools themselves.",
     smallPrint: 'All prices are final. As a small business under Austrian VAT law (§ 6 (1) Z 27 UStG) I do not charge VAT. For businesses with a valid VAT ID in another EU member state, the reverse charge applies.',
   },
 
@@ -253,6 +260,88 @@ export default {
     ],
     sentence: 'Standard replies cost your team about {h} hours a month. With draft replies you save about {saved_h} hours, roughly €{saved_eur} a month.',
     note: 'Estimate. Assumption: a reviewed draft saves 70% of the time per standard reply.',
+  },
+
+  finder: {
+    "h2": "Which package *fits?*",
+    "questions": [
+      [
+        "What is it about?",
+        [
+          [
+            "broken",
+            "Something isn't working"
+          ],
+          [
+            "launch",
+            "I'm planning a launch"
+          ],
+          [
+            "website",
+            "I need a website"
+          ],
+          [
+            "inbox",
+            "My inbox is too full"
+          ]
+        ]
+      ],
+      [
+        "Do you know where the problem is?",
+        [
+          [
+            "yes",
+            "Yes, pretty much"
+          ],
+          [
+            "no",
+            "No, not really"
+          ]
+        ]
+      ],
+      [
+        "When?",
+        [
+          [
+            "soon",
+            "In the next 2 weeks"
+          ],
+          [
+            "later",
+            "Later"
+          ]
+        ]
+      ]
+    ],
+    "result": "Best fit: {pkg}",
+    "link": "See the package",
+    "restart": "Start again",
+    "closing": {
+      "soon": "Write to me right away.",
+      "later": "Happy to plan a later date too."
+    },
+    "static": [
+      [
+        "Something isn't working and you know where",
+        "quick"
+      ],
+      [
+        "You don't know where the problem is",
+        "check"
+      ],
+      [
+        "You're planning a launch",
+        "launch"
+      ],
+      [
+        "You need a website",
+        "website"
+      ],
+      [
+        "Your inbox is too full",
+        "ki"
+      ]
+    ]
   },
 
   process: {

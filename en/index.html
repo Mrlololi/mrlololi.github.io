@@ -705,6 +705,22 @@ font-size: var(--step-0); font-weight: 700; text-align: left; cursor: pointer;
 .speed__bar span { display: block; height: 100%; background: var(--ink-soft); transform-origin: left; transform: scaleX(var(--p, 1)); }
 .speed__card--fast .speed__bar span { background: var(--done); }
 .speed .loop-btn { min-height: 2.25rem; font-size: 0.8125rem; }
+.finder__card { display: grid; gap: var(--space-5); padding: clamp(1.5rem, 4vw, 3rem); border-radius: 28px; background: linear-gradient(135deg, var(--blue-tint), var(--lav-tint)); }
+.finder__static { display: grid; gap: var(--space-2); }
+.finder__static a { display: inline-flex; flex-wrap: wrap; gap: 0.3em; align-items: center; min-height: 2.75rem; color: var(--ink); }
+.finder__app { display: grid; gap: var(--space-5); }
+.finder__app[hidden], .finder__q[hidden] { display: none; }
+.finder__q { margin: 0; padding: 0; border: 0; display: grid; gap: var(--space-3); }
+.finder__q legend { padding: 0; margin-bottom: var(--space-3); font-family: var(--font-display); font-size: var(--step-1); font-weight: 650; }
+.finder__opts { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.finder__opt { min-height: 2.75rem; padding: 0 var(--space-4); border: 1px solid var(--line); border-radius: 999px; background: var(--sheet); font-weight: 700; color: var(--ink); cursor: pointer; }
+.finder__opt:hover { border-color: var(--field); }
+.finder__opt[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
+.finder__result:not(:empty) { display: grid; gap: var(--space-3); padding: var(--space-5); border-radius: var(--radius-card); background: var(--sheet); box-shadow: var(--shadow-soft); }
+.finder__pick { font-family: var(--font-display); font-size: var(--step-2); line-height: 1.2; }
+.finder__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
+.finder__restart { min-height: 2.75rem; padding: 0 var(--space-4); border: 1px solid var(--line); border-radius: 999px; background: var(--sheet); font-weight: 700; cursor: pointer; }
+.tariff__promise { padding: var(--space-3) var(--space-4); border-radius: var(--radius-field); background: var(--pist-tint); color: var(--ink); }
 @media (prefers-reduced-motion: no-preference) {
 .btn--primary:hover { transform: translateY(-2px); }
 .item:hover { transform: translateY(-4px); box-shadow: var(--shadow-soft); }
@@ -949,14 +965,14 @@ font-size: var(--step-0); font-weight: 700; text-align: left; cursor: pointer;
 
 </div>
 <ul class="tariff__items" role="list">
-<li class="item">
+<li class="item" id="pkg-quick">
 <h4 class="item__name">Quick fix</h4>
 <p class="item__price">€190 fixed</p>
 <p class="item__summary">One specific task in up to 4 hours: DNS, SPF and DMARC, broken links or forms, bookings or an automation.</p>
 
 
 </li>
-<li class="item">
+<li class="item" id="pkg-check">
 <h4 class="item__name">Tech check</h4>
 <p class="item__price">€290 fixed</p>
 <p class="item__summary">One day of analysis with read access: ActiveCampaign, Zapier or Make, payments, landing pages, double opt-in and consents.</p>
@@ -974,21 +990,21 @@ font-size: var(--step-0); font-weight: 700; text-align: left; cursor: pointer;
 <p class="tariff__note">Fixed price after the briefing.</p>
 </div>
 <ul class="tariff__items" role="list">
-<li class="item">
+<li class="item" id="pkg-launch">
 <h4 class="item__name">Launch setup</h4>
 <p class="item__price">from €1,190</p>
 <p class="item__summary">Landing pages and checkout, ActiveCampaign flows for sign-up, reminders, launch, onboarding and failed payments, forms with double opt-in and tags, connections via Zapier or Apps Script to your CRM and members area, course setup in Somba, Skool or Circle, Zoom and calendar. Everything is ready when sales open.</p>
 
 
 </li>
-<li class="item">
+<li class="item" id="pkg-website">
 <h4 class="item__name">One-page website</h4>
 <p class="item__price">from €990</p>
 <p class="item__summary">Wix, Leadpages or custom HTML, responsive, with Calendly, cookie banner, SEO basics, legal notice and privacy policy, domain, publishing, a handover call and three rounds of revisions.</p>
 
 
 </li>
-<li class="item">
+<li class="item" id="pkg-ki">
 <h4 class="item__name">AI in customer support</h4>
 <p class="item__price">from €590</p>
 <p class="item__summary">A knowledge base from your FAQ and course rules, a flow in Make or Zapier, draft replies with topic and urgency in GrooveHQ, Gmail or Help Scout, a test with 50 real emails, handover. Only drafts are created: nothing is sent until your team approves it (GDPR).</p>
@@ -1067,7 +1083,7 @@ font-size: var(--step-0); font-weight: 700; text-align: left; cursor: pointer;
 
 </div>
 <ul class="tariff__items" role="list">
-<li class="item">
+<li class="item" id="pkg-support">
 <h4 class="item__name">Support by the hour</h4>
 <p class="item__price">€45 per hour</p>
 <p class="item__summary">From 5 hours a month: care for your automations, small landing pages, troubleshooting. Billed by the hour at the end of the month.</p>
@@ -1079,6 +1095,27 @@ font-size: var(--step-0); font-weight: 700; text-align: left; cursor: pointer;
 <div class="tariff__notes">
 <p class="tariff__hourly">Anything outside the packages: €45 per hour.</p>
 <p class="small">All prices are final. As a small business under Austrian VAT law (§ 6 (1) Z 27 UStG) I do not charge VAT. For businesses with a valid VAT ID in another EU member state, the reverse charge applies.</p>
+<p class="tariff__promise small">My promise: if a flow I built does not work as agreed within the first 30 days, I fix it free of charge. This covers my work, not outages of the tools themselves.</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section finder" id="finder" aria-labelledby="finder-title">
+<div class="wrap">
+<div class="finder__card">
+<h2 id="finder-title">Which package <em class="accent">fits?</em></h2>
+<ul class="finder__static" role="list">
+<li><a href="#pkg-quick">Something isn't working and you know where: <strong>Quick fix</strong></a></li>
+<li><a href="#pkg-check">You don't know where the problem is: <strong>Tech check</strong></a></li>
+<li><a href="#pkg-launch">You're planning a launch: <strong>Launch setup</strong></a></li>
+<li><a href="#pkg-website">You need a website: <strong>One-page website</strong></a></li>
+<li><a href="#pkg-ki">Your inbox is too full: <strong>AI in customer support</strong></a></li>
+</ul>
+<div class="finder__app" hidden>
+<fieldset class="finder__q" data-q="1"><legend>What is it about?</legend><div class="finder__opts"><button class="finder__opt" type="button" data-value="broken" aria-pressed="false">Something isn't working</button><button class="finder__opt" type="button" data-value="launch" aria-pressed="false">I'm planning a launch</button><button class="finder__opt" type="button" data-value="website" aria-pressed="false">I need a website</button><button class="finder__opt" type="button" data-value="inbox" aria-pressed="false">My inbox is too full</button></div></fieldset>
+<fieldset class="finder__q" data-q="2"><legend>Do you know where the problem is?</legend><div class="finder__opts"><button class="finder__opt" type="button" data-value="yes" aria-pressed="false">Yes, pretty much</button><button class="finder__opt" type="button" data-value="no" aria-pressed="false">No, not really</button></div></fieldset>
+<fieldset class="finder__q" data-q="3"><legend>When?</legend><div class="finder__opts"><button class="finder__opt" type="button" data-value="soon" aria-pressed="false">In the next 2 weeks</button><button class="finder__opt" type="button" data-value="later" aria-pressed="false">Later</button></div></fieldset>
+<div class="finder__result" aria-live="polite" data-text="{&quot;result&quot;:&quot;Best fit: {pkg}&quot;,&quot;link&quot;:&quot;See the package&quot;,&quot;restart&quot;:&quot;Start again&quot;,&quot;soon&quot;:&quot;Write to me right away.&quot;,&quot;later&quot;:&quot;Happy to plan a later date too.&quot;,&quot;names&quot;:{&quot;quick&quot;:&quot;Quick fix&quot;,&quot;check&quot;:&quot;Tech check&quot;,&quot;launch&quot;:&quot;Launch setup&quot;,&quot;website&quot;:&quot;One-page website&quot;,&quot;ki&quot;:&quot;AI in customer support&quot;,&quot;support&quot;:&quot;Support by the hour&quot;}}"></div>
 </div>
 </div>
 </div>

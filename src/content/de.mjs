@@ -146,11 +146,13 @@ export default {
         "title": "Zum Einstieg",
         "items": [
           {
+            "id": "quick",
             "name": "Quick-Fix",
             "price": "190 € fix",
             "summary": "Eine konkrete Aufgabe in bis zu 4 Stunden: DNS, SPF und DMARC, defekte Links oder Formulare, Termine oder eine Automation."
           },
           {
+            "id": "check",
             "name": "Technik-Check",
             "price": "290 € fix",
             "summary": "Ein Tag Analyse mit Lesezugriff: ActiveCampaign, Zapier oder Make, Zahlung, Landingpages, Double-Opt-In und Einwilligungen.",
@@ -163,16 +165,19 @@ export default {
         "note": "Festpreis nach dem Briefing.",
         "items": [
           {
+            "id": "launch",
             "name": "Launch-Setup",
             "price": "ab 1.190 €",
             "summary": "Landingpages und Checkout, ActiveCampaign-Abläufe für Anmeldung, Erinnerung, Start, Onboarding und Zahlungsausfall, Formulare mit Double-Opt-In und Tags, Verbindungen über Zapier oder Apps Script zu CRM und Mitgliederbereich, Kurs-Einrichtung in Somba, Skool oder Circle, Zoom und Kalender. Zum Verkaufsstart ist alles startklar."
           },
           {
+            "id": "website",
             "name": "Website als One-Pager",
             "price": "ab 990 €",
             "summary": "Wix, Leadpages oder eigenes HTML, responsiv, mit Calendly, Cookie-Banner, SEO-Grundlagen, Impressum und Datenschutz, Domain, Veröffentlichung, Übergabe-Gespräch und drei Korrekturschleifen."
           },
           {
+            "id": "ki",
             "name": "KI im Kundenservice",
             "price": "ab 590 €",
             "summary": "Wissensbasis aus Ihren FAQ und Kursregeln, Ablauf in Make oder Zapier, Antwortentwürfe mit Thema und Dringlichkeit in GrooveHQ, Gmail oder Help Scout, Test mit 50 echten E-Mails, Übergabe. Es entstehen nur Entwürfe: versendet wird erst nach Freigabe durch Ihr Team (DSGVO).",
@@ -188,6 +193,7 @@ export default {
         "title": "Laufende Betreuung",
         "items": [
           {
+            "id": "support",
             "name": "Betreuung nach Stunden",
             "price": "45 € pro Stunde",
             "summary": "Ab 5 Stunden im Monat: Pflege Ihrer Automationen, kleine Landingpages, Fehlerbehebung. Abrechnung am Monatsende nach Stunden."
@@ -196,6 +202,7 @@ export default {
       }
     ],
     hourly: "Alles außerhalb der Pakete: 45 € pro Stunde.",
+    promise: "Meine Zusage: Läuft eine von mir gebaute Strecke in den ersten 30 Tagen nicht wie vereinbart, behebe ich das ohne Berechnung. Das gilt für meine Arbeit, nicht für Ausfälle der Tools selbst.",
     smallPrint: 'Alle Preise sind Endpreise. Als Kleinunternehmer gemäß § 6 Abs. 1 Z 27 UStG weise ich keine Umsatzsteuer aus. Bei Unternehmen mit gültiger UID in einem anderen EU-Mitgliedstaat geht die Steuerschuld auf den Leistungsempfänger über (Reverse Charge).',
   },
 
@@ -255,6 +262,88 @@ export default {
     ],
     sentence: 'Standardantworten kosten Ihr Team rund {h} Stunden im Monat. Mit Antwortentwürfen sparen Sie etwa {saved_h} Stunden, das sind rund {saved_eur} € pro Monat.',
     note: 'Schätzung. Annahme: Ein geprüfter Entwurf spart 70 % der Zeit pro Standardantwort.',
+  },
+
+  finder: {
+    "h2": "Welches Paket *passt?*",
+    "questions": [
+      [
+        "Worum geht es?",
+        [
+          [
+            "broken",
+            "Etwas funktioniert nicht"
+          ],
+          [
+            "launch",
+            "Ich plane einen Launch"
+          ],
+          [
+            "website",
+            "Ich brauche eine Website"
+          ],
+          [
+            "inbox",
+            "Mein Postfach ist zu voll"
+          ]
+        ]
+      ],
+      [
+        "Wissen Sie, wo das Problem liegt?",
+        [
+          [
+            "yes",
+            "Ja, ziemlich genau"
+          ],
+          [
+            "no",
+            "Nein, nicht wirklich"
+          ]
+        ]
+      ],
+      [
+        "Wann?",
+        [
+          [
+            "soon",
+            "In den nächsten 2 Wochen"
+          ],
+          [
+            "later",
+            "Später"
+          ]
+        ]
+      ]
+    ],
+    "result": "Passt am besten: {pkg}",
+    "link": "Zum Paket",
+    "restart": "Neu starten",
+    "closing": {
+      "soon": "Schreiben Sie mir gleich.",
+      "later": "Gern auch für einen späteren Termin."
+    },
+    "static": [
+      [
+        "Etwas funktioniert nicht und Sie wissen, wo",
+        "quick"
+      ],
+      [
+        "Sie wissen nicht, wo das Problem liegt",
+        "check"
+      ],
+      [
+        "Sie planen einen Launch",
+        "launch"
+      ],
+      [
+        "Sie brauchen eine Website",
+        "website"
+      ],
+      [
+        "Ihr Postfach ist zu voll",
+        "ki"
+      ]
+    ]
   },
 
   process: {

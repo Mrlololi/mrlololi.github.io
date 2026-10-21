@@ -127,3 +127,30 @@ test('KI block: 6 minutes vs 1 minute cards next to the calculator, example valu
   assert.equal(count(speed, /<p class="speed__text" aria-hidden="true">/g), 2);
   assert.ok(de.indexOf('id="ki-rechner"') < de.indexOf('class="speed"'));
 });
+
+test('package finder: mapping from the brief for every answer', async () => {
+  const { pickPackage } = await import('../assets/js/finder.js');
+  const expect = { broken: { yes: 'quick', no: 'check' }, launch: { yes: 'launch', no: 'check' }, website: { yes: 'website', no: 'check' }, inbox: { yes: 'ki', no: 'check' } };
+  for (const [q1, byQ2] of Object.entries(expect)) {
+    for (const [q2, pkg] of Object.entries(byQ2)) assert.equal(pickPackage(q1, q2), pkg, `${q1} + ${q2}`);
+  }
+});
+
+test('package finder: after the prices, static list without JS, questions ready for JS, packages addressable', () => {
+  const sec = de.match(/<section class="section finder"[\s\S]*?<\/section>/)[0];
+  assert.ok(de.indexOf('id="services"') < de.indexOf('id="finder"') && de.indexOf('id="finder"') < de.indexOf('id="process"'));
+  assert.match(sec, /<h2 id="finder-title">Welches Paket <em class="accent">passt\?<\/em><\/h2>/);
+  const links = [...sec.matchAll(/<li><a href="#pkg-(\w+)">[^<]+<strong>([^<]+)<\/strong><\/a><\/li>/g)].map((m) => [m[1], m[2]]);
+  assert.deepEqual(links, [['quick', 'Quick-Fix'], ['check', 'Technik-Check'], ['launch', 'Launch-Setup'], ['website', 'Website als One-Pager'], ['ki', 'KI im Kundenservice']]);
+  for (const id of ['quick', 'check', 'launch', 'website', 'ki']) assert.match(de, new RegExp(`<li class="item" id="pkg-${id}">`));
+  assert.match(sec, /<div class="finder__app" hidden>/);
+  assert.deepEqual([...sec.matchAll(/<legend>([^<]+)<\/legend>/g)].map((m) => m[1]), ['Worum geht es?', 'Wissen Sie, wo das Problem liegt?', 'Wann?']);
+  assert.equal(count(sec, /<button class="finder__opt" type="button" data-value="\w+" aria-pressed="false">/g), 8);
+  assert.match(en, /<legend>Do you know where the problem is\?<\/legend>/);
+});
+
+test('Zusage under the prices, never «Garantie»', () => {
+  assert.match(de, /<p class="tariff__promise small">Meine Zusage: Läuft eine von mir gebaute Strecke in den ersten 30 Tagen nicht wie vereinbart, behebe ich das ohne Berechnung\. Das gilt für meine Arbeit, nicht für Ausfälle der Tools selbst\.<\/p>/);
+  assert.match(en, /<p class="tariff__promise small">My promise: if a flow I built does not work as agreed within the first 30 days, I fix it free of charge\./);
+  for (const html of [de, en]) assert.ok(!/Garantie|guarantee/i.test(body(html)));
+});

@@ -108,3 +108,30 @@ ${card('fast', s.fast)}
 ${loopButton(t)}
 </div>`;
 }
+
+// «Welches Paket passt?»: a static list without JS; three button questions with JS (finder.js maps).
+export function finder(t) {
+  const f = t.finder;
+  const names = Object.fromEntries(t.pricing.groups.flatMap((g) => g.items).map((it) => [it.id, it.name]));
+  const list = f.static.map(([text, id]) => `<li><a href="#pkg-${id}">${esc(text)}: <strong>${esc(names[id])}</strong></a></li>`).join('\n');
+  const questions = f.questions
+    .map(([q, opts], i) => `<fieldset class="finder__q" data-q="${i + 1}"><legend>${esc(q)}</legend><div class="finder__opts">${opts
+      .map(([value, label]) => `<button class="finder__opt" type="button" data-value="${value}" aria-pressed="false">${esc(label)}</button>`)
+      .join('')}</div></fieldset>`)
+    .join('\n');
+  const data = { result: f.result, link: f.link, restart: f.restart, soon: f.closing.soon, later: f.closing.later, names };
+  return `<section class="section finder" id="finder" aria-labelledby="finder-title">
+<div class="wrap">
+<div class="finder__card">
+<h2 id="finder-title">${accent(f.h2)}</h2>
+<ul class="finder__static" role="list">
+${list}
+</ul>
+<div class="finder__app" hidden>
+${questions}
+<div class="finder__result" aria-live="polite" data-text="${esc(JSON.stringify(data))}"></div>
+</div>
+</div>
+</div>
+</section>`;
+}

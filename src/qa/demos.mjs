@@ -103,6 +103,21 @@ export async function checkDemos(browser, base) {
     await page.click('.speed .loop-btn');
     const sp3 = await page.$eval('.speed__card--slow', (el) => el.style.getPropertyValue('--p'));
     check('6 vs 1: lines run while in view, the pause button stops them', sp1 !== sp2 && sp3 === '', `${sp1} -> ${sp2} -> "${sp3}"`);
+    // Package finder: every answer path ends on the right package; restart clears it.
+    const expected = { broken: { yes: 'quick', no: 'check' }, launch: { yes: 'launch', no: 'check' }, website: { yes: 'website', no: 'check' }, inbox: { yes: 'ki', no: 'check' } };
+    const wrong = [];
+    for (const [topic, byKnows] of Object.entries(expected)) {
+      for (const [knows, pkg] of Object.entries(byKnows)) {
+        await page.click(`.finder__q[data-q="1"] [data-value="${topic}"]`);
+        await page.click(`.finder__q[data-q="2"] [data-value="${knows}"]`);
+        await page.click(`.finder__q[data-q="3"] [data-value="${knows === 'yes' ? 'soon' : 'later'}"]`);
+        const href = await page.$eval('.finder__result a', (a) => a.getAttribute('href'));
+        if (href !== `#pkg-${pkg}`) wrong.push(`${topic}+${knows} -> ${href}`);
+      }
+    }
+    await page.click('.finder__restart');
+    const cleared = await page.$eval('.finder__app', (app) => app.querySelector('.finder__result').textContent === '' && app.querySelector('[data-q="2"]').hidden);
+    check('finder: all 8 answer paths pick the package from the brief, restart clears', wrong.length === 0 && cleared, wrong.join(', '));
     check('demos: no console errors', errors.length === 0, errors.join(' | '));
     await page.close();
   }
@@ -167,10 +182,11 @@ export async function checkDemos(browser, base) {
       baNoRange: getComputedStyle(document.querySelector('.ba__control')).display === 'none',
       storyStacked: [...document.querySelectorAll('.story__panel')].every((p) => getComputedStyle(p).visibility === 'visible' && p.getBoundingClientRect().height > 50),
       toasts: document.querySelectorAll('.toast').length === 4,
+      finderList: getComputedStyle(document.querySelector('.finder__static')).display !== 'none' && getComputedStyle(document.querySelector('.finder__app')).display === 'none',
       tones: [...document.querySelectorAll('.tone__panel')].filter((p) => getComputedStyle(p).visibility === 'visible').length === 3,
       marks: getComputedStyle(document.querySelector('.hl')).backgroundColor !== 'rgba(0, 0, 0, 0)',
     }));
-    check('no JS: ribbon rests, tools wrap, no pause buttons, before/after side by side, story stacked, all tones and marks shown', r === 0 && Object.values(s).every(Boolean), JSON.stringify({ r, ...s }));
+    check('no JS: ribbon rests, tools wrap, no pause buttons, before/after side by side, story stacked, all tones and marks shown, finder as a list', r === 0 && Object.values(s).every(Boolean), JSON.stringify({ r, ...s }));
     await page.screenshot({ path: path.join(shots, 'nojs-390.png'), fullPage: true });
     await ctx.close();
   }

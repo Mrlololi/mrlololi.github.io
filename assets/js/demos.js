@@ -1,6 +1,7 @@
 // Stage 2 demos. Every demo starts from its final state in the HTML; these functions only
 // add motion or interaction on top. Loops go through loops.js (pause button, off-screen stop).
 import { loop } from './loops.js';
+import { pickPackage } from './finder.js';
 
 /* ---------- Hero ribbon: SMIL text along two curves ---------- */
 export function initRibbon() {
@@ -298,4 +299,61 @@ export function initSpeed() {
     play: () => { t0 = 0; raf = requestAnimationFrame(frame); },
     pause: () => { cancelAnimationFrame(raf); cards.forEach(({ card, span }) => { card.style.removeProperty('--p'); span.style.removeProperty('--x'); }); },
   });
+}
+
+/* ---------- Package finder: three questions, one result card ---------- */
+export function initFinder() {
+  const app = document.querySelector('.finder__app');
+  if (!app) return;
+  const card = app.closest('.finder__card');
+  const qs = [...app.querySelectorAll('.finder__q')];
+  const out = app.querySelector('.finder__result');
+  const data = JSON.parse(out.dataset.text);
+  const answers = {};
+  card.querySelector('.finder__static').hidden = true;
+  app.hidden = false;
+  const reset = () => {
+    Object.keys(answers).forEach((k) => delete answers[k]);
+    app.querySelectorAll('.finder__opt').forEach((b) => b.setAttribute('aria-pressed', 'false'));
+    qs.forEach((q, i) => { q.hidden = i > 0; });
+    out.textContent = '';
+  };
+  const render = () => {
+    const pkg = pickPackage(answers[1], answers[2]);
+    const name = data.names[pkg];
+    out.innerHTML = '';
+    const pick = document.createElement('p');
+    pick.className = 'finder__pick';
+    const [before, after] = data.result.split('{pkg}');
+    const strong = document.createElement('strong');
+    strong.textContent = name;
+    pick.append(before, strong, after);
+    const close = document.createElement('p');
+    close.textContent = data[answers[3]];
+    const actions = document.createElement('div');
+    actions.className = 'finder__actions';
+    const link = document.createElement('a');
+    link.className = 'btn btn--primary';
+    link.href = `#pkg-${pkg}`;
+    link.textContent = data.link;
+    const again = document.createElement('button');
+    again.type = 'button';
+    again.className = 'finder__restart';
+    again.textContent = data.restart;
+    again.addEventListener('click', () => { reset(); qs[0].querySelector('button').focus(); });
+    actions.append(link, again);
+    out.append(pick, close, actions);
+  };
+  qs.forEach((q) => {
+    const n = Number(q.dataset.q);
+    q.addEventListener('click', (e) => {
+      const b = e.target.closest('.finder__opt');
+      if (!b) return;
+      q.querySelectorAll('.finder__opt').forEach((o) => o.setAttribute('aria-pressed', String(o === b)));
+      answers[n] = b.dataset.value;
+      if (qs[n]) qs[n].hidden = false;
+      if (answers[1] && answers[2] && answers[3]) render();
+    });
+  });
+  reset();
 }
