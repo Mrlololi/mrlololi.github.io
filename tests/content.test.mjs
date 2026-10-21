@@ -57,15 +57,15 @@ for (const [name, t] of [['de', de], ['en', en]]) {
 }
 
 test('de: hero copy is verbatim', () => {
-  assert.equal(de.hero.h1, 'Die Technik hinter Ihrem Kurs-Launch. Gebaut, getestet, betreut.');
-  assert.equal(de.contact.h2, 'Erzählen Sie mir, was hakt.');
+  assert.equal(de.hero.h1, 'Die Technik hinter Ihrem Kurs-Launch. *Gebaut, getestet, betreut.*');
+  assert.equal(de.contact.h2, 'Erzählen Sie mir, *was hakt.*');
   assert.equal(de.lang, 'de');
   assert.equal(de.locale, 'de-AT');
 });
 
 test('en: hero copy is verbatim', () => {
-  assert.equal(en.hero.h1, 'The tech behind your course launch. Built, tested, looked after.');
-  assert.equal(en.contact.h2, "Tell me what's not working.");
+  assert.equal(en.hero.h1, 'The tech behind your course launch. *Built, tested, looked after.*');
+  assert.equal(en.contact.h2, "Tell me *what's not working.*");
   assert.equal(en.lang, 'en');
   assert.equal(en.locale, 'en-GB');
 });

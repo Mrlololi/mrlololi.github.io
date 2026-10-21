@@ -23,7 +23,7 @@
 <meta name="twitter:title" content="Privacy policy - Iva Tsatskrialashvili">
 <meta name="twitter:description" content="Privacy policy of the website of Iva Tsatskrialashvili: no cookies, no analytics, hosted on GitHub Pages.">
 <meta name="twitter:image" content="https://mrlololi.com/og-image-en.png">
-<meta name="theme-color" content="#F1F4F2">
+<meta name="theme-color" content="#FBF8F5">
 <link rel="icon" href="/assets/icons/favicon.ico" sizes="32x32">
 <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
@@ -71,6 +71,16 @@ src: local("Arial Bold"), local("Arial-BoldMT");
 font-weight: 551 900;
 size-adjust: 99.21%; ascent-override: 98.78%; descent-override: 32.26%; line-gap-override: 0%;
 }
+@font-face {
+font-family: "EB Garamond";
+src: url("/assets/fonts/eb-garamond-italic-400.woff2") format("woff2");
+font-weight: 400; font-style: italic; font-display: swap;
+}
+@font-face {
+font-family: "EB Garamond";
+src: url("/assets/fonts/eb-garamond-italic-500.woff2") format("woff2");
+font-weight: 500; font-style: italic; font-display: swap;
+}
 :root {
 --paper: #FBF8F5;
 --sheet: #FFFFFF;
@@ -86,6 +96,7 @@ size-adjust: 99.21%; ascent-override: 98.78%; descent-override: 32.26%; line-gap
 --done: #4E8A3E;
 --font-display: "Bricolage Grotesque", "Bricolage Fallback", Arial, sans-serif;
 --font-body: "Atkinson Hyperlegible Next", "Atkinson Fallback", Arial, sans-serif;
+--font-accent: "EB Garamond", Georgia, "Times New Roman", serif;
 --step--1: clamp(0.875rem, 0.8542rem + 0.0926vw, 0.9375rem);
 --step-0: clamp(1.0625rem, 1.0417rem + 0.0926vw, 1.125rem);
 --step-1: clamp(1.25rem, 1.2083rem + 0.1852vw, 1.375rem);
@@ -125,6 +136,7 @@ overflow-wrap: break-word;
 text-rendering: optimizeLegibility;
 }
 .nowrap { white-space: nowrap; }
+.accent { font-family: var(--font-accent); font-style: italic; font-weight: 500; font-size: 1.08em; letter-spacing: -0.005em; }
 h1, h2, h3, h4 { margin: 0; font-family: var(--font-display); font-weight: 650; color: var(--ink); text-wrap: balance; hyphens: manual; }
 h1 { font-size: var(--step-4); line-height: 1.04; letter-spacing: -0.025em; font-weight: 700; }
 h2 { font-size: var(--step-3); line-height: 1.1; letter-spacing: -0.015em; }
@@ -616,7 +628,7 @@ background: linear-gradient(135deg, var(--pink-tint), var(--lav-tint) 50%, var(-
 <h2>Complaints</h2>
 <p>You can lodge a complaint with the Austrian Data Protection Authority: Barichgasse 40-42, 1030 Vienna, www.dsb.gv.at.</p>
 </section>
-<p class="small">Last updated: 16 October 2026</p>
+<p class="small">Last updated: 21 October 2026</p>
 </article>
 </main>
 <footer class="site-footer">

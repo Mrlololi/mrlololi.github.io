@@ -23,7 +23,7 @@
 <meta name="twitter:title" content="Iva Tsatskrialashvili - Marketing automation and launch tech from Graz, Austria">
 <meta name="twitter:description" content="I build and maintain the tech behind online courses and digital products: ActiveCampaign, Zapier, landing pages and payments. Fixed prices, based in Graz, working remotely across Europe.">
 <meta name="twitter:image" content="https://mrlololi.com/og-image-en.png">
-<meta name="theme-color" content="#F1F4F2">
+<meta name="theme-color" content="#FBF8F5">
 <link rel="icon" href="/assets/icons/favicon.ico" sizes="32x32">
 <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
@@ -71,6 +71,16 @@ src: local("Arial Bold"), local("Arial-BoldMT");
 font-weight: 551 900;
 size-adjust: 99.21%; ascent-override: 98.78%; descent-override: 32.26%; line-gap-override: 0%;
 }
+@font-face {
+font-family: "EB Garamond";
+src: url("/assets/fonts/eb-garamond-italic-400.woff2") format("woff2");
+font-weight: 400; font-style: italic; font-display: swap;
+}
+@font-face {
+font-family: "EB Garamond";
+src: url("/assets/fonts/eb-garamond-italic-500.woff2") format("woff2");
+font-weight: 500; font-style: italic; font-display: swap;
+}
 :root {
 --paper: #FBF8F5;
 --sheet: #FFFFFF;
@@ -86,6 +96,7 @@ size-adjust: 99.21%; ascent-override: 98.78%; descent-override: 32.26%; line-gap
 --done: #4E8A3E;
 --font-display: "Bricolage Grotesque", "Bricolage Fallback", Arial, sans-serif;
 --font-body: "Atkinson Hyperlegible Next", "Atkinson Fallback", Arial, sans-serif;
+--font-accent: "EB Garamond", Georgia, "Times New Roman", serif;
 --step--1: clamp(0.875rem, 0.8542rem + 0.0926vw, 0.9375rem);
 --step-0: clamp(1.0625rem, 1.0417rem + 0.0926vw, 1.125rem);
 --step-1: clamp(1.25rem, 1.2083rem + 0.1852vw, 1.375rem);
@@ -125,6 +136,7 @@ overflow-wrap: break-word;
 text-rendering: optimizeLegibility;
 }
 .nowrap { white-space: nowrap; }
+.accent { font-family: var(--font-accent); font-style: italic; font-weight: 500; font-size: 1.08em; letter-spacing: -0.005em; }
 h1, h2, h3, h4 { margin: 0; font-family: var(--font-display); font-weight: 650; color: var(--ink); text-wrap: balance; hyphens: manual; }
 h1 { font-size: var(--step-4); line-height: 1.04; letter-spacing: -0.025em; font-weight: 700; }
 h2 { font-size: var(--step-3); line-height: 1.1; letter-spacing: -0.015em; }
@@ -590,7 +602,7 @@ background: linear-gradient(135deg, var(--pink-tint), var(--lav-tint) 50%, var(-
 <section class="hero" aria-labelledby="hero-title">
 <div class="wrap hero__grid">
 <div class="hero__text">
-<h1 id="hero-title">The tech behind your course launch. Built, tested, looked after.</h1>
+<h1 id="hero-title">The tech behind your course launch. <em class="accent">Built, tested, looked after.</em></h1>
 <p class="hero__lead lead">I connect forms, ActiveCampaign, Zapier, checkout and your members area so nothing breaks at cart open and no sign-up gets lost.</p>
 <div class="hero__ctas">
 <a class="btn btn--primary" href="#contact">Ask for a first call</a>
@@ -607,7 +619,7 @@ background: linear-gradient(135deg, var(--pink-tint), var(--lav-tint) 50%, var(-
 <section class="section problems" id="problems" aria-labelledby="problems-title">
 <div class="wrap">
 <div class="section__head">
-<h2 id="problems-title">Where launches usually break</h2>
+<h2 id="problems-title">Where launches <em class="accent">usually break</em></h2>
 <p class="lead">I see the same three failures again and again. Each one costs sign-ups, revenue or nerves.</p>
 </div>
 <ul class="pcs" role="list">
@@ -635,7 +647,7 @@ background: linear-gradient(135deg, var(--pink-tint), var(--lav-tint) 50%, var(-
 <section class="section signup" id="signup" aria-labelledby="signup-title">
 <div class="wrap signup__grid">
 <div class="section__head">
-<h2 id="signup-title">What happens when someone signs up</h2>
+<h2 id="signup-title">What happens when someone <em class="accent">signs up</em></h2>
 </div>
 <figure class="run instrument" aria-labelledby="run-title">
 <figcaption class="run__bar"><span class="run__title" id="run-title">Run: new course sign-up</span></figcaption>
@@ -688,7 +700,7 @@ background: linear-gradient(135deg, var(--pink-tint), var(--lav-tint) 50%, var(-
 <section class="section services" id="services" aria-labelledby="services-title">
 <div class="wrap">
 <div class="section__head">
-<h2 id="services-title">Services and pricing</h2>
+<h2 id="services-title">Services and <em class="accent">pricing</em></h2>
 <p class="lead">Fixed prices, clear scope. I work with a few clients at a time, one to two days a week, and give each of them my full attention.</p>
 </div>
 <div class="tariff" id="pricing">
@@ -797,7 +809,7 @@ background: linear-gradient(135deg, var(--pink-tint), var(--lav-tint) 50%, var(-
 <section class="section process" id="process" aria-labelledby="process-title">
 <div class="wrap">
 <div class="section__head">
-<h2 id="process-title">How we work</h2>
+<h2 id="process-title">How <em class="accent">we</em> work</h2>
 </div>
 <ol class="steps" role="list">
 <li class="step">
@@ -826,7 +838,7 @@ background: linear-gradient(135deg, var(--pink-tint), var(--lav-tint) 50%, var(-
 <section class="section refs" id="references" aria-labelledby="refs-title">
 <div class="wrap">
 <div class="section__head">
-<h2 id="refs-title">References</h2>
+<h2 id="refs-title"><em class="accent">References</em></h2>
 </div>
 <article class="case case--feature">
 <picture class="case__shot">
@@ -875,7 +887,7 @@ background: linear-gradient(135deg, var(--pink-tint), var(--lav-tint) 50%, var(-
 </picture>
 </div>
 <div class="about__text">
-<h2 id="about-title">About me</h2>
+<h2 id="about-title">About <em class="accent">me</em></h2>
 <p>I'm Iva and I live in Graz, Austria. I studied information technology and mobile software development and now study marketing and sales part-time at FH CAMPUS 02. So I understand both: the funnel and the API behind it.</p>
 <p>Since 2023 I have worked for online shops and course creators in Germany, Switzerland, Italy and Austria. I speak German and English at C1 level, Russian and Georgian natively and Spanish at B1.</p>
 <p>My business is registered in Austria. You get proper invoices and one person who is responsible.</p>
@@ -892,7 +904,7 @@ background: linear-gradient(135deg, var(--pink-tint), var(--lav-tint) 50%, var(-
 </section>
 <section class="section faq" id="faq" aria-labelledby="faq-title">
 <div class="wrap faq__grid">
-<h2 id="faq-title">Frequently asked questions</h2>
+<h2 id="faq-title">Frequently asked <em class="accent">questions</em></h2>
 <div class="faq__list">
 <details class="faq__item">
 <summary>Do I need to know about tech?</summary>
@@ -927,7 +939,7 @@ background: linear-gradient(135deg, var(--pink-tint), var(--lav-tint) 50%, var(-
 </section>
 <section class="section contact" id="contact" aria-labelledby="contact-title">
 <div class="wrap">
-<h2 class="contact__title" id="contact-title">Tell me what's not working.</h2>
+<h2 class="contact__title" id="contact-title">Tell me <em class="accent">what's not working.</em></h2>
 <p class="lead">I reply within two working days.</p>
 <div class="contact__actions">
 <a class="btn btn--primary" href="mailto:ivikosha@gmail.com?subject=Inquiry%20via%20mrlololi.com">Write an email</a>

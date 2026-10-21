@@ -1,4 +1,4 @@
-import { esc, fill } from './util.mjs';
+import { esc, fill, accent } from './util.mjs';
 import { calcSavings, formatResult } from '../../assets/js/calc.js';
 
 function item(t, it) {
@@ -68,7 +68,7 @@ ${g.items.map((it) => item(t, it) + (it.calc ? '\n' + calculator(t) : '')).join(
   return `<section class="section services" id="services" aria-labelledby="services-title">
 <div class="wrap">
 <div class="section__head">
-<h2 id="services-title">${esc(t.pricing.h2)}</h2>
+<h2 id="services-title">${accent(t.pricing.h2)}</h2>
 <p class="lead">${esc(t.pricing.intro)}</p>
 </div>
 <div class="tariff" id="pricing">

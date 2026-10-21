@@ -25,7 +25,7 @@ export function ogHtml(t) {
   .sum { padding: 14px 24px 18px; border-top: 1px solid #C7D2CD; font-family: var(--font-log); font-size: 17px; color: #15272A; }
 </style></head>
 <body><div class="og">
-<div><div class="mark">mrlololi</div><div class="name">Iva Tsatskrialashvili</div><div class="claim">${esc(t.hero.h1)}</div></div>
+<div><div class="mark">mrlololi</div><div class="name">Iva Tsatskrialashvili</div><div class="claim">${esc(t.hero.h1.replace(/\*/g, ''))}</div></div>
 <div class="log"><h2>${esc(t.run.title)}</h2><ol>${steps}</ol><div class="sum">${esc(t.run.summary)}</div></div>
 </div></body></html>`;
 }

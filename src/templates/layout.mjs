@@ -39,7 +39,7 @@ export function layout({ t, other, config, page, main }) {
     `<meta name="twitter:title" content="${esc(page.title)}">`,
     `<meta name="twitter:description" content="${esc(page.description)}">`,
     `<meta name="twitter:image" content="${ogImage}">`,
-    '<meta name="theme-color" content="#F1F4F2">',
+    '<meta name="theme-color" content="#FBF8F5">',
     '<link rel="icon" href="/assets/icons/favicon.ico" sizes="32x32">',
     '<link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">',
     '<link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">',

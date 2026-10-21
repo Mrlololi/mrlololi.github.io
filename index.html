@@ -23,7 +23,7 @@
 <meta name="twitter:title" content="Iva Tsatskrialashvili - Marketing-Automation und Launch-Technik aus Graz">
 <meta name="twitter:description" content="Ich baue und betreue die Technik hinter Online-Kursen und digitalen Produkten: ActiveCampaign, Zapier, Landingpages und Zahlungen. Festpreise, aus Graz und remote im DACH-Raum.">
 <meta name="twitter:image" content="https://mrlololi.com/og-image-de.png">
-<meta name="theme-color" content="#F1F4F2">
+<meta name="theme-color" content="#FBF8F5">
 <link rel="icon" href="/assets/icons/favicon.ico" sizes="32x32">
 <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
@@ -71,6 +71,16 @@ src: local("Arial Bold"), local("Arial-BoldMT");
 font-weight: 551 900;
 size-adjust: 99.21%; ascent-override: 98.78%; descent-override: 32.26%; line-gap-override: 0%;
 }
+@font-face {
+font-family: "EB Garamond";
+src: url("/assets/fonts/eb-garamond-italic-400.woff2") format("woff2");
+font-weight: 400; font-style: italic; font-display: swap;
+}
+@font-face {
+font-family: "EB Garamond";
+src: url("/assets/fonts/eb-garamond-italic-500.woff2") format("woff2");
+font-weight: 500; font-style: italic; font-display: swap;
+}
 :root {
 --paper: #FBF8F5;
 --sheet: #FFFFFF;
@@ -86,6 +96,7 @@ size-adjust: 99.21%; ascent-override: 98.78%; descent-override: 32.26%; line-gap
 --done: #4E8A3E;
 --font-display: "Bricolage Grotesque", "Bricolage Fallback", Arial, sans-serif;
 --font-body: "Atkinson Hyperlegible Next", "Atkinson Fallback", Arial, sans-serif;
+--font-accent: "EB Garamond", Georgia, "Times New Roman", serif;
 --step--1: clamp(0.875rem, 0.8542rem + 0.0926vw, 0.9375rem);
 --step-0: clamp(1.0625rem, 1.0417rem + 0.0926vw, 1.125rem);
 --step-1: clamp(1.25rem, 1.2083rem + 0.1852vw, 1.375rem);
@@ -125,6 +136,7 @@ overflow-wrap: break-word;
 text-rendering: optimizeLegibility;
 }
 .nowrap { white-space: nowrap; }
+.accent { font-family: var(--font-accent); font-style: italic; font-weight: 500; font-size: 1.08em; letter-spacing: -0.005em; }
 h1, h2, h3, h4 { margin: 0; font-family: var(--font-display); font-weight: 650; color: var(--ink); text-wrap: balance; hyphens: manual; }
 h1 { font-size: var(--step-4); line-height: 1.04; letter-spacing: -0.025em; font-weight: 700; }
 h2 { font-size: var(--step-3); line-height: 1.1; letter-spacing: -0.015em; }
@@ -590,7 +602,7 @@ background: linear-gradient(135deg, var(--pink-tint), var(--lav-tint) 50%, var(-
 <section class="hero" aria-labelledby="hero-title">
 <div class="wrap hero__grid">
 <div class="hero__text">
-<h1 id="hero-title">Die Technik hinter Ihrem <span class="nowrap">Kurs-Launch.</span> Gebaut, getestet, betreut.</h1>
+<h1 id="hero-title">Die Technik hinter Ihrem <span class="nowrap">Kurs-Launch.</span> <em class="accent">Gebaut, getestet, betreut.</em></h1>
 <p class="hero__lead lead">Ich verbinde Formulare, ActiveCampaign, Zapier, Checkout und Mitgliederbereich so, dass beim Cart-Open nichts bricht und keine Anmeldung verloren geht.</p>
 <div class="hero__ctas">
 <a class="btn btn--primary" href="#contact">Erstgespräch anfragen</a>
@@ -607,7 +619,7 @@ background: linear-gradient(135deg, var(--pink-tint), var(--lav-tint) 50%, var(-
 <section class="section problems" id="problems" aria-labelledby="problems-title">
 <div class="wrap">
 <div class="section__head">
-<h2 id="problems-title">Wo es bei Launches meistens hakt</h2>
+<h2 id="problems-title">Wo es bei Launches <em class="accent">meistens hakt</em></h2>
 <p class="lead">Drei Fehler sehe ich immer wieder. Jeder kostet Anmeldungen, Umsatz oder Nerven.</p>
 </div>
 <ul class="pcs" role="list">
@@ -635,7 +647,7 @@ background: linear-gradient(135deg, var(--pink-tint), var(--lav-tint) 50%, var(-
 <section class="section signup" id="signup" aria-labelledby="signup-title">
 <div class="wrap signup__grid">
 <div class="section__head">
-<h2 id="signup-title">Was passiert, wenn sich jemand anmeldet</h2>
+<h2 id="signup-title">Was passiert, wenn sich jemand <em class="accent">anmeldet</em></h2>
 </div>
 <figure class="run instrument" aria-labelledby="run-title">
 <figcaption class="run__bar"><span class="run__title" id="run-title">Ablauf: Neue Kursanmeldung</span></figcaption>
@@ -688,7 +700,7 @@ background: linear-gradient(135deg, var(--pink-tint), var(--lav-tint) 50%, var(-
 <section class="section services" id="services" aria-labelledby="services-title">
 <div class="wrap">
 <div class="section__head">
-<h2 id="services-title">Leistungen und Preise</h2>
+<h2 id="services-title">Leistungen und <em class="accent">Preise</em></h2>
 <p class="lead">Feste Preise, klarer Umfang. Ich arbeite mit wenigen Kund:innen gleichzeitig, an ein bis zwei Tagen pro Woche, und dafür mit voller Aufmerksamkeit.</p>
 </div>
 <div class="tariff" id="pricing">
@@ -797,7 +809,7 @@ background: linear-gradient(135deg, var(--pink-tint), var(--lav-tint) 50%, var(-
 <section class="section process" id="process" aria-labelledby="process-title">
 <div class="wrap">
 <div class="section__head">
-<h2 id="process-title">So arbeiten wir</h2>
+<h2 id="process-title">So arbeiten <em class="accent">wir</em></h2>
 </div>
 <ol class="steps" role="list">
 <li class="step">
@@ -826,7 +838,7 @@ background: linear-gradient(135deg, var(--pink-tint), var(--lav-tint) 50%, var(-
 <section class="section refs" id="references" aria-labelledby="refs-title">
 <div class="wrap">
 <div class="section__head">
-<h2 id="refs-title">Referenzen</h2>
+<h2 id="refs-title"><em class="accent">Referenzen</em></h2>
 </div>
 <article class="case case--feature">
 <picture class="case__shot">
@@ -873,7 +885,7 @@ background: linear-gradient(135deg, var(--pink-tint), var(--lav-tint) 50%, var(-
 </picture>
 </div>
 <div class="about__text">
-<h2 id="about-title">Über mich</h2>
+<h2 id="about-title">Über <em class="accent">mich</em></h2>
 <p>Ich bin Iva und lebe in Graz. Ich habe Informationstechnologie und Mobile Software Development studiert und studiere jetzt berufsbegleitend Marketing &amp; Sales an der FH CAMPUS 02. Deshalb verstehe ich beides: den Funnel und die API dahinter.</p>
 <p>Seit 2023 arbeite ich für Onlineshops und Kursanbieter in Deutschland, der Schweiz, Italien und Österreich. Ich spreche Deutsch und Englisch auf C1-Niveau, Russisch und Georgisch als Muttersprachen und Spanisch auf B1.</p>
 <p>Mein Gewerbe ist in Österreich angemeldet. Sie bekommen ordentliche Rechnungen und einen festen Ansprechpartner.</p>
@@ -890,7 +902,7 @@ background: linear-gradient(135deg, var(--pink-tint), var(--lav-tint) 50%, var(-
 </section>
 <section class="section faq" id="faq" aria-labelledby="faq-title">
 <div class="wrap faq__grid">
-<h2 id="faq-title">Häufige Fragen</h2>
+<h2 id="faq-title">Häufige <em class="accent">Fragen</em></h2>
 <div class="faq__list">
 <details class="faq__item">
 <summary>Muss ich mich mit Technik auskennen?</summary>
@@ -925,7 +937,7 @@ background: linear-gradient(135deg, var(--pink-tint), var(--lav-tint) 50%, var(-
 </section>
 <section class="section contact" id="contact" aria-labelledby="contact-title">
 <div class="wrap">
-<h2 class="contact__title" id="contact-title">Erzählen Sie mir, was hakt.</h2>
+<h2 class="contact__title" id="contact-title">Erzählen Sie mir, <em class="accent">was hakt.</em></h2>
 <p class="lead">Ich antworte innerhalb von zwei Werktagen.</p>
 <div class="contact__actions">
 <a class="btn btn--primary" href="mailto:ivikosha@gmail.com?subject=Anfrage%20%C3%BCber%20mrlololi.com">E-Mail schreiben</a>

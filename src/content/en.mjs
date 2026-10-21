@@ -51,7 +51,7 @@ export default {
   ],
 
   hero: {
-    h1: 'The tech behind your course launch. Built, tested, looked after.',
+    h1: 'The tech behind your course launch. *Built, tested, looked after.*',
     lead: 'I connect forms, ActiveCampaign, Zapier, checkout and your members area so nothing breaks at cart open and no sign-up gets lost.',
     primary: 'Ask for a first call',
     secondary: 'See pricing',
@@ -60,7 +60,7 @@ export default {
   },
 
   run: {
-    h2: "What happens when someone signs up",
+    h2: "What happens when someone *signs up*",
     title: "Run: new course sign-up",
     steps: [
       { text: "Sign-up via the form", seconds: 0.2 },
@@ -75,7 +75,7 @@ export default {
   },
 
   problems: {
-    h2: "Where launches usually break",
+    h2: "Where launches *usually break*",
     intro: "I see the same three failures again and again. Each one costs sign-ups, revenue or nerves.",
     items: [
       { problem: "Sign-ups get lost between the form and the CRM.", fix: "Flows with checks and retries that stay reliable even when many people sign up at once." },
@@ -85,7 +85,7 @@ export default {
   },
 
   pricing: {
-    h2: 'Services and pricing',
+    h2: 'Services and *pricing*',
     intro: 'Fixed prices, clear scope. I work with a few clients at a time, one to two days a week, and give each of them my full attention.',
     groups: [
       {
@@ -158,7 +158,7 @@ export default {
   },
 
   process: {
-    h2: 'How we work',
+    h2: 'How *we* work',
     steps: [
       { title: 'First call, 20 minutes, free.', text: 'You tell me what is not working. I tell you honestly whether I can help.' },
       { title: 'Quick fix or quote.', text: 'Small things I fix right away, bigger ones get a fixed price.' },
@@ -168,7 +168,7 @@ export default {
   },
 
   refs: {
-    h2: 'References',
+    h2: '*References*',
     case1: {
       domain: 'alexandrafry.ch',
       titleRest: ', website for an executive coach in Bern',
@@ -202,7 +202,7 @@ export default {
   },
 
   about: {
-    h2: 'About me',
+    h2: 'About *me*',
     photoAlt: 'Iva Tsatskrialashvili',
     paragraphs: [
       "I'm Iva and I live in Graz, Austria. I studied information technology and mobile software development and now study marketing and sales part-time at FH CAMPUS 02. So I understand both: the funnel and the API behind it.",
@@ -216,7 +216,7 @@ export default {
   },
 
   faq: {
-    h2: 'Frequently asked questions',
+    h2: 'Frequently asked *questions*',
     items: [
       { q: 'Do I need to know about tech?', a: 'No. You tell me what should happen, I take care of the rest and explain everything in plain words.' },
       { q: 'Do you work remotely?', a: 'Yes. Almost all projects run remotely across Europe. In Graz I am happy to meet in person.' },
@@ -229,7 +229,7 @@ export default {
   },
 
   contact: {
-    h2: "Tell me what's not working.",
+    h2: "Tell me *what's not working.*",
     text: 'I reply within two working days.',
     mail: 'Write an email',
     subject: 'Inquiry%20via%20mrlololi.com',

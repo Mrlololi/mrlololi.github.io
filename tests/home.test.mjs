@@ -9,7 +9,7 @@ const en = all.find((p) => p.file === 'en/index.html').html;
 const count = (html, re) => (html.match(re) || []).length;
 
 test('hero: H1, CTAs to contact and pricing', () => {
-  assert.match(de, /<h1[^>]*>Die Technik hinter Ihrem <span class="nowrap">Kurs-Launch\.<\/span> Gebaut, getestet, betreut\.<\/h1>/);
+  assert.match(de, /<h1[^>]*>Die Technik hinter Ihrem <span class="nowrap">Kurs-Launch\.<\/span> <em class="accent">Gebaut, getestet, betreut\.<\/em><\/h1>/);
   assert.match(de, /<a class="btn btn--primary" href="#contact">Erstgespräch anfragen<\/a>/);
   assert.match(de, /<a class="text-link" href="#pricing">Preise ansehen<\/a>/);
 });
@@ -23,7 +23,7 @@ test('hero: flow diagram with four nodes and a chip with the photo', () => {
 
 test('run log: own section after the problems, six steps, replay', () => {
   assert.match(de, /<section class="section signup" id="signup" aria-labelledby="signup-title">/);
-  assert.match(de, /<h2 id="signup-title">Was passiert, wenn sich jemand anmeldet<\/h2>/);
+  assert.match(de, /<h2 id="signup-title">Was passiert, wenn sich jemand <em class="accent">anmeldet<\/em><\/h2>/);
   assert.ok(de.indexOf('id="problems"') < de.indexOf('id="signup"') && de.indexOf('id="signup"') < de.indexOf('id="services"'), 'order: problems, signup, services');
   assert.equal(count(de, /<li class="run__step" data-seconds="[\d.]+">/g), 6);
   assert.match(de, /<span class="run__time">0,2 s<\/span>/);

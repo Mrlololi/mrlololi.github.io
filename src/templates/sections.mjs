@@ -1,4 +1,4 @@
-import { esc } from './util.mjs';
+import { esc, accent } from './util.mjs';
 
 export function processSteps(t) {
   const steps = t.process.steps
@@ -13,7 +13,7 @@ export function processSteps(t) {
   return `<section class="section process" id="process" aria-labelledby="process-title">
 <div class="wrap">
 <div class="section__head">
-<h2 id="process-title">${esc(t.process.h2)}</h2>
+<h2 id="process-title">${accent(t.process.h2)}</h2>
 </div>
 <ol class="steps" role="list">
 ${steps}
@@ -33,7 +33,7 @@ export function about(t, config) {
 </picture>
 </div>
 <div class="about__text">
-<h2 id="about-title">${esc(t.about.h2)}</h2>
+<h2 id="about-title">${accent(t.about.h2)}</h2>
 ${t.about.paragraphs.map((p) => `<p>${esc(p)}</p>`).join('\n')}
 <ol class="path" role="list" aria-label="${esc(t.about.pathLabel)}">
 ${t.about.path.map((stop) => `<li class="path__stop">${esc(stop)}</li>`).join('\n')}
@@ -56,7 +56,7 @@ export function faq(t) {
     .join('\n');
   return `<section class="section faq" id="faq" aria-labelledby="faq-title">
 <div class="wrap faq__grid">
-<h2 id="faq-title">${esc(t.faq.h2)}</h2>
+<h2 id="faq-title">${accent(t.faq.h2)}</h2>
 <div class="faq__list">
 ${items}
 </div>
@@ -71,7 +71,7 @@ export function contact(t, config) {
     : '';
   return `<section class="section contact" id="contact" aria-labelledby="contact-title">
 <div class="wrap">
-<h2 class="contact__title" id="contact-title">${esc(t.contact.h2)}</h2>
+<h2 class="contact__title" id="contact-title">${accent(t.contact.h2)}</h2>
 <p class="lead">${esc(t.contact.text)}</p>
 <div class="contact__actions">
 <a class="btn btn--primary" href="${esc(mailto)}">${esc(t.contact.mail)}</a>

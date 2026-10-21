@@ -1,4 +1,4 @@
-import { esc, quoted } from './util.mjs';
+import { esc, quoted, accent } from './util.mjs';
 
 function quote(t, q, extraClass = '') {
   const langAttr = q.lang !== t.lang ? ` lang="${q.lang}"` : '';
@@ -16,7 +16,7 @@ export function references(t, config) {
   return `<section class="section refs" id="references" aria-labelledby="refs-title">
 <div class="wrap">
 <div class="section__head">
-<h2 id="refs-title">${esc(t.refs.h2)}</h2>
+<h2 id="refs-title">${accent(t.refs.h2)}</h2>
 </div>
 <article class="case case--feature">
 <picture class="case__shot">

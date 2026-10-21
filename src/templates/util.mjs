@@ -23,5 +23,11 @@ export const formatDate = (date, locale) =>
 // Escaped text where hyphenated words never break at their hyphen (for big headlines).
 export const keepHyphenated = (s) => esc(s).replace(/(\S+-\S+)/g, '<span class="nowrap">$1</span>');
 
+// Escaped text with one *accent* turned into the italic serif <em> (Stage 2 headings).
+export const accent = (s) => esc(s).replace(/\*([^*]+)\*/g, '<em class="accent">$1</em>');
+
+// Big headlines: accent plus hyphenated words that never break at their hyphen.
+export const headline = (s) => accent(s).replace(/(^|\s)([^\s<>*]+-[^\s<>*]+)/g, '$1<span class="nowrap">$2</span>');
+
 // Joins template parts, dropping false/null/undefined.
 export const join = (parts) => parts.filter((p) => p !== false && p != null && p !== '').join('\n');

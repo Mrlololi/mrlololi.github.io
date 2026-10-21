@@ -48,6 +48,18 @@
   size-adjust: 99.21%; ascent-override: 98.78%; descent-override: 32.26%; line-gap-override: 0%;
 }
 
+/* Accent face (Stage 2): EB Garamond italic, Latin subset, not preloaded. */
+@font-face {
+  font-family: "EB Garamond";
+  src: url("/assets/fonts/eb-garamond-italic-400.woff2") format("woff2");
+  font-weight: 400; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: "EB Garamond";
+  src: url("/assets/fonts/eb-garamond-italic-500.woff2") format("woff2");
+  font-weight: 500; font-style: italic; font-display: swap;
+}
+
 /* ---------- Tokens (pastel redesign, 16.10.2026; see docs/superpowers/specs) ---------- */
 :root {
   --paper: #FBF8F5;
@@ -66,6 +78,7 @@
 
   --font-display: "Bricolage Grotesque", "Bricolage Fallback", Arial, sans-serif;
   --font-body: "Atkinson Hyperlegible Next", "Atkinson Fallback", Arial, sans-serif;
+  --font-accent: "EB Garamond", Georgia, "Times New Roman", serif;
 
   /* fluid type, 360 px -> 1440 px */
   --step--1: clamp(0.875rem, 0.8542rem + 0.0926vw, 0.9375rem);
@@ -114,6 +127,8 @@ body {
 /* No automatic hyphenation (it splits brand names like ActiveCampaign);
    overflow-wrap on body is the safety net for long compounds at 360 px. */
 .nowrap { white-space: nowrap; }
+/* One italic serif accent per heading (Stage 2). Slightly larger: Garamond runs small. */
+.accent { font-family: var(--font-accent); font-style: italic; font-weight: 500; font-size: 1.08em; letter-spacing: -0.005em; }
 h1, h2, h3, h4 { margin: 0; font-family: var(--font-display); font-weight: 650; color: var(--ink); text-wrap: balance; hyphens: manual; }
 h1 { font-size: var(--step-4); line-height: 1.04; letter-spacing: -0.025em; font-weight: 700; }
 h2 { font-size: var(--step-3); line-height: 1.1; letter-spacing: -0.015em; }

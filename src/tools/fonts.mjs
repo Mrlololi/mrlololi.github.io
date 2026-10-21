@@ -16,6 +16,8 @@ const files = [
   ['@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-ext-opsz-normal.woff2', 'bricolage-grotesque-latin-ext.woff2', false],
   ['@fontsource-variable/atkinson-hyperlegible-next/files/atkinson-hyperlegible-next-latin-wght-normal.woff2', 'atkinson-hyperlegible-next-latin.woff2', true],
   ['@fontsource-variable/atkinson-hyperlegible-next/files/atkinson-hyperlegible-next-latin-ext-wght-normal.woff2', 'atkinson-hyperlegible-next-latin-ext.woff2', false],
+  ['@fontsource/eb-garamond/files/eb-garamond-latin-400-italic.woff2', 'eb-garamond-italic-400.woff2', true],
+  ['@fontsource/eb-garamond/files/eb-garamond-latin-500-italic.woff2', 'eb-garamond-italic-500.woff2', true],
 ];
 
 // ASCII, German and common Western letters, typographic quotes, € § © and the spaces Intl uses.

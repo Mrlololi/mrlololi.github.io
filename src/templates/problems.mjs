@@ -1,4 +1,4 @@
-import { esc } from './util.mjs';
+import { esc, accent } from './util.mjs';
 
 // Each card names the problem; its «Lösung» panel sits below it. With motion, main.js
 // holds the panel under the card's edge and slides it up once the card is in view.
@@ -17,7 +17,7 @@ export function problems(t) {
   return `<section class="section problems" id="problems" aria-labelledby="problems-title">
 <div class="wrap">
 <div class="section__head">
-<h2 id="problems-title">${esc(t.problems.h2)}</h2>
+<h2 id="problems-title">${accent(t.problems.h2)}</h2>
 <p class="lead">${esc(t.problems.intro)}</p>
 </div>
 <ul class="pcs" role="list">

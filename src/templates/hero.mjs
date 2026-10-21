@@ -1,4 +1,4 @@
-import { esc, seconds, keepHyphenated } from './util.mjs';
+import { esc, seconds, accent, headline } from './util.mjs';
 
 // One status node of the run log: idle (grey), wait (amber), done (green) + check.
 // Default CSS shows the finished state; main.js rewinds it when the log comes into view.
@@ -25,7 +25,7 @@ export function hero(t) {
   return `<section class="hero" aria-labelledby="hero-title">
 <div class="wrap hero__grid">
 <div class="hero__text">
-<h1 id="hero-title">${keepHyphenated(t.hero.h1)}</h1>
+<h1 id="hero-title">${headline(t.hero.h1)}</h1>
 <p class="hero__lead lead">${esc(t.hero.lead)}</p>
 <div class="hero__ctas">
 <a class="btn btn--primary" href="#contact">${esc(t.hero.primary)}</a>
@@ -41,7 +41,7 @@ ${flowSvg(t.hero.flow.nodes)}
 </section>`;
 }
 
-// Â«Was passiert, wenn sich jemand anmeldetÂ»: the run log as a card, played once in view.
+// «Was passiert, wenn sich jemand anmeldet»: the run log as a card, played once in view.
 export function signup(t) {
   const steps = t.run.steps
     .map(
@@ -57,7 +57,7 @@ ${i < t.run.steps.length - 1 ? runLink : ''}
   return `<section class="section signup" id="signup" aria-labelledby="signup-title">
 <div class="wrap signup__grid">
 <div class="section__head">
-<h2 id="signup-title">${esc(t.run.h2)}</h2>
+<h2 id="signup-title">${accent(t.run.h2)}</h2>
 </div>
 <figure class="run instrument" aria-labelledby="run-title">
 <figcaption class="run__bar"><span class="run__title" id="run-title">${esc(t.run.title)}</span></figcaption>

@@ -53,7 +53,7 @@ export default {
   ],
 
   hero: {
-    h1: 'Die Technik hinter Ihrem Kurs-Launch. Gebaut, getestet, betreut.',
+    h1: 'Die Technik hinter Ihrem Kurs-Launch. *Gebaut, getestet, betreut.*',
     lead: 'Ich verbinde Formulare, ActiveCampaign, Zapier, Checkout und Mitgliederbereich so, dass beim Cart-Open nichts bricht und keine Anmeldung verloren geht.',
     primary: 'Erstgespräch anfragen',
     secondary: 'Preise ansehen',
@@ -62,7 +62,7 @@ export default {
   },
 
   run: {
-    h2: "Was passiert, wenn sich jemand anmeldet",
+    h2: "Was passiert, wenn sich jemand *anmeldet*",
     title: "Ablauf: Neue Kursanmeldung",
     steps: [
       { text: "Anmeldung über das Formular", seconds: 0.2 },
@@ -77,7 +77,7 @@ export default {
   },
 
   problems: {
-    h2: "Wo es bei Launches meistens hakt",
+    h2: "Wo es bei Launches *meistens hakt*",
     intro: "Drei Fehler sehe ich immer wieder. Jeder kostet Anmeldungen, Umsatz oder Nerven.",
     items: [
       { problem: "Anmeldungen verschwinden zwischen Formular und CRM.", fix: "Ich baue Strecken mit Prüfung und Wiederholung, die auch bei vielen gleichzeitigen Anmeldungen sauber laufen." },
@@ -87,7 +87,7 @@ export default {
   },
 
   pricing: {
-    h2: 'Leistungen und Preise',
+    h2: 'Leistungen und *Preise*',
     intro: 'Feste Preise, klarer Umfang. Ich arbeite mit wenigen Kund:innen gleichzeitig, an ein bis zwei Tagen pro Woche, und dafür mit voller Aufmerksamkeit.',
     groups: [
       {
@@ -160,7 +160,7 @@ export default {
   },
 
   process: {
-    h2: 'So arbeiten wir',
+    h2: 'So arbeiten *wir*',
     steps: [
       { title: 'Erstgespräch, 20 Minuten, kostenlos.', text: 'Sie erzählen, was hakt. Ich sage ehrlich, ob ich helfen kann.' },
       { title: 'Quick-Fix oder Angebot.', text: 'Kleine Dinge löse ich direkt, für größere bekommen Sie einen Festpreis.' },
@@ -170,7 +170,7 @@ export default {
   },
 
   refs: {
-    h2: 'Referenzen',
+    h2: '*Referenzen*',
     case1: {
       domain: 'alexandrafry.ch',
       titleRest: ', Website für eine Executive-Coachin in Bern',
@@ -202,7 +202,7 @@ export default {
   },
 
   about: {
-    h2: 'Über mich',
+    h2: 'Über *mich*',
     photoAlt: 'Iva Tsatskrialashvili',
     paragraphs: [
       'Ich bin Iva und lebe in Graz. Ich habe Informationstechnologie und Mobile Software Development studiert und studiere jetzt berufsbegleitend Marketing & Sales an der FH CAMPUS 02. Deshalb verstehe ich beides: den Funnel und die API dahinter.',
@@ -216,7 +216,7 @@ export default {
   },
 
   faq: {
-    h2: 'Häufige Fragen',
+    h2: 'Häufige *Fragen*',
     items: [
       { q: 'Muss ich mich mit Technik auskennen?', a: 'Nein. Sie sagen mir, was passieren soll, ich kümmere mich um den Rest und erkläre alles in einfachen Worten.' },
       { q: 'Arbeiten Sie auch remote?', a: 'Ja. Fast alle Projekte laufen remote im DACH-Raum. In Graz komme ich gern persönlich vorbei.' },
@@ -229,7 +229,7 @@ export default {
   },
 
   contact: {
-    h2: 'Erzählen Sie mir, was hakt.',
+    h2: 'Erzählen Sie mir, *was hakt.*',
     text: 'Ich antworte innerhalb von zwei Werktagen.',
     mail: 'E-Mail schreiben',
     subject: 'Anfrage%20%C3%BCber%20mrlololi.com',
