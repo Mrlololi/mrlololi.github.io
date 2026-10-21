@@ -10,6 +10,7 @@ import { checkBehaviour } from './behaviour.mjs';
 import { checkReviewFixes } from './review-fixes.mjs';
 import { checkDemos } from './demos.mjs';
 import { checkClickable } from './clickable.mjs';
+import { checkFixes } from './fixes.mjs';
 import { screenshots, network, accessibility, links, copy, keyboard, budget } from './checks.mjs';
 import { lighthouseCheck } from './lighthouse.mjs';
 
@@ -26,13 +27,14 @@ const run = async (title, fn) => {
 
 await run('Layout (no horizontal scroll)', async () => {
   const problems = await checkOverflow(browser, server.url);
-  return [{ name: 'no horizontal scroll on 7 pages at 360/390/768/1024/1280/1440', pass: problems.length === 0, details: problems.join('\n') }];
+  return [{ name: 'no horizontal scroll on 7 pages at 360/390/768/1024/1280/1440, plus EN/DE 360-400 after main.js', pass: problems.length === 0, details: problems.join('\n') }];
 });
 await run('Screenshots', () => screenshots(browser, server.url));
 await run('Motion, reduced motion, no JS, calculator', () => checkBehaviour(browser, server.url));
 await run('Final-review cases (late scripts, failed main.js, timing)', () => checkReviewFixes(browser, server.url));
 await run('Stage 2 demos (motion, reduced motion, no JS, keyboard, mobile)', () => checkDemos(browser, server.url));
 await run('Stage 3 clickable guard (DE, EN, 360, 1280)', () => checkClickable(browser, server.url));
+await run('Fixes 21.10.2026 (footer, calculator, tooltips, reduced motion, keys)', () => checkFixes(browser, server.url));
 await run('Network', () => network(browser, server.url));
 await run('Accessibility (axe)', () => accessibility(browser, server.url));
 await run('Keyboard', () => keyboard(browser, server.url));

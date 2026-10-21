@@ -10,9 +10,11 @@ function item(t, it, email) {
 <div class="price-details__body"><p>${esc(it.details)}</p></div>
 </details>`
     : '';
+  const bullets = it.bullets ? `<ul class="item__bullets" role="list">${it.bullets.map((b) => `<li>${esc(b)}</li>`).join('')}</ul>` : '';
   return `<li class="item"${it.id ? ` id="pkg-${it.id}"` : ''}>
 <h4 class="item__name">${esc(it.name)}</h4>
 <p class="item__price">${esc(it.price)}</p>
+${bullets}
 <p class="item__summary">${esc(it.summary)}</p>
 ${extra}
 ${details}

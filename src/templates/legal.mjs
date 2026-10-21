@@ -35,7 +35,7 @@ ${facts(L.disclosure, config)}
 </article>`;
 }
 
-export function privacy(t, config, { buildDate }) {
+export function privacy(t, config, { date }) {
   const P = t.privacyPage;
   const sections = P.sections
     .filter((s) => s.key !== 'booking' || config.booking_url)
@@ -52,7 +52,7 @@ export function privacy(t, config, { buildDate }) {
   return `<article class="doc">
 <h1>${esc(P.h1)}</h1>
 ${sections}
-<p class="small">${esc(t.ui.lastUpdated)}: ${formatDate(buildDate, t.locale)}</p>
+<p class="small">${esc(t.ui.lastUpdated)}: ${formatDate(date, t.locale)}</p>
 </article>`;
 }
 

@@ -9,8 +9,8 @@ export default {
   paths: { home: '/', legal: '/impressum/', privacy: '/datenschutz/' },
 
   meta: {
-    title: 'Iva Tsatskrialashvili - Marketing-Automation und Launch-Technik aus Graz',
-    description: 'Ich baue und betreue die Technik hinter Online-Kursen und digitalen Produkten: ActiveCampaign, Zapier, Landingpages und Zahlungen. Festpreise, aus Graz und remote im DACH-Raum.',
+    title: 'Marketing-Automation & Launch-Technik aus Graz | mrlololi',
+    description: 'Ich baue und betreue die Technik hinter Online-Kursen: ActiveCampaign, Zapier, Landingpages, Zahlungen. Marketing-Automation und Launch-Technik aus Graz.',
   },
   legalMeta: {
     title: 'Impressum - Iva Tsatskrialashvili',
@@ -28,6 +28,7 @@ export default {
   // Small interface strings that CONTENT.md does not cover (accessibility, structure).
   ui: {
     skip: 'Zum Inhalt springen',
+    newTab: '(öffnet in neuem Tab)',
     menu: 'Menü',
     navLabel: 'Hauptnavigation',
     footerNavLabel: 'Rechtliches und Sprache',
@@ -58,11 +59,11 @@ export default {
 
   hero: {
     h1: 'Die Technik hinter Ihrem Kurs-Launch. *Gebaut, getestet, betreut.*',
-    lead: 'Ich verbinde Formulare, ActiveCampaign, Zapier, Checkout und Mitgliederbereich so, dass beim Cart-Open nichts bricht und keine Anmeldung verloren geht.',
+    lead: 'Ich verbinde Formulare, ActiveCampaign, Zapier, Checkout und Mitgliederbereich so, dass zum Verkaufsstart nichts bricht und keine Anmeldung verloren geht.',
     primary: 'Erstgespräch anfragen',
     secondary: 'Preise ansehen',
     small: 'Aus Graz, remote im ganzen DACH-Raum. Deutsch, Englisch, Russisch und Georgisch.',
-    proof: 'Seit 2023 für Kursanbieter und Onlineshops in Deutschland, der Schweiz, Österreich und Italien · Gewerbe in Österreich',
+    proof: 'Seit 2023 für Onlineshops, seit 2026 für Online-Kursanbieter:innen in Deutschland, der Schweiz, Österreich und Italien · Gewerbe in Österreich',
     ribbon: 'Anmeldung eingegangen · E-Mail bestätigt · Tag gesetzt · Zahlung erhalten · Zugang frei · Willkommens-Mail angekommen ·',
     flow: {"label":"Ablauf: Formular, ActiveCampaign, Zahlung, Kurs offen","nodes":["Formular","ActiveCampaign","Zahlung","Kurs offen"],"lines":["Die Anmeldung kommt herein und wird geprüft.","Kontakt, Tag und Willkommens-Mail werden gesetzt.","Zahlung oder Rate wird erkannt, die Rechnung geht raus.","Der Zugang wird freigeschaltet, ohne Handarbeit."],"chip":"Hallo, ich bin Iva"},
   },
@@ -120,7 +121,7 @@ export default {
       { text: "Kurszugang freigeschaltet", seconds: 1.9 },
       { text: "Willkommens-Mail angekommen", seconds: 2.3 },
     ],
-    summary: "6 Schritte, 2,3 Sekunden, 0 Fehler",
+    summary: "6 Schritte, 2,3 Sekunden, 0 Fehler (vereinfachtes Beispiel)",
     replay: "Nochmal abspielen",
   },
 
@@ -131,11 +132,12 @@ export default {
       label: 'Vorher / Nachher ziehen',
       before: 'Chaos',
       after: 'Geordnet',
+      valuetext: 'Vorher {v} %',
       alt: 'Vorher: Formular, ActiveCampaign, Zapier, Stripe und Kurs kreuz und quer verbunden, drei Verbindungen gerissen. Nachher: dieselben Werkzeuge in einem klaren Ablauf.',
       nodes: ['Formular', 'ActiveCampaign', 'Zapier', 'Stripe', 'Kurs'],
     },
     items: [
-      { problem: "Anmeldungen verschwinden zwischen Formular und CRM.", fix: "Ich baue Strecken mit Prüfung und Wiederholung, die auch bei vielen gleichzeitigen Anmeldungen sauber laufen.", pkg: "check" },
+      { problem: "Anmeldungen verschwinden zwischen Formular und CRM.", fix: "Ich baue Abläufe, die jede Anmeldung prüfen und bei Fehlern automatisch neu senden, auch wenn viele gleichzeitig kommen.", pkg: "check" },
       { problem: "Launch-Mails landen im Spam.", fix: "SPF, DKIM und DMARC richtig einrichten und die Zustellung testen.", pkg: "quick" },
       { problem: "Die Ratenzahlung ist fehlgeschlagen, der Zugang bleibt trotzdem offen.", fix: "Automatische Erinnerungen, Sperre und Freischaltung, abgestimmt mit Quaderno, Somba oder Stripe.", pkg: "launch" },
     ],
@@ -152,7 +154,7 @@ export default {
             "id": "quick",
             "name": "Quick-Fix",
             "price": "190 € fix",
-            "summary": "Eine konkrete Aufgabe in bis zu 4 Stunden: DNS, SPF und DMARC, defekte Links oder Formulare, Termine oder eine Automation."
+            "summary": "Eine konkrete Aufgabe in bis zu 4 Stunden: DNS- und E-Mail-Einträge (SPF, DKIM, DMARC), defekte Links oder Formulare, Termine oder eine Automation."
           },
           {
             "id": "check",
@@ -171,7 +173,8 @@ export default {
             "id": "launch",
             "name": "Launch-Setup",
             "price": "ab 1.190 €",
-            "summary": "Landingpages und Checkout, ActiveCampaign-Abläufe für Anmeldung, Erinnerung, Start, Onboarding und Zahlungsausfall, Formulare mit Double-Opt-In und Tags, Verbindungen über Zapier oder Apps Script zu CRM und Mitgliederbereich, Kurs-Einrichtung in Somba, Skool oder Circle, Zoom und Kalender. Zum Verkaufsstart ist alles startklar."
+            "bullets": ["Landingpages und Checkout", "ActiveCampaign-Abläufe für Anmeldung, Erinnerung, Start, Onboarding und Zahlungsausfall", "Formulare mit Double-Opt-In und Tags", "Verbindungen über Zapier oder Apps Script zu CRM und Mitgliederbereich", "Kurs-Einrichtung in Somba, Skool oder Circle, Zoom und Kalender"],
+            "summary": "Zum Verkaufsstart ist alles startklar."
           },
           {
             "id": "website",
@@ -183,7 +186,7 @@ export default {
             "id": "ki",
             "name": "KI im Kundenservice",
             "price": "ab 590 €",
-            "summary": "Wissensbasis aus Ihren FAQ und Kursregeln, Ablauf in Make oder Zapier, Antwortentwürfe mit Thema und Dringlichkeit in GrooveHQ, Gmail oder Help Scout, Test mit 50 echten E-Mails, Übergabe. Es entstehen nur Entwürfe: versendet wird erst nach Freigabe durch Ihr Team (DSGVO).",
+            "summary": "Wissensbasis aus Ihren FAQ und Kursregeln, Ablauf in Make oder Zapier, Antwortentwürfe mit Thema und Dringlichkeit in GrooveHQ, Gmail oder Help Scout, Test mit 50 Beispiel-E-Mails aus Ihrem Postfach, anonymisiert, Übergabe. Es entstehen nur Entwürfe: Ihr Team prüft und versendet jede Antwort selbst. Den Datenschutz klären wir vor dem Start, mit einem KI-Anbieter, der Daten in der EU verarbeitet, wo möglich.",
             "extra": {
               "label": "Optional: Pflege 90 € pro Monat",
               "text": "monatlich kündbar: bis 2 Stunden für Wissensbasis, Qualitätskontrolle und einen kurzen Bericht zur gesparten Zeit; darüber 45 € pro Stunde; API-Kosten zahlen Sie direkt."
@@ -207,12 +210,12 @@ export default {
     cta: "Anfragen",
     subjectPrefix: "Anfrage: ",
     hourly: "Alles außerhalb der Pakete: 45 € pro Stunde.",
-    promise: "Meine Zusage: Läuft eine von mir gebaute Strecke in den ersten 30 Tagen nicht wie vereinbart, behebe ich das ohne Berechnung. Das gilt für meine Arbeit, nicht für Ausfälle der Tools selbst.",
+    promise: "Zusätzlich zur gesetzlichen Gewährleistung: Läuft ein von mir gebauter Ablauf in den ersten 30 Tagen nicht wie vereinbart, behebe ich das ohne Berechnung. Das gilt für meine Arbeit, nicht für Ausfälle der Tools selbst.",
     smallPrint: 'Alle Preise sind Endpreise. Als Kleinunternehmer gemäß § 6 Abs. 1 Z 27 UStG weise ich keine Umsatzsteuer aus. Bei Unternehmen mit gültiger UID in einem anderen EU-Mitgliedstaat geht die Steuerschuld auf den Leistungsempfänger über (Reverse Charge).',
   },
 
   ki: {
-    "h3": "Vom verärgerten Mail zum fertigen *Entwurf*",
+    "h3": "Von der verärgerten Kundenmail zum fertigen *Entwurf*",
     "from": "Anna K.",
     "mail": "hallo ich hab den kurs gekauft aber kein login bekommen??? und die rechnung fehlt auch. echt ärgerlich, brauche das bis morgen!!",
     "marks": [
@@ -253,7 +256,7 @@ export default {
     "done": "Fertig",
     "editLabel": "Antwort bearbeiten",
     "replay": "Nochmal",
-    "caption": "Die Entwürfe klingen wie Ihre Schule.",
+    "caption": "Die Entwürfe klingen nach Ihnen.",
     "speed": {
       "label": "Beispielwerte",
       "slow": "Von Hand: ca. 6 Minuten pro Antwort",
@@ -360,7 +363,7 @@ export default {
     steps: [
       { title: 'Erstgespräch, 20 Minuten, kostenlos.', text: 'Sie erzählen, was hakt. Ich sage ehrlich, ob ich helfen kann.' },
       { title: 'Quick-Fix oder Angebot.', text: 'Kleine Dinge löse ich direkt, für größere bekommen Sie einen Festpreis.' },
-      { title: 'Umsetzung.', text: 'Ich arbeite in Ihren Konten, dokumentiere jeden Schritt und teste mit echten Daten.' },
+      { title: 'Umsetzung.', text: 'Ich arbeite in Ihren Konten, dokumentiere jeden Schritt und teste mit Testkontakten, bevor echte Anmeldungen durchlaufen.' },
       { title: 'Übergabe.', text: 'Eine schriftliche Anleitung, auf Wunsch ein kurzes Video, damit Ihr Team alles selbst pflegen kann.' },
     ],
   },
@@ -380,21 +383,22 @@ export default {
     },
     case2: {
       title: 'Launch-Technik für eine Online-Kursanbieterin, seit April 2026',
-      text: 'ActiveCampaign- und Zapier-Strecken für Anmeldung, Launch, Onboarding und Zahlungserinnerungen, Landingpages in Leadpages, Rechnungen, Ratenzahlungen und Kurszugänge mit Quaderno und Somba, Live-Termine mit Zoom und Ecamm.',
+      text: 'ActiveCampaign- und Zapier-Abläufe für Anmeldung, Launch, Onboarding und Zahlungserinnerungen, Landingpages in Leadpages, Rechnungen, Ratenzahlungen und Kurszugänge mit Quaderno und Somba, Live-Termine mit Zoom und Ecamm.',
     },
     case3: {
       title: 'E-Commerce für zwei deutsche Onlineshops, zweieinhalb Jahre',
       text: 'Relaunch zweier Onlineshops, Produktdaten und SEO-Inhalte in CMS- und PIM-Systemen, Markt- und Wettbewerbsanalysen und Auswertungen der Shop-Statistiken.',
       quote: {
         lang: 'de',
-        text: 'Aus oben genannten Gründen halten wir Iva Tsatskrialashvili als Dienstleister für Projekte im Bereich Online Marketing und E-Commerce für sehr qualifiziert und möchten ihn ohne jegliche Vorbehalte an potenzielle Auftraggeber weiterempfehlen.',
+        text: '[…] halten wir Iva Tsatskrialashvili als Dienstleister für Projekte im Bereich Online Marketing und E-Commerce für sehr qualifiziert und möchten ihn ohne jegliche Vorbehalte an potenzielle Auftraggeber weiterempfehlen.',
         source: 'Ditoma GmbH, Ludwigsburg',
       },
     },
     quote4: {
       lang: 'en',
       text: 'He was also highly adaptable, quickly learning new tools and processes specific to each project.',
-      source: 'Tamar Tsvimitidze, Operations Manager, CMX Solutions (Kundensupport für Zalando und Medion)',
+      translation: 'Er war außerdem sehr anpassungsfähig und hat sich schnell in die Tools und Abläufe des jeweiligen Projekts eingearbeitet.',
+      source: 'Tamar Tsvimitidze, Operations Manager, CMX Solutions (Kundensupport-Dienstleister)',
     },
   },
 
@@ -403,7 +407,7 @@ export default {
     photoAlt: 'Iva Tsatskrialashvili',
     paragraphs: [
       'Ich bin Iva und lebe in Graz. Ich habe Informationstechnologie und Mobile Software Development studiert und studiere jetzt berufsbegleitend Marketing & Sales an der FH CAMPUS 02. Deshalb verstehe ich beides: den Funnel und die API dahinter.',
-      'Seit 2023 arbeite ich für Onlineshops und Kursanbieter in Deutschland, der Schweiz, Italien und Österreich. Ich spreche Deutsch und Englisch auf C1-Niveau, Russisch und Georgisch als Muttersprachen und Spanisch auf B1.',
+      'Seit 2023 arbeite ich für Onlineshops, seit 2026 auch für Online-Kursanbieter:innen, in Deutschland, der Schweiz, Italien und Österreich. Ich spreche Deutsch und Englisch auf C1-Niveau, Russisch und Georgisch als Muttersprachen und Spanisch auf B1.',
       'Mein Gewerbe ist in Österreich angemeldet. Sie bekommen ordentliche Rechnungen und einen festen Ansprechpartner.',
     ],
     tools: 'ActiveCampaign, Zapier, Make, Google Apps Script, Leadpages, WordPress, Wix, Shopware, Stripe, Quaderno, Somba, GrooveHQ, Canva, HTML, CSS, JavaScript, Python, SQL',
@@ -412,7 +416,7 @@ export default {
     projects: 'Eigene Projekte: GeoAPP und KittyCats',
   },
 
-  notdo: {"label":"Was ich nicht mache:","text":"Werbetexte schreiben, Ads schalten oder Ihren Kundensupport übernehmen. Dafür empfehle ich Ihnen gern Kolleg:innen."},
+  notdo: {"label":"Was ich nicht mache:","text":"Werbetexte schreiben, Werbeanzeigen schalten oder Ihren Kundensupport übernehmen. Dafür empfehle ich Ihnen gern Kolleg:innen."},
 
   faq: {
     typing: "tippt…",
@@ -422,7 +426,7 @@ export default {
       { q: 'Arbeiten Sie auch remote?', a: 'Ja. Fast alle Projekte laufen remote im DACH-Raum. In Graz komme ich gern persönlich vorbei.' },
       { q: 'Wie schnell können Sie starten?', a: 'Quick-Fixes meist innerhalb einer Woche. Projekte nach Absprache, weil ich bewusst nur wenige gleichzeitig annehme.' },
       { q: 'Brauche ich bestimmte Tools?', a: 'Nein. Ich arbeite mit dem, was Sie schon haben, und schlage einen Wechsel nur vor, wenn er sich rechnet.' },
-      { q: 'Wie gehen Sie mit Daten um?', a: 'Ich arbeite mit eigenem Zugang in Ihren Konten und gebe nach Projektende alle Zugänge zurück.' },
+      { q: 'Wie gehen Sie mit Daten um?', a: 'Ich bekomme einen eigenen Benutzer in Ihren Konten, nie Ihr Passwort. Nach Projektende entfernen Sie meinen Zugang, und ich lösche alle Kopien Ihrer Daten.' },
       { q: 'Übernehmen Sie auch den Kundensupport?', a: 'Nein. Ich baue die Technik, die Ihren Support entlastet, zum Beispiel Antwortentwürfe für wiederkehrende Fragen.' },
       { q: 'Was, wenn mein Problem in kein Paket passt?', a: 'Schreiben Sie mir kurz, was nicht funktioniert. Sie erfahren den Preis, bevor ich anfange.' },
     ],
@@ -431,6 +435,7 @@ export default {
   contact: {
     h2: 'Erzählen Sie mir, *was hakt.*',
     text: 'Ich antworte innerhalb von zwei Werktagen.',
+    free: 'Das Erstgespräch (20 Minuten) ist kostenlos.',
     mail: 'E-Mail schreiben',
     subject: 'Anfrage%20%C3%BCber%20mrlololi.com',
     booking: 'Termin buchen',
@@ -439,7 +444,7 @@ export default {
   },
 
   footer: {
-    copyright: '© 2026 Iva Tsatskrialashvili, Werbeagentur, Graz',
+    copyright: '© 2026 Iva Tsatskrialashvili · Werbeagentur · Graz, Österreich',
     legal: 'Impressum',
     privacy: 'Datenschutz',
   },
@@ -466,7 +471,7 @@ export default {
     ],
     disclosureTitle: 'Offenlegung gemäß § 25 Mediengesetz',
     disclosure: [
-      ['Medieninhaber', 'Iva Tsatskrialashvili, Herbersteinstraße 4/4181, 8020 Graz'],
+      ['Medieninhaber', 'Iva Tsatskrialashvili, Herbersteinstraße 4/4181, 8020 Graz, Österreich'],
       ['Grundlegende Richtung', 'Information über die Dienstleistungen von Iva Tsatskrialashvili im Bereich Marketing-Automation, Websites und Launch-Technik.'],
     ],
     linksTitle: 'Haftung für Links',
@@ -481,14 +486,14 @@ export default {
       {
         key: 'hosting',
         title: 'Hosting',
-        text: 'Diese Website wird bei GitHub Pages gehostet (GitHub Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, USA). Beim Aufruf verarbeitet GitHub technisch notwendige Daten wie Ihre IP-Adresse, Datum und Uhrzeit, die aufgerufene Seite und Browserinformationen, um die Seite auszuliefern und die Sicherheit zu gewährleisten. Rechtsgrundlage ist unser berechtigtes Interesse an einem sicheren und zuverlässigen Betrieb (Art. 6 Abs. 1 lit. f DSGVO). Dabei können Daten in die USA übermittelt werden.',
-        dpf: 'GitHub ist unter dem EU-US Data Privacy Framework zertifiziert.',
+        text: 'Diese Website wird bei GitHub Pages gehostet (GitHub Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, USA). Beim Aufruf verarbeitet GitHub technisch notwendige Daten wie Ihre IP-Adresse, Datum und Uhrzeit, die aufgerufene Seite und Browserinformationen, um die Seite auszuliefern und die Sicherheit zu gewährleisten. Rechtsgrundlage ist mein berechtigtes Interesse an einem sicheren und zuverlässigen Betrieb (Art. 6 Abs. 1 lit. f DSGVO). Dabei können Daten in die USA übermittelt werden.',
+        dpf: 'GitHub ist unter dem EU-US Data Privacy Framework zertifiziert; die Übermittlung in die USA stützt sich darauf (Art. 45 DSGVO).',
       },
       { key: 'cookies', title: 'Keine Cookies, keine Analyse', text: 'Diese Website setzt keine Cookies und verwendet keine Analyse- oder Tracking-Werkzeuge. Schriften und Skripte werden vom eigenen Server geladen.' },
-      { key: 'email', title: 'Kontakt per E-Mail', text: 'Wenn Sie mir schreiben, verarbeite ich Ihre Angaben, um Ihre Anfrage zu beantworten (Art. 6 Abs. 1 lit. b DSGVO, Anbahnung eines Vertrags). Ich lösche die Nachricht, wenn sie nicht mehr gebraucht wird, spätestens nach Ablauf gesetzlicher Aufbewahrungsfristen.' },
+      { key: 'email', title: 'Kontakt per E-Mail', text: 'Wenn Sie mir schreiben, verarbeite ich Ihre Angaben, um Ihre Anfrage zu beantworten (Art. 6 Abs. 1 lit. b DSGVO, bei allgemeinen Anfragen lit. f). E-Mails an hello@mrlololi.com werden über Cloudflare Email Routing (Cloudflare, Inc., USA) an mein Postfach bei Google (Gmail) weitergeleitet. Die Übermittlung in die USA stützt sich auf das EU-US Data Privacy Framework (Art. 45 DSGVO). Anfragen ohne Auftrag lösche ich nach spätestens 12 Monaten. Entsteht ein Auftrag, bewahre ich geschäftsrelevante Korrespondenz bis zum Ende der gesetzlichen Aufbewahrungsfrist auf (in der Regel 7 Jahre, § 132 BAO).' },
       { key: 'booking', title: 'Terminbuchung', text: 'Der Button „Termin buchen“ führt zu einem externen Anbieter. Dort gelten dessen Datenschutzbestimmungen. Daten werden erst übertragen, wenn Sie den Link anklicken.' },
       { key: 'links', title: 'Externe Links', text: 'Links zu LinkedIn, Malt oder Referenz-Websites führen zu fremden Seiten. Erst beim Anklicken werden Daten an diese Anbieter übertragen.' },
-      { key: 'rights', title: 'Ihre Rechte', text: 'Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch. Schreiben Sie an {email}.' },
+      { key: 'rights', title: 'Ihre Rechte', text: 'Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch (Art. 15 bis 21 DSGVO). Schreiben Sie an {email}.' },
       { key: 'complaint', title: 'Beschwerde', text: 'Sie können sich bei der Österreichischen Datenschutzbehörde beschweren: Barichgasse 40-42, 1030 Wien, www.dsb.gv.at.' },
     ],
   },

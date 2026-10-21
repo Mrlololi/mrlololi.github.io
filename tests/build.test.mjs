@@ -74,17 +74,16 @@ test('404 is noindex and links home', () => {
   assert.match(byFile['404.html'], /href="\/"/);
 });
 
-test('home pages carry ProfessionalService JSON-LD without a street', () => {
+test('home pages carry ProfessionalService JSON-LD with the Impressum address (Fixes 21.10.2026)', () => {
   for (const file of ['index.html', 'en/index.html']) {
     const m = byFile[file].match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
     assert.ok(m, 'JSON-LD missing');
-    const data = JSON.parse(m[1]);
-    assert.equal(data['@type'], 'ProfessionalService');
+    const data = JSON.parse(m[1])['@graph'].find((n) => n['@type'] === 'ProfessionalService');
     assert.equal(data.priceRange, '€€');
-    assert.deepEqual(data.areaServed, ['AT', 'DE', 'CH']);
+    assert.deepEqual(data.areaServed, ['AT', 'DE', 'CH', 'IT']);
     assert.equal(data.address.postalCode, '8020');
     assert.equal(data.address.addressLocality, 'Graz');
-    assert.equal(data.address.streetAddress, undefined);
+    assert.equal(data.address.streetAddress, 'Herbersteinstraße 4/4181');
     assert.deepEqual(data.founder.sameAs, [config.linkedin, config.malt]);
   }
 });
@@ -95,9 +94,9 @@ test('language switch points to the equivalent page', () => {
   assert.match(byFile['index.html'], /<a [^>]*href="\/en\/"[^>]*hreflang="en"/);
 });
 
-test('at most two font preloads per page', () => {
+test('at most three font preloads per page', () => {
   for (const html of Object.values(byFile)) {
-    assert.ok(count(html, /rel="preload"[^>]*as="font"/g) <= 2);
+    assert.ok(count(html, /rel="preload"[^>]*as="font"/g) <= 3);
   }
 });
 
@@ -106,27 +105,27 @@ test('Impressum: facts from CONTENT.md, full address, no ODR link', () => {
   assert.match(html, /GISA-Zahl/);
   assert.match(html, /40197975/);
   assert.match(html, /Herbersteinstraße 4\/4181<br>8020 Graz, Österreich/);
-  assert.match(html, /Medieninhaber<\/dt>\n<dd>Iva Tsatskrialashvili, Herbersteinstraße 4\/4181, 8020 Graz<\/dd>/);
+  assert.match(html, /Medieninhaber<\/dt>\n<dd>Iva Tsatskrialashvili, Herbersteinstraße 4\/4181, 8020 Graz, Österreich<\/dd>/);
   assert.match(byFile['datenschutz/index.html'], /Herbersteinstraße 4\/4181, 8020 Graz, Österreich/);
   assert.match(byFile['en/legal-notice/index.html'], /Herbersteinstraße 4\/4181<br>8020 Graz, Austria/);
   assert.match(html, /Kleinunternehmer gemäß § 6 Abs\. 1 Z 27 UStG/);
   assert.match(html, /Offenlegung gemäß § 25 Mediengesetz/);
   assert.match(html, /href="mailto:hello@mrlololi\.com"/);
   assert.ok(!/odr|online-streitbeilegung/i.test(html));
-  assert.match(byFile['en/legal-notice/index.html'], /Trade register number \(GISA\)/);
+  assert.match(byFile['en/legal-notice/index.html'], /GISA number \(Austrian trade register\)/);
   assert.match(byFile['en/legal-notice/index.html'], /Disclosure under § 25 Austrian Media Act/);
 });
 
-test('privacy: build date as Stand / Last updated', () => {
-  assert.match(byFile['datenschutz/index.html'], /Stand: 15\.10\.2026/);
-  assert.match(byFile['en/privacy/index.html'], /Last updated: 15 October 2026/);
+test('privacy: page date as Stand / Last updated', () => {
+  assert.match(byFile['datenschutz/index.html'], /Stand: 21\.10\.2026/);
+  assert.match(byFile['en/privacy/index.html'], /Last updated: 21 October 2026/);
 });
 
 test('privacy: DPF sentence only when verified', () => {
   const on = pages({ ...config, github_dpf_verified: true }, { buildDate: fixedDate }).find((p) => p.file === 'datenschutz/index.html').html;
   const off = pages({ ...config, github_dpf_verified: false }, { buildDate: fixedDate }).find((p) => p.file === 'datenschutz/index.html').html;
-  assert.match(on, /GitHub ist unter dem EU-US Data Privacy Framework zertifiziert\./);
-  assert.ok(!off.includes('Data Privacy Framework'));
+  assert.match(on, /GitHub ist unter dem EU-US Data Privacy Framework zertifiziert; die Übermittlung in die USA stützt sich darauf \(Art\. 45 DSGVO\)\./);
+  assert.ok(!off.includes('GitHub ist unter dem EU-US Data Privacy Framework'));
 });
 
 test('booking button, booking privacy section and UID line are hidden while empty', () => {

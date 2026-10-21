@@ -1,4 +1,4 @@
-import { esc, quoted, accent } from './util.mjs';
+import { esc, quoted, accent, extLink } from './util.mjs';
 
 function quote(t, q, extraClass = '') {
   const langAttr = q.lang !== t.lang ? ` lang="${q.lang}"` : '';
@@ -38,7 +38,7 @@ export function references(t, config) {
 <img src="/assets/img/case-alexandrafry-640.jpg" srcset="/assets/img/case-alexandrafry-640.jpg 640w, /assets/img/case-alexandrafry-1280.jpg 1280w" sizes="(min-width: 960px) 40rem, 100vw" width="640" height="400" loading="lazy" decoding="async" alt="${esc(t.ui.caseImageAlt)}">
 </picture>
 <div class="case__body">
-<h3><a class="ext" href="${esc(config.case1_url)}" rel="noopener">${esc(c1.domain)}</a>${esc(c1.titleRest)}</h3>
+<h3>${extLink(config.case1_url, esc(c1.domain), t)}${esc(c1.titleRest)}</h3>
 <p>${esc(c1.text)}</p>
 </div>
 </article>

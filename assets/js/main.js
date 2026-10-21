@@ -11,6 +11,8 @@ let ScrollTrigger;
 let hasGsap = false;
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
 const locale = root.lang === 'de' ? 'de-AT' : 'en-GB';
+// The calculator's count-up tween; the first keystroke kills it, so it never overwrites the reader's numbers.
+let calcCountUp = null;
 // matchMedia runs a handler only while at least one condition matches, so both
 // widths are listed; otherwise phones without reduced motion would get no handler at all.
 const CONDITIONS = {
@@ -263,7 +265,7 @@ function initCalcCountUp() {
         out('savedH').textContent = f.savedH;
         out('savedEur').textContent = f.savedEur;
       };
-      gsap.fromTo(k, { v: 0 }, { v: 1, duration: 1.2, ease: 'power2.out', onUpdate: render });
+      calcCountUp = gsap.fromTo(k, { v: 0 }, { v: 1, duration: 1.2, ease: 'power2.out', onUpdate: render, onComplete: () => { calcCountUp = null; } });
     },
   });
 }
@@ -338,6 +340,7 @@ function initCalculator() {
   form.addEventListener('submit', (e) => e.preventDefault());
   form.addEventListener('input', () => {
     form.dataset.touched = '1';
+    if (calcCountUp) { calcCountUp.kill(); calcCountUp = null; }
     const target = calcSavings(read());
     if (hasGsap && !reduceMotion.matches) {
       gsap.to(shown, { ...target, duration: 0.4, ease: 'power2.out', overwrite: true, onUpdate: () => render(shown) });

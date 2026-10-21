@@ -43,8 +43,11 @@ export function layout({ t, other, config, page, main }) {
     '<link rel="icon" href="/assets/icons/favicon.ico" sizes="32x32">',
     '<link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">',
     '<link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">',
+    '<link rel="manifest" href="/site.webmanifest">',
     '<link rel="preload" href="/assets/fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin>',
     '<link rel="preload" href="/assets/fonts/atkinson-hyperlegible-next-latin.woff2" as="font" type="font/woff2" crossorigin>',
+    // The h1 accent words: without this they fall back to Georgia on a cold cache (font-display: optional).
+    '<link rel="preload" href="/assets/fonts/eb-garamond-italic-500.woff2" as="font" type="font/woff2" crossorigin>',
     // The stylesheet is inlined at build time (saves a render-blocking request on slow phones).
     `<style>${css}</style>`,
     // Runs before first paint: marks JS as available; with motion allowed it holds the run log
@@ -54,6 +57,8 @@ export function layout({ t, other, config, page, main }) {
     // waits for it; the page works without it until then ("Menü" link, example result).
     // main.js in turn loads the GSAP files after load (home pages only).
     `<script type="module">requestAnimationFrame(()=>requestAnimationFrame(()=>import('/assets/js/main.js')))</script>`,
+    // main.js's own imports are fetched early at low priority, so they are ready when it runs.
+    ...['demos', 'calc', 'loops', 'finder'].map((m) => `<link rel="modulepreload" href="/assets/js/${m}.js" fetchpriority="low">`),
     isHome && jsonLd(t, config),
   ]);
 

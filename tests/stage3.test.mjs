@@ -34,7 +34,7 @@ test('KI demo: real approve / edit buttons with their follow-up texts', () => {
 });
 
 test('price cards: one «Anfragen» mail link each, package in the subject', () => {
-  const items = [...de.matchAll(/<li class="item" id="pkg-(\w+)">[\s\S]*?<\/li>/g)];
+  const items = [...de.matchAll(/<li class="item" id="pkg-(\w+)">[\s\S]*?<\/a>\n<\/li>/g)];
   assert.equal(items.length, 6);
   for (const [li] of items) {
     const name = li.match(/<h4 class="item__name">([^<]+)<\/h4>/)[1];

@@ -8,8 +8,8 @@ export default {
   paths: { home: '/en/', legal: '/en/legal-notice/', privacy: '/en/privacy/' },
 
   meta: {
-    title: 'Iva Tsatskrialashvili - Marketing automation and launch tech from Graz, Austria',
-    description: 'I build and maintain the tech behind online courses and digital products: ActiveCampaign, Zapier, landing pages and payments. Fixed prices, based in Graz, working remotely across Europe.',
+    title: 'Marketing automation & launch tech from Graz | mrlololi',
+    description: 'I build and maintain the tech behind online courses: ActiveCampaign, Zapier, landing pages, payments. Marketing automation and launch tech from Graz.',
   },
   legalMeta: {
     title: 'Legal notice - Iva Tsatskrialashvili',
@@ -26,6 +26,7 @@ export default {
 
   ui: {
     skip: 'Skip to content',
+    newTab: '(opens in a new tab)',
     menu: 'Menu',
     navLabel: 'Main navigation',
     footerNavLabel: 'Legal and language',
@@ -55,12 +56,12 @@ export default {
   ],
 
   hero: {
-    h1: 'The tech behind your course launch. *Built, tested, looked after.*',
-    lead: 'I connect forms, ActiveCampaign, Zapier, checkout and your members area so nothing breaks at cart open and no sign-up gets lost.',
-    primary: 'Ask for a first call',
+    h1: 'The tech behind your course launch. *Built, tested, maintained.*',
+    lead: 'I connect forms, ActiveCampaign, Zapier, checkout and your members area so nothing breaks when sales open and no sign-up gets lost.',
+    primary: 'Request a free intro call',
     secondary: 'See pricing',
     small: 'Based in Graz, working remotely across Europe. German, English, Russian and Georgian.',
-    proof: 'Since 2023 for course creators and online shops in Germany, Switzerland, Austria and Italy · Business registered in Austria',
+    proof: 'Since 2023 for online shops, since 2026 for online course creators in Germany, Switzerland, Austria and Italy · Business registered in Austria',
     ribbon: 'Sign-up received · Email confirmed · Tag added · Payment received · Access granted · Welcome email arrived ·',
     flow: {"label":"Flow: form, ActiveCampaign, payment, course open","nodes":["Form","ActiveCampaign","Payment","Course open"],"lines":["The sign-up comes in and is checked.","Contact, tag and welcome email are set.","Payment or instalment is recognised, the invoice goes out.","Access is granted, with no manual work."],"chip":"Hi, I'm Iva"},
   },
@@ -118,7 +119,7 @@ export default {
       { text: "Course access granted", seconds: 1.9 },
       { text: "Welcome email arrived", seconds: 2.3 },
     ],
-    summary: "6 steps, 2.3 seconds, 0 errors",
+    summary: "6 steps, 2.3 seconds, 0 errors (simplified example)",
     replay: "Play again",
   },
 
@@ -129,11 +130,12 @@ export default {
       label: 'Drag before / after',
       before: 'Chaos',
       after: 'Sorted',
+      valuetext: 'Before {v} %',
       alt: 'Before: form, ActiveCampaign, Zapier, Stripe and course wired every which way, three links broken. After: the same tools in one clear flow.',
       nodes: ['Form', 'ActiveCampaign', 'Zapier', 'Stripe', 'Course'],
     },
     items: [
-      { problem: "Sign-ups get lost between the form and the CRM.", fix: "Flows with checks and retries that stay reliable even when many people sign up at once.", pkg: "check" },
+      { problem: "Sign-ups get lost between the form and the CRM.", fix: "I build flows that check every sign-up and resend it automatically on errors, even when many come in at once.", pkg: "check" },
       { problem: "Launch emails land in spam.", fix: "Set up SPF, DKIM and DMARC correctly and test delivery.", pkg: "quick" },
       { problem: "The instalment payment failed, but access is still open.", fix: "Automatic reminders, suspension and reactivation, in sync with Quaderno, Somba or Stripe.", pkg: "launch" },
     ],
@@ -150,7 +152,7 @@ export default {
             "id": "quick",
             "name": "Quick fix",
             "price": "€190 fixed",
-            "summary": "One specific task in up to 4 hours: DNS, SPF and DMARC, broken links or forms, bookings or an automation."
+            "summary": "One specific task in up to 4 hours: DNS and email records (SPF, DKIM, DMARC), broken links or forms, bookings or an automation."
           },
           {
             "id": "check",
@@ -169,7 +171,8 @@ export default {
             "id": "launch",
             "name": "Launch setup",
             "price": "from €1,190",
-            "summary": "Landing pages and checkout, ActiveCampaign flows for sign-up, reminders, launch, onboarding and failed payments, forms with double opt-in and tags, connections via Zapier or Apps Script to your CRM and members area, course setup in Somba, Skool or Circle, Zoom and calendar. Everything is ready when sales open."
+            "bullets": ["Landing pages and checkout", "ActiveCampaign flows for sign-up, reminders, launch, onboarding and failed payments", "Forms with double opt-in and tags", "Connections via Zapier or Apps Script to your CRM and members area", "Course setup in Somba, Skool or Circle, Zoom and calendar"],
+            "summary": "Everything is ready when sales open."
           },
           {
             "id": "website",
@@ -181,10 +184,10 @@ export default {
             "id": "ki",
             "name": "AI in customer support",
             "price": "from €590",
-            "summary": "A knowledge base from your FAQ and course rules, a flow in Make or Zapier, draft replies with topic and urgency in GrooveHQ, Gmail or Help Scout, a test with 50 real emails, handover. Only drafts are created: nothing is sent until your team approves it (GDPR).",
+            "summary": "A knowledge base from your FAQ and course rules, a flow in Make or Zapier, draft replies with topic and urgency in GrooveHQ, Gmail or Help Scout, a test with 50 sample emails from your inbox, anonymised, handover. Only drafts are created: your team reviews and sends every reply itself. We settle data protection before the start, with an AI provider that processes data in the EU where possible.",
             "extra": {
               "label": "Optional: care plan €90 per month",
-              "text": "cancel monthly: up to 2 hours for the knowledge base, quality checks and a short report on time saved; beyond that €45 per hour; you pay API costs directly."
+              "text": "cancellable monthly: up to 2 hours for the knowledge base, quality checks and a short report on time saved; beyond that €45 per hour; you pay API costs directly."
             },
             "calc": true
           }
@@ -205,12 +208,12 @@ export default {
     cta: "Enquire",
     subjectPrefix: "Enquiry: ",
     hourly: "Anything outside the packages: €45 per hour.",
-    promise: "My promise: if a flow I built does not work as agreed within the first 30 days, I fix it free of charge. This covers my work, not outages of the tools themselves.",
+    promise: "On top of statutory warranty rights: if a flow I built does not work as agreed within the first 30 days, I fix it free of charge. This covers my work, not outages of the tools themselves.",
     smallPrint: 'All prices are final. As a small business under Austrian VAT law (§ 6 (1) Z 27 UStG) I do not charge VAT. For businesses with a valid VAT ID in another EU member state, the reverse charge applies.',
   },
 
   ki: {
-    "h3": "From an upset email to a ready *draft*",
+    "h3": "From an upset customer email to a ready *draft*",
     "from": "Anna K.",
     "mail": "hi i bought the course but never got a login??? and the invoice is missing too. really annoying, need this by tomorrow!!",
     "marks": [
@@ -251,7 +254,7 @@ export default {
     "done": "Done",
     "editLabel": "Edit reply",
     "replay": "Play again",
-    "caption": "The drafts sound like your school.",
+    "caption": "The drafts sound like you.",
     "speed": {
       "label": "Example values",
       "slow": "By hand: about 6 minutes per reply",
@@ -358,7 +361,7 @@ export default {
     steps: [
       { title: 'First call, 20 minutes, free.', text: 'You tell me what is not working. I tell you honestly whether I can help.' },
       { title: 'Quick fix or quote.', text: 'Small things I fix right away, bigger ones get a fixed price.' },
-      { title: 'Build.', text: 'I work in your accounts, document every step and test with real data.' },
+      { title: 'Build.', text: 'I work in your accounts, document every step and test with test contacts before real sign-ups go through.' },
       { title: 'Handover.', text: 'Written instructions, and a short video on request, so your team can maintain everything.' },
     ],
   },
@@ -386,15 +389,15 @@ export default {
       text: 'Relaunch of two online shops, product data and SEO content in CMS and PIM systems, market and competitor analysis, and shop statistics.',
       quote: {
         lang: 'de',
-        text: 'Aus oben genannten Gründen halten wir Iva Tsatskrialashvili als Dienstleister für Projekte im Bereich Online Marketing und E-Commerce für sehr qualifiziert und möchten ihn ohne jegliche Vorbehalte an potenzielle Auftraggeber weiterempfehlen.',
-        translation: 'For these reasons we consider Iva Tsatskrialashvili highly qualified as a service provider for online marketing and e-commerce projects and recommend him to potential clients without any reservations.',
+        text: '[…] halten wir Iva Tsatskrialashvili als Dienstleister für Projekte im Bereich Online Marketing und E-Commerce für sehr qualifiziert und möchten ihn ohne jegliche Vorbehalte an potenzielle Auftraggeber weiterempfehlen.',
+        translation: '[…] we consider Iva Tsatskrialashvili highly qualified as a service provider for online marketing and e-commerce projects and recommend him to potential clients without any reservations.',
         source: 'Ditoma GmbH, Ludwigsburg',
       },
     },
     quote4: {
       lang: 'en',
       text: 'He was also highly adaptable, quickly learning new tools and processes specific to each project.',
-      source: 'Tamar Tsvimitidze, Operations Manager, CMX Solutions (customer support for Zalando and Medion)',
+      source: 'Tamar Tsvimitidze, Operations Manager, CMX Solutions (customer support provider)',
     },
   },
 
@@ -403,7 +406,7 @@ export default {
     photoAlt: 'Iva Tsatskrialashvili',
     paragraphs: [
       "I'm Iva and I live in Graz, Austria. I studied information technology and mobile software development and now study marketing and sales part-time at FH CAMPUS 02. So I understand both: the funnel and the API behind it.",
-      'Since 2023 I have worked for online shops and course creators in Germany, Switzerland, Italy and Austria. I speak German and English at C1 level, Russian and Georgian natively and Spanish at B1.',
+      'Since 2023 I have worked for online shops, and since 2026 also for online course creators, in Germany, Switzerland, Italy and Austria. I speak German and English at C1 level, Russian and Georgian natively and Spanish at B1.',
       'My business is registered in Austria. You get proper invoices and one person who is responsible.',
     ],
     tools: 'ActiveCampaign, Zapier, Make, Google Apps Script, Leadpages, WordPress, Wix, Shopware, Stripe, Quaderno, Somba, GrooveHQ, Canva, HTML, CSS, JavaScript, Python, SQL',
@@ -422,7 +425,7 @@ export default {
       { q: 'Do you work remotely?', a: 'Yes. Almost all projects run remotely across Europe. In Graz I am happy to meet in person.' },
       { q: 'How soon can you start?', a: 'Quick fixes usually within a week. Projects by arrangement, because I take on only a few at a time.' },
       { q: 'Do I need specific tools?', a: 'No. I work with what you already have and only suggest a switch when it pays off.' },
-      { q: 'How do you handle data?', a: 'I use my own login in your accounts and hand back all access when the project ends.' },
+      { q: 'How do you handle data?', a: 'I get my own user in your accounts, never your password. When the project ends, you remove my access and I delete all copies of your data.' },
       { q: 'Do you also do customer support?', a: 'No. I build the tech that takes load off your support, for example draft replies for recurring questions.' },
       { q: "What if my problem doesn't fit a package?", a: "Send me a short note on what isn't working. You get the price before I start." },
     ],
@@ -431,15 +434,16 @@ export default {
   contact: {
     h2: "Tell me *what's not working.*",
     text: 'I reply within two working days.',
+    free: 'The intro call (20 minutes) is free.',
     mail: 'Write an email',
-    subject: 'Inquiry%20via%20mrlololi.com',
+    subject: 'Enquiry%20via%20mrlololi.com',
     booking: 'Book a call',
     linkedin: 'LinkedIn',
     malt: 'Malt profile',
   },
 
   footer: {
-    copyright: '© 2026 Iva Tsatskrialashvili, Werbeagentur (advertising agency), Graz, Austria',
+    copyright: '© 2026 Iva Tsatskrialashvili · Advertising agency (Werbeagentur) · Graz, Austria',
     legal: 'Legal notice',
     privacy: 'Privacy',
   },
@@ -455,10 +459,10 @@ export default {
     address: ['Iva Tsatskrialashvili', 'Herbersteinstraße 4/4181', '8020 Graz, Austria'],
     emailLabel: 'Email',
     facts: [
-      ['Business', 'advertising agency (free trade)'],
-      ['Trade register number (GISA)', '40197975'],
+      ['Business', 'advertising agency (non-regulated trade, freies Gewerbe)'],
+      ['GISA number (Austrian trade register)', '40197975'],
       ['Trade authority', 'Magistrat der Stadt Graz'],
-      ['Member of', 'Austrian Economic Chamber, Styria'],
+      ['Member of', 'Styrian Economic Chamber (Wirtschaftskammer Steiermark)'],
       ['Applicable law', 'Austrian Trade Act (Gewerbeordnung), www.ris.bka.gv.at'],
       ['VAT ID', '{uid}'],
       ['VAT', 'small business exemption, § 6 (1) Z 27 UStG'],
@@ -479,14 +483,14 @@ export default {
       {
         key: 'hosting',
         title: 'Hosting',
-        text: 'This website is hosted on GitHub Pages (GitHub Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, USA). When you visit it, GitHub processes technically necessary data such as your IP address, date and time, the page requested and browser information in order to deliver the page and keep it secure. The legal basis is our legitimate interest in secure and reliable operation (Art. 6(1)(f) GDPR). Data may be transferred to the USA in the process.',
-        dpf: 'GitHub is certified under the EU-US Data Privacy Framework.',
+        text: 'This website is hosted on GitHub Pages (GitHub Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, USA). When you visit it, GitHub processes technically necessary data such as your IP address, date and time, the page requested and browser information in order to deliver the page and keep it secure. The legal basis is my legitimate interest in secure and reliable operation (Art. 6(1)(f) GDPR). Data may be transferred to the USA in the process.',
+        dpf: 'GitHub is certified under the EU-US Data Privacy Framework; the transfer to the USA relies on it (Art. 45 GDPR).',
       },
       { key: 'cookies', title: 'No cookies, no analytics', text: "This website sets no cookies and uses no analytics or tracking tools. Fonts and scripts are loaded from the website's own server." },
-      { key: 'email', title: 'Contact by email', text: 'If you write to me, I process your details in order to answer your enquiry (Art. 6(1)(b) GDPR, steps prior to entering into a contract). I delete the message when it is no longer needed, at the latest when statutory retention periods have expired.' },
+      { key: 'email', title: 'Contact by email', text: 'If you write to me, I process your details in order to answer your enquiry (Art. 6(1)(b) GDPR, for general enquiries Art. 6(1)(f) GDPR). Emails to hello@mrlololi.com are forwarded via Cloudflare Email Routing (Cloudflare, Inc., USA) to my mailbox at Google (Gmail). The transfer to the USA relies on the EU-US Data Privacy Framework (Art. 45 GDPR). I delete enquiries that do not lead to an assignment after 12 months at the latest. If an assignment follows, I keep business-relevant correspondence until the statutory retention period ends (usually 7 years, § 132 BAO).' },
       { key: 'booking', title: 'Booking a call', text: 'The “Book a call” button leads to an external provider. Its privacy policy applies there. Data is only transferred when you click the link.' },
       { key: 'links', title: 'External links', text: 'Links to LinkedIn, Malt or reference websites lead to third-party sites. Data is only transferred to these providers when you click them.' },
-      { key: 'rights', title: 'Your rights', text: 'Access, rectification, erasure, restriction of processing, data portability and objection. Write to {email}.' },
+      { key: 'rights', title: 'Your rights', text: 'Access, rectification, erasure, restriction of processing, data portability and objection (Art. 15 to 21 GDPR). Write to {email}.' },
       { key: 'complaint', title: 'Complaints', text: 'You can lodge a complaint with the Austrian Data Protection Authority: Barichgasse 40-42, 1030 Vienna, www.dsb.gv.at.' },
     ],
   },

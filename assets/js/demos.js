@@ -45,7 +45,10 @@ export function initBeforeAfter() {
   if (!fig) return;
   const stage = fig.querySelector('.ba__stage');
   const range = fig.querySelector('.ba__range');
-  const set = () => stage.style.setProperty('--pos', `${range.value}%`);
+  const set = () => {
+    stage.style.setProperty('--pos', `${range.value}%`);
+    range.setAttribute('aria-valuetext', range.dataset.valuetext.replace('{v}', range.value));
+  };
   range.addEventListener('input', set);
   set();
   // The picture itself can be dragged (mouse, pen, finger); vertical swipes still scroll the page.
@@ -243,10 +246,10 @@ export function initTone() {
   tabs.forEach((tab, i) => {
     tab.addEventListener('click', () => show(i));
     tab.addEventListener('keydown', (e) => {
-      const step = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
-      if (!step) return;
+      const to = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 }[e.key];
+      if (to === undefined) return;
       e.preventDefault();
-      const n = (i + step + tabs.length) % tabs.length;
+      const n = (to + tabs.length) % tabs.length;
       show(n);
       tabs[n].focus();
     });
@@ -295,6 +298,16 @@ export function initKiDemo() {
     at(t, () => demo.classList.add('is-drafting'));
     at(t + 1300, () => { demo.classList.remove('is-drafting'); demo.classList.add('is-done'); replay.hidden = false; });
   };
+  // Reduced motion switched on while it plays: jump to the end.
+  reduceMotion.addEventListener('change', () => {
+    if (!reduceMotion.matches || !demo.classList.contains('is-playing') || demo.classList.contains('is-done')) return;
+    timers.forEach(clearTimeout);
+    timers = [];
+    [...words, ...marks, ...chips].forEach((el) => el.classList.add('is-on'));
+    demo.classList.remove('is-drafting');
+    demo.classList.add('is-done');
+    replay.hidden = false;
+  });
   replay.addEventListener('click', play);
   const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { io.disconnect(); play(); } }, { threshold: 0.4 });
   io.observe(demo);

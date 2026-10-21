@@ -1,6 +1,6 @@
 // Renders all pages from src/content/*.mjs into static HTML at the repo root.
 // Usage: npm run build
-import { mkdir, writeFile } from 'node:fs/promises';
+import { copyFile, mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import config from './config.json' with { type: 'json' };
@@ -9,14 +9,15 @@ import en from './content/en.mjs';
 import { layout } from './templates/layout.mjs';
 import { home } from './templates/home.mjs';
 import { impressum, privacy, notFound } from './templates/legal.mjs';
-import { robots, sitemap, cname } from './templates/seo.mjs';
+import { robots, sitemap, cname, manifest } from './templates/seo.mjs';
 
 export { sitemap, cname };
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const fileFor = (p) => (p.endsWith('/') ? `${p.slice(1)}index.html` : p.slice(1));
 
-export function pages(cfg = config, { buildDate = new Date() } = {}) {
+// Dates come from config.page_dates (change them only with the page's content), never from the build day.
+export function pages(cfg = config) {
   const out = [];
   for (const [t, other] of [[de, en], [en, de]]) {
     const ctx = { t, other, config: cfg };
@@ -30,7 +31,7 @@ export function pages(cfg = config, { buildDate = new Date() } = {}) {
     });
     out.push({
       file: fileFor(t.paths.privacy),
-      html: layout({ ...ctx, page: { key: 'privacy', path: t.paths.privacy, altPath: other.paths.privacy, ...t.privacyMeta }, main: privacy(t, cfg, { buildDate }) }),
+      html: layout({ ...ctx, page: { key: 'privacy', path: t.paths.privacy, altPath: other.paths.privacy, ...t.privacyMeta }, main: privacy(t, cfg, { date: new Date(`${cfg.page_dates.privacy}T12:00:00Z`) }) }),
     });
   }
   out.push({
@@ -44,17 +45,19 @@ export function pages(cfg = config, { buildDate = new Date() } = {}) {
   return out;
 }
 
-export async function build({ outDir = root, buildDate } = {}) {
-  const date = buildDate ?? (config.build_date ? new Date(config.build_date) : new Date());
-  for (const { file, html } of pages(config, { buildDate: date })) {
+export async function build({ outDir = root } = {}) {
+  for (const { file, html } of pages(config)) {
     const target = path.join(outDir, file);
     await mkdir(path.dirname(target), { recursive: true });
     await writeFile(target, html, 'utf8');
     console.log(`page: ${file}`);
   }
   await writeFile(path.join(outDir, 'robots.txt'), robots(config), 'utf8');
-  await writeFile(path.join(outDir, 'sitemap.xml'), sitemap(config, date), 'utf8');
-  console.log('page: robots.txt, sitemap.xml');
+  await writeFile(path.join(outDir, 'sitemap.xml'), sitemap(config), 'utf8');
+  await writeFile(path.join(outDir, 'site.webmanifest'), manifest(), 'utf8');
+  // Browsers ask for /favicon.ico at the root no matter what the page links.
+  await copyFile(path.join(root, 'assets/icons/favicon.ico'), path.join(outDir, 'favicon.ico'));
+  console.log('page: robots.txt, sitemap.xml, site.webmanifest, favicon.ico');
   const domain = cname(config);
   if (domain) {
     await writeFile(path.join(outDir, 'CNAME'), domain, 'utf8');

@@ -3,16 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Iva Tsatskrialashvili - Marketing automation and launch tech from Graz, Austria</title>
-<meta name="description" content="I build and maintain the tech behind online courses and digital products: ActiveCampaign, Zapier, landing pages and payments. Fixed prices, based in Graz, working remotely across Europe.">
+<title>Marketing automation &amp; launch tech from Graz | mrlololi</title>
+<meta name="description" content="I build and maintain the tech behind online courses: ActiveCampaign, Zapier, landing pages, payments. Marketing automation and launch tech from Graz.">
 <link rel="canonical" href="https://mrlololi.com/en/">
 <link rel="alternate" hreflang="de" href="https://mrlololi.com/">
 <link rel="alternate" hreflang="en" href="https://mrlololi.com/en/">
 <link rel="alternate" hreflang="x-default" href="https://mrlololi.com/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="mrlololi">
-<meta property="og:title" content="Iva Tsatskrialashvili - Marketing automation and launch tech from Graz, Austria">
-<meta property="og:description" content="I build and maintain the tech behind online courses and digital products: ActiveCampaign, Zapier, landing pages and payments. Fixed prices, based in Graz, working remotely across Europe.">
+<meta property="og:title" content="Marketing automation &amp; launch tech from Graz | mrlololi">
+<meta property="og:description" content="I build and maintain the tech behind online courses: ActiveCampaign, Zapier, landing pages, payments. Marketing automation and launch tech from Graz.">
 <meta property="og:url" content="https://mrlololi.com/en/">
 <meta property="og:image" content="https://mrlololi.com/og-image-en.png">
 <meta property="og:image:width" content="1200">
@@ -20,15 +20,17 @@
 <meta property="og:locale" content="en_GB">
 <meta property="og:locale:alternate" content="de_AT">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Iva Tsatskrialashvili - Marketing automation and launch tech from Graz, Austria">
-<meta name="twitter:description" content="I build and maintain the tech behind online courses and digital products: ActiveCampaign, Zapier, landing pages and payments. Fixed prices, based in Graz, working remotely across Europe.">
+<meta name="twitter:title" content="Marketing automation &amp; launch tech from Graz | mrlololi">
+<meta name="twitter:description" content="I build and maintain the tech behind online courses: ActiveCampaign, Zapier, landing pages, payments. Marketing automation and launch tech from Graz.">
 <meta name="twitter:image" content="https://mrlololi.com/og-image-en.png">
 <meta name="theme-color" content="#F4C9D3">
 <link rel="icon" href="/assets/icons/favicon.ico" sizes="32x32">
 <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
 <link rel="preload" href="/assets/fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/atkinson-hyperlegible-next-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/eb-garamond-italic-500.woff2" as="font" type="font/woff2" crossorigin>
 <style>@font-face {
 font-family: "Bricolage Grotesque";
 src: url("/assets/fonts/bricolage-grotesque-latin.woff2") format("woff2");
@@ -140,6 +142,10 @@ background: var(--sec-pink);
 }
 body {
 margin: 0;
+min-height: 100vh;
+min-height: 100dvh;
+display: flex;
+flex-direction: column;
 background: var(--sec-pink);
 color: var(--ink);
 font-family: var(--font-body);
@@ -165,6 +171,7 @@ button, input { font: inherit; color: inherit; }
 a { color: var(--lav-ink); text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
 a:hover { color: var(--ink); text-decoration-thickness: 2px; }
 :focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; border-radius: 4px; }
+main { flex: 1 0 auto; }
 main:focus { outline: none; }
 .sr-only {
 position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
@@ -266,9 +273,13 @@ box-shadow: var(--shadow-soft);
 .site-footer { border-top: 1px solid var(--line); padding-block: var(--space-6) var(--space-7); font-size: var(--step--1); color: var(--ink-soft); }
 .site-footer__in {
 width: min(100% - 2 * var(--gutter), var(--max)); margin-inline: auto;
-display: flex; flex-wrap: wrap; gap: var(--space-4) var(--space-6); justify-content: space-between; align-items: center;
+display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-4) var(--space-6);
 }
-.site-footer__links { display: flex; flex-wrap: wrap; gap: 0 var(--space-5); list-style: none; margin: 0; padding: 0; }
+.site-footer__links { display: flex; flex-wrap: wrap; gap: 0 var(--space-4); list-style: none; margin: 0; padding: 0; }
+@media (min-width: 80rem) {
+.site-footer__in { flex-direction: row; justify-content: space-between; align-items: center; }
+.site-footer__links { flex-wrap: nowrap; white-space: nowrap; }
+}
 .site-footer__links a { display: inline-flex; align-items: center; min-height: 2.75rem; color: var(--ink-soft); }
 .site-footer__links a:hover { color: var(--ink); }
 .doc { width: min(100% - 2 * var(--gutter), 44rem); margin-inline: auto; padding-block: var(--space-8) var(--section); display: grid; gap: var(--space-6); }
@@ -393,6 +404,8 @@ font-family: var(--font-display); font-size: var(--step-2); font-weight: 750; li
 font-variant-numeric: tabular-nums lining-nums;
 }
 .item__summary { color: var(--ink-soft); font-size: var(--step--1); line-height: 1.55; }
+.item__bullets { margin: 0; padding-inline-start: 1.1rem; list-style: disc; font-size: var(--step--1); line-height: 1.5; }
+.item__bullets li + li { margin-top: 0.2rem; }
 .item__extra {
 margin-top: var(--space-2); padding: var(--space-3) var(--space-4);
 background: rgb(255 255 255 / 0.7); border-radius: var(--radius-field);
@@ -415,7 +428,6 @@ color: var(--ink); font-weight: 700; cursor: pointer; list-style: none;
 .calc__title { font-size: var(--step-1); }
 .calc__fields { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4) var(--space-5); }
 @media (min-width: 560px) { .calc__fields { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (min-width: 960px) { .calc__fields { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .calc__field { display: grid; gap: var(--space-2); align-content: end; }
 .calc__field label { font-size: var(--step--1); font-weight: 600; color: var(--ink-soft); }
 .calc__field input {
@@ -531,6 +543,7 @@ background: var(--sheet); border: 1px solid var(--line);
 }
 .contact__title { font-size: var(--step-4); line-height: 1.04; letter-spacing: -0.025em; max-width: 16ch; }
 .contact .lead { margin-top: var(--space-5); }
+.contact__free { margin-top: var(--space-3); font-weight: 700; }
 .contact__actions { display: flex; flex-wrap: wrap; gap: var(--space-4); margin-top: var(--space-6); }
 .contact__links { display: flex; flex-wrap: wrap; gap: 0 var(--space-6); margin-top: var(--space-4); }
 .contact__links a { display: inline-flex; align-items: center; min-height: 2.75rem; font-weight: 600; }
@@ -543,11 +556,11 @@ border: 1px solid var(--line); border-radius: 50%; background: var(--sheet); col
 .loop-btn.is-paused .loop-btn__pause { display: none; }
 .loop-btn.is-paused .loop-btn__play { display: inline; }
 .loop-btn__tip {
-position: absolute; right: calc(100% + 0.4rem); top: 50%; transform: translateY(-50%); padding: 0.25rem 0.5rem; border-radius: 6px;
+position: absolute; right: 0; bottom: calc(100% + 0.4rem); padding: 0.25rem 0.5rem; border-radius: 6px;
 background: var(--ink); color: #fff; font-size: 0.75rem; font-weight: 700; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.15s ease;
 }
 .loop-btn:hover .loop-btn__tip, .loop-btn:focus-visible .loop-btn__tip { opacity: 1; }
-.hero__flow .loop-btn__tip { right: auto; left: calc(100% + 0.4rem); }
+.hero__flow .loop-btn__tip { right: auto; left: 0; }
 .tools__in, .toasts, .speed { position: relative; }
 .tools .loop-btn { position: absolute; right: 0; top: calc(-1 * var(--space-2)); }
 .toasts .loop-btn { position: absolute; }
@@ -680,8 +693,8 @@ font-size: var(--step-0); font-weight: 700; text-align: left; cursor: pointer;
 .tone__panel { display: grid; gap: var(--space-1); }
 .tone__label { font-size: 0.8125rem; font-weight: 700; color: var(--lav-ink); }
 .tone__text { line-height: 1.6; }
-.tone__tabs { display: inline-flex; justify-self: start; padding: 0.2rem; border-radius: 999px; background: var(--sheet); border: 1px solid var(--line); }
-.tone__tab { min-height: 2.5rem; padding: 0 var(--space-4); border: 0; border-radius: 999px; background: transparent; font-weight: 700; color: var(--ink-soft); cursor: pointer; }
+.tone__tabs { display: flex; flex-wrap: wrap; gap: 0.2rem; justify-self: start; max-width: 100%; padding: 0.2rem; border-radius: 1.45rem; background: var(--sheet); border: 1px solid var(--line); }
+.tone__tab { min-height: 2.5rem; padding: 0 var(--space-4); white-space: nowrap; border: 0; border-radius: 999px; background: transparent; font-weight: 700; color: var(--ink-soft); cursor: pointer; }
 .tone__tab[aria-selected="true"] { background: var(--ink); color: #fff; }
 .tone.is-tabs .tone__label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .tone.is-tabs .tone__panels { display: grid; }
@@ -806,7 +819,7 @@ html:not(.js) .hf__btn { display: none; }
 .js .hf__lines { min-height: 3.2em; align-content: start; text-align: center; padding-inline: 3.25rem; }
 .js .hf__lines li:not(.is-active) { display: none; }
 html:not(.js) .kidemo__actions { display: none; }
-.kidemo__actions .btn[aria-disabled="true"] { cursor: default; opacity: 1; background: var(--done); border-color: var(--done); color: #fff; }
+.kidemo__actions .btn[aria-disabled="true"] { cursor: default; opacity: 1; background: #3F7531; border-color: #3F7531; color: #fff; }
 .kidemo__actions svg { width: 1rem; height: 1rem; fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
 .kidemo__sent { justify-self: start; padding: var(--space-2) var(--space-3); border-radius: 10px; border-left: 4px solid var(--done); background: var(--sheet); font-size: var(--step--1); font-weight: 600; }
 .kidemo__sent[hidden] { display: none; }
@@ -868,7 +881,11 @@ html:not(.js) .kidemo__actions { display: none; }
 }</style>
 <script>var d=document.documentElement;d.classList.add('js');if(matchMedia('(prefers-reduced-motion: no-preference)').matches)d.classList.add('run-pending')</script>
 <script type="module">requestAnimationFrame(()=>requestAnimationFrame(()=>import('/assets/js/main.js')))</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","name":"mrlololi","alternateName":"Iva Tsatskrialashvili","description":"I build and maintain the tech behind online courses and digital products: ActiveCampaign, Zapier, landing pages and payments. Fixed prices, based in Graz, working remotely across Europe.","url":"https://mrlololi.com/en/","email":"hello@mrlololi.com","image":"https://mrlololi.com/og-image-en.png","inLanguage":"en","areaServed":["AT","DE","CH"],"address":{"@type":"PostalAddress","addressLocality":"Graz","postalCode":"8020","addressCountry":"AT"},"founder":{"@type":"Person","name":"Iva Tsatskrialashvili","sameAs":["https://www.linkedin.com/in/tsatskrialashvili-iva","https://www.malt.de/profile/ivatsatskrialashvili"]},"priceRange":"€€"}</script>
+<link rel="modulepreload" href="/assets/js/demos.js" fetchpriority="low">
+<link rel="modulepreload" href="/assets/js/calc.js" fetchpriority="low">
+<link rel="modulepreload" href="/assets/js/loops.js" fetchpriority="low">
+<link rel="modulepreload" href="/assets/js/finder.js" fetchpriority="low">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"ProfessionalService","@id":"https://mrlololi.com/#business","name":"mrlololi","alternateName":"Iva Tsatskrialashvili","description":"I build and maintain the tech behind online courses: ActiveCampaign, Zapier, landing pages, payments. Marketing automation and launch tech from Graz.","url":"https://mrlololi.com/en/","email":"hello@mrlololi.com","image":"https://mrlololi.com/og-image-en.png","logo":"https://mrlololi.com/assets/icons/apple-touch-icon.png","sameAs":["https://www.linkedin.com/in/tsatskrialashvili-iva","https://www.malt.de/profile/ivatsatskrialashvili"],"areaServed":["AT","DE","CH","IT"],"address":{"@type":"PostalAddress","streetAddress":"Herbersteinstraße 4/4181","addressLocality":"Graz","postalCode":"8020","addressCountry":"AT"},"founder":{"@type":"Person","name":"Iva Tsatskrialashvili","sameAs":["https://www.linkedin.com/in/tsatskrialashvili-iva","https://www.malt.de/profile/ivatsatskrialashvili"]},"priceRange":"€€"},{"@type":"WebSite","@id":"https://mrlololi.com/#website","url":"https://mrlololi.com/","name":"mrlololi","inLanguage":"en","publisher":{"@id":"https://mrlololi.com/#business"}}]}</script>
 </head>
 <body class="page-home">
 <a class="skip" href="#main">Skip to content</a>
@@ -893,13 +910,13 @@ html:not(.js) .kidemo__actions { display: none; }
 <section class="hero bg-hero" aria-labelledby="hero-title">
 <div class="wrap hero__grid">
 <div class="hero__text">
-<h1 id="hero-title">The tech behind your course launch. <em class="accent">Built, tested, looked after.</em></h1>
-<p class="hero__lead lead">I connect forms, ActiveCampaign, Zapier, checkout and your members area so nothing breaks at cart open and no sign-up gets lost.</p>
+<h1 id="hero-title">The tech behind your course launch. <em class="accent">Built, tested, maintained.</em></h1>
+<p class="hero__lead lead">I connect forms, ActiveCampaign, Zapier, checkout and your members area so nothing breaks when sales open and no sign-up gets lost.</p>
 <div class="hero__ctas">
-<a class="btn btn--primary" href="#contact">Ask for a first call</a>
+<a class="btn btn--primary" href="#contact">Request a free intro call</a>
 <a class="text-link" href="#pricing">See pricing</a>
 </div>
-<p class="hero__proof">Since 2023 for course creators and online shops in Germany, Switzerland, Austria and Italy · Business registered in Austria</p>
+<p class="hero__proof">Since 2023 for online shops, since 2026 for online course creators in Germany, Switzerland, Austria and Italy · Business registered in Austria</p>
 <p class="hero__small small">Based in Graz, working remotely across Europe. German, English, Russian and Georgian.</p>
 </div>
 <div class="hero__visual">
@@ -941,7 +958,7 @@ html:not(.js) .kidemo__actions { display: none; }
 <div class="ba__side ba__side--after"><span class="label label--pist ba__tag--after">Sorted</span><svg class="ba__svg" viewBox="0 0 440 300" aria-hidden="true" focusable="false"><path class="ba__link ba__link--ok" d="M120 87H146"/><path class="ba__link ba__link--ok" d="M286 87H312"/><path class="ba__link ba__link--ok" d="M358 104V196"/><path class="ba__link ba__link--ok" d="M312 213H222"/><g class="ba__node ba__node--1"><rect x="16" y="70" width="104" height="34" rx="12"/><text x="68" y="92" text-anchor="middle">Form</text></g><g class="ba__node ba__node--2"><rect x="146" y="70" width="140" height="34" rx="12"/><text x="216" y="92" text-anchor="middle">ActiveCampaign</text></g><g class="ba__node ba__node--3"><rect x="312" y="70" width="92" height="34" rx="12"/><text x="358" y="92" text-anchor="middle">Zapier</text></g><g class="ba__node ba__node--4"><rect x="312" y="196" width="86" height="34" rx="12"/><text x="355" y="218" text-anchor="middle">Stripe</text></g><g class="ba__node ba__node--5"><rect x="146" y="196" width="76" height="34" rx="12"/><text x="184" y="218" text-anchor="middle">Course</text></g><g class="ba__ok"><circle cx="133" cy="87" r="9"/><path d="M129 87l2.6 2.6 5-5.2"/></g><g class="ba__ok"><circle cx="299" cy="87" r="9"/><path d="M295 87l2.6 2.6 5-5.2"/></g><g class="ba__ok"><circle cx="358" cy="150" r="9"/><path d="M354 150l2.6 2.6 5-5.2"/></g><g class="ba__ok"><circle cx="267" cy="213" r="9"/><path d="M263 213l2.6 2.6 5-5.2"/></g></svg></div>
 <span class="ba__divider" aria-hidden="true"></span>
 </div>
-<label class="ba__control"><span>Drag before / after</span><input class="ba__range" type="range" min="0" max="100" step="1" value="50"></label>
+<label class="ba__control"><span>Drag before / after</span><input class="ba__range" type="range" min="0" max="100" step="1" value="50" aria-valuetext="Before 50 %" data-valuetext="Before {v} %"></label>
 <figcaption class="sr-only">Before: form, ActiveCampaign, Zapier, Stripe and course wired every which way, three links broken. After: the same tools in one clear flow.</figcaption>
 </figure>
 <ul class="pcs" role="list">
@@ -949,7 +966,7 @@ html:not(.js) .kidemo__actions { display: none; }
 <div class="pc__problem"><span class="label label--pink">Problem</span>
 <h3 class="pc__title">Sign-ups get lost between the form and the CRM.</h3></div>
 <div class="pc__fix"><span class="label label--pist">Fix</span>
-<p>Flows with checks and retries that stay reliable even when many people sign up at once.</p>
+<p>I build flows that check every sign-up and resend it automatically on errors, even when many come in at once.</p>
 <a class="pc__link" href="#pkg-check">Matching package: Tech check</a></div>
 </li>
 <li class="pc">
@@ -1039,7 +1056,7 @@ html:not(.js) .kidemo__actions { display: none; }
 </li>
 </ol>
 <div class="run__foot">
-<p class="run__summary">6 steps, 2.3 seconds, 0 errors</p>
+<p class="run__summary">6 steps, 2.3 seconds, 0 errors (simplified example)</p>
 <button class="run__replay" type="button" hidden>Play again</button>
 </div>
 <p class="sr-only" id="run-status" role="status" aria-live="polite"></p>
@@ -1077,7 +1094,8 @@ html:not(.js) .kidemo__actions { display: none; }
 <li class="item" id="pkg-quick">
 <h4 class="item__name">Quick fix</h4>
 <p class="item__price">€190 fixed</p>
-<p class="item__summary">One specific task in up to 4 hours: DNS, SPF and DMARC, broken links or forms, bookings or an automation.</p>
+
+<p class="item__summary">One specific task in up to 4 hours: DNS and email records (SPF, DKIM, DMARC), broken links or forms, bookings or an automation.</p>
 
 
 <a class="btn btn--sm item__cta" href="mailto:hello@mrlololi.com?subject=Enquiry%3A%20Quick%20fix">Enquire<span class="sr-only">: Quick fix</span></a>
@@ -1085,6 +1103,7 @@ html:not(.js) .kidemo__actions { display: none; }
 <li class="item" id="pkg-check">
 <h4 class="item__name">Tech check</h4>
 <p class="item__price">€290 fixed</p>
+
 <p class="item__summary">One day of analysis with read access: ActiveCampaign, Zapier or Make, payments, landing pages, double opt-in and consents.</p>
 
 <details class="price-details">
@@ -1104,7 +1123,8 @@ html:not(.js) .kidemo__actions { display: none; }
 <li class="item" id="pkg-launch">
 <h4 class="item__name">Launch setup</h4>
 <p class="item__price">from €1,190</p>
-<p class="item__summary">Landing pages and checkout, ActiveCampaign flows for sign-up, reminders, launch, onboarding and failed payments, forms with double opt-in and tags, connections via Zapier or Apps Script to your CRM and members area, course setup in Somba, Skool or Circle, Zoom and calendar. Everything is ready when sales open.</p>
+<ul class="item__bullets" role="list"><li>Landing pages and checkout</li><li>ActiveCampaign flows for sign-up, reminders, launch, onboarding and failed payments</li><li>Forms with double opt-in and tags</li><li>Connections via Zapier or Apps Script to your CRM and members area</li><li>Course setup in Somba, Skool or Circle, Zoom and calendar</li></ul>
+<p class="item__summary">Everything is ready when sales open.</p>
 
 
 <a class="btn btn--sm item__cta" href="mailto:hello@mrlololi.com?subject=Enquiry%3A%20Launch%20setup">Enquire<span class="sr-only">: Launch setup</span></a>
@@ -1112,6 +1132,7 @@ html:not(.js) .kidemo__actions { display: none; }
 <li class="item" id="pkg-website">
 <h4 class="item__name">One-page website</h4>
 <p class="item__price">from €990</p>
+
 <p class="item__summary">Wix, Leadpages or custom HTML, responsive, with Calendly, cookie banner, SEO basics, legal notice and privacy policy, domain, publishing, a handover call and three rounds of revisions.</p>
 
 
@@ -1120,14 +1141,15 @@ html:not(.js) .kidemo__actions { display: none; }
 <li class="item" id="pkg-ki">
 <h4 class="item__name">AI in customer support</h4>
 <p class="item__price">from €590</p>
-<p class="item__summary">A knowledge base from your FAQ and course rules, a flow in Make or Zapier, draft replies with topic and urgency in GrooveHQ, Gmail or Help Scout, a test with 50 real emails, handover. Only drafts are created: nothing is sent until your team approves it (GDPR).</p>
-<p class="item__extra"><strong>Optional: care plan €90 per month</strong>, cancel monthly: up to 2 hours for the knowledge base, quality checks and a short report on time saved; beyond that €45 per hour; you pay API costs directly.</p>
+
+<p class="item__summary">A knowledge base from your FAQ and course rules, a flow in Make or Zapier, draft replies with topic and urgency in GrooveHQ, Gmail or Help Scout, a test with 50 sample emails from your inbox, anonymised, handover. Only drafts are created: your team reviews and sends every reply itself. We settle data protection before the start, with an AI provider that processes data in the EU where possible.</p>
+<p class="item__extra"><strong>Optional: care plan €90 per month</strong>, cancellable monthly: up to 2 hours for the knowledge base, quality checks and a short report on time saved; beyond that €45 per hour; you pay API costs directly.</p>
 
 <a class="btn btn--sm item__cta" href="mailto:hello@mrlololi.com?subject=Enquiry%3A%20AI%20in%20customer%20support">Enquire<span class="sr-only">: AI in customer support</span></a>
 </li>
 <li class="tariff__ki">
 <section class="kidemo" aria-labelledby="kidemo-title">
-<div class="kidemo__head"><h3 class="kidemo__title" id="kidemo-title">From an upset email to a ready <em class="accent">draft</em></h3><span class="label">Example</span></div>
+<div class="kidemo__head"><h3 class="kidemo__title" id="kidemo-title">From an upset customer email to a ready <em class="accent">draft</em></h3><span class="label">Example</span></div>
 <div class="kidemo__grid">
 <div class="kidemo__mail">
 <p class="kidemo__from">Anna K.</p>
@@ -1146,7 +1168,7 @@ html:not(.js) .kidemo__actions { display: none; }
 <p class="kidemo__note small">Nothing is sent until your team approves it.</p>
 </div>
 </div>
-<p class="kidemo__caption">The drafts sound like your school.</p>
+<p class="kidemo__caption">The drafts sound like you.</p>
 <button class="kidemo__replay" type="button" hidden>Play again</button>
 </section>
 </li>
@@ -1201,6 +1223,7 @@ html:not(.js) .kidemo__actions { display: none; }
 <li class="item" id="pkg-support">
 <h4 class="item__name">Support by the hour</h4>
 <p class="item__price">€45 per hour</p>
+
 <p class="item__summary">From 5 hours a month: care for your automations, small landing pages, troubleshooting. Billed by the hour at the end of the month.</p>
 
 
@@ -1211,7 +1234,7 @@ html:not(.js) .kidemo__actions { display: none; }
 <div class="tariff__notes">
 <p class="tariff__hourly">Anything outside the packages: €45 per hour.</p>
 <p class="small">All prices are final. As a small business under Austrian VAT law (§ 6 (1) Z 27 UStG) I do not charge VAT. For businesses with a valid VAT ID in another EU member state, the reverse charge applies.</p>
-<p class="tariff__promise small">My promise: if a flow I built does not work as agreed within the first 30 days, I fix it free of charge. This covers my work, not outages of the tools themselves.</p>
+<p class="tariff__promise small">On top of statutory warranty rights: if a flow I built does not work as agreed within the first 30 days, I fix it free of charge. This covers my work, not outages of the tools themselves.</p>
 </div>
 </div>
 </div>
@@ -1255,7 +1278,7 @@ html:not(.js) .kidemo__actions { display: none; }
 <li class="step">
 <span class="step__n" aria-hidden="true">3</span>
 <h3 class="step__title">Build.</h3>
-<p>I work in your accounts, document every step and test with real data.</p>
+<p>I work in your accounts, document every step and test with test contacts before real sign-ups go through.</p>
 </li>
 <li class="step">
 <span class="step__n" aria-hidden="true">4</span>
@@ -1277,7 +1300,7 @@ html:not(.js) .kidemo__actions { display: none; }
 <img src="/assets/img/case-alexandrafry-640.jpg" srcset="/assets/img/case-alexandrafry-640.jpg 640w, /assets/img/case-alexandrafry-1280.jpg 1280w" sizes="(min-width: 960px) 40rem, 100vw" width="640" height="400" loading="lazy" decoding="async" alt="Home page of alexandrafry.ch">
 </picture>
 <div class="case__body">
-<h3><a class="ext" href="https://alexandrafry.ch" rel="noopener">alexandrafry.ch</a>, website for an executive coach in Bern</h3>
+<h3><a class="ext" href="https://alexandrafry.ch" target="_blank" rel="noopener">alexandrafry.ch<span class="sr-only"> (opens in a new tab)</span></a>, website for an executive coach in Bern</h3>
 <p>One-pager built in Leadpages: responsive design, booking via Calendly, cookie notice, SEO basics, legal pages, domain and handover call.</p>
 </div>
 </article>
@@ -1299,13 +1322,13 @@ html:not(.js) .kidemo__actions { display: none; }
 <figcaption>Alexandra Fry, Managing Director, FRY-CPC GmbH, Bern</figcaption>
 </figure></li>
 <li class="qcard qcard--blue"><figure class="quote">
-<blockquote lang="de"><p>„Aus oben genannten Gründen halten wir Iva Tsatskrialashvili als Dienstleister für Projekte im Bereich Online Marketing und E-Commerce für sehr qualifiziert und möchten ihn ohne jegliche Vorbehalte an potenzielle Auftraggeber weiterempfehlen.“</p></blockquote>
-<p class="quote__translation">Translation: “For these reasons we consider Iva Tsatskrialashvili highly qualified as a service provider for online marketing and e-commerce projects and recommend him to potential clients without any reservations.”</p>
+<blockquote lang="de"><p>„[…] halten wir Iva Tsatskrialashvili als Dienstleister für Projekte im Bereich Online Marketing und E-Commerce für sehr qualifiziert und möchten ihn ohne jegliche Vorbehalte an potenzielle Auftraggeber weiterempfehlen.“</p></blockquote>
+<p class="quote__translation">Translation: “[…] we consider Iva Tsatskrialashvili highly qualified as a service provider for online marketing and e-commerce projects and recommend him to potential clients without any reservations.”</p>
 <figcaption>Ditoma GmbH, Ludwigsburg</figcaption>
 </figure></li>
 <li class="qcard qcard--pist"><figure class="quote">
 <blockquote><p>“He was also highly adaptable, quickly learning new tools and processes specific to each project.”</p></blockquote>
-<figcaption>Tamar Tsvimitidze, Operations Manager, CMX Solutions (customer support for Zalando and Medion)</figcaption>
+<figcaption>Tamar Tsvimitidze, Operations Manager, CMX Solutions (customer support provider)</figcaption>
 </figure></li>
 </ul>
 </div>
@@ -1322,7 +1345,7 @@ html:not(.js) .kidemo__actions { display: none; }
 <div class="about__text">
 <h2 id="about-title">About <em class="accent">me</em></h2>
 <p>I'm Iva and I live in Graz, Austria. I studied information technology and mobile software development and now study marketing and sales part-time at FH CAMPUS 02. So I understand both: the funnel and the API behind it.</p>
-<p>Since 2023 I have worked for online shops and course creators in Germany, Switzerland, Italy and Austria. I speak German and English at C1 level, Russian and Georgian natively and Spanish at B1.</p>
+<p>Since 2023 I have worked for online shops, and since 2026 also for online course creators, in Germany, Switzerland, Italy and Austria. I speak German and English at C1 level, Russian and Georgian natively and Spanish at B1.</p>
 <p>My business is registered in Austria. You get proper invoices and one person who is responsible.</p>
 <ol class="path" role="list" aria-label="My path">
 <li class="path__stop">Tbilisi</li>
@@ -1331,7 +1354,7 @@ html:not(.js) .kidemo__actions { display: none; }
 <li class="path__stop">Graz since 2025</li>
 </ol>
 <p class="about__tools small">ActiveCampaign, Zapier, Make, Google Apps Script, Leadpages, WordPress, Wix, Shopware, Stripe, Quaderno, Somba, GrooveHQ, Canva, HTML, CSS, JavaScript, Python, SQL</p>
-<p class="about__project"><a href="https://mrlololi.com/Webprojekte/">Side projects: GeoAPP and KittyCats</a></p>
+<p class="about__project"><a class="ext" href="https://mrlololi.com/Webprojekte/" target="_blank" rel="noopener">Side projects: GeoAPP and KittyCats<span class="sr-only"> (opens in a new tab)</span></a></p>
 </div>
 </div>
 </section>
@@ -1362,7 +1385,7 @@ html:not(.js) .kidemo__actions { display: none; }
 </details>
 <details class="faq__item">
 <summary>How do you handle data?</summary>
-<p>I use my own login in your accounts and hand back all access when the project ends.</p>
+<p>I get my own user in your accounts, never your password. When the project ends, you remove my access and I delete all copies of your data.</p>
 </details>
 <details class="faq__item">
 <summary>Do you also do customer support?</summary>
@@ -1379,21 +1402,22 @@ html:not(.js) .kidemo__actions { display: none; }
 <div class="wrap">
 <h2 class="contact__title" id="contact-title">Tell me <em class="accent">what's not working.</em></h2>
 <p class="lead">I reply within two working days.</p>
+<p class="contact__free">The intro call (20 minutes) is free.</p>
 <div class="contact__actions">
-<a class="btn btn--primary" href="mailto:hello@mrlololi.com?subject=Inquiry%20via%20mrlololi.com">Write an email</a>
+<a class="btn btn--primary" href="mailto:hello@mrlololi.com?subject=Enquiry%20via%20mrlololi.com">Write an email</a>
 
 </div>
 <ul class="contact__links" role="list">
-<li><a href="mailto:hello@mrlololi.com?subject=Inquiry%20via%20mrlololi.com">hello@mrlololi.com</a></li>
-<li><a class="ext" href="https://www.linkedin.com/in/tsatskrialashvili-iva" rel="noopener">LinkedIn</a></li>
-<li><a class="ext" href="https://www.malt.de/profile/ivatsatskrialashvili" rel="noopener">Malt profile</a></li>
+<li><a href="mailto:hello@mrlololi.com?subject=Enquiry%20via%20mrlololi.com">hello@mrlololi.com</a></li>
+<li><a class="ext" href="https://www.linkedin.com/in/tsatskrialashvili-iva" target="_blank" rel="noopener">LinkedIn<span class="sr-only"> (opens in a new tab)</span></a></li>
+<li><a class="ext" href="https://www.malt.de/profile/ivatsatskrialashvili" target="_blank" rel="noopener">Malt profile<span class="sr-only"> (opens in a new tab)</span></a></li>
 </ul>
 </div>
 </section>
 </main>
 <footer class="site-footer bg-ink edge">
 <div class="site-footer__in">
-<p class="site-footer__copy">© 2026 Iva Tsatskrialashvili, Werbeagentur (advertising agency), Graz, Austria</p>
+<p class="site-footer__copy">© 2026 Iva Tsatskrialashvili · Advertising agency (Werbeagentur) · Graz, Austria</p>
 <nav id="footer-nav" aria-label="Legal and language">
 <ul class="site-footer__links">
 <li><a href="#services">Services</a></li>

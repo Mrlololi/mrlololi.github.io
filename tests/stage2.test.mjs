@@ -34,17 +34,18 @@ test('headings carry exactly one accent each', () => {
   for (const html of [de, en]) assert.ok(!/\*[^*\s<][^*<]*\*/.test(body(html)), 'no raw asterisks left');
 });
 
-test('EB Garamond italic is self-hosted and not preloaded', () => {
+test('EB Garamond italic is self-hosted; only the 500 (h1 accent) is preloaded', () => {
   for (const f of ['eb-garamond-italic-400.woff2', 'eb-garamond-italic-500.woff2']) {
     assert.ok(existsSync(new URL(`../assets/fonts/${f}`, import.meta.url)), f);
   }
-  assert.equal(count(de, /<link rel="preload"[^>]*as="font"/g), 2);
+  assert.equal(count(de, /<link rel="preload"[^>]*as="font"/g), 3);
+  assert.ok(!de.includes('eb-garamond-italic-400.woff2" as="font"'));
   assert.match(de, /font-family:\s*"EB Garamond"/);
 });
 
 test('hero: proof line under the buttons', () => {
-  assert.match(de, /<p class="hero__proof">Seit 2023 für Kursanbieter und Onlineshops in Deutschland, der Schweiz, Österreich und Italien · Gewerbe in Österreich<\/p>/);
-  assert.match(en, /<p class="hero__proof">Since 2023 for course creators and online shops in Germany, Switzerland, Austria and Italy · Business registered in Austria<\/p>/);
+  assert.match(de, /<p class="hero__proof">Seit 2023 für Onlineshops, seit 2026 für Online-Kursanbieter:innen in Deutschland, der Schweiz, Österreich und Italien · Gewerbe in Österreich<\/p>/);
+  assert.match(en, /<p class="hero__proof">Since 2023 for online shops, since 2026 for online course creators in Germany, Switzerland, Austria and Italy · Business registered in Austria<\/p>/);
 });
 
 test('hero: ribbon along two curves, started only by JS, with a pause button', () => {
@@ -74,7 +75,7 @@ test('tool marquee: ten text pills, one aria-hidden copy, never «Partner»', ()
 test('problems: before/after slider above the cards, keyboard ready, with a text alternative', () => {
   const fig = de.match(/<figure class="ba">[\s\S]*?<\/figure>/)[0];
   assert.ok(de.indexOf('class="ba"') > de.indexOf('id="problems-title"') && de.indexOf('class="ba"') < de.indexOf('class="pcs"'));
-  assert.match(fig, /<label class="ba__control"><span>Vorher \/ Nachher ziehen<\/span><input class="ba__range" type="range" min="0" max="100" step="1" value="50"><\/label>/);
+  assert.match(fig, /<label class="ba__control"><span>Vorher \/ Nachher ziehen<\/span><input class="ba__range" type="range" min="0" max="100" step="1" value="50" aria-valuetext="Vorher 50 %" data-valuetext="Vorher \{v\} %"><\/label>/);
   assert.match(fig, /<span class="label label--pink ba__tag--before">Chaos<\/span>/);
   assert.match(fig, /<span class="label label--pist ba__tag--after">Geordnet<\/span>/);
   assert.equal(count(fig, /<svg class="ba__svg"[^>]*aria-hidden="true"/g), 2);
@@ -104,7 +105,7 @@ test('3-step story: three panels with titles, the run log as step 2, toasts in s
 test('KI block: inbox to draft with marks, chips, pill, tone panels, note, after the KI item', () => {
   const ki = de.match(/<section class="kidemo"[\s\S]*?<\/section>/)[0];
   assert.ok(de.indexOf('KI im Kundenservice') < de.indexOf('class="kidemo"') && de.indexOf('class="kidemo"') < de.indexOf('id="ki-rechner"'));
-  assert.match(ki, /<h3 class="kidemo__title" id="kidemo-title">Vom verärgerten Mail zum fertigen <em class="accent">Entwurf<\/em><\/h3>/);
+  assert.match(ki, /<h3 class="kidemo__title" id="kidemo-title">Von der verärgerten Kundenmail zum fertigen <em class="accent">Entwurf<\/em><\/h3>/);
   assert.equal(ki.match(/<p class="kidemo__text">([\s\S]*?)<\/p>/)[1].replace(/<[^>]+>/g, ''), 'hallo ich hab den kurs gekauft aber kein login bekommen??? und die rechnung fehlt auch. echt ärgerlich, brauche das bis morgen!!');
   assert.deepEqual([...ki.matchAll(/<mark class="hl hl--\d">([^<]+)<\/mark>/g)].map((m) => m[1]), ['kein login bekommen', 'die rechnung fehlt', 'echt ärgerlich', 'bis morgen']);
   assert.deepEqual([...ki.matchAll(/<li class="label label--\w+">([^<]+)<\/li>/g)].map((m) => m[1]), ['Thema: Login', 'Rechnung fehlt', 'Stimmung: verärgert', 'dringend']);
@@ -114,7 +115,7 @@ test('KI block: inbox to draft with marks, chips, pill, tone panels, note, after
   assert.match(ki, /Hi Anna! Sorry für das Chaos\. Zugang ist neu unterwegs, Rechnung hängt dran\. Schreib einfach, wenn noch was fehlt\./);
   assert.match(ki, /<div class="kidemo__actions"><button class="btn btn--primary btn--sm kidemo__approve" type="button"[^>]*>Freigeben<\/button><button class="btn btn--ghost btn--sm kidemo__edit" type="button"[^>]*>Bearbeiten<\/button><\/div>/);
   assert.match(ki, /Versendet wird erst nach Freigabe durch Ihr Team\./);
-  assert.match(ki, /<p class="kidemo__caption">Die Entwürfe klingen wie Ihre Schule\.<\/p>/);
+  assert.match(ki, /<p class="kidemo__caption">Die Entwürfe klingen nach Ihnen\.<\/p>/);
   assert.match(ki, /<button class="kidemo__replay" type="button" hidden>Nochmal<\/button>/);
   assert.match(en, /<p class="tone__label">Casual<\/p>/);
 });
@@ -150,8 +151,8 @@ test('package finder: after the prices, static list without JS, questions ready 
 });
 
 test('Zusage under the prices, never «Garantie»', () => {
-  assert.match(de, /<p class="tariff__promise small">Meine Zusage: Läuft eine von mir gebaute Strecke in den ersten 30 Tagen nicht wie vereinbart, behebe ich das ohne Berechnung\. Das gilt für meine Arbeit, nicht für Ausfälle der Tools selbst\.<\/p>/);
-  assert.match(en, /<p class="tariff__promise small">My promise: if a flow I built does not work as agreed within the first 30 days, I fix it free of charge\./);
+  assert.match(de, /<p class="tariff__promise small">Zusätzlich zur gesetzlichen Gewährleistung: Läuft ein von mir gebauter Ablauf in den ersten 30 Tagen nicht wie vereinbart, behebe ich das ohne Berechnung\. Das gilt für meine Arbeit, nicht für Ausfälle der Tools selbst\.<\/p>/);
+  assert.match(en, /<p class="tariff__promise small">On top of statutory warranty rights: if a flow I built does not work as agreed within the first 30 days, I fix it free of charge\./);
   for (const html of [de, en]) assert.ok(!/Garantie|guarantee/i.test(body(html)));
 });
 
@@ -172,7 +173,7 @@ test('case study stays hidden until Iva sends real numbers (config.case_study)',
 });
 
 test('«Was ich nicht mache» right before the FAQ', () => {
-  assert.match(de, /<p class="notdo__text"><strong>Was ich nicht mache:<\/strong> Werbetexte schreiben, Ads schalten oder Ihren Kundensupport übernehmen\. Dafür empfehle ich Ihnen gern Kolleg:innen\.<\/p>/);
+  assert.match(de, /<p class="notdo__text"><strong>Was ich nicht mache:<\/strong> Werbetexte schreiben, Werbeanzeigen schalten oder Ihren Kundensupport übernehmen\. Dafür empfehle ich Ihnen gern Kolleg:innen\.<\/p>/);
   assert.ok(de.indexOf('class="notdo__text"') < de.indexOf('id="faq"') && de.indexOf('class="notdo__text"') > de.indexOf('id="about"'));
   assert.match(en, /<strong>What I don't do:<\/strong> write ad copy, run ads or take over your customer support\./);
 });

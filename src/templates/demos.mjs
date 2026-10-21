@@ -1,4 +1,4 @@
-import { esc, accent } from './util.mjs';
+import { esc, accent, fill } from './util.mjs';
 import { loopButton } from './hero.mjs';
 
 // «Ich arbeite mit»: text pills (no logos). The second list is the marquee's seamless copy.
@@ -55,7 +55,7 @@ export function beforeAfter(t) {
 <div class="ba__side ba__side--after"><span class="label label--pist ba__tag--after">${esc(s.after)}</span>${orderSvg(s.nodes)}</div>
 <span class="ba__divider" aria-hidden="true"></span>
 </div>
-<label class="ba__control"><span>${esc(s.label)}</span><input class="ba__range" type="range" min="0" max="100" step="1" value="50"></label>
+<label class="ba__control"><span>${esc(s.label)}</span><input class="ba__range" type="range" min="0" max="100" step="1" value="50" aria-valuetext="${esc(fill(s.valuetext, { v: 50 }))}" data-valuetext="${esc(s.valuetext)}"></label>
 <figcaption class="sr-only">${esc(s.alt)}</figcaption>
 </figure>`;
 }

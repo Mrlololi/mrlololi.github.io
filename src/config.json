@@ -8,7 +8,13 @@
   "projects_url": "https://mrlololi.com/Webprojekte/",
   "case1_url": "https://alexandrafry.ch",
   "case_study": null,
-  "build_date": "",
+  "page_dates": {
+    "home": "2026-10-21",
+    "legal": "2026-10-21",
+    "privacy": "2026-10-21"
+  },
   "github_dpf_verified": true,
-  "github_dpf_checked": "2026-10-15: dataprivacyframework.gov/list shows GitHub (San Francisco, CA) Active for the EU-U.S. DPF, Non-HR data"
+  "github_dpf_checked": "2026-10-15: dataprivacyframework.gov/list shows GitHub (San Francisco, CA) Active for the EU-U.S. DPF, Non-HR data",
+  "cloudflare_dpf_checked": "2026-10-21: dataprivacyframework.gov/participant/5666 Cloudflare, Inc.: EU-U.S. DPF Active (re-certification under review), next due 09/15/2027",
+  "google_dpf_checked": "2026-10-21: dataprivacyframework.gov/participant/5780 Google LLC: EU-U.S. DPF Active, next due 09/13/2027"
 }

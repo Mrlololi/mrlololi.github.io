@@ -1,4 +1,9 @@
 User-agent: *
 Allow: /
+Disallow: /src/
+Disallow: /tests/
+Disallow: /README.md
+Disallow: /package.json
+Disallow: /package-lock.json
 
 Sitemap: https://mrlololi.com/sitemap.xml

@@ -9,7 +9,7 @@ export function loop({ root, button, play, pause, when = () => true, threshold =
   let paused = false;
   let running = false;
   const sync = () => {
-    const should = visible && !paused && !document.hidden && when();
+    const should = visible && !paused && !document.hidden && !reduceMotion.matches && when();
     if (should === running) return;
     running = should;
     (should ? play : pause)();
@@ -27,5 +27,7 @@ export function loop({ root, button, play, pause, when = () => true, threshold =
   }
   new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; sync(); }, { threshold }).observe(root);
   document.addEventListener('visibilitychange', sync);
+  // Reduced motion switched on while the page is open: stop and hide the button (and back).
+  reduceMotion.addEventListener('change', () => { if (button) button.hidden = reduceMotion.matches; sync(); });
   return { sync, get running() { return running; } };
 }

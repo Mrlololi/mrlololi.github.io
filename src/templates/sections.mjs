@@ -1,4 +1,4 @@
-import { esc, accent } from './util.mjs';
+import { esc, accent, extLink } from './util.mjs';
 
 export function processSteps(t) {
   const steps = t.process.steps
@@ -39,7 +39,7 @@ ${t.about.paragraphs.map((p) => `<p>${esc(p)}</p>`).join('\n')}
 ${t.about.path.map((stop) => `<li class="path__stop">${esc(stop)}</li>`).join('\n')}
 </ol>
 <p class="about__tools small">${esc(t.about.tools)}</p>
-<p class="about__project"><a href="${esc(config.projects_url)}">${esc(t.about.projects)}</a></p>
+<p class="about__project">${extLink(config.projects_url, esc(t.about.projects), t)}</p>
 </div>
 </div>
 </section>`;
@@ -81,14 +81,15 @@ export function contact(t, config) {
 <div class="wrap">
 <h2 class="contact__title" id="contact-title">${accent(t.contact.h2)}</h2>
 <p class="lead">${esc(t.contact.text)}</p>
+<p class="contact__free">${esc(t.contact.free)}</p>
 <div class="contact__actions">
 <a class="btn btn--primary" href="${esc(mailto)}">${esc(t.contact.mail)}</a>
 ${booking}
 </div>
 <ul class="contact__links" role="list">
 <li><a href="${esc(mailto)}">${esc(config.contact_email)}</a></li>
-<li><a class="ext" href="${esc(config.linkedin)}" rel="noopener">${esc(t.contact.linkedin)}</a></li>
-<li><a class="ext" href="${esc(config.malt)}" rel="noopener">${esc(t.contact.malt)}</a></li>
+<li>${extLink(config.linkedin, esc(t.contact.linkedin), t)}</li>
+<li>${extLink(config.malt, esc(t.contact.malt), t)}</li>
 </ul>
 </div>
 </section>`;

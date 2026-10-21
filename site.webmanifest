@@ -1,0 +1,20 @@
+{
+  "name": "mrlololi",
+  "short_name": "mrlololi",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#F4C9D3",
+  "theme_color": "#F4C9D3",
+  "icons": [
+    {
+      "src": "/assets/icons/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any"
+    },
+    {
+      "src": "/assets/icons/apple-touch-icon.png",
+      "type": "image/png",
+      "sizes": "180x180"
+    }
+  ]
+}

@@ -1,32 +1,48 @@
 import { absUrl } from './util.mjs';
 
-// The three page pairs; DE is x-default.
+// The three page pairs; DE is x-default. The key names the pair's date in config.page_dates.
 const PAIRS = [
-  ['/', '/en/'],
-  ['/impressum/', '/en/legal-notice/'],
-  ['/datenschutz/', '/en/privacy/'],
+  ['/', '/en/', 'home'],
+  ['/impressum/', '/en/legal-notice/', 'legal'],
+  ['/datenschutz/', '/en/privacy/', 'privacy'],
 ];
 
 export function alternatesFor(path) {
-  const pair = PAIRS.find((p) => p.includes(path));
+  const pair = PAIRS.find((p) => p.slice(0, 2).includes(path));
   return pair ? { de: pair[0], en: pair[1] } : null;
 }
 
+// One business and the website it publishes; the street is the Impressum address.
 export function jsonLd(t, config) {
+  const business = absUrl(config, '/#business');
   const data = {
     '@context': 'https://schema.org',
-    '@type': 'ProfessionalService',
-    name: 'mrlololi',
-    alternateName: 'Iva Tsatskrialashvili',
-    description: t.meta.description,
-    url: absUrl(config, t.paths.home),
-    email: config.contact_email,
-    image: absUrl(config, `/og-image-${t.lang}.png`),
-    inLanguage: t.lang,
-    areaServed: ['AT', 'DE', 'CH'],
-    address: { '@type': 'PostalAddress', addressLocality: 'Graz', postalCode: '8020', addressCountry: 'AT' },
-    founder: { '@type': 'Person', name: 'Iva Tsatskrialashvili', sameAs: [config.linkedin, config.malt] },
-    priceRange: '€€',
+    '@graph': [
+      {
+        '@type': 'ProfessionalService',
+        '@id': business,
+        name: 'mrlololi',
+        alternateName: 'Iva Tsatskrialashvili',
+        description: t.meta.description,
+        url: absUrl(config, t.paths.home),
+        email: config.contact_email,
+        image: absUrl(config, `/og-image-${t.lang}.png`),
+        logo: absUrl(config, '/assets/icons/apple-touch-icon.png'),
+        sameAs: [config.linkedin, config.malt],
+        areaServed: ['AT', 'DE', 'CH', 'IT'],
+        address: { '@type': 'PostalAddress', streetAddress: 'Herbersteinstraße 4/4181', addressLocality: 'Graz', postalCode: '8020', addressCountry: 'AT' },
+        founder: { '@type': 'Person', name: 'Iva Tsatskrialashvili', sameAs: [config.linkedin, config.malt] },
+        priceRange: '€€',
+      },
+      {
+        '@type': 'WebSite',
+        '@id': absUrl(config, '/#website'),
+        url: absUrl(config, '/'),
+        name: 'mrlololi',
+        inLanguage: t.lang,
+        publisher: { '@id': business },
+      },
+    ],
   };
   return `<script type="application/ld+json">${JSON.stringify(data).replace(/</g, '\\u003c')}</script>`;
 }
@@ -38,15 +54,32 @@ export function cname(config) {
   return host.endsWith('.github.io') ? null : `${host}\n`;
 }
 
-export const robots = (config) => `User-agent: *\nAllow: /\n\nSitemap: ${absUrl(config, '/sitemap.xml')}\n`;
+// The repo root is the published folder, so the source files are kept out of search.
+const PRIVATE = ['/src/', '/tests/', '/README.md', '/package.json', '/package-lock.json'];
+export const robots = (config) =>
+  `User-agent: *\nAllow: /\n${PRIVATE.map((p) => `Disallow: ${p}\n`).join('')}\nSitemap: ${absUrl(config, '/sitemap.xml')}\n`;
 
-export function sitemap(config, buildDate) {
-  const day = buildDate.toISOString().slice(0, 10);
-  const urls = PAIRS.flatMap(([de, en]) =>
+// Minimal web app manifest (name, icons, theme colour).
+export const manifest = () => `${JSON.stringify({
+  name: 'mrlololi',
+  short_name: 'mrlololi',
+  start_url: '/',
+  display: 'browser',
+  background_color: '#F4C9D3',
+  theme_color: '#F4C9D3',
+  icons: [
+    { src: '/assets/icons/favicon.svg', type: 'image/svg+xml', sizes: 'any' },
+    { src: '/assets/icons/apple-touch-icon.png', type: 'image/png', sizes: '180x180' },
+  ],
+}, null, 2)}\n`;
+
+// lastmod is the date of each page's last real content change (config.page_dates), not the build day.
+export function sitemap(config) {
+  const urls = PAIRS.flatMap(([de, en, key]) =>
     [de, en].map(
       (loc) => `  <url>
     <loc>${absUrl(config, loc)}</loc>
-    <lastmod>${day}</lastmod>
+    <lastmod>${config.page_dates[key]}</lastmod>
     <xhtml:link rel="alternate" hreflang="de" href="${absUrl(config, de)}"/>
     <xhtml:link rel="alternate" hreflang="en" href="${absUrl(config, en)}"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="${absUrl(config, de)}"/>

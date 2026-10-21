@@ -31,7 +31,7 @@ test('run log: own section after the problems, six steps, replay', () => {
   assert.equal(count(de, /class="run__link"/g), 5, 'one connector per gap');
   assert.match(de, /<button class="run__replay" type="button" hidden>Nochmal abspielen<\/button>/);
   assert.match(de, /id="run-status"[^>]*aria-live="polite"/);
-  assert.match(de, /<p class="run__summary">6 Schritte, 2,3 Sekunden, 0 Fehler<\/p>/);
+  assert.match(de, /<p class="run__summary">6 Schritte, 2,3 Sekunden, 0 Fehler \(vereinfachtes Beispiel\)<\/p>/);
 });
 
 test('problems: three cards, problem first, then the solution panel', () => {
@@ -73,9 +73,8 @@ test('process: numbered list of four steps', () => {
   assert.equal(count(de, /<li class="step">/g), 4);
 });
 
-test('references: case link opens in same tab with noopener; quotes typographic', () => {
-  assert.match(de, /<a class="ext" href="https:\/\/alexandrafry\.ch" rel="noopener">alexandrafry\.ch<\/a>/);
-  assert.ok(!de.includes('target="_blank"'));
+test('references: case link opens in a new tab with noopener (Fixes 21.10.2026); quotes typographic', () => {
+  assert.match(de, /<a class="ext" href="https:\/\/alexandrafry\.ch" target="_blank" rel="noopener">alexandrafry\.ch<span class="sr-only"> \(öffnet in neuem Tab\)<\/span><\/a>/);
   assert.match(de, /„Sehr gerne bestätige ich/);
   assert.match(de, /übertroffen hat\.“/);
   assert.match(en, /<blockquote lang="de">/);
@@ -88,7 +87,7 @@ test('about: Hallstatt photo 1x/2x, path line, link to the own projects', () => 
   assert.ok(!de.includes('portrait-'), 'the CV photo is gone');
   assert.match(de, /<ol class="path" role="list" aria-label="Mein Weg">/);
   assert.equal(count(de, /<li class="path__stop">/g), 4);
-  assert.match(de, /<a href="https:\/\/mrlololi\.com\/Webprojekte\/">Eigene Projekte: GeoAPP und KittyCats<\/a>/);
+  assert.match(de, /<a class="ext" href="https:\/\/mrlololi\.com\/Webprojekte\/" target="_blank" rel="noopener">Eigene Projekte: GeoAPP und KittyCats<span class="sr-only"> \(öffnet in neuem Tab\)<\/span><\/a>/);
 });
 
 test('faq: seven details, the tech question first', () => {
@@ -99,7 +98,7 @@ test('faq: seven details, the tech question first', () => {
 test('contact: mailto with prefilled subject, LinkedIn and Malt', () => {
   assert.match(de, /href="mailto:hello@mrlololi\.com\?subject=Anfrage%20%C3%BCber%20mrlololi\.com"/);
   // English subject chosen by Iva (15.10.2026): "Inquiry via mrlololi.com"
-  assert.match(en, /href="mailto:hello@mrlololi\.com\?subject=Inquiry%20via%20mrlololi\.com"/);
+  assert.match(en, /href="mailto:hello@mrlololi\.com\?subject=Enquiry%20via%20mrlololi\.com"/);
   assert.match(de, new RegExp(`href="${config.linkedin}"`));
   assert.match(de, new RegExp(`href="${config.malt}"`));
 });

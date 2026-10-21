@@ -64,7 +64,7 @@ test('de: hero copy is verbatim', () => {
 });
 
 test('en: hero copy is verbatim', () => {
-  assert.equal(en.hero.h1, 'The tech behind your course launch. *Built, tested, looked after.*');
+  assert.equal(en.hero.h1, 'The tech behind your course launch. *Built, tested, maintained.*');
   assert.equal(en.contact.h2, "Tell me *what's not working.*");
   assert.equal(en.lang, 'en');
   assert.equal(en.locale, 'en-GB');
@@ -74,7 +74,7 @@ test('en: German quotes keep the original plus a translation', () => {
   assert.equal(en.refs.case1.quote.lang, 'de');
   assert.ok(en.refs.case1.quote.translation.startsWith('I am happy to confirm'));
   assert.equal(en.refs.case3.quote.lang, 'de');
-  assert.ok(en.refs.case3.quote.translation.startsWith('For these reasons'));
+  assert.ok(en.refs.case3.quote.translation.startsWith('[…] we consider'));
   assert.equal(en.refs.quote4.lang, 'en');
 });
 
@@ -86,5 +86,5 @@ test('prices as decided by Iva (16.10.2026)', () => {
   assert.equal(de.pricing.hourly, 'Alles außerhalb der Pakete: 45 € pro Stunde.');
   assert.equal(de.pricing.groups[1].items[2].extra.label, 'Optional: Pflege 90 € pro Monat');
   assert.equal(de.faq.items[0].q, 'Muss ich mich mit Technik auskennen?');
-  assert.equal(de.faq.items[4].a, 'Ich arbeite mit eigenem Zugang in Ihren Konten und gebe nach Projektende alle Zugänge zurück.');
+  assert.equal(de.faq.items[4].a, 'Ich bekomme einen eigenen Benutzer in Ihren Konten, nie Ihr Passwort. Nach Projektende entfernen Sie meinen Zugang, und ich lösche alle Kopien Ihrer Daten.');
 });

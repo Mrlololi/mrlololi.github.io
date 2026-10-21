@@ -53,9 +53,9 @@ for (const [p, title, redirect] of portfolio) {
   const res = await fetch(base + p, { redirect: 'manual' });
   const html = await res.text();
   const t = (html.match(/<title>([\s\S]*?)<\/title>/i) || [])[1]?.trim() || '';
-  // The old project pages point at their new home by an absolute URL of their own repo
-  // (github.io or the custom domain, both end at the same page).
-  const target = redirect ? new RegExp(`url=https://(mrlololi\\.github\\.io|${new URL(base).host.replace(/\./g, '\\.')})${redirect}`) : null;
+  // The old project pages point straight at their new home on this domain (Fixes 21.10.2026:
+  // no detour via mrlololi.github.io), by a root-relative or absolute URL.
+  const target = redirect ? new RegExp(`url=(https://${new URL(base).host.replace(/\./g, '\\.')})?${redirect}`) : null;
   const ok = res.status === 200 && t.includes(title) && (!target || target.test(html));
   check(`${p}: ${res.status} "${t}"${redirect ? ` -> ${redirect}` : ''}`, ok, `status ${res.status}, title "${t}"`);
 }

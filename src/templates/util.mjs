@@ -29,5 +29,9 @@ export const accent = (s) => esc(s).replace(/\*([^*]+)\*/g, '<em class="accent">
 // Big headlines: accent plus hyphenated words that never break at their hyphen.
 export const headline = (s) => accent(s).replace(/(^|\s)([^\s<>*]+-[^\s<>*]+)/g, '$1<span class="nowrap">$2</span>');
 
+// Links to other sites open in a new tab and say so to screen readers (label is escaped HTML).
+export const extLink = (href, label, t) =>
+  `<a class="ext" href="${esc(href)}" target="_blank" rel="noopener">${label}<span class="sr-only"> ${esc(t.ui.newTab)}</span></a>`;
+
 // Joins template parts, dropping false/null/undefined.
 export const join = (parts) => parts.filter((p) => p !== false && p != null && p !== '').join('\n');
