@@ -51,6 +51,11 @@ export async function checkDemos(browser, base) {
     await page.waitForTimeout(400);
     const off = await page.$eval('.marquee', (el) => el.classList.contains('is-running'));
     check('marquee: stops off-screen', !off);
+    await page.focus('.ba__range');
+    for (let i = 0; i < 10; i++) await page.keyboard.press('ArrowRight');
+    const pos = await page.$eval('.ba__stage', (el) => el.style.getPropertyValue('--pos'));
+    const clip = await page.$eval('.ba__side--after', (el) => getComputedStyle(el).clipPath);
+    check('before/after: arrow keys move the divider and the clip', pos === '60%' && clip.includes('60%'), `${pos} | ${clip}`);
     check('demos: no console errors', errors.length === 0, errors.join(' | '));
     await page.close();
   }
@@ -78,8 +83,10 @@ export async function checkDemos(browser, base) {
       copyHidden: getComputedStyle(document.querySelector('.marquee__list[aria-hidden="true"]')).display === 'none',
       wraps: getComputedStyle(document.querySelector('.marquee__list')).flexWrap === 'wrap',
       buttons: [...document.querySelectorAll('.loop-btn')].every((b) => getComputedStyle(b).display === 'none'),
+      baBoth: [...document.querySelectorAll('.ba__side')].every((el) => getComputedStyle(el).clipPath === 'none' && el.getBoundingClientRect().height > 100),
+      baNoRange: getComputedStyle(document.querySelector('.ba__control')).display === 'none',
     }));
-    check('no JS: ribbon rests, tool list wraps, no pause buttons', r === 0 && Object.values(s).every(Boolean), JSON.stringify({ r, ...s }));
+    check('no JS: ribbon rests, tool list wraps, no pause buttons, before and after both shown', r === 0 && Object.values(s).every(Boolean), JSON.stringify({ r, ...s }));
     await page.screenshot({ path: path.join(shots, 'nojs-390.png'), fullPage: true });
     await ctx.close();
   }

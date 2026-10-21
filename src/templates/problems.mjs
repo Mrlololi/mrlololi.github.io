@@ -1,4 +1,5 @@
 import { esc, accent } from './util.mjs';
+import { beforeAfter } from './demos.mjs';
 
 // Each card names the problem; its «Lösung» panel sits below it. With motion, main.js
 // holds the panel under the card's edge and slides it up once the card is in view.
@@ -20,6 +21,7 @@ export function problems(t) {
 <h2 id="problems-title">${accent(t.problems.h2)}</h2>
 <p class="lead">${esc(t.problems.intro)}</p>
 </div>
+${beforeAfter(t)}
 <ul class="pcs" role="list">
 ${cards}
 </ul>

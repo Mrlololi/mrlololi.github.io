@@ -87,6 +87,13 @@ export default {
   problems: {
     h2: "Where launches *usually break*",
     intro: "I see the same three failures again and again. Each one costs sign-ups, revenue or nerves.",
+    slider: {
+      label: 'Drag before / after',
+      before: 'Chaos',
+      after: 'Sorted',
+      alt: 'Before: form, ActiveCampaign, Zapier, Stripe and course wired every which way, three links broken. After: the same tools in one clear flow.',
+      nodes: ['Form', 'ActiveCampaign', 'Zapier', 'Stripe', 'Course'],
+    },
     items: [
       { problem: "Sign-ups get lost between the form and the CRM.", fix: "Flows with checks and retries that stay reliable even when many people sign up at once." },
       { problem: "Launch emails land in spam.", fix: "Set up SPF, DKIM and DMARC correctly and test delivery." },

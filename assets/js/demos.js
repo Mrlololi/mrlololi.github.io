@@ -37,3 +37,14 @@ export function initMarquee() {
     pause: () => marquee.classList.remove('is-running'),
   });
 }
+
+/* ---------- Before/after: the range value moves the clip and the divider ---------- */
+export function initBeforeAfter() {
+  const fig = document.querySelector('.ba');
+  if (!fig) return;
+  const stage = fig.querySelector('.ba__stage');
+  const range = fig.querySelector('.ba__range');
+  const set = () => stage.style.setProperty('--pos', `${range.value}%`);
+  range.addEventListener('input', set);
+  set();
+}

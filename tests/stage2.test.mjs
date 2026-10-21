@@ -70,3 +70,15 @@ test('tool marquee: ten text pills, one aria-hidden copy, never «Partner»', ()
   assert.ok(de.indexOf('class="hero"') < de.indexOf('class="tools"') && de.indexOf('class="tools"') < de.indexOf('id="problems"'));
   for (const html of [de, en]) assert.ok(!/Partner/.test(body(html)));
 });
+
+test('problems: before/after slider above the cards, keyboard ready, with a text alternative', () => {
+  const fig = de.match(/<figure class="ba">[\s\S]*?<\/figure>/)[0];
+  assert.ok(de.indexOf('class="ba"') > de.indexOf('id="problems-title"') && de.indexOf('class="ba"') < de.indexOf('class="pcs"'));
+  assert.match(fig, /<label class="ba__control"><span>Vorher \/ Nachher ziehen<\/span><input class="ba__range" type="range" min="0" max="100" step="1" value="50"><\/label>/);
+  assert.match(fig, /<span class="ba__tag ba__tag--before">Chaos<\/span>/);
+  assert.match(fig, /<span class="ba__tag ba__tag--after">Geordnet<\/span>/);
+  assert.equal(count(fig, /<svg class="ba__svg"[^>]*aria-hidden="true"/g), 2);
+  assert.match(fig, /<figcaption class="sr-only">Vorher: Formular, ActiveCampaign, Zapier, Stripe und Kurs kreuz und quer verbunden, drei Verbindungen gerissen\. Nachher: dieselben Werkzeuge in einem klaren Ablauf\.<\/figcaption>/);
+  assert.match(en, /<span>Drag before \/ after<\/span>/);
+  assert.match(en, /<span class="ba__tag ba__tag--after">Sorted<\/span>/);
+});

@@ -89,6 +89,13 @@ export default {
   problems: {
     h2: "Wo es bei Launches *meistens hakt*",
     intro: "Drei Fehler sehe ich immer wieder. Jeder kostet Anmeldungen, Umsatz oder Nerven.",
+    slider: {
+      label: 'Vorher / Nachher ziehen',
+      before: 'Chaos',
+      after: 'Geordnet',
+      alt: 'Vorher: Formular, ActiveCampaign, Zapier, Stripe und Kurs kreuz und quer verbunden, drei Verbindungen gerissen. Nachher: dieselben Werkzeuge in einem klaren Ablauf.',
+      nodes: ['Formular', 'ActiveCampaign', 'Zapier', 'Stripe', 'Kurs'],
+    },
     items: [
       { problem: "Anmeldungen verschwinden zwischen Formular und CRM.", fix: "Ich baue Strecken mit Prüfung und Wiederholung, die auch bei vielen gleichzeitigen Anmeldungen sauber laufen." },
       { problem: "Launch-Mails landen im Spam.", fix: "SPF, DKIM und DMARC richtig einrichten und die Zustellung testen." },

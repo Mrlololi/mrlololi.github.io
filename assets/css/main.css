@@ -615,6 +615,44 @@ html:not(.calc-ready) .calc__fields { display: none; }
 }
 .marquee__list[aria-hidden="true"] { display: none; }
 
+/* ---------- Stage 2: before/after slider ---------- */
+.ba { display: grid; gap: var(--space-3); margin-bottom: var(--space-7); }
+.ba__stage { display: grid; gap: var(--space-4); }
+@media (min-width: 700px) { .ba__stage { grid-template-columns: 1fr 1fr; } }
+.ba__side { position: relative; padding: var(--space-6) var(--space-3) var(--space-3); background: var(--sheet); border: 1px solid var(--line); border-radius: var(--radius-card); }
+.ba__side--after { background: linear-gradient(135deg, var(--pist-tint), var(--blue-tint)); }
+.ba__tag { position: absolute; top: var(--space-3); padding: 0.15rem 0.7rem; border-radius: 999px; font-size: 0.8125rem; font-weight: 700; line-height: 1.5; }
+.ba__tag--before { left: var(--space-3); background: #FBE7EC; color: var(--pink-ink); }
+.ba__tag--after { right: var(--space-3); background: #E6F1DF; color: var(--pist-ink); }
+.ba__svg { width: 100%; height: auto; }
+.ba__node rect { stroke-width: 1.5; }
+.ba__node text { font-family: var(--font-body); font-size: 15px; font-weight: 700; fill: var(--ink); }
+.ba__node--grey rect { fill: #F4F1EE; stroke: #CFC7C1; }
+.ba__node--grey text { fill: var(--ink-soft); }
+.ba__node--1 rect { fill: var(--pink); stroke: var(--pink-ink); }
+.ba__node--2 rect { fill: var(--blue); stroke: var(--blue-ink); }
+.ba__node--3 rect { fill: var(--lav); stroke: var(--lav-ink); }
+.ba__node--4 rect { fill: var(--pist); stroke: var(--pist-ink); }
+.ba__node--5 rect { fill: #F7DCC8; stroke: #8A5A35; }
+.ba__link { fill: none; stroke: #CFC7C1; stroke-width: 2; }
+.ba__link--broken { stroke: #B5473A; stroke-dasharray: 6 6; }
+.ba__link--ok { stroke: var(--done); stroke-width: 2.5; }
+.ba__x circle { fill: #B5473A; }
+.ba__x path, .ba__ok path { fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.ba__ok circle { fill: var(--done); }
+.ba__divider, .ba__control { display: none; }
+/* With JS (class from <head>, so no layout shift later): one stage, the «after» side clipped. */
+.js .ba__stage { position: relative; display: block; max-width: 34rem; width: 100%; margin-inline: auto; aspect-ratio: 440 / 330; }
+.js .ba__side { position: absolute; inset: 0; }
+.js .ba__side--after { clip-path: inset(0 0 0 var(--pos, 50%) round var(--radius-card)); }
+.js .ba__divider { display: block; position: absolute; top: 0; bottom: 0; left: var(--pos, 50%); width: 2px; margin-left: -1px; background: var(--ink); pointer-events: none; }
+.js .ba__divider::after {
+  content: ""; position: absolute; top: 50%; left: 50%; width: 2.25rem; height: 2.25rem; margin: -1.125rem 0 0 -1.125rem;
+  border-radius: 50%; background: var(--ink) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 7l-5 5 5 5M15 7l5 5-5 5' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 1.25rem no-repeat;
+}
+.js .ba__control { display: grid; justify-items: center; gap: var(--space-1); font-size: var(--step--1); font-weight: 700; color: var(--ink-soft); }
+.ba__range { width: min(100%, 34rem); min-height: 2.75rem; accent-color: var(--ink); cursor: ew-resize; }
+
 /* ---------- Motion: one calm effect per section, each once, never under reduced motion ---------- */
 @media (prefers-reduced-motion: no-preference) {
   .btn--primary:hover { transform: translateY(-2px); }
