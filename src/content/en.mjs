@@ -197,6 +197,52 @@ export default {
     smallPrint: 'All prices are final. As a small business under Austrian VAT law (§ 6 (1) Z 27 UStG) I do not charge VAT. For businesses with a valid VAT ID in another EU member state, the reverse charge applies.',
   },
 
+  ki: {
+    "h3": "From an upset email to a ready *draft*",
+    "from": "Anna K.",
+    "mail": "hi i bought the course but never got a login??? and the invoice is missing too. really annoying, need this by tomorrow!!",
+    "marks": [
+      "never got a login",
+      "the invoice is missing",
+      "really annoying",
+      "by tomorrow"
+    ],
+    "chips": [
+      "Topic: login",
+      "Invoice missing",
+      "Mood: upset",
+      "urgent"
+    ],
+    "pill": "Drafting reply…",
+    "toneLabel": "Tone",
+    "tones": [
+      [
+        "Formal",
+        "Dear Anna, thank you for your message and sorry for the trouble. I have resent your access, and you will find the invoice attached. I am happy to help with any questions."
+      ],
+      [
+        "Friendly",
+        "Hi Anna, thanks for your message and sorry for the hassle. I've resent your access and the invoice is attached. Just get in touch if you have questions."
+      ],
+      [
+        "Casual",
+        "Hey Anna! Sorry about the mix-up. Your access is on its way again, invoice attached. Just shout if anything's missing."
+      ]
+    ],
+    "buttons": [
+      "Approve",
+      "Edit"
+    ],
+    "note": "Nothing is sent until your team approves it.",
+    "replay": "Play again",
+    "caption": "The drafts sound like your school.",
+    "speed": {
+      "label": "Example values",
+      "slow": "By hand: about 6 minutes per reply",
+      "fast": "With a draft: about 1 minute to review"
+    }
+  },
+
   calc: {
     h3: 'How much time does your inbox cost you?',
     inputs: [

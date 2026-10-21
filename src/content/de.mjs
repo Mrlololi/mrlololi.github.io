@@ -199,6 +199,52 @@ export default {
     smallPrint: 'Alle Preise sind Endpreise. Als Kleinunternehmer gemäß § 6 Abs. 1 Z 27 UStG weise ich keine Umsatzsteuer aus. Bei Unternehmen mit gültiger UID in einem anderen EU-Mitgliedstaat geht die Steuerschuld auf den Leistungsempfänger über (Reverse Charge).',
   },
 
+  ki: {
+    "h3": "Vom verärgerten Mail zum fertigen *Entwurf*",
+    "from": "Anna K.",
+    "mail": "hallo ich hab den kurs gekauft aber kein login bekommen??? und die rechnung fehlt auch. echt ärgerlich, brauche das bis morgen!!",
+    "marks": [
+      "kein login bekommen",
+      "die rechnung fehlt",
+      "echt ärgerlich",
+      "bis morgen"
+    ],
+    "chips": [
+      "Thema: Login",
+      "Rechnung fehlt",
+      "Stimmung: verärgert",
+      "dringend"
+    ],
+    "pill": "Entwurf wird erstellt…",
+    "toneLabel": "Tonfall",
+    "tones": [
+      [
+        "Sie",
+        "Liebe Anna, danke für Ihre Nachricht und entschuldigen Sie den Ärger. Ihren Zugang habe ich neu verschickt, die Rechnung finden Sie im Anhang. Bei Fragen bin ich gern da."
+      ],
+      [
+        "du",
+        "Liebe Anna, danke für deine Nachricht und sorry für den Ärger. Deinen Zugang habe ich neu verschickt, die Rechnung findest du im Anhang. Melde dich gern bei Fragen."
+      ],
+      [
+        "locker",
+        "Hi Anna! Sorry für das Chaos. Zugang ist neu unterwegs, Rechnung hängt dran. Schreib einfach, wenn noch was fehlt."
+      ]
+    ],
+    "buttons": [
+      "Freigeben",
+      "Bearbeiten"
+    ],
+    "note": "Versendet wird erst nach Freigabe durch Ihr Team.",
+    "replay": "Nochmal",
+    "caption": "Die Entwürfe klingen wie Ihre Schule.",
+    "speed": {
+      "label": "Beispielwerte",
+      "slow": "Von Hand: ca. 6 Minuten pro Antwort",
+      "fast": "Mit Entwurf: ca. 1 Minute zum Prüfen"
+    }
+  },
+
   calc: {
     h3: 'Wie viel Zeit kostet Sie Ihr Postfach?',
     inputs: [

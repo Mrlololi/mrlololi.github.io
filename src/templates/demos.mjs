@@ -1,4 +1,4 @@
-import { esc } from './util.mjs';
+import { esc, accent } from './util.mjs';
 import { loopButton } from './hero.mjs';
 
 // «Ich arbeite mit»: text pills (no logos). The second list is the marquee's seamless copy.
@@ -58,4 +58,53 @@ export function beforeAfter(t) {
 <label class="ba__control"><span>${esc(s.label)}</span><input class="ba__range" type="range" min="0" max="100" step="1" value="50"></label>
 <figcaption class="sr-only">${esc(s.alt)}</figcaption>
 </figure>`;
+}
+
+// KI im Kundenservice: an upset mail becomes a draft (marks, chips, then the reply in three tones).
+// The HTML is the finished state; demos.js plays it once in view and turns the tones into tabs.
+export function kiDemo(t) {
+  const k = t.ki;
+  let text = esc(k.mail);
+  k.marks.forEach((m, i) => { text = text.replace(esc(m), `<mark class="hl hl--${i + 1}">${esc(m)}</mark>`); });
+  const chips = k.chips.map((c, i) => `<li class="chip chip--${i + 1}">${esc(c)}</li>`).join('');
+  const tones = k.tones.map(([name, reply]) => `<div class="tone__panel"><p class="tone__label">${esc(name)}</p><p class="tone__text">${esc(reply)}</p></div>`).join('\n');
+  return `<li class="tariff__ki">
+<section class="kidemo" aria-labelledby="kidemo-title">
+<div class="kidemo__head"><h3 class="kidemo__title" id="kidemo-title">${accent(k.h3)}</h3><span class="demo-tag">${esc(t.ui.example)}</span></div>
+<div class="kidemo__grid">
+<div class="kidemo__mail">
+<p class="kidemo__from">${esc(k.from)}</p>
+<p class="kidemo__text">${text}</p>
+<ul class="chips" role="list">${chips}</ul>
+</div>
+<div class="kidemo__draft">
+<p class="kidemo__pill" aria-hidden="true"><span class="sparkle"></span>${esc(k.pill)}</p>
+<div class="tone" data-label="${esc(k.toneLabel)}">
+${tones}
+</div>
+<div class="kidemo__actions" aria-hidden="true"><span class="fake-btn fake-btn--primary">${esc(k.buttons[0])}</span><span class="fake-btn">${esc(k.buttons[1])}</span></div>
+<p class="kidemo__note small">${esc(k.note)}</p>
+</div>
+</div>
+<p class="kidemo__caption">${esc(k.caption)}</p>
+<button class="kidemo__replay" type="button" hidden>${esc(k.replay)}</button>
+</section>
+</li>`;
+}
+
+// 6 Minuten gegen 1 Minute: the same reply runs along a line at two speeds (example values).
+export function speed(t) {
+  const s = t.ki.speed;
+  const reply = esc(t.ki.tones[0][1]);
+  const card = (cls, title) => `<div class="speed__card speed__card--${cls}">
+<p class="speed__title">${esc(title)}</p>
+<p class="speed__text" aria-hidden="true">${reply}</p>
+<span class="speed__bar" aria-hidden="true"><span></span></span>
+</div>`;
+  return `<div class="speed">
+<span class="demo-tag">${esc(s.label)}</span>
+${card('slow', s.slow)}
+${card('fast', s.fast)}
+${loopButton(t)}
+</div>`;
 }

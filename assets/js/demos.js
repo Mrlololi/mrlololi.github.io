@@ -173,3 +173,129 @@ function initToasts() {
   });
   if (ctl) document.addEventListener('story:show', ctl.sync);
 }
+
+/* ---------- Tone switcher: the three replies become a segmented tablist ---------- */
+export function initTone() {
+  const tone = document.querySelector('.tone');
+  if (!tone) return;
+  const panels = [...tone.querySelectorAll('.tone__panel')];
+  const list = document.createElement('div');
+  list.className = 'tone__tabs';
+  list.setAttribute('role', 'tablist');
+  list.setAttribute('aria-label', tone.dataset.label);
+  const wrap = document.createElement('div');
+  wrap.className = 'tone__panels';
+  const tabs = panels.map((p, i) => {
+    const tab = document.createElement('button');
+    tab.type = 'button';
+    tab.className = 'tone__tab';
+    tab.id = `tone-tab-${i + 1}`;
+    p.id = `tone-panel-${i + 1}`;
+    tab.textContent = p.querySelector('.tone__label').textContent;
+    tab.setAttribute('role', 'tab');
+    tab.setAttribute('aria-controls', p.id);
+    p.setAttribute('role', 'tabpanel');
+    p.setAttribute('aria-labelledby', tab.id);
+    list.append(tab);
+    wrap.append(p);
+    return tab;
+  });
+  tone.append(list, wrap);
+  tone.classList.add('is-tabs');
+  const show = (i) => {
+    tabs.forEach((tab, k) => { tab.setAttribute('aria-selected', String(k === i)); tab.tabIndex = k === i ? 0 : -1; });
+    panels.forEach((p, k) => p.classList.toggle('is-active', k === i));
+  };
+  tabs.forEach((tab, i) => {
+    tab.addEventListener('click', () => show(i));
+    tab.addEventListener('keydown', (e) => {
+      const step = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
+      if (!step) return;
+      e.preventDefault();
+      const n = (i + step + tabs.length) % tabs.length;
+      show(n);
+      tabs[n].focus();
+    });
+  });
+  show(0);
+}
+
+/* ---------- Inbox to draft: plays once in view (about 4.5 s), «Nochmal» replays ---------- */
+export function initKiDemo() {
+  const demo = document.querySelector('.kidemo');
+  if (!demo || reduceMotion.matches || !('IntersectionObserver' in window)) return;
+  const text = demo.querySelector('.kidemo__text');
+  // Words become spans (marks keep their words inside), so the mail can "type" in.
+  for (const node of [...text.childNodes]) {
+    const host = node.nodeType === 3 ? node : node.firstChild;
+    const parts = host.textContent.split(/(\s+)/);
+    const frag = document.createDocumentFragment();
+    for (const part of parts) {
+      if (!part) continue;
+      if (/^\s+$/.test(part)) { frag.append(part); continue; }
+      const w = document.createElement('span');
+      w.className = 'w';
+      w.textContent = part;
+      frag.append(w);
+    }
+    if (node.nodeType === 3) node.replaceWith(frag);
+    else { node.textContent = ''; node.append(frag); }
+  }
+  const words = [...text.querySelectorAll('.w')];
+  const marks = [...demo.querySelectorAll('.hl')];
+  const chips = [...demo.querySelectorAll('.chip')];
+  const replay = demo.querySelector('.kidemo__replay');
+  let timers = [];
+  const at = (ms, fn) => timers.push(setTimeout(fn, ms));
+  const play = () => {
+    timers.forEach(clearTimeout);
+    timers = [];
+    demo.classList.remove('is-done', 'is-drafting');
+    demo.classList.add('is-playing');
+    [...words, ...marks, ...chips].forEach((el) => el.classList.remove('is-on'));
+    words.forEach((w, i) => at(i * 45, () => w.classList.add('is-on')));
+    let t = words.length * 45 + 250;
+    marks.forEach((m, i) => at(t + i * 280, () => { m.classList.add('is-on'); chips[i]?.classList.add('is-on'); }));
+    t += marks.length * 280 + 250;
+    at(t, () => demo.classList.add('is-drafting'));
+    at(t + 1300, () => { demo.classList.remove('is-drafting'); demo.classList.add('is-done'); replay.hidden = false; });
+  };
+  replay.addEventListener('click', play);
+  const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { io.disconnect(); play(); } }, { threshold: 0.4 });
+  io.observe(demo);
+}
+
+/* ---------- 6 Minuten gegen 1 Minute: two lines of the same reply at two speeds ---------- */
+export function initSpeed() {
+  const box = document.querySelector('.speed');
+  if (!box) return;
+  const cards = [...box.querySelectorAll('.speed__card')].map((card) => {
+    const p = card.querySelector('.speed__text');
+    const span = document.createElement('span');
+    span.textContent = p.textContent;
+    p.textContent = '';
+    p.append(span);
+    return { card, p, span };
+  });
+  const CYCLE = 9000; // the slow line needs the whole cycle, the fast one a sixth of it
+  const dur = [CYCLE, CYCLE / 6];
+  let raf = 0;
+  let t0 = 0;
+  const frame = (now) => {
+    if (!t0) t0 = now;
+    const t = (now - t0) % (CYCLE + 1200);
+    cards.forEach(({ card, p, span }, i) => {
+      const k = Math.min(1, t / dur[i]);
+      const dist = Math.max(0, span.scrollWidth - p.clientWidth);
+      card.style.setProperty('--p', k.toFixed(3));
+      span.style.setProperty('--x', `${(-dist * k).toFixed(1)}px`);
+    });
+    raf = requestAnimationFrame(frame);
+  };
+  loop({
+    root: box,
+    button: box.querySelector('.loop-btn'),
+    play: () => { t0 = 0; raf = requestAnimationFrame(frame); },
+    pause: () => { cancelAnimationFrame(raf); cards.forEach(({ card, span }) => { card.style.removeProperty('--p'); span.style.removeProperty('--x'); }); },
+  });
+}

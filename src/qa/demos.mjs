@@ -79,6 +79,30 @@ export async function checkDemos(browser, base) {
     await page.keyboard.press('ArrowLeft');
     await page.waitForTimeout(350);
     check('story: arrow keys on the tabs move to the previous step', (await active()) === 1 && (await page.evaluate(() => document.activeElement.id)) === 'story-tab-2');
+    // KI block: plays once in view, ends finished, «Nochmal» replays; tones by arrow keys.
+    await page.$eval('.kidemo', (el) => el.scrollIntoView({ block: 'center' }));
+    await page.waitForTimeout(1200);
+    const mid = await page.$eval('.kidemo', (el) => ({ playing: el.classList.contains('is-playing'), done: el.classList.contains('is-done') }));
+    await page.waitForTimeout(4200);
+    const end = await page.$eval('.kidemo', (el) => ({ done: el.classList.contains('is-done'), replay: !el.querySelector('.kidemo__replay').hidden, chips: el.querySelectorAll('.chip.is-on').length }));
+    check('KI demo: plays once in view and ends with the draft (under 5 s)', mid.playing && !mid.done && end.done && end.replay && end.chips === 4, JSON.stringify({ mid, end }));
+    await page.click('.kidemo__replay');
+    await page.waitForTimeout(300);
+    check('KI demo: «Nochmal» replays it', await page.$eval('.kidemo', (el) => !el.classList.contains('is-done')));
+    await page.focus('#tone-tab-1');
+    await page.keyboard.press('ArrowRight');
+    await page.keyboard.press('ArrowRight');
+    const tone = await page.evaluate(() => ({ focus: document.activeElement.id, shown: document.querySelector('.tone__panel.is-active .tone__text').textContent.slice(0, 9) }));
+    check('tone switcher: arrow keys choose «locker»', tone.focus === 'tone-tab-3' && tone.shown === 'Hi Anna! ', JSON.stringify(tone));
+    // 6 vs 1: moves while in view, pause button stops it.
+    await page.$eval('.speed', (el) => el.scrollIntoView({ block: 'center' }));
+    await page.waitForTimeout(700);
+    const sp1 = await page.$eval('.speed__card--slow', (el) => el.style.getPropertyValue('--p'));
+    await page.waitForTimeout(700);
+    const sp2 = await page.$eval('.speed__card--slow', (el) => el.style.getPropertyValue('--p'));
+    await page.click('.speed .loop-btn');
+    const sp3 = await page.$eval('.speed__card--slow', (el) => el.style.getPropertyValue('--p'));
+    check('6 vs 1: lines run while in view, the pause button stops them', sp1 !== sp2 && sp3 === '', `${sp1} -> ${sp2} -> "${sp3}"`);
     check('demos: no console errors', errors.length === 0, errors.join(' | '));
     await page.close();
   }
@@ -117,6 +141,14 @@ export async function checkDemos(browser, base) {
       toasts: [...document.querySelectorAll('.toast')].every((t) => getComputedStyle(t).opacity === '1'),
     }));
     check('reduced motion: story uses tabs without pin, all toasts listed', !rm.pinned && rm.tabs && rm.toasts, JSON.stringify(rm));
+    await page.$eval('.kidemo', (el) => el.scrollIntoView({ block: 'center' }));
+    await page.waitForTimeout(600);
+    const kr = await page.evaluate(() => ({
+      playing: document.querySelector('.kidemo').classList.contains('is-playing'),
+      draft: getComputedStyle(document.querySelector('.tone')).opacity === '1',
+      speed: getComputedStyle(document.querySelector('.speed__text')).whiteSpace !== 'nowrap',
+    }));
+    check('reduced motion: KI demo shows the finished draft, 6 vs 1 shows full text', !kr.playing && kr.draft && kr.speed, JSON.stringify(kr));
     await page.close();
   }
 
@@ -135,8 +167,10 @@ export async function checkDemos(browser, base) {
       baNoRange: getComputedStyle(document.querySelector('.ba__control')).display === 'none',
       storyStacked: [...document.querySelectorAll('.story__panel')].every((p) => getComputedStyle(p).visibility === 'visible' && p.getBoundingClientRect().height > 50),
       toasts: document.querySelectorAll('.toast').length === 4,
+      tones: [...document.querySelectorAll('.tone__panel')].filter((p) => getComputedStyle(p).visibility === 'visible').length === 3,
+      marks: getComputedStyle(document.querySelector('.hl')).backgroundColor !== 'rgba(0, 0, 0, 0)',
     }));
-    check('no JS: ribbon rests, tool list wraps, no pause buttons, before and after both shown', r === 0 && Object.values(s).every(Boolean), JSON.stringify({ r, ...s }));
+    check('no JS: ribbon rests, tools wrap, no pause buttons, before/after side by side, story stacked, all tones and marks shown', r === 0 && Object.values(s).every(Boolean), JSON.stringify({ r, ...s }));
     await page.screenshot({ path: path.join(shots, 'nojs-390.png'), fullPage: true });
     await ctx.close();
   }

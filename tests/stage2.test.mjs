@@ -100,3 +100,30 @@ test('3-step story: three panels with titles, the run log as step 2, toasts in s
   assert.match(en, /<li class="toast">Payment received: €297<\/li>/);
   assert.match(en, /<span class="demo-tag">Example run<\/span>/);
 });
+
+test('KI block: inbox to draft with marks, chips, pill, tone panels, note, after the KI item', () => {
+  const ki = de.match(/<section class="kidemo"[\s\S]*?<\/section>/)[0];
+  assert.ok(de.indexOf('KI im Kundenservice') < de.indexOf('class="kidemo"') && de.indexOf('class="kidemo"') < de.indexOf('id="ki-rechner"'));
+  assert.match(ki, /<h3 class="kidemo__title" id="kidemo-title">Vom verärgerten Mail zum fertigen <em class="accent">Entwurf<\/em><\/h3>/);
+  assert.equal(ki.match(/<p class="kidemo__text">([\s\S]*?)<\/p>/)[1].replace(/<[^>]+>/g, ''), 'hallo ich hab den kurs gekauft aber kein login bekommen??? und die rechnung fehlt auch. echt ärgerlich, brauche das bis morgen!!');
+  assert.deepEqual([...ki.matchAll(/<mark class="hl hl--\d">([^<]+)<\/mark>/g)].map((m) => m[1]), ['kein login bekommen', 'die rechnung fehlt', 'echt ärgerlich', 'bis morgen']);
+  assert.deepEqual([...ki.matchAll(/<li class="chip chip--\d">([^<]+)<\/li>/g)].map((m) => m[1]), ['Thema: Login', 'Rechnung fehlt', 'Stimmung: verärgert', 'dringend']);
+  assert.match(ki, /Entwurf wird erstellt…/);
+  assert.deepEqual([...ki.matchAll(/<p class="tone__label">([^<]+)<\/p>/g)].map((m) => m[1]), ['Sie', 'du', 'locker']);
+  assert.match(ki, /Liebe Anna, danke für Ihre Nachricht und entschuldigen Sie den Ärger\. Ihren Zugang habe ich neu verschickt, die Rechnung finden Sie im Anhang\. Bei Fragen bin ich gern da\./);
+  assert.match(ki, /Hi Anna! Sorry für das Chaos\. Zugang ist neu unterwegs, Rechnung hängt dran\. Schreib einfach, wenn noch was fehlt\./);
+  assert.match(ki, /<div class="kidemo__actions" aria-hidden="true"><span class="fake-btn fake-btn--primary">Freigeben<\/span><span class="fake-btn">Bearbeiten<\/span><\/div>/);
+  assert.match(ki, /Versendet wird erst nach Freigabe durch Ihr Team\./);
+  assert.match(ki, /<p class="kidemo__caption">Die Entwürfe klingen wie Ihre Schule\.<\/p>/);
+  assert.match(ki, /<button class="kidemo__replay" type="button" hidden>Nochmal<\/button>/);
+  assert.match(en, /<p class="tone__label">Casual<\/p>/);
+});
+
+test('KI block: 6 minutes vs 1 minute cards next to the calculator, example values, pause button', () => {
+  const speed = de.match(/<div class="speed">[\s\S]*?<button class="loop-btn"/)[0];
+  assert.match(speed, /<span class="demo-tag">Beispielwerte<\/span>/);
+  assert.match(speed, /<p class="speed__title">Von Hand: ca\. 6 Minuten pro Antwort<\/p>/);
+  assert.match(speed, /<p class="speed__title">Mit Entwurf: ca\. 1 Minute zum Prüfen<\/p>/);
+  assert.equal(count(speed, /<p class="speed__text" aria-hidden="true">/g), 2);
+  assert.ok(de.indexOf('id="ki-rechner"') < de.indexOf('class="speed"'));
+});

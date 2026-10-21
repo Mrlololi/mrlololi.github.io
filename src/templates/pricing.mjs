@@ -1,5 +1,6 @@
 import { esc, fill, accent } from './util.mjs';
 import { calcSavings, formatResult } from '../../assets/js/calc.js';
+import { kiDemo, speed } from './demos.mjs';
 
 function item(t, it) {
   const extra = it.extra ? `<p class="item__extra"><strong>${esc(it.extra.label)}</strong>, ${esc(it.extra.text)}</p>` : '';
@@ -47,6 +48,7 @@ ${fields}
 <p class="calc__note small">${esc(t.calc.note)}</p>
 <p class="sr-only" id="calc-live" aria-live="polite"></p>
 </form>
+${speed(t)}
 </li>`;
 }
 
@@ -59,7 +61,7 @@ export function pricing(t) {
 ${g.note ? `<p class="tariff__note">${esc(g.note)}</p>` : ''}
 </div>
 <ul class="tariff__items" role="list">
-${g.items.map((it) => item(t, it) + (it.calc ? '\n' + calculator(t) : '')).join('\n')}
+${g.items.map((it) => item(t, it) + (it.calc ? '\n' + kiDemo(t) + '\n' + calculator(t) : '')).join('\n')}
 </ul>
 </section>`
     )
