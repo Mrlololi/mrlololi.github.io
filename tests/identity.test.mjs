@@ -108,11 +108,29 @@ test('hero: Logik at Formular, Lösung at ActiveCampaign, Live at Kurs offen, as
   assert.match(css, /html:not\(\.js\) \.mascot-btn \{ display: none; \}/);
   assert.deepEqual(btns, [['logik', '1', 'Logik springt'], ['loesung', '2', 'Lösung springt'], ['live', '4', 'Live springt']]);
   assert.match(en, /aria-label="Lösung jumps"/);
-  for (const part of ['shadow', 'rig', 'legs', 'body', 'eyes', 'mouth', 'accessory', 'arms']) assert.ok(de.includes(`data-part="${part}"`), part);
+  for (const part of ['shadow', 'rig', 'legs', 'body', 'belly', 'eyes', 'mouth', 'accessory', 'arms']) assert.ok(de.includes(`data-part="${part}"`), part);
   // Logik wears the glasses, Lösung holds the wrench, Live has the peach star.
-  assert.match(de, /data-mascot="0"[\s\S]*?<circle cx="38" cy="57" r="10"\/>/);
-  assert.match(de, /data-mascot="1"[\s\S]*?<rect x="-3" y="-24" width="6" height="22" rx="3"\/>/);
+  assert.match(de, /data-mascot="0"[\s\S]*?<g class="m-glasses"/);
+  assert.match(de, /data-mascot="1"[\s\S]*?<rect x="-2.4" y="-18" width="4.8" height="22" rx="2.4"\/>/);
   assert.match(de, /data-mascot="2"[\s\S]*?fill="#F7DCC8"/);
+});
+
+test('mascots v2: hexagon, ball, teardrop; two-tone belly clipped to the body; glasses in every emotion', async () => {
+  const { MASCOTS, EMOTIONS, mascotSvg } = await import('../assets/js/mascot-art.js');
+  assert.deepEqual(MASCOTS.map((m) => [m.fill, m.belly]), [['#F4C9D3', '#FBE6EC'], ['#BFD8EE', '#E4F0FA'], ['#CFE3C2', '#EAF4E3']]);
+  for (const [i] of MASCOTS.entries()) {
+    for (const e of EMOTIONS) {
+      const s = mascotSvg(i, e);
+      const id = s.match(/<clipPath id="([\w-]+)">/)[1];
+      assert.match(s, new RegExp(`<g data-part="belly"><ellipse clip-path="url\\(#${id}\\)"`), `${i} ${e}`);
+      if (i === 0) assert.ok(s.includes('class="m-glasses"'), `Logik ${e}: glasses`);
+      if (e === 'wave') assert.match(s, /<g class="m-wave" data-origin="[\d.]+ [\d.]+">/);
+    }
+  }
+  // Every SVG gets its own clipPath id (hero and footer on one page).
+  const ids = [...de.matchAll(/<clipPath id="([\w-]+)">/g)].map((m) => m[1]);
+  assert.equal(ids.length, 6);
+  assert.equal(new Set(ids).size, 6);
 });
 
 test('mascot weight: three SVGs plus the mascot JS stay within 15 KB gzip; no Lottie, Rive or three.js', () => {

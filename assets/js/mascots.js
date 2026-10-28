@@ -1,4 +1,4 @@
-// Mascots Logik, Lösung, Live (Identity 21.10.2026). Without this file they stand still in their
+// Mascots Logik, Lösung, Live (Identity 21.10.2026, drawings v2 28.10.2026). Without this file they stand still in their
 // pose. initMascots (no GSAP): a click makes one jump, and in the hero each hops when the pulse
 // lights its flow node. startMascotMotion (after GSAP has loaded): idle bob with a little squash
 // and stretch, a blink every 4-6 s, eyes that follow the pointer on desktop, waving in the footer.
@@ -125,7 +125,9 @@ function footerMotion(gsap, box) {
   const svgs = [...box.querySelectorAll('.mascot')];
   const tl = gsap.timeline({ paused: true, onComplete: () => mark(svgs, false) });
   svgs.forEach((svg, i) => {
-    tl.fromTo(svg.querySelector('.m-wave'), { rotation: 0 }, { rotation: -22, svgOrigin: '86 64', duration: 0.3, ease: 'sine.inOut', yoyo: true, repeat: 5, immediateRender: false }, i * 0.15);
+    // The arm turns around its own shoulder (each body shape has it elsewhere).
+    const arm = svg.querySelector('.m-wave');
+    tl.fromTo(arm, { rotation: 0 }, { rotation: -22, svgOrigin: arm.dataset.origin, duration: 0.3, ease: 'sine.inOut', yoyo: true, repeat: 5, immediateRender: false }, i * 0.15);
   });
   loop({
     root: box,
