@@ -54,9 +54,10 @@ test('dates come from the content, not from the build day', () => {
   for (const f of ['datenschutz/index.html', 'en/privacy/index.html']) {
     assert.equal(later.find((p) => p.file === f).html, html(f), f);
   }
-  assert.match(html('datenschutz/index.html'), /Stand: 21\.10\.2026/);
+  assert.match(html('datenschutz/index.html'), /Stand: 28\.10\.2026/); // Language Starter section, 28.10.2026
   assert.equal(sitemap(config, new Date('2027-03-01')), sitemap(config, new Date('2026-01-01')));
-  assert.equal((sitemap(config).match(/<lastmod>2026-10-21<\/lastmod>/g) || []).length, 6);
+  assert.equal((sitemap(config).match(/<lastmod>2026-10-21<\/lastmod>/g) || []).length, 4);
+  assert.equal((sitemap(config).match(/<lastmod>2026-10-28<\/lastmod>/g) || []).length, 2, 'the two privacy pages');
 });
 
 test('external links open in a new tab and say so', () => {
