@@ -503,7 +503,7 @@ export default {
       label: 'Example calculation',
       meter: 'Hours per month',
       switch: 'per month',
-      options: [2, 5, 10],
+      options: [5, 10, 20],
       total: '{h} h = {eur} €',
       promiseTitle: 'My promise',
       days: ['Day 1', 'Day 14', 'Day 30'],

@@ -94,7 +94,7 @@ ${speed(t)}
 </li>`;
 }
 
-// Betreuung: an hour meter (1 -> 3 -> 5 h on entry, the total counts along) and a 2/5/10 h switch.
+// Betreuung: an hour meter (1 -> 3 -> 5 h on entry, the total counts along) and a 5/10/20 h switch.
 // Without JS the example (5 h = 225 €) stands alone; the switch appears with prices.js.
 function meter(t) {
   const s = t.s4.support;

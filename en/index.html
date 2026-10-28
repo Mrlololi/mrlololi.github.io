@@ -1164,7 +1164,7 @@ html:not(.js) .fixdemo__play { display: none; }
 .meter { display: grid; gap: var(--space-3); align-content: start; padding: var(--space-5); border-radius: var(--radius-card); background: var(--sheet); border: 1px solid var(--line); }
 .meter__total { font-family: var(--font-display); font-size: var(--step-2); font-weight: 750; font-variant-numeric: tabular-nums lining-nums; }
 .meter__bar { position: relative; display: block; height: 1rem; border-radius: 999px; background: rgb(255 255 255 / 0.8); border: 1px solid var(--line); overflow: hidden; }
-.meter__fill { position: absolute; inset: 0; background: linear-gradient(90deg, var(--pink), var(--lav), var(--blue)); transform-origin: left; transform: scaleX(calc(var(--h) / 10)); transition: transform 0.5s var(--ease-soft); }
+.meter__fill { position: absolute; inset: 0; background: linear-gradient(90deg, var(--pink), var(--lav), var(--blue)); transform-origin: left; transform: scaleX(calc(var(--h) / 20)); transition: transform 0.5s var(--ease-soft); }
 .meter__ticks { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(10, 1fr); }
 .meter__ticks i { border-right: 1px solid rgb(43 42 51 / 0.12); }
 .meter__switch { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); font-size: var(--step--1); font-weight: 600; }
@@ -1853,7 +1853,7 @@ html:not(.js) .brief { display: none; }
 <span class="label">Example calculation</span>
 <p class="meter__total"><span class="meter__h">5</span> h = <span class="meter__eur">225</span> €</p>
 <span class="meter__bar" aria-hidden="true"><span class="meter__fill"></span><span class="meter__ticks"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span></span>
-<div class="meter__switch"><div class="meter__opts" role="group" aria-label="Hours per month"><button class="meter__opt" type="button" aria-pressed="false" data-h="2">2 h</button><button class="meter__opt" type="button" aria-pressed="true" data-h="5">5 h</button><button class="meter__opt" type="button" aria-pressed="false" data-h="10">10 h</button></div><span class="meter__per">per month</span></div>
+<div class="meter__switch"><div class="meter__opts" role="group" aria-label="Hours per month"><button class="meter__opt" type="button" aria-pressed="true" data-h="5">5 h</button><button class="meter__opt" type="button" aria-pressed="false" data-h="10">10 h</button><button class="meter__opt" type="button" aria-pressed="false" data-h="20">20 h</button></div><span class="meter__per">per month</span></div>
 <p class="sr-only meter__live" aria-live="polite"></p>
 </div>
 </li>

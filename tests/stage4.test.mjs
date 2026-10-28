@@ -51,7 +51,7 @@ test('brief builder: the sentence and the e-mail follow the choices', () => {
 });
 
 test('support meter: 45 € per hour', () => {
-  assert.deepEqual([1, 3, 5, 2, 10].map(supportTotal), [45, 135, 225, 90, 450]);
+  assert.deepEqual([1, 3, 5, 10, 20].map(supportTotal), [45, 135, 225, 450, 900]);
 });
 
 /* ---------- motion system ---------- */
@@ -181,11 +181,12 @@ test('finder chat: honest header, static list for no JS, avatar Lösung', () => 
 });
 
 /* ---------- B8: Betreuung ---------- */
-test('Betreuung: hour meter, 2/5/10 h switch, 30-day strip with the stamp; VAT line unchanged', () => {
+test('Betreuung: hour meter, 5/10/20 h switch, 30-day strip with the stamp; VAT line unchanged', () => {
   const p = section(DE, 'services');
   assert.match(p, /<div class="meter"/);
   const opts = [...p.matchAll(/<button class="meter__opt" type="button" aria-pressed="(true|false)" data-h="(\d+)">/g)].map((m) => Number(m[2]));
-  assert.deepEqual(opts, [2, 5, 10]);
+  assert.deepEqual(opts, [5, 10, 20], 'the package starts at 5 h a month (Iva, 28.10)');
+  assert.match(css, /\.meter__fill \{[^}]*scaleX\(calc\(var\(--h\) \/ 20\)\)/, 'the bar spans 0 to 20 h');
   assert.match(p, /<ol class="zusage__days" role="list">/);
   assert.match(p, /<textPath href="#stamp-path"[^>]*>30 Tage Zusage · 30 Tage Zusage · <\/textPath>/);
   assert.ok(p.includes(`<p class="small">${de.pricing.smallPrint}</p>`), 'VAT text exactly as before');

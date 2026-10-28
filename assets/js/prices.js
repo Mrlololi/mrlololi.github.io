@@ -98,7 +98,7 @@ function chat() {
   });
 }
 
-// Hour meter: on entry 1 h -> 3 h -> 5 h with the total counting along; the switch rolls to 2, 5 or 10 h.
+// Hour meter: on entry 1 h -> 3 h -> 5 h with the total counting along; the switch rolls to 5, 10 or 20 h.
 function meter(gsap, reduceMotion, locale) {
   const box = document.querySelector('.meter');
   if (!box) return;

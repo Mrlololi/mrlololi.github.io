@@ -134,10 +134,10 @@ export async function checkStage4(browser, base) {
     // Betreuung: the switch rolls to 10 h = 450 €.
     await center(page, '.meter');
     await wait(page, 2400);
-    await page.click('.meter__opt[data-h="10"]');
+    await page.click('.meter__opt[data-h="20"]');
     await wait(page, 800);
     const meter = await page.$eval('.meter__total', (p) => p.textContent);
-    check('Betreuung: the 10 h switch rolls to 450 €', meter === '10 h = 450 €', meter);
+    check('Betreuung: the 20 h switch rolls to 900 €', meter === '20 h = 900 €', meter);
 
     // About: a timeline dot opens its story.
     await center(page, '.path');

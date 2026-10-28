@@ -504,7 +504,7 @@ export default {
       label: 'Beispielrechnung',
       meter: 'Stunden im Monat',
       switch: 'im Monat',
-      options: [2, 5, 10],
+      options: [5, 10, 20],
       total: '{h} h = {eur} €',
       promiseTitle: 'Meine Zusage',
       days: ['Tag 1', 'Tag 14', 'Tag 30'],
