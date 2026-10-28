@@ -57,11 +57,24 @@ ${sections}
 }
 
 // One 404.html serves both languages: German first, the English line below it.
+// Stage 5: both lists of service pages, so a wrong link still leads somewhere useful.
+const serviceList = (t) => `<ul class="doc__links" role="list">
+${t.services.pages.map((p) => `<li><a href="${p.path}">${esc(p.h1)}</a></li>`).join('\n')}
+</ul>`;
+
 export function notFound(t, alt) {
   return `<article class="doc">
 <h1>${esc(t.notFound.h1)}</h1>
 <p class="lead">${esc(t.notFound.text)}</p>
 <p><a class="btn btn--primary" href="${t.paths.home}">${esc(t.notFound.link)}</a></p>
+<section aria-labelledby="nf-services">
+<h2 id="nf-services">${esc(t.services.ui.notFound)}</h2>
+${serviceList(t)}
+</section>
 <p class="doc__alt" lang="${alt.lang}">${esc(alt.notFound.h1)} ${esc(alt.notFound.text)} <a href="${alt.paths.home}">${esc(alt.notFound.link)}</a></p>
+<section lang="${alt.lang}" aria-labelledby="nf-services-alt">
+<h2 id="nf-services-alt">${esc(alt.services.ui.notFound)}</h2>
+${serviceList(alt)}
+</section>
 </article>`;
 }

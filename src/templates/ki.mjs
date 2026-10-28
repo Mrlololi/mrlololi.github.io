@@ -35,7 +35,7 @@ export function kiDemo(t) {
   const more = KI_EXAMPLES[t.lang].slice(1).map((e) => `<li class="kimore__item"><p class="kimore__head"><strong>${esc(e.title)}</strong> · ${esc(e.from)} · ${esc(s.mood)}: ${esc(e.mood)}</p><p class="kimore__body">${markedBody(e)}</p><p class="kimore__draft"><span class="kidemo__tag">${esc(s.tag)}</span> ${esc(e.drafts.sie)}</p><p class="kimore__system"><strong>${esc(s.system)}:</strong> ${esc(e.system)}</p></li>`).join('\n');
   const labels = { why: s.why, draftDoes: s.draftDoes, close: s.close, legend: s.legend, counter: s.counter, next: s.next, random: s.random, inbox: s.inbox, unread: s.unread, subject: s.subject, mood: s.mood, tones: k.tones.map(([name]) => name) };
   return `<li class="tariff__ki">
-<section class="kidemo" aria-labelledby="kidemo-title" data-src="/assets/data/ki-${t.lang}.json" data-labels="${esc(JSON.stringify(labels))}">
+<section class="kidemo" id="ki-demo" aria-labelledby="kidemo-title" data-src="/assets/data/ki-${t.lang}.json" data-labels="${esc(JSON.stringify(labels))}">
 <div class="kidemo__head"><h3 class="kidemo__title" id="kidemo-title">${accent(k.h3)}</h3><span class="label">${esc(t.ui.example)}</span></div>
 <div class="kidemo__layout">
 <ol class="kisteps" role="list">

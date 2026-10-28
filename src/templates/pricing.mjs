@@ -49,6 +49,9 @@ function item(t, it, email) {
     : '';
   const bullets = it.bullets ? `<ul class="item__bullets" role="list">${it.bullets.map((b) => `<li>${esc(b)}</li>`).join('')}</ul>` : '';
   const badge = it.id === 'check' ? `<span class="label label--lav item__badge">${esc(t.s4.starter.recommended)}</span>` : '';
+  // Stage 5: a text link to the package's own page (it sits above the card-wide «Anfragen» link).
+  const page = t.services.pages.find((p) => p.key === t.services.byPackage[it.id]);
+  const more = page ? `<a class="item__more" href="${page.path}">${esc(t.services.ui.more)} ${esc(page.short)}</a>` : '';
   return `<li class="item item--${it.id}"${it.id ? ` id="pkg-${it.id}"` : ''} data-tilt>
 ${badge}<h4 class="item__name">${esc(it.name)}</h4>
 <p class="item__price">${esc(it.price)}</p>
@@ -57,6 +60,7 @@ ${bullets}
 <p class="item__summary">${esc(it.summary)}</p>
 ${extra}
 ${details}
+${more}
 <a class="btn btn--sm item__cta" href="mailto:${email}?subject=${encodeURIComponent(t.pricing.subjectPrefix + it.name)}">${esc(t.pricing.cta)}<span class="sr-only">: ${esc(it.name)}</span></a>
 </li>`;
 }

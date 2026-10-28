@@ -54,7 +54,7 @@ export async function network(browser, base) {
   await page.close();
   const blocked = ['fonts.googleapis.com', 'fonts.gstatic.com', 'cdn.jsdelivr.net', 'unpkg.com'];
   return [
-    ok('network: only same-origin requests on all 7 pages', foreign.length === 0, foreign.join(', ')),
+    ok(`network: only same-origin requests on all ${PAGES.length} pages`, foreign.length === 0, foreign.join(', ')),
     ok('network: no Google Fonts / CDN hosts', !foreign.some((u) => blocked.some((b) => u.includes(b)))),
     ok('network: no failed requests (404 page itself excluded)', failed.length === 0, failed.join(', ')),
   ];

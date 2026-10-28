@@ -42,4 +42,74 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://mrlololi.com/en/privacy/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mrlololi.com/datenschutz/"/>
   </url>
+  <url>
+    <loc>https://mrlololi.com/launch-technik/</loc>
+    <lastmod>2026-10-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mrlololi.com/launch-technik/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mrlololi.com/en/course-launch-tech/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mrlololi.com/launch-technik/"/>
+  </url>
+  <url>
+    <loc>https://mrlololi.com/en/course-launch-tech/</loc>
+    <lastmod>2026-10-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mrlololi.com/launch-technik/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mrlololi.com/en/course-launch-tech/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mrlololi.com/launch-technik/"/>
+  </url>
+  <url>
+    <loc>https://mrlololi.com/e-mails-landen-im-spam/</loc>
+    <lastmod>2026-10-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mrlololi.com/e-mails-landen-im-spam/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mrlololi.com/en/emails-going-to-spam/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mrlololi.com/e-mails-landen-im-spam/"/>
+  </url>
+  <url>
+    <loc>https://mrlololi.com/en/emails-going-to-spam/</loc>
+    <lastmod>2026-10-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mrlololi.com/e-mails-landen-im-spam/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mrlololi.com/en/emails-going-to-spam/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mrlololi.com/e-mails-landen-im-spam/"/>
+  </url>
+  <url>
+    <loc>https://mrlololi.com/activecampaign-einrichten/</loc>
+    <lastmod>2026-10-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mrlololi.com/activecampaign-einrichten/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mrlololi.com/en/activecampaign-setup/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mrlololi.com/activecampaign-einrichten/"/>
+  </url>
+  <url>
+    <loc>https://mrlololi.com/en/activecampaign-setup/</loc>
+    <lastmod>2026-10-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mrlololi.com/activecampaign-einrichten/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mrlololi.com/en/activecampaign-setup/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mrlololi.com/activecampaign-einrichten/"/>
+  </url>
+  <url>
+    <loc>https://mrlololi.com/ki-antwortentwuerfe/</loc>
+    <lastmod>2026-10-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mrlololi.com/ki-antwortentwuerfe/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mrlololi.com/en/ai-reply-drafts/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mrlololi.com/ki-antwortentwuerfe/"/>
+  </url>
+  <url>
+    <loc>https://mrlololi.com/en/ai-reply-drafts/</loc>
+    <lastmod>2026-10-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mrlololi.com/ki-antwortentwuerfe/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mrlololi.com/en/ai-reply-drafts/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mrlololi.com/ki-antwortentwuerfe/"/>
+  </url>
+  <url>
+    <loc>https://mrlololi.com/website-one-pager/</loc>
+    <lastmod>2026-10-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mrlololi.com/website-one-pager/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mrlololi.com/en/one-page-website/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mrlololi.com/website-one-pager/"/>
+  </url>
+  <url>
+    <loc>https://mrlololi.com/en/one-page-website/</loc>
+    <lastmod>2026-10-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mrlololi.com/website-one-pager/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mrlololi.com/en/one-page-website/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mrlololi.com/website-one-pager/"/>
+  </url>
 </urlset>

@@ -11,11 +11,14 @@ const css = readFileSync(new URL('../../assets/css/main.css', import.meta.url), 
   .replace(/\n{2,}/g, '\n')
   .trim();
 
-// page: { key: 'home'|'legal'|'privacy'|'404', path, altPath, title, description, noindex? }
-export function layout({ t, other, config, page, main }) {
+// page: { key, path, altPath, title, description, noindex?, ogImage?, ld? }. Every indexable page has a
+// canonical; hreflang only where a DE/EN pair exists (the Ratgeber is German only).
+// ratgeber: true once the Ratgeber is live (config.ratgeber_live and at least one article).
+export function layout({ t, other, config, page, main, ratgeber = false }) {
   const isHome = page.key === 'home';
   const alts = alternatesFor(page.path);
-  const ogImage = absUrl(config, `/og-image-${t.lang}.png`);
+  const canonical = !page.noindex;
+  const ogImage = absUrl(config, page.ogImage || `/og-image-${t.lang}.png`);
 
   const head = join([
     '<meta charset="utf-8">',
@@ -23,7 +26,7 @@ export function layout({ t, other, config, page, main }) {
     `<title>${esc(page.title)}</title>`,
     `<meta name="description" content="${esc(page.description)}">`,
     page.noindex && '<meta name="robots" content="noindex">',
-    alts && `<link rel="canonical" href="${absUrl(config, page.path)}">`,
+    canonical && `<link rel="canonical" href="${absUrl(config, page.path)}">`,
     alts && `<link rel="alternate" hreflang="de" href="${absUrl(config, alts.de)}">`,
     alts && `<link rel="alternate" hreflang="en" href="${absUrl(config, alts.en)}">`,
     alts && `<link rel="alternate" hreflang="x-default" href="${absUrl(config, alts.de)}">`,
@@ -31,7 +34,7 @@ export function layout({ t, other, config, page, main }) {
     '<meta property="og:site_name" content="mrlololi">',
     `<meta property="og:title" content="${esc(page.title)}">`,
     `<meta property="og:description" content="${esc(page.description)}">`,
-    alts && `<meta property="og:url" content="${absUrl(config, page.path)}">`,
+    canonical && `<meta property="og:url" content="${absUrl(config, page.path)}">`,
     `<meta property="og:image" content="${ogImage}">`,
     '<meta property="og:image:width" content="1200">',
     '<meta property="og:image:height" content="630">',
@@ -60,7 +63,8 @@ export function layout({ t, other, config, page, main }) {
     `<script type="module">requestAnimationFrame(()=>requestAnimationFrame(()=>import('/assets/js/main.js')))</script>`,
     // main.js's own imports are fetched early at low priority, so they are ready when it runs.
     ...['demos', 'calc', 'loops', ...(isHome ? ['mascots', 'mascot-art'] : [])].map((m) => `<link rel="modulepreload" href="/assets/js/${m}.js" fetchpriority="low">`),
-    isHome && jsonLd(t, config),
+    // Stage 5: the business and Iva (#business, #iva) on every page, plus the page's own nodes.
+    jsonLd(t, config, page.ld || []),
   ]);
 
   return `<!doctype html>
@@ -74,7 +78,7 @@ ${header({ t, page, isHome, variant: config.header_variant || 'light' })}
 <main id="main" tabindex="-1">
 ${main}
 </main>
-${footer({ t, page })}
+${footer({ t, page, ratgeber })}
 </body>
 </html>
 `;
@@ -110,14 +114,28 @@ ${footerMascots()}
 </div>`;
 }
 
+// Stage 5: a «Leistungen» column with the five service pages (and the Ratgeber once it is live, DE only).
+function footerServices(t, ratgeber) {
+  const L = t.services.ui;
+  const links = t.services.pages.map((p) => `<li><a href="${p.path}">${esc(p.short)}</a></li>`);
+  if (ratgeber && t.ratgeber) links.push(`<li><a href="${t.ratgeber.path}">${esc(t.ratgeber.h1)}</a></li>`);
+  return `<nav class="site-footer__services" aria-label="${esc(L.services)}">
+<p class="site-footer__title">${esc(L.services)}</p>
+<ul class="site-footer__links">
+${links.join('\n')}
+</ul>
+</nav>`;
+}
+
 // The footer repeats the section links: it is also where the phone "Menü" link leads
 // when main.js has not (yet) loaded.
-function footer({ t, page }) {
+function footer({ t, page, ratgeber }) {
   const base = page.key === 'home' ? '' : t.paths.home;
   const sections = t.nav.map((n) => `<li><a href="${base}${n.href}">${esc(n.label)}</a></li>`).join('\n');
   return `<footer class="site-footer bg-ink edge">
 <div class="site-footer__in">
-${page.key === 'home' ? footerBrand(t) : ''}<p class="site-footer__copy">${esc(t.footer.copyright)}</p>
+${page.key === 'home' ? footerBrand(t) : ''}${footerServices(t, ratgeber)}
+<p class="site-footer__copy">${esc(t.footer.copyright)}</p>
 <nav id="footer-nav" aria-label="${esc(t.ui.footerNavLabel)}">
 <ul class="site-footer__links">
 ${sections}

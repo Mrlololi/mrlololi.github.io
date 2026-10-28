@@ -37,3 +37,23 @@ export function ogHtml(t) {
 <div class="log"><h2>${esc(t.run.title)}</h2><ol>${steps}</ol><div class="sum">${esc(t.run.summary)}</div></div>
 </div></body></html>`;
 }
+
+// Stage 5: the same 1200x630 card for a service page: the lockup, the page title and the package price.
+// No mascots (the service pages have none).
+export function ogPageHtml(t, title, price) {
+  return `<!doctype html>
+<html lang="${t.lang}"><head><meta charset="utf-8"><link rel="stylesheet" href="/assets/css/main.css">
+<style>
+  html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; background: linear-gradient(135deg, #F4C9D3, #DCD3F0); }
+  .og { box-sizing: border-box; width: 1200px; height: 630px; padding: 72px 80px; display: grid; grid-template-rows: auto 1fr auto; }
+  .mark { display: block; height: 92px; width: auto; }
+  .title { align-self: center; max-width: 1000px; font-family: var(--font-display); font-weight: 680; font-size: 76px; line-height: 1.02; letter-spacing: -0.025em; color: #2B2A33; }
+  .foot { display: flex; justify-content: space-between; align-items: baseline; font-family: var(--font-body); font-size: 28px; color: #4A4753; }
+  .price { font-family: var(--font-display); font-weight: 750; font-size: 34px; color: #2B2A33; }
+</style></head>
+<body><div class="og">
+${lockup({ kind: 'full', lang: t.lang, class: 'mark' })}
+<div class="title">${esc(title)}</div>
+<div class="foot"><span>Iva Tsatskrialashvili · mrlololi.com</span><span class="price">${esc(price)}</span></div>
+</div></body></html>`;
+}

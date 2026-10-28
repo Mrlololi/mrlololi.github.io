@@ -1539,3 +1539,69 @@ html:not(.js) .brief { display: none; }
 .run__bar { padding: 0; display: block; }
 .run__steps { padding: 0; }
 .run__step { padding-block: 0; border-bottom: 0; }
+
+/* ---------- Stage 5: service pages (one light template, no mascots, no demo scripts) ---------- */
+.crumbs ol { display: flex; flex-wrap: wrap; align-items: center; column-gap: var(--space-2); font-size: var(--step--1); color: var(--ink-soft); }
+.crumbs li { display: inline-flex; align-items: center; gap: var(--space-2); }
+.crumbs a { display: inline-flex; align-items: center; min-height: 2.75rem; color: var(--ink-soft); }
+.crumbs a:hover { color: var(--ink); }
+.crumbs [aria-current] { color: var(--ink); font-weight: 700; }
+.svc-hero { padding-block: var(--space-4) calc(var(--space-8) + var(--dock-r)); }
+.svc-hero__in { display: grid; gap: var(--space-5); justify-items: start; }
+.svc-hero h1 { max-width: 20ch; font-size: clamp(2.125rem, 1.5rem + 2.6vw, 3.75rem); line-height: 1.06; }
+.svc-hero .lead { max-width: 40rem; }
+.svc-prices { display: flex; flex-wrap: wrap; gap: var(--space-3) var(--space-5); }
+.svc-price { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+.svc-price__value, .svc-pkg__price { font-family: var(--font-display); font-size: var(--step-2); font-weight: 750; line-height: 1.15; font-variant-numeric: tabular-nums lining-nums; }
+.svc-sec { padding-block: var(--space-8) calc(var(--space-8) + var(--dock-r)); }
+.svc-sec__in { display: grid; gap: var(--space-5); }
+.svc-sec__in > * { max-width: 46rem; }
+.svc-sec__in > .svc-pkgs, .svc-sec__in > .svc-steps, .svc-sec__in > .svc-rels { max-width: none; }
+.svc-text { font-size: var(--step-1); line-height: 1.5; color: var(--ink-soft); }
+.svc-list { padding-inline-start: 1.2rem; display: grid; gap: var(--space-2); line-height: 1.5; }
+.svc-pkgs { display: grid; gap: var(--space-4); grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); }
+.svc-pkg { display: grid; gap: var(--space-3); align-content: start; justify-items: start; padding: var(--space-5); background: var(--sheet); border: 1px solid var(--line); border-radius: var(--radius-card); }
+.svc-pkg__name { font-size: var(--step-1); }
+.svc-steps { display: grid; gap: var(--space-4); grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); }
+.svc-step { display: grid; gap: var(--space-2); align-content: start; padding: var(--space-5); background: var(--sheet); border: 1px solid var(--line); border-radius: var(--radius-card); }
+.svc-step__n { display: grid; place-items: center; width: 2.25rem; height: 2.25rem; border-radius: 50%; background: var(--ink); color: #fff; font-weight: 700; }
+.svc-step h3 { font-size: var(--step-1); }
+.svc-step p { color: var(--ink-soft); }
+.svc-card, .svc-case { display: grid; gap: var(--space-4); padding: var(--space-5); background: var(--sheet); border: 1px solid var(--line); border-radius: var(--radius-card); }
+.svc-card h3, .svc-case h3 { font-size: var(--step-1); }
+.svc-case .browser img { width: 100%; height: auto; }
+.svc-figure { padding: var(--space-5); background: var(--sheet); border: 1px solid var(--line); border-radius: var(--radius-card); }
+.svc-spam { width: 100%; max-width: 26rem; height: auto; font-family: var(--font-body); }
+.svc-links { display: flex; flex-wrap: wrap; gap: 0 var(--space-5); }
+.svc-faq { display: grid; gap: var(--space-3); }
+.svc-rels { display: grid; gap: var(--space-3); grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); }
+.svc-rel { display: flex; align-items: center; min-height: 3.5rem; height: 100%; padding: var(--space-4) var(--space-5); background: var(--sheet); border: 1px solid var(--line); border-radius: 16px; font-weight: 700; color: var(--ink); text-decoration: none; }
+.svc-rel::after { content: "\2192"; margin-inline-start: auto; padding-inline-start: var(--space-3); color: var(--lav-ink); }
+.svc-rel:hover { color: var(--lav-ink); border-color: var(--lav-ink); }
+.svc-contact { display: grid; gap: var(--space-4); margin-top: var(--space-7); }
+.svc-contact__title { font-size: var(--step-3); }
+/* Home price cards: «Mehr zu …» stays clickable above the card-wide «Anfragen» link. */
+.item__more { position: relative; z-index: 1; align-self: flex-start; display: inline-flex; align-items: center; min-height: 2.75rem; font-size: var(--step--1); font-weight: 700; }
+/* Footer: the «Leistungen» column, its own row above the copyright line. */
+.site-footer__services { flex-basis: 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--space-4); }
+.site-footer__title { font-weight: 700; color: #fff; margin-inline-end: var(--space-2); }
+.site-footer__services .site-footer__links { flex-wrap: wrap; white-space: normal; }
+.doc__links { display: grid; gap: var(--space-1); }
+.doc__links a { display: inline-flex; align-items: center; min-height: 2.75rem; }
+
+/* ---------- Stage 5: Ratgeber (published only with config.ratgeber_live) ---------- */
+.ratgeber__head { display: grid; gap: var(--space-3); }
+.toc { padding: var(--space-4) var(--space-5); background: var(--lav-tint); border-radius: 16px; }
+.toc h2 { font-size: var(--step-0); margin-bottom: var(--space-2); }
+.toc ol { padding-inline-start: 1.2rem; display: grid; gap: var(--space-1); }
+.ratgeber__body { display: grid; gap: var(--space-4); }
+.ratgeber__body h2 { font-size: var(--step-2); margin-top: var(--space-4); }
+.ratgeber__body h3 { font-size: var(--step-1); }
+.ratgeber__body ul, .ratgeber__body ol { padding-inline-start: 1.2rem; display: grid; gap: var(--space-1); }
+.ratgeber-cta { display: grid; gap: var(--space-3); justify-items: start; padding: var(--space-5); background: var(--pist-tint); border: 1px solid var(--line); border-radius: var(--radius-card); }
+.ratgeber-cta h2 { font-size: var(--step-1); }
+.ratgeber-cta__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-5); }
+.ratgeber-list { display: grid; gap: var(--space-5); }
+.ratgeber-teaser { display: grid; gap: var(--space-2); }
+.ratgeber-teaser h2 { font-size: var(--step-2); }
+.ratgeber-more ul { display: grid; gap: var(--space-1); }

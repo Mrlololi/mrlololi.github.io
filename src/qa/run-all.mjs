@@ -5,7 +5,8 @@ import { writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { chromium, repoRoot, qaDir } from './browsers.mjs';
 import { startServer } from './serve.mjs';
-import { checkOverflow } from './overflow.mjs';
+import { checkOverflow, PAGES, SERVICE_PAGES } from './overflow.mjs';
+import { checkSeo } from './seo.mjs';
 import { checkBehaviour } from './behaviour.mjs';
 import { checkReviewFixes } from './review-fixes.mjs';
 import { checkDemos } from './demos.mjs';
@@ -28,7 +29,7 @@ const run = async (title, fn) => {
 
 await run('Layout (no horizontal scroll)', async () => {
   const problems = await checkOverflow(browser, server.url);
-  return [{ name: 'no horizontal scroll on 7 pages at 360/390/768/1024/1280/1440, plus EN/DE 360-400 after main.js', pass: problems.length === 0, details: problems.join('\n') }];
+  return [{ name: `no horizontal scroll on ${PAGES.length} pages at 360/390/768/1024/1280/1440, plus EN/DE 360-400 after main.js`, pass: problems.length === 0, details: problems.join('\n') }];
 });
 await run('Screenshots', () => screenshots(browser, server.url));
 await run('Motion, reduced motion, no JS, calculator', () => checkBehaviour(browser, server.url));
@@ -37,6 +38,11 @@ await run('Stage 2 demos (motion, reduced motion, no JS, keyboard, mobile)', () 
 await run('Stage 3 clickable guard (DE, EN, 360, 1280)', () => checkClickable(browser, server.url));
 await run('Fixes 21.10.2026 (footer, calculator, tooltips, reduced motion, keys)', () => checkFixes(browser, server.url));
 await run('Stage 4 (replay, reduced motion, no JS, keyboard and Escape, phone tabs, mailto)', () => checkStage4(browser, server.url));
+// Stage 5: canonical and reciprocal hreflang over the built pages.
+await run('SEO (canonical, hreflang)', async () => {
+  const r = await checkSeo(repoRoot);
+  return [{ name: `seo: ${r.indexable} indexable pages with canonical and reciprocal hreflang`, pass: r.problems.length === 0, details: r.problems.join('\n') }];
+});
 await run('Network', () => network(browser, server.url));
 await run('Accessibility (axe)', () => accessibility(browser, server.url));
 await run('Keyboard', () => keyboard(browser, server.url));
@@ -48,7 +54,7 @@ await server.close();
 
 if (!skipLighthouse) {
   const lhServer = await startServer({ root: repoRoot, rewriteOrigin: config.site_url });
-  await run('Lighthouse (mobile)', () => lighthouseCheck(lhServer.url));
+  await run('Lighthouse (mobile)', () => lighthouseCheck(lhServer.url, ['/', '/en/', ...SERVICE_PAGES]));
   await lhServer.close();
 }
 

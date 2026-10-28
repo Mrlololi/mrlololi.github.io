@@ -32,8 +32,11 @@ const expected = {
   '404.html': { lang: 'de', url: null },
 };
 
-test('builds exactly the seven pages', () => {
-  assert.deepEqual(all.map((p) => p.file).sort(), Object.keys(expected).sort());
+// Stage 5 added the ten service pages (tests/stage5-seo.test.mjs checks them).
+test('builds the seven original pages plus the ten service pages', () => {
+  const SERVICE = /^(en\/)?(launch-technik|e-mails-landen-im-spam|activecampaign-einrichten|ki-antwortentwuerfe|website-one-pager|course-launch-tech|emails-going-to-spam|activecampaign-setup|ai-reply-drafts|one-page-website)\/index\.html$/;
+  assert.deepEqual(all.map((p) => p.file).filter((f) => !SERVICE.test(f)).sort(), Object.keys(expected).sort());
+  assert.equal(all.length, 17);
 });
 
 for (const [file, { lang, url }] of Object.entries(expected)) {
@@ -84,7 +87,10 @@ test('home pages carry ProfessionalService JSON-LD with the Impressum address (F
     assert.equal(data.address.postalCode, '8020');
     assert.equal(data.address.addressLocality, 'Graz');
     assert.equal(data.address.streetAddress, 'Herbersteinstraße 4/4181');
-    assert.deepEqual(data.founder.sameAs, [config.linkedin, config.malt]);
+    // Stage 5: the founder is a reference to the full Person node.
+    assert.deepEqual(data.founder, { '@id': 'https://mrlololi.com/#iva' });
+    const iva = JSON.parse(m[1])['@graph'].find((n) => n['@id'] === 'https://mrlololi.com/#iva');
+    assert.deepEqual(iva.sameAs.slice(0, 2), [config.linkedin, config.malt]);
   }
 });
 
@@ -151,9 +157,9 @@ test('404: German text and link to the home page, plus the English line', () => 
   assert.match(html, /<p class="doc__alt" lang="en">This page doesn't exist\. The home page might help\. <a href="\/en\/">Go to the home page<\/a><\/p>/);
 });
 
-test('sitemap lists the six indexable pages with alternates', () => {
+test('sitemap lists the sixteen indexable pages with alternates (Stage 5: plus ten service pages)', () => {
   const xml = sitemap(config, fixedDate);
-  assert.equal(count(xml, /<url>/g), 6);
-  assert.equal(count(xml, /<xhtml:link rel="alternate"/g), 18);
+  assert.equal(count(xml, /<url>/g), 16);
+  assert.equal(count(xml, /<xhtml:link rel="alternate"/g), 48);
   assert.ok(xml.includes(`<loc>${SITE}/en/privacy/</loc>`));
 });

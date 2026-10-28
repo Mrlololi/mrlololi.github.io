@@ -4,7 +4,7 @@ import { mkdir } from 'node:fs/promises';
 import path from 'node:path';
 import { chromium, repoRoot } from '../qa/browsers.mjs';
 import { startServer } from '../qa/serve.mjs';
-import { ogHtml } from '../templates/og.mjs';
+import { ogHtml, ogPageHtml } from '../templates/og.mjs';
 import de from '../content/de.mjs';
 import en from '../content/en.mjs';
 
@@ -12,7 +12,24 @@ const server = await startServer({ root: repoRoot });
 const browser = await chromium.launch();
 const exportDir = path.resolve(repoRoot, '../docs/brand-export');
 await mkdir(exportDir, { recursive: true });
-for (const [t, scale] of [[de, 1], [en, 1], [de, 2], [en, 2]]) {
+const fontsReady = (page) => page.evaluate(() => Promise.all(['680 60px "Bricolage Grotesque"', '750 34px "Bricolage Grotesque"', 'italic 500 60px "EB Garamond"', '400 19px "Atkinson Hyperlegible Next"'].map((f) => document.fonts.load(f))).then(() => document.fonts.ready));
+
+// Stage 5: one card per service page, assets/og/<lang>-<key>.png (--only-pages skips the home cards).
+await mkdir(path.join(repoRoot, 'assets/og'), { recursive: true });
+for (const t of [de, en]) {
+  const prices = Object.fromEntries(t.pricing.groups.flatMap((g) => g.items).map((it) => [it.id, it.price]));
+  for (const s of t.services.pages) {
+    const page = await browser.newPage({ viewport: { width: 1200, height: 630 } });
+    await page.goto(`${server.url}/404.html`);
+    await page.setContent(ogPageHtml(t, s.h1, prices[s.packages[0]]), { waitUntil: 'load' });
+    await fontsReady(page);
+    const file = path.join(repoRoot, `assets/og/${t.lang}-${s.key}.png`);
+    await page.screenshot({ path: file });
+    console.log(`og: assets/og/${path.basename(file)}`);
+    await page.close();
+  }
+}
+for (const [t, scale] of process.argv.includes('--only-pages') ? [] : [[de, 1], [en, 1], [de, 2], [en, 2]]) {
   const page = await browser.newPage({ viewport: { width: 1200, height: 630 }, deviceScaleFactor: scale });
   await page.goto(`${server.url}/404.html`);
   await page.setContent(ogHtml(t), { waitUntil: 'load' });

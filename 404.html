@@ -1384,12 +1384,73 @@ html:not(.js) .brief { display: none; }
 .run { border-radius: 0; }
 .run__bar { padding: 0; display: block; }
 .run__steps { padding: 0; }
-.run__step { padding-block: 0; border-bottom: 0; }</style>
+.run__step { padding-block: 0; border-bottom: 0; }
+.crumbs ol { display: flex; flex-wrap: wrap; align-items: center; column-gap: var(--space-2); font-size: var(--step--1); color: var(--ink-soft); }
+.crumbs li { display: inline-flex; align-items: center; gap: var(--space-2); }
+.crumbs a { display: inline-flex; align-items: center; min-height: 2.75rem; color: var(--ink-soft); }
+.crumbs a:hover { color: var(--ink); }
+.crumbs [aria-current] { color: var(--ink); font-weight: 700; }
+.svc-hero { padding-block: var(--space-4) calc(var(--space-8) + var(--dock-r)); }
+.svc-hero__in { display: grid; gap: var(--space-5); justify-items: start; }
+.svc-hero h1 { max-width: 20ch; font-size: clamp(2.125rem, 1.5rem + 2.6vw, 3.75rem); line-height: 1.06; }
+.svc-hero .lead { max-width: 40rem; }
+.svc-prices { display: flex; flex-wrap: wrap; gap: var(--space-3) var(--space-5); }
+.svc-price { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+.svc-price__value, .svc-pkg__price { font-family: var(--font-display); font-size: var(--step-2); font-weight: 750; line-height: 1.15; font-variant-numeric: tabular-nums lining-nums; }
+.svc-sec { padding-block: var(--space-8) calc(var(--space-8) + var(--dock-r)); }
+.svc-sec__in { display: grid; gap: var(--space-5); }
+.svc-sec__in > * { max-width: 46rem; }
+.svc-sec__in > .svc-pkgs, .svc-sec__in > .svc-steps, .svc-sec__in > .svc-rels { max-width: none; }
+.svc-text { font-size: var(--step-1); line-height: 1.5; color: var(--ink-soft); }
+.svc-list { padding-inline-start: 1.2rem; display: grid; gap: var(--space-2); line-height: 1.5; }
+.svc-pkgs { display: grid; gap: var(--space-4); grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); }
+.svc-pkg { display: grid; gap: var(--space-3); align-content: start; justify-items: start; padding: var(--space-5); background: var(--sheet); border: 1px solid var(--line); border-radius: var(--radius-card); }
+.svc-pkg__name { font-size: var(--step-1); }
+.svc-steps { display: grid; gap: var(--space-4); grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); }
+.svc-step { display: grid; gap: var(--space-2); align-content: start; padding: var(--space-5); background: var(--sheet); border: 1px solid var(--line); border-radius: var(--radius-card); }
+.svc-step__n { display: grid; place-items: center; width: 2.25rem; height: 2.25rem; border-radius: 50%; background: var(--ink); color: #fff; font-weight: 700; }
+.svc-step h3 { font-size: var(--step-1); }
+.svc-step p { color: var(--ink-soft); }
+.svc-card, .svc-case { display: grid; gap: var(--space-4); padding: var(--space-5); background: var(--sheet); border: 1px solid var(--line); border-radius: var(--radius-card); }
+.svc-card h3, .svc-case h3 { font-size: var(--step-1); }
+.svc-case .browser img { width: 100%; height: auto; }
+.svc-figure { padding: var(--space-5); background: var(--sheet); border: 1px solid var(--line); border-radius: var(--radius-card); }
+.svc-spam { width: 100%; max-width: 26rem; height: auto; font-family: var(--font-body); }
+.svc-links { display: flex; flex-wrap: wrap; gap: 0 var(--space-5); }
+.svc-faq { display: grid; gap: var(--space-3); }
+.svc-rels { display: grid; gap: var(--space-3); grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); }
+.svc-rel { display: flex; align-items: center; min-height: 3.5rem; height: 100%; padding: var(--space-4) var(--space-5); background: var(--sheet); border: 1px solid var(--line); border-radius: 16px; font-weight: 700; color: var(--ink); text-decoration: none; }
+.svc-rel::after { content: "\2192"; margin-inline-start: auto; padding-inline-start: var(--space-3); color: var(--lav-ink); }
+.svc-rel:hover { color: var(--lav-ink); border-color: var(--lav-ink); }
+.svc-contact { display: grid; gap: var(--space-4); margin-top: var(--space-7); }
+.svc-contact__title { font-size: var(--step-3); }
+.item__more { position: relative; z-index: 1; align-self: flex-start; display: inline-flex; align-items: center; min-height: 2.75rem; font-size: var(--step--1); font-weight: 700; }
+.site-footer__services { flex-basis: 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--space-4); }
+.site-footer__title { font-weight: 700; color: #fff; margin-inline-end: var(--space-2); }
+.site-footer__services .site-footer__links { flex-wrap: wrap; white-space: normal; }
+.doc__links { display: grid; gap: var(--space-1); }
+.doc__links a { display: inline-flex; align-items: center; min-height: 2.75rem; }
+.ratgeber__head { display: grid; gap: var(--space-3); }
+.toc { padding: var(--space-4) var(--space-5); background: var(--lav-tint); border-radius: 16px; }
+.toc h2 { font-size: var(--step-0); margin-bottom: var(--space-2); }
+.toc ol { padding-inline-start: 1.2rem; display: grid; gap: var(--space-1); }
+.ratgeber__body { display: grid; gap: var(--space-4); }
+.ratgeber__body h2 { font-size: var(--step-2); margin-top: var(--space-4); }
+.ratgeber__body h3 { font-size: var(--step-1); }
+.ratgeber__body ul, .ratgeber__body ol { padding-inline-start: 1.2rem; display: grid; gap: var(--space-1); }
+.ratgeber-cta { display: grid; gap: var(--space-3); justify-items: start; padding: var(--space-5); background: var(--pist-tint); border: 1px solid var(--line); border-radius: var(--radius-card); }
+.ratgeber-cta h2 { font-size: var(--step-1); }
+.ratgeber-cta__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-5); }
+.ratgeber-list { display: grid; gap: var(--space-5); }
+.ratgeber-teaser { display: grid; gap: var(--space-2); }
+.ratgeber-teaser h2 { font-size: var(--step-2); }
+.ratgeber-more ul { display: grid; gap: var(--space-1); }</style>
 <script>document.documentElement.classList.add('js')</script>
 <script type="module">requestAnimationFrame(()=>requestAnimationFrame(()=>import('/assets/js/main.js')))</script>
 <link rel="modulepreload" href="/assets/js/demos.js" fetchpriority="low">
 <link rel="modulepreload" href="/assets/js/calc.js" fetchpriority="low">
 <link rel="modulepreload" href="/assets/js/loops.js" fetchpriority="low">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"ProfessionalService","@id":"https://mrlololi.com/#business","name":"mrlololi","alternateName":"Iva Tsatskrialashvili","description":"Ich baue und betreue die Technik hinter Online-Kursen: ActiveCampaign, Zapier, Landingpages, Zahlungen. Marketing-Automation und Launch-Technik aus Graz.","url":"https://mrlololi.com/","email":"hello@mrlololi.com","image":"https://mrlololi.com/og-image-de.png","logo":"https://mrlololi.com/assets/brand/apple-touch-icon.png","sameAs":["https://www.linkedin.com/in/tsatskrialashvili-iva","https://www.malt.de/profile/ivatsatskrialashvili"],"areaServed":["AT","DE","CH","IT"],"address":{"@type":"PostalAddress","streetAddress":"Herbersteinstraße 4/4181","addressLocality":"Graz","postalCode":"8020","addressCountry":"AT"},"founder":{"@id":"https://mrlololi.com/#iva"},"priceRange":"€€"},{"@type":"Person","@id":"https://mrlololi.com/#iva","name":"Iva Tsatskrialashvili","jobTitle":"Marketing Automation Engineer","knowsAbout":["ActiveCampaign","Zapier","Make","Leadpages","Stripe","E-Mail-Zustellbarkeit","Marketing-Automation"],"address":{"@type":"PostalAddress","addressLocality":"Graz","addressCountry":"AT"},"image":"https://mrlololi.com/assets/img/about-680.jpg","url":"https://mrlololi.com/","sameAs":["https://www.linkedin.com/in/tsatskrialashvili-iva","https://www.malt.de/profile/ivatsatskrialashvili","https://github.com/Mrlololi","https://www.instagram.com/mrlololi/"]},{"@type":"WebSite","@id":"https://mrlololi.com/#website","url":"https://mrlololi.com/","name":"mrlololi","inLanguage":"de","publisher":{"@id":"https://mrlololi.com/#business"}}]}</script>
 </head>
 <body class="page-404">
 <a class="skip" href="#main">Zum Inhalt springen</a>
@@ -1415,11 +1476,41 @@ html:not(.js) .brief { display: none; }
 <h1>Diese Seite gibt es nicht.</h1>
 <p class="lead">Vielleicht hilft die Startseite weiter.</p>
 <p><a class="btn btn--primary" href="/">Zur Startseite</a></p>
+<section aria-labelledby="nf-services">
+<h2 id="nf-services">Leistungen</h2>
+<ul class="doc__links" role="list">
+<li><a href="/launch-technik/">Launch-Technik für Online-Kurse</a></li>
+<li><a href="/e-mails-landen-im-spam/">E-Mails landen im Spam? SPF, DKIM und DMARC einrichten</a></li>
+<li><a href="/activecampaign-einrichten/">ActiveCampaign einrichten und betreuen</a></li>
+<li><a href="/ki-antwortentwuerfe/">KI-Antwortentwürfe für Ihren Kundenservice</a></li>
+<li><a href="/website-one-pager/">Website als One-Pager mit Leadpages oder Wix</a></li>
+</ul>
+</section>
 <p class="doc__alt" lang="en">This page doesn't exist. The home page might help. <a href="/en/">Go to the home page</a></p>
+<section lang="en" aria-labelledby="nf-services-alt">
+<h2 id="nf-services-alt">Services</h2>
+<ul class="doc__links" role="list">
+<li><a href="/en/course-launch-tech/">Launch tech for online courses</a></li>
+<li><a href="/en/emails-going-to-spam/">Emails going to spam? Set up SPF, DKIM and DMARC</a></li>
+<li><a href="/en/activecampaign-setup/">ActiveCampaign setup and support</a></li>
+<li><a href="/en/ai-reply-drafts/">AI reply drafts for your customer support</a></li>
+<li><a href="/en/one-page-website/">One-page website with Leadpages or Wix</a></li>
+</ul>
+</section>
 </article>
 </main>
 <footer class="site-footer bg-ink edge">
 <div class="site-footer__in">
+<nav class="site-footer__services" aria-label="Leistungen">
+<p class="site-footer__title">Leistungen</p>
+<ul class="site-footer__links">
+<li><a href="/launch-technik/">Launch-Technik</a></li>
+<li><a href="/e-mails-landen-im-spam/">E-Mails im Spam</a></li>
+<li><a href="/activecampaign-einrichten/">ActiveCampaign einrichten</a></li>
+<li><a href="/ki-antwortentwuerfe/">KI-Antwortentwürfe</a></li>
+<li><a href="/website-one-pager/">Website als One-Pager</a></li>
+</ul>
+</nav>
 <p class="site-footer__copy">© 2026 Iva Tsatskrialashvili · Werbeagentur · Graz, Österreich</p>
 <nav id="footer-nav" aria-label="Rechtliches und Sprache">
 <ul class="site-footer__links">

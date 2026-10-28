@@ -5,7 +5,12 @@ import { chromium, repoRoot } from './browsers.mjs';
 import { startServer } from './serve.mjs';
 import { warm } from './warm.mjs';
 
-export const PAGES = ['/', '/en/', '/impressum/', '/datenschutz/', '/en/legal-notice/', '/en/privacy/', '/404.html'];
+import de from '../content/de.mjs';
+import en from '../content/en.mjs';
+
+// Stage 5: the ten service pages follow the seven original pages.
+export const SERVICE_PAGES = [...de.services.pages, ...en.services.pages].map((s) => s.path);
+export const PAGES = ['/', '/en/', '/impressum/', '/datenschutz/', '/en/legal-notice/', '/en/privacy/', '/404.html', ...SERVICE_PAGES];
 export const WIDTHS = [360, 390, 768, 1024, 1280, 1440];
 // Checked again once main.js has built the demo controls (Fixes 21.10.2026: the EN tone tabs at 360-400 px).
 export const JS_CASES = [['/en/', 360], ['/en/', 400], ['/', 360]];
@@ -47,6 +52,6 @@ if (import.meta.url === pathToFileURL(process.argv[1]).href) {
   const problems = await checkOverflow(browser, server.url);
   await browser.close();
   await server.close();
-  console.log(problems.length ? problems.join('\n') : 'overflow: none at 360-1440 px on 7 pages, plus EN/DE 360-400 px after main.js');
+  console.log(problems.length ? problems.join('\n') : 'overflow: none at 360-1440 px on ${PAGES.length} pages, plus EN/DE 360-400 px after main.js');
   process.exit(problems.length ? 1 : 0);
 }
