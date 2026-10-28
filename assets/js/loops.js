@@ -31,3 +31,17 @@ export function loop({ root, button, play, pause, when = () => true, threshold =
   reduceMotion.addEventListener('change', () => { if (button) button.hidden = reduceMotion.matches; sync(); });
   return { sync, get running() { return running; } };
 }
+
+// Stage 4: a demo that restarts every time it comes into view (onEnter / onEnterBack) and stops
+// when it leaves. Never under reduced motion (then the HTML's final state simply stays).
+export function scene(el, { enter, leave = () => {}, threshold = 0.35 }) {
+  if (!el || reduceMotion.matches || !('IntersectionObserver' in window)) return null;
+  let inView = false;
+  new IntersectionObserver(([e]) => {
+    if (e.isIntersecting === inView) return;
+    inView = e.isIntersecting;
+    if (inView && !document.hidden) enter();
+    else if (!inView) leave();
+  }, { threshold }).observe(el);
+  return { get inView() { return inView; } };
+}

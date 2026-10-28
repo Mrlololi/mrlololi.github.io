@@ -27,7 +27,7 @@ async function resolveFile(root, urlPath) {
 }
 
 // rewriteOrigin: replace the production origin in HTML/XML/TXT with the local one (Lighthouse SEO checks).
-export function startServer({ root, port = 0, rewriteOrigin = null } = {}) {
+export function startServer({ root, port = 0, rewriteOrigin = null, noCache = false } = {}) {
   let localOrigin = '';
   const server = createServer(async (req, res) => {
     let file = await resolveFile(root, req.url);
@@ -38,7 +38,7 @@ export function startServer({ root, port = 0, rewriteOrigin = null } = {}) {
     if (rewriteOrigin && ['.html', '.xml', '.txt'].includes(ext)) {
       body = Buffer.from(body.toString('utf8').replaceAll(rewriteOrigin, localOrigin));
     }
-    const headers = { 'Content-Type': TYPES[ext] || 'application/octet-stream', 'Cache-Control': 'max-age=600' };
+    const headers = { 'Content-Type': TYPES[ext] || 'application/octet-stream', 'Cache-Control': noCache ? 'no-store' : 'max-age=600' };
     if (COMPRESS.has(ext) && /gzip/.test(req.headers['accept-encoding'] || '')) {
       body = gzipSync(body);
       headers['Content-Encoding'] = 'gzip';

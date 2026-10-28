@@ -82,7 +82,8 @@ test('footers: same structure and the agreed copyright lines', () => {
 test('performance hints: three font preloads incl. the accent, module preloads, one .calc__fields rule set', () => {
   assert.equal((deHome.match(/<link rel="preload"[^>]*as="font"/g) || []).length, 3);
   assert.match(deHome, /<link rel="preload" href="\/assets\/fonts\/eb-garamond-italic-500\.woff2" as="font" type="font\/woff2" crossorigin>/);
-  for (const m of ['demos', 'calc', 'loops', 'finder']) assert.match(deHome, new RegExp(`<link rel="modulepreload" href="/assets/js/${m}\\.js"`));
+  // finder.js now comes with the lazy chat module (Stage 4).
+  for (const m of ['demos', 'calc', 'loops']) assert.match(deHome, new RegExp(`<link rel="modulepreload" href="/assets/js/${m}\\.js"`));
   const css = readFileSync(root('assets/css/main.css'), 'utf8');
   assert.equal((css.match(/^\.calc__fields \{/gm) || []).length, 1);
 });

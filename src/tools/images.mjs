@@ -35,3 +35,5 @@ await variants(src('about-hallstatt.jpg'), 'about', [[340, 425], [680, 850]], { 
 await variants(src('avatar-laecheln.jpg'), 'avatar', [[44, 44], [88, 88]]);
 // Case 1 screenshot 1440x900 (16:10), shown at up to 640 px.
 await variants(src('case-alexandrafry.png'), 'case-alexandrafry', [[640, 400], [1280, 800]]);
+// Stage 4: the long capture that scrolls inside the browser frame (capture-case.mjs --long).
+await variants(src('case-alexandrafry-long.png'), 'case-alexandrafry-long', [[640, 1067], [1280, 2133]]);

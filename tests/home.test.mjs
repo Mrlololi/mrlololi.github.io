@@ -10,7 +10,7 @@ const count = (html, re) => (html.match(re) || []).length;
 
 test('hero: H1, CTAs to contact and pricing', () => {
   assert.match(de, /<h1[^>]*>Die Technik hinter Ihrem <span class="nowrap">Kurs-Launch\.<\/span> <em class="accent">Gebaut, getestet, betreut\.<\/em><\/h1>/);
-  assert.match(de, /<a class="btn btn--primary" href="#contact">Erstgespräch anfragen<\/a>/);
+  assert.match(de, /<a class="btn btn--primary" href="#contact" data-magnet data-wave><span class="btn__text">Erstgespräch anfragen<\/span><\/a>/);
   assert.match(de, /<a class="text-link" href="#pricing">Preise ansehen<\/a>/);
 });
 
@@ -23,7 +23,7 @@ test('hero: flow diagram with four nodes and a chip with the photo', () => {
 
 test('run log: own section after the problems, six steps, replay', () => {
   assert.match(de, /<section class="section signup[^"]*" id="signup" aria-labelledby="signup-title">/);
-  assert.match(de, /<h2 id="signup-title">Was passiert, wenn sich jemand <em class="accent">anmeldet<\/em><\/h2>/);
+  assert.match(de, /<h2 id="signup-title" data-enter="lines">Was passiert, wenn sich jemand <em class="accent">anmeldet<\/em><\/h2>/);
   assert.ok(de.indexOf('id="problems"') < de.indexOf('id="signup"') && de.indexOf('id="signup"') < de.indexOf('id="services"'), 'order: problems, signup, services');
   assert.equal(count(de, /<li class="run__step" data-seconds="[\d.]+">/g), 6);
   assert.match(de, /<span class="run__time">0,2 s<\/span>/);
@@ -91,7 +91,7 @@ test('about: Hallstatt photo 1x/2x, path line, link to the own projects', () => 
 });
 
 test('faq: seven details, the tech question first', () => {
-  assert.equal(count(de, /<details class="faq__item">/g), 7);
+  assert.equal(count(de, /<details class="faq__item" id="faq-\d">/g), 7);
   assert.ok(de.indexOf('Muss ich mich mit Technik auskennen?') < de.indexOf('Arbeiten Sie auch remote?'));
 });
 

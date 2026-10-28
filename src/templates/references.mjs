@@ -11,6 +11,9 @@ function quote(t, q, extraClass = '') {
 </figure>`;
 }
 
+// Stage 4: the long screenshot scrolls inside a browser frame that grows from 0.94 to 1 (sections.js);
+// the three quote cards start stacked and fan out to their tilts with the scroll.
+
 // Case study with real, documented numbers only: rendered when config.case_study is set.
 function study(t, s) {
   const tiles = (s.tiles || []).map((x) => `<li><span class="study__value">${esc(x.value)}</span><span class="study__label">${esc(x.label)}</span></li>`).join('');
@@ -29,20 +32,24 @@ export function references(t, config) {
   return `<section class="section refs bg-pist edge" id="references" aria-labelledby="refs-title">
 <div class="wrap">
 <div class="section__head">
-<h2 id="refs-title">${accent(t.refs.h2)}</h2>
+<h2 id="refs-title" data-enter="lines">${accent(t.refs.h2)}</h2>
 </div>
 <article class="case case--feature">
+<div class="browser"><div class="browser__bar" aria-hidden="true"><i></i><i></i><i></i><span>${esc(c1.domain)}</span></div>
+<div class="browser__view">
 <picture class="case__shot">
-<source type="image/avif" srcset="/assets/img/case-alexandrafry-640.avif 640w, /assets/img/case-alexandrafry-1280.avif 1280w" sizes="(min-width: 960px) 40rem, 100vw">
-<source type="image/webp" srcset="/assets/img/case-alexandrafry-640.webp 640w, /assets/img/case-alexandrafry-1280.webp 1280w" sizes="(min-width: 960px) 40rem, 100vw">
-<img src="/assets/img/case-alexandrafry-640.jpg" srcset="/assets/img/case-alexandrafry-640.jpg 640w, /assets/img/case-alexandrafry-1280.jpg 1280w" sizes="(min-width: 960px) 40rem, 100vw" width="640" height="400" loading="lazy" decoding="async" alt="${esc(t.ui.caseImageAlt)}">
+<source type="image/avif" srcset="/assets/img/case-alexandrafry-long-640.avif 640w, /assets/img/case-alexandrafry-long-1280.avif 1280w" sizes="(min-width: 960px) 40rem, 100vw">
+<source type="image/webp" srcset="/assets/img/case-alexandrafry-long-640.webp 640w, /assets/img/case-alexandrafry-long-1280.webp 1280w" sizes="(min-width: 960px) 40rem, 100vw">
+<img src="/assets/img/case-alexandrafry-long-640.jpg" srcset="/assets/img/case-alexandrafry-long-640.jpg 640w, /assets/img/case-alexandrafry-long-1280.jpg 1280w" sizes="(min-width: 960px) 40rem, 100vw" width="640" height="1067" loading="lazy" decoding="async" alt="${esc(t.ui.caseImageAlt)}">
 </picture>
+</div>
+</div>
 <div class="case__body">
 <h3>${extLink(config.case1_url, esc(c1.domain), t)}${esc(c1.titleRest)}</h3>
 <p>${esc(c1.text)}</p>
 </div>
 </article>
-<div class="cases">
+<div class="cases" data-enter="stagger">
 <article class="case">
 <h3>${esc(t.refs.case2.title)}</h3>
 <p>${esc(t.refs.case2.text)}</p>
@@ -53,7 +60,7 @@ export function references(t, config) {
 </article>
 </div>
 ${config.case_study ? study(t, config.case_study) : ''}
-<ul class="qcards" role="list">
+<ul class="qcards" role="list" tabindex="0" aria-label="${esc(t.s4.refs.quotes)}">
 <li class="qcard qcard--pink">${quote(t, c1.quote)}</li>
 <li class="qcard qcard--blue">${quote(t, t.refs.case3.quote)}</li>
 <li class="qcard qcard--pist">${quote(t, t.refs.quote4)}</li>

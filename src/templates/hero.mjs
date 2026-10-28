@@ -1,5 +1,6 @@
 import { esc, seconds, accent, headline } from './util.mjs';
-import { heroMascots } from './mascots.mjs';
+import { heroMascots, mascotScene } from './mascots.mjs';
+import { firstName } from '../../assets/js/pure.js';
 
 // One status node of the run log: idle (grey), wait (amber), done (green) + check.
 // Default CSS shows the finished state; main.js rewinds it when the log comes into view.
@@ -39,12 +40,13 @@ function flowSvg(nodes) {
 
 export function hero(t) {
   return `<section class="hero bg-hero" aria-labelledby="hero-title">
+<span class="hero__blob hero__blob--1" aria-hidden="true"></span><span class="hero__blob hero__blob--2" aria-hidden="true"></span>
 <div class="wrap hero__grid">
 <div class="hero__text">
 <h1 id="hero-title">${headline(t.hero.h1)}</h1>
 <p class="hero__lead lead">${esc(t.hero.lead)}</p>
 <div class="hero__ctas">
-<a class="btn btn--primary" href="#contact">${esc(t.hero.primary)}</a>
+<a class="btn btn--primary" href="#contact" data-magnet data-wave><span class="btn__text">${esc(t.hero.primary)}</span></a>
 <a class="text-link" href="#pricing">${esc(t.hero.secondary)}</a>
 </div>
 <p class="hero__proof">${esc(t.hero.proof)}</p>
@@ -56,8 +58,11 @@ ${ribbonSvg(t.hero.ribbon)}
 <a class="hero__chip" href="#about"><picture><source type="image/avif" srcset="/assets/img/avatar-44.avif 1x, /assets/img/avatar-88.avif 2x"><source type="image/webp" srcset="/assets/img/avatar-44.webp 1x, /assets/img/avatar-88.webp 2x"><img src="/assets/img/avatar-44.jpg" srcset="/assets/img/avatar-88.jpg 2x" width="44" height="44" loading="lazy" decoding="async" alt=""></picture>${esc(t.hero.flow.chip)}</a>
 <div class="hf-wrap">
 ${flowSvg(t.hero.flow.nodes)}
-${t.hero.flow.nodes.map((n, i) => `<button class="hf__btn hf__btn--${i + 1}" type="button" aria-expanded="false" aria-controls="hf-line-${i + 1}">${esc(n)}</button>`).join('')}
-${heroMascots(t)}
+${t.hero.flow.nodes.map((n, i) => {
+  const btn = `<button class="hf__btn hf__btn--${i + 1}" type="button" aria-expanded="false" aria-controls="hf-line-${i + 1}">${esc(n)}</button>`;
+  // Each mascot button next to its node in Tab order; Live stands left of and above «Kurs offen», so it comes first.
+  return i === 3 ? heroMascots(t, 4) + btn : btn + heroMascots(t, i + 1);
+}).join('')}
 </div>
 <ul class="hf__lines" role="list">${t.hero.flow.lines.map((l, i) => `<li id="hf-line-${i + 1}">${esc(l)}</li>`).join('')}</ul>
 ${loopButton(t)}
@@ -67,9 +72,7 @@ ${loopButton(t)}
 </section>`;
 }
 
-// «Was passiert, wenn sich jemand anmeldet»: a 3-step story. Without JS the three panels
-// stand one under the other; assets/js/demos.js turns the step list into tabs, and on wide
-// screens with motion allowed pins the story and moves through the steps with the scroll.
+// The run log (stripe under the story screen). Default CSS shows the finished state; story.js rewinds it.
 function runLog(t) {
   const steps = t.run.steps
     .map(
@@ -81,8 +84,8 @@ ${i < t.run.steps.length - 1 ? runLink : ''}
 </li>`
     )
     .join('\n');
-  return `<figure class="run instrument" aria-labelledby="run-title">
-<figcaption class="run__bar"><span class="run__title" id="run-title">${esc(t.run.title)}</span><span class="label">${esc(t.story.runLabel)}</span></figcaption>
+  return `<figure class="run" aria-labelledby="run-title">
+<figcaption class="run__bar">${esc(t.s4.story.log)}</figcaption>
 <ol class="run__steps" role="list">
 ${steps}
 </ol>
@@ -95,57 +98,86 @@ ${steps}
 }
 
 // A real local form: nothing is sent (method "dialog" does nothing outside a dialog, also
-// without JS); demos.js checks the e-mail, then plays steps 2 and 3 with the typed name.
+// without JS); story.js checks the e-mail, then plays the run with the typed name.
 function formCard(t) {
   const f = t.story.form;
   const [[nameLabel, name], [mailLabel, mail]] = f.fields;
-  return `<div class="story__card">
-<form class="story__form" method="dialog" novalidate>
-<p class="story__card-title">${esc(f.title)}<span class="label">${esc(t.ui.example)}</span></p>
+  return `<form class="story__form" method="dialog" novalidate>
+<p class="story__card-title">${esc(f.title)}</p>
 <div class="story__field"><label for="story-name">${esc(nameLabel)}</label><input id="story-name" name="name" type="text" value="${esc(name)}" autocomplete="off"></div>
 <div class="story__field"><label for="story-email">${esc(mailLabel)}</label><input id="story-email" name="email" type="email" value="${esc(mail)}" autocomplete="off" aria-describedby="story-email-error"><p class="story__error" id="story-email-error" hidden>${esc(f.error)}</p></div>
-<button class="btn btn--primary" type="submit">${esc(f.button)}</button>
+<button class="btn btn--primary btn--sm" type="submit">${esc(f.button)}</button>
 <p class="story__note small">${esc(f.note)}</p>
-</form>
-</div>`;
+</form>`;
 }
 
-function welcomeCard(t) {
-  const w = t.story.welcome;
-  return `<div class="story__card story__welcome">
-<p class="story__card-title">${esc(w.subject).replace('{first}', `<span class="js-first">${esc(t.story.form.fields[0][1].split(' ')[0])}</span>`)}<span class="label">${esc(t.ui.example)}</span></p>
-<p>${esc(w.text)}</p>
-<p class="story__access">${esc(w.access)}</p>
+// Stage 4: an automation canvas in the style of an e-mail tool's builder (plain labels, no logos).
+function canvas(t) {
+  const st = t.s4.story;
+  const nodes = st.nodes.map(([kind, name], i) => `<li class="anode anode--${i + 1}"><span class="anode__kind">${esc(kind)}</span><span class="anode__name">${esc(name)}</span></li>`).join('\n');
+  return `<ol class="canvas" role="list">
+${nodes}
+</ol>
+${mascotScene('loading', [[0, 'idle'], [1, 'idle'], [2, 'idle']])}`;
+}
+
+function phone(t, first) {
+  const st = t.s4.story;
+  const mails = st.mails.map(([subject, text], i) => `<li class="pmail pmail--${i + 1}"><span class="pmail__from">${esc(st.tool)}</span><span class="pmail__subject">${esc(subject).replace('{first}', `<span class="js-first">${esc(first)}</span>`)}</span><span class="pmail__text">${esc(text)}</span></li>`).join('\n');
+  return `<div class="phone"><p class="phone__bar">${esc(st.phone)}</p><ul class="phone__mails" role="list">
+${mails}
+</ul></div>`;
+}
+
+const lockIcon = '<svg class="course__lock" viewBox="0 0 24 28" aria-hidden="true" focusable="false"><path class="course__shackle" d="M7 13V8a5 5 0 0 1 10 0"/><rect x="3" y="12" width="18" height="14" rx="4"/></svg>';
+const confetti = Array.from({ length: 10 }, (_, i) => `<i style="--i:${i}"></i>`).join('');
+
+function course(t) {
+  const st = t.s4.story;
+  const full = t.story.form.fields[0][1];
+  return `<div class="course">
+<p class="course__state">${lockIcon}<span class="course__locked">${esc(st.locked)}</span><span class="course__open">${esc(st.unlocked)}</span></p>
+<p class="course__name">${esc(st.course)}</p>
+<p class="course__module">${esc(st.module)}</p>
+<p class="course__ring"><svg viewBox="0 0 36 36" aria-hidden="true" focusable="false"><circle cx="18" cy="18" r="15"/></svg>${esc(st.progress)}</p>
 </div>
-<div class="toasts">
-${loopButton(t)}
-<ul class="toasts__list" role="list">${t.story.toasts.map((x) => `<li class="toast">${esc(x).replace('{name}', `<span class="js-name">${esc(t.story.form.fields[0][1])}</span>`)}</li>`).join('')}</ul>
-</div>`;
+<div class="door" aria-hidden="true"><span class="door__light"></span><span class="door__confetti">${confetti}</span>${mascotScene('party', [[0, 'joy'], [1, 'joy'], [2, 'joy']])}</div>
+<ul class="toasts__list" role="list">${t.story.toasts.map((x) => `<li class="toast">${esc(x).replace('{name}', `<span class="js-name">${esc(full)}</span>`)}</li>`).join('')}</ul>`;
 }
 
+// «Was passiert, wenn sich jemand anmeldet» (Stage 4): one wide screen with four panes that run
+// together (form, automation, inbox, course area) and the run log as a stripe below. The HTML is
+// the finished run; story.js plays it on entry (with «Anna K.») and on submit. Phones: the panes
+// become tabs that follow the run. The 1-2-3 list on the left is the legend and progress.
 export function signup(t) {
   const s = t.story;
-  const bodies = [formCard(t), runLog(t), welcomeCard(t)];
-  const panels = s.steps
-    .map((title, i) => `<div class="story__panel" id="story-panel-${i + 1}">
-<h3 class="story__title">${esc(title)}</h3>
+  const st = t.s4.story;
+  const first = firstName(s.form.fields[0][1]);
+  const bodies = [formCard(t), canvas(t), phone(t, first), course(t)];
+  const kinds = ['form', 'flow', 'phone', 'course'];
+  const panes = st.panes.map((title, i) => `<div class="pane pane--${kinds[i]}" id="story-pane-${i + 1}">
+<p class="pane__title">${esc(title)}</p>
 ${bodies[i]}
-</div>`)
-    .join('\n');
+</div>`).join('\n');
   return `<section class="section signup bg-pist edge" id="signup" aria-labelledby="signup-title">
 <div class="wrap">
 <div class="section__head">
-<h2 id="signup-title">${accent(t.run.h2)}</h2>
+<h2 id="signup-title" data-enter="lines">${accent(t.run.h2)}</h2>
 </div>
-<div class="story">
+<div class="story" data-pin>
 <div class="story__nav">
 <span class="story__progress" aria-hidden="true"><span></span></span>
 <ol class="story__steps" role="list" aria-label="${esc(s.label)}">
 ${s.steps.map((title, i) => `<li class="story__step"><span class="story__n" aria-hidden="true">${i + 1}</span>${esc(title)}</li>`).join('\n')}
 </ol>
 </div>
-<div class="story__panels">
-${panels}
+<div class="screen" role="group" aria-label="${esc(st.screen)}">
+<div class="screen__bar"><span class="screen__dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="screen__title" id="run-title">${esc(t.run.title)}</span><span class="label">${esc(s.runLabel)}</span></div>
+<div class="screen__panes">
+${panes}
+</div>
+${runLog(t)}
+${loopButton(t)}
 </div>
 </div>
 </div>

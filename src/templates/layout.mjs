@@ -52,15 +52,14 @@ export function layout({ t, other, config, page, main }) {
     '<link rel="preload" href="/assets/fonts/eb-garamond-italic-500.woff2" as="font" type="font/woff2" crossorigin>',
     // The stylesheet is inlined at build time (saves a render-blocking request on slow phones).
     `<style>${css}</style>`,
-    // Runs before first paint: marks JS as available; with motion allowed it holds the run log
-    // steps (all widths) and, on desktop, the hero H1 for their entrance. CSS shows them anyway after 2 s.
-    `<script>var d=document.documentElement;d.classList.add('js');if(matchMedia('(prefers-reduced-motion: no-preference)').matches)d.classList.add('run-pending')</script>`,
+    // Runs before first paint: marks JS as available (the CSS lays out the JS versions of the demos).
+    `<script>document.documentElement.classList.add('js')</script>`,
     // main.js is fetched only after the first frame is on screen, so the headline (LCP) never
     // waits for it; the page works without it until then ("Menü" link, example result).
     // main.js in turn loads the GSAP files after load (home pages only).
     `<script type="module">requestAnimationFrame(()=>requestAnimationFrame(()=>import('/assets/js/main.js')))</script>`,
     // main.js's own imports are fetched early at low priority, so they are ready when it runs.
-    ...['demos', 'calc', 'loops', 'finder', ...(isHome ? ['mascots', 'mascot-art'] : [])].map((m) => `<link rel="modulepreload" href="/assets/js/${m}.js" fetchpriority="low">`),
+    ...['demos', 'calc', 'loops', ...(isHome ? ['mascots', 'mascot-art'] : [])].map((m) => `<link rel="modulepreload" href="/assets/js/${m}.js" fetchpriority="low">`),
     isHome && jsonLd(t, config),
   ]);
 
@@ -71,7 +70,7 @@ ${head}
 </head>
 <body class="page-${page.key}">
 <a class="skip" href="#main">${esc(t.ui.skip)}</a>
-${header({ t, page, isHome })}
+${header({ t, page, isHome, variant: config.header_variant || 'light' })}
 <main id="main" tabindex="-1">
 ${main}
 </main>
@@ -81,13 +80,14 @@ ${footer({ t, page })}
 `;
 }
 
-function header({ t, page, isHome }) {
+// Stage 4: variant «light» (warm white bar with blur) or «halo» (pink bar, white ring around each ball).
+function header({ t, page, isHome, variant }) {
   const base = isHome ? '' : t.paths.home;
   const items = t.nav.map((n) => `<li><a href="${base}${n.href}">${esc(n.label)}</a></li>`).join('\n');
   const altPath = page.altPath;
-  return `<header class="site-header" data-header>
+  return `<header class="site-header" data-header data-variant="${variant}">
 <div class="site-header__in">
-<a class="wordmark" href="${t.paths.home}">${lockup({ kind: 'header', class: 'logo', wordId: 'mrl-word' })}<span class="sr-only">mrlololi ${esc(t.ui.wordmarkName)}</span></a>
+<a class="wordmark" href="${t.paths.home}">${lockup({ kind: 'header', class: 'logo', wordId: 'mrl-word', halo: variant === 'halo' })}<span class="sr-only">mrlololi ${esc(t.ui.wordmarkName)}</span></a>
 <nav class="site-nav" aria-label="${esc(t.ui.navLabel)}">
 <a class="site-nav__jump" href="#footer-nav">${esc(t.ui.menu)}</a>
 <button class="site-nav__toggle" type="button" aria-expanded="false" aria-controls="site-nav-list" hidden>${esc(t.ui.menu)}</button>

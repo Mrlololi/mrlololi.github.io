@@ -33,7 +33,8 @@ export async function lighthouseCheck(base, pages = ['/', '/en/']) {
       failing.push(...shifts, ...lcpInfo, ...opportunities);
       results.push({
         name: `lighthouse ${p}: perf ${scores.performance}, a11y ${scores.accessibility}, best ${scores['best-practices']}, seo ${scores.seo}; LCP ${lcp.toFixed(2)} s, CLS ${cls.toFixed(3)}`,
-        pass: Object.values(scores).every((s) => s >= 95) && lcp < 2 && cls < 0.05,
+        // Stage 4 target: performance >= 90 (was 95); the other categories stay >= 95; LCP in Google's «good» range.
+        pass: scores.performance >= 90 && [scores.accessibility, scores['best-practices'], scores.seo].every((s) => s >= 95) && lcp < 2.5 && cls < 0.05,
         details: failing.join('\n'),
         scores, lcp, cls,
       });

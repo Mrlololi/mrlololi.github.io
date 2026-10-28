@@ -13,7 +13,7 @@ export function home(t, config) {
     problems(t),
     signup(t),
     pricing(t, config),
-    finder(t),
+    finder(t, config),
     processSteps(t),
     references(t, config),
     about(t, config),

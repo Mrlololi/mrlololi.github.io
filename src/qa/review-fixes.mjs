@@ -86,66 +86,8 @@ export async function checkReviewFixes(browser, base) {
     await page.close();
   }
 
-  // R2: GSAP arriving after the 2 s failsafe never rewinds a log the reader is looking at.
-  {
-    const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
-    await page.route('**/assets/vendor/*.js', async (route) => { await new Promise((r) => setTimeout(r, 2600)); await route.continue(); });
-    await page.goto(base + '/', { waitUntil: 'domcontentloaded' });
-    await page.$eval('.story', (el) => el.scrollIntoView({ block: 'center' }));
-    await page.waitForTimeout(2300); // failsafe has shown the finished log
-    await page.click('#story-tab-2');
-    await page.evaluate(SAMPLER);
-    await page.waitForTimeout(3000);
-    const s = await page.evaluate(() => window.__samples);
-    const rewound = s.filter((x) => x.done.some((d) => d < 1)).length;
-    check('R2 late GSAP: finished log in view is never rewound', rewound === 0, `${rewound} frames with unfinished steps`);
-    await page.close();
-  }
-
-  // R3 + R4: the run ends within 2.6 s of reaching the view; connector reaches a step before it goes pending.
-  {
-    const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
-    await page.goto(base + '/', { waitUntil: 'load' });
-    await page.waitForTimeout(1500); // GSAP is in, the log below the fold is rewound
-    await page.evaluate(SAMPLER);
-    await page.$eval('.story', (el) => el.scrollIntoView({ block: 'center' }));
-    await page.waitForTimeout(200);
-    const start = await page.evaluate(() => { document.getElementById('story-tab-2').click(); return performance.now(); });
-    await page.waitForTimeout(3500);
-    const s = await page.evaluate(() => window.__samples);
-    const startedIdx = s.findIndex((x) => x.done.some((d) => d < 1));
-    const end = s.find((x, i) => i > startedIdx && startedIdx >= 0 && x.summary >= 0.99 && x.done.every((d) => d === 1))?.t;
-    const total = (end - start) / 1000;
-    check(`R3 run ends within 2.6 s of showing step 2 (${total.toFixed(2)} s)`, end && total <= 2.6, `${total.toFixed(2)} s`);
-    const order = [];
-    for (let i = 1; i < 6; i++) {
-      const linkIn = s.find((x, k) => k > startedIdx && x.link[i - 1] <= 0.02)?.t;
-      const pending = s.find((x, k) => k > startedIdx && x.wait[i] > 0.02)?.t;
-      order.push(linkIn !== undefined && pending !== undefined && linkIn <= pending + 1 ? 'ok' : `step ${i + 1}: line ${Math.round(linkIn)} > pending ${Math.round(pending)}`);
-    }
-    check('R4 connector reaches each step before it goes pending', order.every((o) => o === 'ok'), order.join(', '));
-    await page.close();
-  }
-
-  // R5 + R6: at 900 px the log is below a short viewport: it waits for the reader, replay hidden until then.
-  {
-    const page = await browser.newPage({ viewport: { width: 900, height: 600 } });
-    await page.goto(base + '/', { waitUntil: 'load' });
-    await page.waitForTimeout(3200);
-    const before = await page.evaluate(() => ({
-      done: [...document.querySelectorAll('.run__done')].map((c) => Number(getComputedStyle(c).opacity)),
-      replayHidden: document.querySelector('.run__replay').hidden,
-      top: document.querySelector('.run').getBoundingClientRect().top,
-    }));
-    await page.$eval('.story', (el) => el.scrollIntoView({ block: 'center' }));
-    await page.click('#story-tab-2');
-    await page.waitForTimeout(3200);
-    const after = await page.$$eval('.run__done', (cs) => cs.map((c) => Number(getComputedStyle(c).opacity)));
-    const below = before.top > 600;
-    check('R5 900x600: log below the fold waits, then plays when step 2 is shown', below && before.done.some((d) => d < 1) && after.every((d) => d === 1), JSON.stringify({ top: Math.round(before.top), before: before.done, after }));
-    check('R6 replay button hidden until the run has started', before.replayHidden === true);
-    await page.close();
-  }
+  // R2-R6 (the Stage 2 run log: failsafe, late GSAP, wait below the fold) are replaced by the Stage 4
+  // story, which restarts on every entry; see stage4.mjs.
 
   // R7: small print under the prices stays under 80 characters per line.
   {

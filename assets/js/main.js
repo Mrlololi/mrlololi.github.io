@@ -1,8 +1,10 @@
-// mrlololi: navigation, run log, problem cards, path line, price details, KI-Rechner.
-// Progressive enhancement: the HTML/CSS already shows every final state; this file only
-// rewinds and plays them back. Without GSAP (or with reduced motion) nothing moves.
+// mrlololi: navigation, header, price details, KI-Rechner; loads GSAP and the section modules.
+// Progressive enhancement: the HTML/CSS already shows every final state; the modules only
+// rewind and play them back. Without GSAP (or with reduced motion) nothing moves.
+// Stage 4: motion.js (docking, entrances, hover) and one module per demo section, imported when
+// the section comes within a viewport (story.js, which pins, as soon as GSAP is there).
 import { calcSavings, formatResult, toNumber } from './calc.js';
-import { initRibbon, initMarquee, initBeforeAfter, initStory, pinStory, initTone, initKiDemo, initSpeed, initFinder, initFaqChat, driftQuotes, initKiActions, initFlowNodes } from './demos.js';
+import { initRibbon, initMarquee, initBeforeAfter, initSpeed, initFlowNodes } from './demos.js';
 
 const root = document.documentElement;
 // GSAP is loaded after the first paint (see loadMotion), so these are filled in later.
@@ -25,61 +27,73 @@ initNav();
 initHeader();
 initCalculator();
 initPriceDetails();
-initReveals();
 initRibbon();
 initMarquee();
-initBeforeAfter();
-initStory();
-initTone();
-initKiDemo();
-initSpeed();
-initFinder();
-initFaqChat();
-initKiActions();
 initFlowNodes();
+initSpeed();
+const home = Boolean(document.querySelector('.hero'));
 // Mascots (home pages): their own module, so the legal pages never load it.
 const mascots = document.querySelector('.mascot') ? import('./mascots.js').then((m) => { m.initMascots(); return m; }).catch(() => null) : null;
-if (document.querySelector('.run')) loadMotion();
-else releasePending();
+// Resolves to { gsap, ScrollTrigger } once the animation code is there, or null (no library).
+const motion = home ? loadMotion() : Promise.resolve(null);
+const ctx = { motion, reduceMotion, locale };
+// The story pins, so it is set up as soon as GSAP is there (a pin added later above the reader would make the page jump).
+initBeforeAfter(motion);
+if (home) motion.then(() => import('./story.js')).then((m) => m.init(ctx)).catch(report);
+lazy('#problems', () => import('./fixdemos.js'));
+lazy('.tariff__group--1', () => import('./prices.js'));
+lazy('.kidemo', () => import('./kidemo.js'));
+lazy('#finder', () => import('./chat.js'));
+lazy('#process', () => import('./sections.js'));
+lazy('#faq', () => import('./faqbox.js'));
+lazy('#contact', () => import('./contact.js'));
 
-// Drops the class that holds the run log for its entrance (set in <head>).
-function releasePending() {
-  root.classList.remove('run-pending');
+function report(e) { console.error(e); }
+
+// Imports a section module when its section is within one viewport of the screen.
+function lazy(sel, load) {
+  const el = document.querySelector(sel);
+  if (!el) return;
+  const go = () => load().then((m) => m.init(ctx)).then(() => motion.then((mo) => mo?.refresh())).catch(report);
+  if (!('IntersectionObserver' in window)) { go(); return; }
+  const io = new IntersectionObserver((entries) => {
+    if (entries.some((e) => e.isIntersecting)) { io.disconnect(); go(); }
+  }, { rootMargin: '100% 0px' });
+  io.observe(el);
 }
 
 // The self-hosted GSAP files are fetched only after the page has loaded and painted, so the
 // headline (LCP) never waits for 50 KB of animation code on a slow phone.
 async function loadMotion() {
-  // The run log sits below the fold, so the animation code can wait for load and an idle moment.
   await new Promise((resolve) => {
     const idle = () => ('requestIdleCallback' in window ? requestIdleCallback(() => resolve(), { timeout: 1200 }) : setTimeout(resolve, 200));
     if (document.readyState === 'complete') idle();
     else addEventListener('load', idle, { once: true });
   });
-  const load = (src) => new Promise((resolve, reject) => {
+  try {
+    await loadScript('/assets/vendor/gsap.min.js');
+    await loadScript('/assets/vendor/ScrollTrigger.min.js');
+  } catch {
+    return null; // no animation library: everything stays in its final state
+  }
+  ({ gsap, ScrollTrigger } = window);
+  hasGsap = Boolean(gsap && ScrollTrigger);
+  if (!hasGsap) return null;
+  gsap.registerPlugin(ScrollTrigger);
+  initCalcCountUp();
+  mascots?.then((m) => m?.startMascotMotion(gsap));
+  const { initMotion } = await import('./motion.js');
+  return initMotion(gsap, ScrollTrigger, loadScript);
+}
+
+function loadScript(src) {
+  return new Promise((resolve, reject) => {
     const s = document.createElement('script');
     s.src = src;
     s.onload = resolve;
     s.onerror = reject;
     document.head.append(s);
   });
-  try {
-    await load('/assets/vendor/gsap.min.js');
-    await load('/assets/vendor/ScrollTrigger.min.js');
-  } catch {
-    releasePending(); // no animation library: everything stays in its final state
-    return;
-  }
-  ({ gsap, ScrollTrigger } = window);
-  hasGsap = Boolean(gsap && ScrollTrigger);
-  if (!hasGsap) { releasePending(); return; }
-  gsap.registerPlugin(ScrollTrigger);
-  const mm = gsap.matchMedia();
-  initRun(mm);
-  pinStory(gsap, ScrollTrigger);
-  driftQuotes(gsap);
-  initCalcCountUp();
-  mascots?.then((m) => m?.startMascotMotion(gsap));
 }
 
 /* ---------- Navigation: disclosure menu below 800 px ---------- */
@@ -122,132 +136,6 @@ function initHeader() {
     if (!ticking) { ticking = true; requestAnimationFrame(update); }
   }, { passive: true });
   header.addEventListener('focusin', () => header.classList.remove('is-hidden'));
-}
-
-/* ---------- «Was passiert, wenn sich jemand anmeldet»: the run log, once in view ---------- */
-function initRun(mm) {
-  const run = document.querySelector('.run');
-  if (!run) { releasePending(); return; }
-  const summary = run.querySelector('.run__summary');
-  const replay = run.querySelector('.run__replay');
-  const status = document.getElementById('run-status');
-  const seconds = new Intl.NumberFormat(locale, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
-  const steps = [...run.querySelectorAll('.run__step')].map((li) => ({
-    wait: li.querySelector('.run__wait'),
-    done: li.querySelector('.run__done'),
-    check: li.querySelector('.run__check'),
-    link: li.querySelector('.run__link path'),
-    time: li.querySelector('.run__time'),
-    seconds: Number(li.dataset.seconds),
-  }));
-  let played = false; // the run plays once; later breakpoint changes only rebuild
-  // The log is step 2 of the story: it counts as seen only while that step is shown and on screen.
-  const panel = run.closest('.story__panel');
-  const inView = () => (!panel || !panel.closest('.is-tabs') || panel.classList.contains('is-active'))
-    && run.getBoundingClientRect().top < innerHeight * 0.85 && run.getBoundingClientRect().bottom > 0;
-  // After 2 s the CSS failsafe has shown the finished log. A reader who already sees it
-  // never watches it rewind; one who has not scrolled there yet still gets the run.
-  const late = () => performance.now() > 1900;
-
-  const announce = () => {
-    status.textContent = '';
-    requestAnimationFrame(() => { status.textContent = summary.textContent; });
-  };
-
-  mm.add(CONDITIONS, (ctx) => {
-    const { reduceMotion: reduced } = ctx.conditions;
-
-    if (reduced) {
-      // Final state is the CSS default. Replay just confirms the result for screen readers.
-      releasePending();
-      replay.hidden = false;
-      replay.addEventListener('click', announce);
-      return () => replay.removeEventListener('click', announce);
-    }
-
-    // Built paused; its first tweens render the rewound state right away (same task, no paint).
-    const tl = buildRunTimeline(steps, summary, seconds);
-    let replayed = false; // announce the result only after a replay, not on the first run
-    tl.eventCallback('onComplete', () => { if (replayed) { replayed = false; announce(); } });
-
-    const onReplay = () => {
-      if (tl.isActive()) return; // ignore clicks while it runs
-      replayed = true;
-      tl.restart();
-    };
-    replay.addEventListener('click', onReplay);
-
-    // The replay button appears only once the run has started (or is shown finished).
-    const begin = () => { played = true; replay.hidden = false; tl.restart(true); };
-
-    if (played || (late() && inView())) {
-      played = true;
-      replay.hidden = false;
-      tl.progress(1);
-    } else if (inView()) {
-      begin();
-    }
-    // Otherwise wait until the reader reaches it: by scrolling, or by choosing step 2.
-    const tryBegin = () => { if (!played && inView()) begin(); };
-    const st = played ? null : ScrollTrigger.create({ trigger: run, start: 'top 85%', onEnter: tryBegin });
-    document.addEventListener('story:show', tryBegin);
-    // The sign-up form in step 1 plays the run again with the visitor's own sign-up.
-    const onStoryReplay = () => { played = true; replay.hidden = false; tl.restart(); };
-    document.addEventListener('story:replay', onStoryReplay);
-    releasePending();
-    return () => {
-      replay.removeEventListener('click', onReplay);
-      document.removeEventListener('story:show', tryBegin);
-      document.removeEventListener('story:replay', onStoryReplay);
-      st?.kill();
-    };
-  });
-}
-
-function buildRunTimeline(steps, summary, seconds) {
-  const tl = gsap.timeline({ paused: true, delay: 0.25, defaults: { ease: 'power2.out' } });
-  const STEP = 0.27;
-  const first = 0.15;
-  tl.fromTo(steps.map((s) => s.wait), { autoAlpha: 0 }, { autoAlpha: 0, duration: 0 }, 0)
-    .fromTo(steps.map((s) => s.done), { autoAlpha: 0 }, { autoAlpha: 0, duration: 0 }, 0)
-    .fromTo(steps.map((s) => s.check), { strokeDashoffset: 1 }, { strokeDashoffset: 1, duration: 0 }, 0)
-    .fromTo(steps.map((s) => s.time), { autoAlpha: 0 }, { autoAlpha: 0, duration: 0 }, 0)
-    .fromTo(steps.filter((s) => s.link).map((s) => s.link), { strokeDashoffset: 1 }, { strokeDashoffset: 1, duration: 0 }, 0)
-    .fromTo(summary, { autoAlpha: 0 }, { autoAlpha: 0, duration: 0 }, 0);
-
-  // Per step: pending, then done with its check and time, then the connector draws down
-  // to the next step, which goes pending only once the line has arrived.
-  steps.forEach((s, i) => {
-    const at = first + i * STEP;
-    const counter = { v: 0 };
-    tl.to(s.wait, { autoAlpha: 1, duration: 0.1 }, at)
-      .to(s.done, { autoAlpha: 1, duration: 0.12 }, at + 0.1)
-      .to(s.check, { strokeDashoffset: 0, duration: 0.12 }, at + 0.12)
-      .to(s.time, { autoAlpha: 1, duration: 0.08 }, at + 0.12)
-      .fromTo(counter, { v: 0 }, {
-        v: s.seconds, duration: 0.2, ease: 'none',
-        onUpdate: () => { s.time.textContent = `${seconds.format(counter.v)} s`; },
-      }, at + 0.12);
-    if (s.link) tl.to(s.link, { strokeDashoffset: 0, duration: 0.09, ease: 'none' }, at + 0.17);
-  });
-  tl.to(summary, { autoAlpha: 1, duration: 0.25 }, first + steps.length * STEP + 0.05);
-  return tl; // 2.07 s of content + 0.25 s delay; with the 0.15 s hand-off from the reveal about 2.5 s
-}
-
-/* ---------- Problem cards and the path line: CSS transitions started once in view ---------- */
-function initReveals() {
-  if (reduceMotion.matches || !('IntersectionObserver' in window)) return; // final state stays
-  const targets = document.querySelectorAll('.pc, .path');
-  if (!targets.length) return;
-  root.classList.add('anim');
-  const io = new IntersectionObserver((entries) => {
-    for (const e of entries) {
-      if (!e.isIntersecting) continue;
-      e.target.classList.add('is-in');
-      io.unobserve(e.target);
-    }
-  }, { threshold: 0.35 });
-  targets.forEach((el) => io.observe(el));
 }
 
 /* ---------- KI-Rechner: the example numbers count up once in view ---------- */

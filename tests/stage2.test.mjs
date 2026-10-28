@@ -73,7 +73,7 @@ test('tool marquee: ten text pills, one aria-hidden copy, never «Partner»', ()
 });
 
 test('problems: before/after slider above the cards, keyboard ready, with a text alternative', () => {
-  const fig = de.match(/<figure class="ba">[\s\S]*?<\/figure>/)[0];
+  const fig = de.match(/<figure class="ba" data-pin>[\s\S]*?<\/figure>/)[0];
   assert.ok(de.indexOf('class="ba"') > de.indexOf('id="problems-title"') && de.indexOf('class="ba"') < de.indexOf('class="pcs"'));
   assert.match(fig, /<label class="ba__control"><span>Vorher \/ Nachher ziehen<\/span><input class="ba__range" type="range" min="0" max="100" step="1" value="50" aria-valuetext="Vorher 50 %" data-valuetext="Vorher \{v\} %"><\/label>/);
   assert.match(fig, /<span class="label label--pink ba__tag--before">Chaos<\/span>/);
@@ -88,16 +88,13 @@ test('3-step story: three panels with titles, the run log as step 2, toasts in s
   const sec = de.match(/<section class="section signup[^"]*"[\s\S]*?<\/section>\n<section class="section services/)[0];
   const titles = ['Eine Anmeldung kommt herein', 'Die Automation läuft', 'Ihre Teilnehmerin ist drin'];
   assert.deepEqual([...sec.matchAll(/<li class="story__step"><span class="story__n" aria-hidden="true">\d<\/span>([^<]+)<\/li>/g)].map((m) => m[1]), titles);
-  assert.deepEqual([...sec.matchAll(/<h3 class="story__title">([^<]+)<\/h3>/g)].map((m) => m[1]), titles);
-  assert.equal(count(sec, /<div class="story__panel" id="story-panel-\d"/g), 3);
-  const p2 = sec.match(/id="story-panel-2"[\s\S]*?(?=<div class="story__panel" id="story-panel-3")/)[0];
-  assert.match(p2, /<figure class="run instrument"/);
-  assert.match(p2, /<span class="label">Beispiel-Durchlauf<\/span>/);
+  assert.equal(count(sec, /<div class="pane pane--\w+" id="story-pane-\d"/g), 4);
+  assert.match(sec, /<div class="screen__panes">[\s\S]*<figure class="run"/, 'the run log is the stripe under the panes');
+  assert.match(sec, /<span class="label">Beispiel-Durchlauf<\/span>/);
   assert.match(sec, /<input id="story-email" name="email" type="email" value="anna@example\.com"/);
-  assert.match(sec, /Willkommen im Kurs, <span class="js-first">Anna<\/span>!/);
+  assert.match(sec, /Willkommen, <span class="js-first">Anna<\/span>!/);
   const toasts = [...sec.matchAll(/<li class="toast">([\s\S]*?)<\/li>/g)].map((m) => m[1].replace(/<[^>]+>/g, ''));
   assert.deepEqual(toasts, ['Neue Anmeldung: Anna K.', 'Zahlung erhalten: 297 €', 'Kurszugang freigeschaltet', 'Willkommens-Mail zugestellt']);
-  assert.ok(count(sec, /<span class="label">Beispiel<\/span>/g) >= 2);
   assert.match(en, /<li class="toast">Payment received: €297<\/li>/);
   assert.match(en, /<span class="label">Example run<\/span>/);
 });
@@ -107,8 +104,8 @@ test('KI block: inbox to draft with marks, chips, pill, tone panels, note, after
   assert.ok(de.indexOf('KI im Kundenservice') < de.indexOf('class="kidemo"') && de.indexOf('class="kidemo"') < de.indexOf('id="ki-rechner"'));
   assert.match(ki, /<h3 class="kidemo__title" id="kidemo-title">Von der verärgerten Kundenmail zum fertigen <em class="accent">Entwurf<\/em><\/h3>/);
   assert.equal(ki.match(/<p class="kidemo__text">([\s\S]*?)<\/p>/)[1].replace(/<[^>]+>/g, ''), 'hallo ich hab den kurs gekauft aber kein login bekommen??? und die rechnung fehlt auch. echt ärgerlich, brauche das bis morgen!!');
-  assert.deepEqual([...ki.matchAll(/<mark class="hl hl--\d">([^<]+)<\/mark>/g)].map((m) => m[1]), ['kein login bekommen', 'die rechnung fehlt', 'echt ärgerlich', 'bis morgen']);
-  assert.deepEqual([...ki.matchAll(/<li class="label label--\w+">([^<]+)<\/li>/g)].map((m) => m[1]), ['Thema: Login', 'Rechnung fehlt', 'Stimmung: verärgert', 'dringend']);
+  assert.deepEqual([...ki.matchAll(/<mark class="hl hl--(\w+)" data-mark="\d"[^>]*>([^<]+)<\/mark>/g)].slice(0, 4).map((m) => [m[1], m[2]]), [['anliegen', 'kein login bekommen'], ['fehlt', 'die rechnung fehlt'], ['stimmung', 'echt ärgerlich'], ['dringlichkeit', 'bis morgen']]);
+  assert.deepEqual([...ki.matchAll(/<span class="hl hl--\w+">([^<]+)<\/span><\/li>/g)].map((m) => m[1]), ['Anliegen', 'Fehlt', 'Stimmung', 'Dringlichkeit']);
   assert.match(ki, /Entwurf wird erstellt…/);
   assert.deepEqual([...ki.matchAll(/<p class="tone__label">([^<]+)<\/p>/g)].map((m) => m[1]), ['Sie', 'du', 'locker']);
   assert.match(ki, /Liebe Anna, danke für Ihre Nachricht und entschuldigen Sie den Ärger\. Ihren Zugang habe ich neu verschickt, die Rechnung finden Sie im Anhang\. Bei Fragen bin ich gern da\./);
@@ -116,7 +113,6 @@ test('KI block: inbox to draft with marks, chips, pill, tone panels, note, after
   assert.match(ki, /<div class="kidemo__actions"><button class="btn btn--primary btn--sm kidemo__approve" type="button"[^>]*>Freigeben<\/button><button class="btn btn--ghost btn--sm kidemo__edit" type="button"[^>]*>Bearbeiten<\/button><\/div>/);
   assert.match(ki, /Versendet wird erst nach Freigabe durch Ihr Team\./);
   assert.match(ki, /<p class="kidemo__caption">Die Entwürfe klingen nach Ihnen\.<\/p>/);
-  assert.match(ki, /<button class="kidemo__replay" type="button" hidden>Nochmal<\/button>/);
   assert.match(en, /<p class="tone__label">Casual<\/p>/);
 });
 
@@ -140,19 +136,20 @@ test('package finder: mapping from the brief for every answer', async () => {
 test('package finder: after the prices, static list without JS, questions ready for JS, packages addressable', () => {
   const sec = de.match(/<section class="section finder[^"]*"[\s\S]*?<\/section>/)[0];
   assert.ok(de.indexOf('id="services"') < de.indexOf('id="finder"') && de.indexOf('id="finder"') < de.indexOf('id="process"'));
-  assert.match(sec, /<h2 id="finder-title">Welches Paket <em class="accent">passt\?<\/em><\/h2>/);
+  assert.match(sec, /<h2 id="finder-title" data-enter="lines">Welches Paket <em class="accent">passt\?<\/em><\/h2>/);
   const links = [...sec.matchAll(/<li><a href="#pkg-(\w+)">[^<]+<strong>([^<]+)<\/strong><\/a><\/li>/g)].map((m) => [m[1], m[2]]);
   assert.deepEqual(links, [['quick', 'Quick-Fix'], ['check', 'Technik-Check'], ['launch', 'Launch-Setup'], ['website', 'Website als One-Pager'], ['ki', 'KI im Kundenservice']]);
-  for (const id of ['quick', 'check', 'launch', 'website', 'ki']) assert.match(de, new RegExp(`<li class="item" id="pkg-${id}">`));
-  assert.match(sec, /<div class="finder__app" hidden>/);
-  assert.deepEqual([...sec.matchAll(/<legend>([^<]+)<\/legend>/g)].map((m) => m[1]), ['Worum geht es?', 'Wissen Sie, wo das Problem liegt?', 'Wann?']);
-  assert.equal(count(sec, /<button class="finder__opt" type="button" data-value="\w+" aria-pressed="false">/g), 8);
-  assert.match(en, /<legend>Do you know where the problem is\?<\/legend>/);
+  for (const id of ['quick', 'check', 'launch', 'website', 'ki']) assert.match(de, new RegExp(`<li class="item item--${id}" id="pkg-${id}"`));
+  const data = JSON.parse(sec.match(/<div class="chat" hidden data-text="([^"]+)">/)[1].replace(/&quot;/g, '"').replace(/&amp;/g, '&'));
+  assert.deepEqual(data.questions.map(([q]) => q), ['Worum geht es?', 'Wissen Sie, wo das Problem liegt?', 'Wann?']);
+  assert.equal(data.questions.flatMap(([, o]) => o).length, 8);
+  assert.match(en, /Do you know where the problem is\?/);
 });
 
 test('Zusage under the prices, never «Garantie»', () => {
-  assert.match(de, /<p class="tariff__promise small">Zusätzlich zur gesetzlichen Gewährleistung: Läuft ein von mir gebauter Ablauf in den ersten 30 Tagen nicht wie vereinbart, behebe ich das ohne Berechnung\. Das gilt für meine Arbeit, nicht für Ausfälle der Tools selbst\.<\/p>/);
-  assert.match(en, /<p class="tariff__promise small">On top of statutory warranty rights: if a flow I built does not work as agreed within the first 30 days, I fix it free of charge\./);
+  const promise = (h) => h.match(/<p class="tariff__promise small">[\s\S]*?<\/p>/)[0].replace(/<span class="mscene[\s\S]*?<\/svg><\/span>/, '');
+  assert.match(promise(de), /<p class="tariff__promise small">Zusätzlich zur gesetzlichen Gewährleistung: Läuft ein von mir gebauter Ablauf in den ersten 30 Tagen nicht wie vereinbart, behebe ich das ohne Berechnung\. Das gilt für meine Arbeit, nicht für Ausfälle der Tools selbst\.<\/p>/);
+  assert.match(promise(en), /<p class="tariff__promise small">On top of statutory warranty rights: if a flow I built does not work as agreed within the first 30 days, I fix it free of charge\./);
   for (const html of [de, en]) assert.ok(!/Garantie|guarantee/i.test(body(html)));
 });
 
@@ -179,8 +176,8 @@ test('«Was ich nicht mache» right before the FAQ', () => {
 });
 
 test('FAQ chat: still seven details, chat texts for the script', () => {
-  assert.equal(count(de, /<details class="faq__item">/g), 7);
-  assert.match(de, /<div class="faq__list" data-typing="tippt…" data-photo="\/assets\/img\/avatar-88\.webp">/);
+  assert.equal(count(de, /<details class="faq__item" id="faq-\d">/g), 7);
+  assert.match(de, /<div class="faqbox"[^>]* data-typing="tippt…" data-photo="\/assets\/img\/avatar-88\.webp">/);
   assert.match(en, /data-typing="typing…"/);
 });
 
@@ -190,8 +187,8 @@ test('final touches (21.10.2026): hello@ address everywhere, path line «DACH-Ve
   const dsg = all.find((p) => p.file === 'datenschutz/index.html').html;
   assert.match(imp, /hello@mrlololi\.com/);
   assert.match(dsg, /hello@mrlololi\.com/);
-  assert.match(de, /<li class="path__stop">DACH-Vertrieb ab 2020<\/li>/);
-  assert.match(en, /<li class="path__stop">DACH sales since 2020<\/li>/);
+  assert.match(de, /<li class="path__stop"><span class="path__label">DACH-Vertrieb ab 2020<\/span>/);
+  assert.match(en, /<li class="path__stop"><span class="path__label">DACH sales since 2020<\/span>/);
   for (const f of ['about-340', 'about-680', 'avatar-44', 'avatar-88']) {
     for (const ext of ['avif', 'webp', 'jpg']) assert.ok(existsSync(new URL(`../assets/img/${f}.${ext}`, import.meta.url)), `${f}.${ext}`);
   }

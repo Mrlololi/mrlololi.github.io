@@ -44,15 +44,102 @@ export function initMascots() {
     b.querySelector('.mascot-btn').addEventListener('click', () => jump(svg));
     // Choosing a flow node also greets it.
     document.querySelector(`.hf__btn--${b.dataset.node}`)?.addEventListener('click', () => jump(svg, 18));
-    if (reduceMotion.matches) continue;
-    // The hero flow is a CSS animation that plays once on load: hop when it lights this node.
-    const anim = document.querySelector(`.hf__node--${b.dataset.node} rect`)?.getAnimations?.()[0];
-    if (!anim) continue;
-    const left = anim.effect.getTiming().delay - (anim.currentTime ?? 0);
-    // Still to come or lit a moment ago: hop with it. Long past (slow load) or scrolled away: stay put.
-    const onScreen = () => { const r = svg.getBoundingClientRect(); return r.bottom > 0 && r.top < innerHeight && !document.hidden; };
-    if (left > -250) setTimeout(() => { if (onScreen()) jump(svg, 18); }, Math.max(0, left));
   }
+  heroRun();
+}
+
+// Stage 4, hero: on wide screens with motion the three hop together along the flow wires with the
+// pulse, from «Formular» to «Kurs offen» (a little conga line), land there happy and walk back to
+// their own nodes: about 5 s, synced to the CSS flow. Once per visit; again each time the hero
+// comes back into view after it was left. Phones: they just stand at their nodes.
+const SPOT = { w: 58, h: 58 * 124 / 120, fx: 58 * 58 / 120, fy: (58 * 124 / 120) * (113 / 124) }; // units of the 340 grid
+const WIRE_AT = [[600, 1450], [1700, 2550], [2800, 3650]]; // ms, as the CSS pulses
+const BACK = [4150, 4800];
+const TOTAL = 5200;
+const LAG = 130;
+
+function heroRun() {
+  const wrap = document.querySelector('.hf-wrap');
+  if (!wrap || reduceMotion.matches) return;
+  const wide = matchMedia('(min-width: 768px)');
+  const spots = [...wrap.querySelectorAll('.mascot-spot')];
+  const wires = [...wrap.querySelectorAll('.hf__wire')];
+  const flow = [...wrap.querySelectorAll('.hf__pulse, .hf__node rect, .hf__check')];
+  const ref = () => wrap.querySelector('.hf__pulse')?.getAnimations?.()[0];
+  let anims = [];
+  let timers = [];
+
+  // Feet positions over time for one mascot (k = its place in the line), in grid units.
+  const path = (home, k) => {
+    const pts = [];
+    const lag = k * LAG;
+    const at = (wire, f) => { const w = wires[wire]; const p = w.getPointAtLength(w.getTotalLength() * f); return [p.x, p.y]; };
+    pts.push([0, home]);
+    pts.push([WIRE_AT[0][0] + lag, at(0, 0)]);
+    WIRE_AT.forEach(([a, b], wi) => {
+      const n = 18;
+      for (let i = 1; i <= n; i++) {
+        const f = i / n;
+        const [x, y] = at(wi, f);
+        pts.push([a + lag + (b - a) * f, [x, y - 14 * Math.abs(Math.sin(Math.PI * 3 * f))]]);
+      }
+      // A quick hop over the node to the next wire's start.
+      if (wires[wi + 1]) pts.push([WIRE_AT[wi + 1][0] + lag, at(wi + 1, 0)]);
+    });
+    pts.push([BACK[0] + lag, pts.at(-1)[1]]);
+    pts.push([BACK[1] + lag, home]);
+    pts.push([TOTAL, home]);
+    return pts;
+  };
+  const homeOf = (spot) => {
+    const r = spot.getBoundingClientRect();
+    const w = wrap.getBoundingClientRect();
+    const u = w.width / 340;
+    return [(r.left - w.left) / u + SPOT.fx, (r.top - w.top) / u + SPOT.fy];
+  };
+
+  const stop = () => {
+    anims.forEach((a) => a.cancel());
+    timers.forEach(clearTimeout);
+    anims = [];
+    timers = [];
+    spots.forEach((s) => setPose(s.querySelector('.mascot'), s.querySelector('.mascot').dataset.base));
+  };
+  const run = (from = 0) => {
+    stop();
+    // Live leads (it ends at «Kurs offen»), Lösung and Logik follow.
+    const order = [2, 1, 0];
+    spots.forEach((spot, i) => {
+      const k = order.indexOf(i);
+      const home = homeOf(spot);
+      const frames = path(home, k).map(([ms, [x, y]]) => ({
+        offset: ms / TOTAL,
+        transform: `translate(${(((x - home[0]) / SPOT.w) * 100).toFixed(2)}%, ${(((y - home[1]) / SPOT.h) * 100).toFixed(2)}%)`,
+      }));
+      const a = spot.animate(frames, { duration: TOTAL, easing: 'linear' });
+      a.currentTime = from;
+      anims.push(a);
+      const svg = spot.querySelector('.mascot');
+      const later = (ms, fn) => { if (ms >= from) timers.push(setTimeout(fn, ms - from)); };
+      later(0, () => setPose(svg, 'wow'));
+      later(WIRE_AT[2][1] + k * LAG, () => setPose(svg, 'joy'));
+      later(BACK[1] + k * LAG, () => setPose(svg, svg.dataset.base));
+    });
+  };
+  const restartFlow = () => flow.forEach((el) => el.getAnimations().forEach((a) => { a.currentTime = 0; a.play(); }));
+
+  // First visit: join the CSS flow where it is now (main.js arrives a moment after first paint).
+  const now = ref()?.currentTime ?? Infinity;
+  if (wide.matches && now < WIRE_AT[0][0]) run(now);
+  let left = false;
+  new IntersectionObserver(([e]) => {
+    if (!e.isIntersecting) { left = true; stop(); return; }
+    if (!left || !wide.matches || reduceMotion.matches || document.hidden) return;
+    left = false;
+    restartFlow();
+    run(0);
+  }, { threshold: 0.5 }).observe(wrap);
+  wide.addEventListener('change', () => { if (!wide.matches) stop(); });
 }
 
 const mark = (svgs, on) => svgs.forEach((s) => { s.dataset.moving = String(on); });

@@ -6,7 +6,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
-import { icon, lockup, INK, BALLS } from '../templates/brand.mjs';
+import { icon, lockup, INK, BALLS, WHITE } from '../templates/brand.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const out = path.join(root, 'assets/brand');
@@ -53,11 +53,11 @@ function ico(pngs) {
 const png = (svgText, w, h = w) => sharp(Buffer.from(svgText), { density: 600 }).resize(w, h).png().toBuffer();
 const inner = (svgText) => svgText.replace(/^<svg[^>]*>/, '').replace(/<\/svg>$/, '').replace(/<title>.*?<\/title>/, '');
 // The icon centred on a square ground (circle or full square), the chain at `scale` of the side.
-function onGround(size, { ground, circle, scale = 0.72 }) {
+function onGround(size, { ground, circle, scale = 0.72, line = INK }) {
   const s = (size * scale) / 64;
   const o = (size - 64 * s) / 2;
   const g = circle ? `<circle cx="${size / 2}" cy="${size / 2}" r="${size / 2}" fill="${ground}"/>` : `<rect width="${size}" height="${size}" fill="${ground}"/>`;
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}">${g}<g transform="translate(${o} ${o}) scale(${s})">${inner(icon())}</g></svg>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}">${g}<g transform="translate(${o} ${o}) scale(${s})">${inner(icon({ line }))}</g></svg>`;
 }
 
 await mkdir(out, { recursive: true });
@@ -71,7 +71,10 @@ console.log(`brand: ${Object.keys(files).join(', ')}, favicon.ico (16/32/48), ap
 // For Iva (not deployed): avatars and the signature logo.
 await mkdir(exp, { recursive: true });
 await sharp(Buffer.from(onGround(400, { ground: '#FFFFFF', circle: true }))).png().toFile(path.join(exp, 'avatar-400-white.png'));
-await sharp(Buffer.from(onGround(400, { ground: BALLS[0].fill, circle: true }))).png().toFile(path.join(exp, 'avatar-400-pink.png'));
+// Stage 4: profile avatars on white or dark; the pink one melted into pink headers and lives in _alt.
+await sharp(Buffer.from(onGround(400, { ground: INK, circle: true, line: WHITE }))).png().toFile(path.join(exp, 'avatar-400-dark.png'));
+await mkdir(path.join(exp, '_alt'), { recursive: true });
+await sharp(Buffer.from(onGround(400, { ground: BALLS[0].fill, circle: true }))).png().toFile(path.join(exp, '_alt/avatar-400-pink.png'));
 // E-mail signature: large lockup DE at twice the approved size, on white (dark-mode mail keeps it readable).
 const sig = lockup({ kind: 'full', lang: 'de', pad: 120 });
 const [, , sw, sh] = sig.match(/viewBox="([^"]+)"/)[1].split(' ').map(Number);
@@ -80,5 +83,5 @@ const sigH = Math.round((sh * 84) / 1000);
 await sharp(Buffer.from(sig.replace(/(<svg[^>]*>)/, `$1<rect x="-99999" y="-99999" width="199999" height="199999" fill="#FFFFFF"/>`)), { density: 300 })
   .resize(sigW, sigH).png().toFile(path.join(exp, 'signature-de@2x.png'));
 for (const name of ['logo-full-de.svg', 'logo-full-en.svg', 'logo-dark-de.svg', 'logo-dark-en.svg', 'icon.svg']) await writeFile(path.join(exp, name), `${files[name]}\n`);
-console.log(`brand export: avatar-400-white.png, avatar-400-pink.png, signature-de@2x.png (${sigW} x ${sigH}), logo SVGs -> ${exp}`);
+console.log(`brand export: avatar-400-white.png, avatar-400-dark.png (_alt/avatar-400-pink.png), signature-de@2x.png (${sigW} x ${sigH}), logo SVGs -> ${exp}`);
 void INK;

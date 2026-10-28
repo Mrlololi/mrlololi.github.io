@@ -102,7 +102,7 @@ test('tagline: Lo / Lö / Li (DE) and Lo / Lo / Li (EN) coloured, the rest ink',
 });
 
 test('hero: Logik at Formular, Lösung at ActiveCampaign, Live at Kurs offen, as labelled buttons', () => {
-  const btns = [...de.matchAll(/<span class="mascot-spot mascot-spot--(\w+)" data-node="(\d)"><svg viewBox="-8 -8 120 124" data-mascot="\d" data-emo="(\w+)" class="mascot" data-base="\3" aria-hidden="true" focusable="false">[\s\S]*?<\/svg><button class="mascot-btn" type="button" aria-label="([^"]+)"><\/button><\/span>/g)]
+  const btns = [...de.matchAll(/<span class="mascot-spot mascot-spot--(\w+)" data-node="(\d)" data-scene="hero"><svg viewBox="-8 -8 120 124" data-mascot="\d" data-emo="(\w+)" class="mascot" data-base="\3" aria-hidden="true" focusable="false">[\s\S]*?<\/svg><button class="mascot-btn" type="button" aria-label="([^"]+)"><\/button><\/span>/g)]
     .map((m) => [m[1], m[2], m[4]]);
   // Like the node buttons: without JS there is no button that could do nothing.
   assert.match(css, /html:not\(\.js\) \.mascot-btn \{ display: none; \}/);
@@ -127,10 +127,10 @@ test('mascots v2: hexagon, ball, teardrop; two-tone belly clipped to the body; g
       if (e === 'wave') assert.match(s, /<g class="m-wave" data-origin="[\d.]+ [\d.]+">/);
     }
   }
-  // Every SVG gets its own clipPath id (hero and footer on one page).
+  // Every SVG gets its own clipPath id (hero, footer and the Stage 4 scenes on one page).
   const ids = [...de.matchAll(/<clipPath id="([\w-]+)">/g)].map((m) => m[1]);
-  assert.equal(ids.length, 6);
-  assert.equal(new Set(ids).size, 6);
+  assert.ok(ids.length > 6);
+  assert.equal(new Set(ids).size, ids.length);
 });
 
 test('mascot weight: three SVGs plus the mascot JS stay within 15 KB gzip; no Lottie, Rive or three.js', () => {

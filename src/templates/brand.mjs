@@ -20,10 +20,12 @@ const ICON16 = { r: 14, xs: [18, 32, 46], stroke: 5 };
 
 const n = (v) => String(Math.round(v * 10000) / 10000);
 
-function iconBody({ small = false, line = INK } = {}) {
+// halo (Stage 4, header variant b): a thin white ring (2 units, about 2 px in the header) behind each ball.
+function iconBody({ small = false, line = INK, halo = false } = {}) {
   const s = small ? ICON16 : ICON;
   const [l, m, r] = s.xs;
-  return `<g stroke="${line}" stroke-width="${s.stroke}"><circle cx="${l}" cy="32" r="${s.r}" fill="${PINK.fill}"/><circle cx="${r}" cy="32" r="${s.r}" fill="${PIST.fill}"/><circle cx="${m}" cy="32" r="${s.r}" fill="${BLUE.fill}"/></g>`;
+  const ring = halo ? `<g fill="#fff">${s.xs.map((x) => `<circle cx="${x}" cy="32" r="${s.r + s.stroke / 2 + 2}"/>`).join('')}</g>` : '';
+  return `${ring}<g stroke="${line}" stroke-width="${s.stroke}"><circle cx="${l}" cy="32" r="${s.r}" fill="${PINK.fill}"/><circle cx="${r}" cy="32" r="${s.r}" fill="${PIST.fill}"/><circle cx="${m}" cy="32" r="${s.r}" fill="${BLUE.fill}"/></g>`;
 }
 
 const attrs = (a = {}) => Object.entries(a).filter(([, v]) => v != null && v !== false).map(([k, v]) => ` ${k}="${v}"`).join('');
@@ -134,7 +136,7 @@ const tagLineBottom = wordLineBottom + TAG_GAP + (G.tagline.ascender - G.tagline
  * kind: 'header' (icon + word) or 'full' (icon + word + tagline in `lang`).
  * dark: white word, white icon strokes and ring, pastel tagline initials; `bg` adds the #2B2A33 ground.
  */
-export function lockup({ kind = 'header', lang = 'de', dark = false, bg = false, pad = 0, wordId, ...rest } = {}) {
+export function lockup({ kind = 'header', lang = 'de', dark = false, bg = false, pad = 0, wordId, halo = false, ...rest } = {}) {
   const k = KINDS[kind];
   const line = dark ? WHITE : INK;
   const colTop = wordLineTop;
@@ -142,10 +144,11 @@ export function lockup({ kind = 'header', lang = 'de', dark = false, bg = false,
   const iconY = (colTop + colBottom) / 2 - k.icon / 2;
   const s = k.icon / 64;
   const wx = k.icon + k.gap;
-  let parts = `<g transform="translate(0 ${n(iconY)}) scale(${n(s)})">${iconBody({ line })}</g>`;
+  let parts = `<g transform="translate(0 ${n(iconY)}) scale(${n(s)})">${iconBody({ line, halo })}</g>`;
   parts += `<g transform="translate(${wx} 0)">${wordBody({ fill: line, ring: line, id: wordId })}</g>`;
   // Tight box: icon ink (circles plus half the stroke) and word ink.
-  const iconInk = [(ICON.xs[0] - ICON.r - ICON.stroke / 2) * s, iconY + (32 - ICON.r - ICON.stroke / 2) * s, (ICON.xs[2] + ICON.r + ICON.stroke / 2) * s, iconY + (32 + ICON.r + ICON.stroke / 2) * s];
+  const h = halo ? 2 : 0; // the halo reaches 2 grid units beyond the ink
+  const iconInk = [(ICON.xs[0] - ICON.r - ICON.stroke / 2 - h) * s, iconY + (32 - ICON.r - ICON.stroke / 2 - h) * s, (ICON.xs[2] + ICON.r + ICON.stroke / 2 + h) * s, iconY + (32 + ICON.r + ICON.stroke / 2 + h) * s];
   let box = [iconInk[0], Math.min(iconInk[1], WORD_BOX[1]), Math.max(iconInk[2], wx + WORD_BOX[2]), Math.max(iconInk[3], WORD_BOX[3])];
   if (k.tagline) {
     const t = taglineBody(lang, dark);

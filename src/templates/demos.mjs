@@ -1,5 +1,6 @@
 import { esc, accent, fill } from './util.mjs';
 import { loopButton } from './hero.mjs';
+import { mascotScene } from './mascots.mjs';
 
 // «Ich arbeite mit»: text pills (no logos). The second list is the marquee's seamless copy.
 export function tools(t) {
@@ -18,8 +19,7 @@ ${loopButton(t)}
 </section>`;
 }
 
-// Before/after slider for «Wo es meistens hakt». Both drawings share one 440 x 300 canvas.
-// Without JS they stand side by side; with JS the «after» side is clipped by the range value.
+// Before/after for «Wo es meistens hakt». Both drawings share one 440 x 300 canvas.
 const BA_W = [104, 140, 92, 86, 76];
 function pill(label, x, y, w, cls) {
   return `<g class="ba__node ${cls}"><rect x="${x}" y="${y}" width="${w}" height="34" rx="12"/><text x="${x + w / 2}" y="${y + 22}" text-anchor="middle">${esc(label)}</text></g>`;
@@ -47,50 +47,20 @@ function orderSvg(nodes) {
   return `<svg class="ba__svg" viewBox="0 0 440 300" aria-hidden="true" focusable="false">${lines}${boxes}${checks}</svg>`;
 }
 
+// Stage 4: the «after» drawing sits in a mask (moved with xPercent) around a counter-shifted inner
+// layer, so the wipe is transforms only. Wide screens: it covers from the left as the divider moves
+// right (pinned and scrubbed with motion, dragged or set with the range). Phones and no JS: stacked.
 export function beforeAfter(t) {
   const s = t.problems.slider;
-  return `<figure class="ba">
+  return `<figure class="ba" data-pin>
 <div class="ba__stage">
 <div class="ba__side ba__side--before"><span class="label label--pink ba__tag--before">${esc(s.before)}</span>${chaosSvg(s.nodes)}</div>
-<div class="ba__side ba__side--after"><span class="label label--pist ba__tag--after">${esc(s.after)}</span>${orderSvg(s.nodes)}</div>
-<span class="ba__divider" aria-hidden="true"></span>
+<div class="ba__mask"><div class="ba__inner"><div class="ba__side ba__side--after"><span class="label label--pist ba__tag--after">${esc(s.after)}</span>${orderSvg(s.nodes)}</div></div></div>
+<span class="ba__track" aria-hidden="true"><span class="ba__divider"></span></span>
 </div>
 <label class="ba__control"><span>${esc(s.label)}</span><input class="ba__range" type="range" min="0" max="100" step="1" value="50" aria-valuetext="${esc(fill(s.valuetext, { v: 50 }))}" data-valuetext="${esc(s.valuetext)}"></label>
 <figcaption class="sr-only">${esc(s.alt)}</figcaption>
 </figure>`;
-}
-
-// KI im Kundenservice: an upset mail becomes a draft (marks, chips, then the reply in three tones).
-// The HTML is the finished state; demos.js plays it once in view and turns the tones into tabs.
-export function kiDemo(t) {
-  const k = t.ki;
-  let text = esc(k.mail);
-  k.marks.forEach((m, i) => { text = text.replace(esc(m), `<mark class="hl hl--${i + 1}">${esc(m)}</mark>`); });
-  const chips = k.chips.map((c, i) => `<li class="label label--${['blue', 'pink', 'lav', 'peach'][i]}">${esc(c)}</li>`).join('');
-  const tones = k.tones.map(([name, reply]) => `<div class="tone__panel"><p class="tone__label">${esc(name)}</p><p class="tone__text">${esc(reply)}</p></div>`).join('\n');
-  return `<li class="tariff__ki">
-<section class="kidemo" aria-labelledby="kidemo-title">
-<div class="kidemo__head"><h3 class="kidemo__title" id="kidemo-title">${accent(k.h3)}</h3><span class="label">${esc(t.ui.example)}</span></div>
-<div class="kidemo__grid">
-<div class="kidemo__mail">
-<p class="kidemo__from">${esc(k.from)}</p>
-<p class="kidemo__text">${text}</p>
-<ul class="chips" role="list">${chips}</ul>
-</div>
-<div class="kidemo__draft">
-<p class="kidemo__pill" aria-hidden="true"><span class="sparkle"></span>${esc(k.pill)}</p>
-<div class="tone" data-label="${esc(k.toneLabel)}">
-${tones}
-</div>
-<div class="kidemo__actions"><button class="btn btn--primary btn--sm kidemo__approve" type="button" data-done="${esc(k.approved)}">${esc(k.buttons[0])}</button><button class="btn btn--ghost btn--sm kidemo__edit" type="button" data-done="${esc(k.done)}" data-label="${esc(k.editLabel)}">${esc(k.buttons[1])}</button></div>
-<p class="kidemo__sent" role="status" hidden>${esc(k.sent)}</p>
-<p class="kidemo__note small">${esc(k.note)}</p>
-</div>
-</div>
-<p class="kidemo__caption">${esc(k.caption)}</p>
-<button class="kidemo__replay" type="button" hidden>${esc(k.replay)}</button>
-</section>
-</li>`;
 }
 
 // 6 Minuten gegen 1 Minute: the same reply runs along a line at two speeds (example values).
@@ -110,29 +80,35 @@ ${loopButton(t)}
 </div>`;
 }
 
-// «Welches Paket passt?»: a static list without JS; three button questions with JS (finder.js maps).
-export function finder(t) {
+// «Welches Paket passt?» (Stage 4): a static link list without JS; with JS a pre-programmed chat
+// (assets/js/chat.js): three questions with typing dots, chip answers, the last bubble grows into
+// the package card. Lösung is the small avatar in the header. Honest label: no real AI, nothing sent.
+export function finder(t, config) {
   const f = t.finder;
-  const names = Object.fromEntries(t.pricing.groups.flatMap((g) => g.items).map((it) => [it.id, it.name]));
+  const c = t.s4.finder;
+  const items = t.pricing.groups.flatMap((g) => g.items);
+  const names = Object.fromEntries(items.map((it) => [it.id, it.name]));
+  const prices = Object.fromEntries(items.map((it) => [it.id, it.price]));
   const list = f.static.map(([text, id]) => `<li><a href="#pkg-${id}">${esc(text)}: <strong>${esc(names[id])}</strong></a></li>`).join('\n');
-  const questions = f.questions
-    .map(([q, opts], i) => `<fieldset class="finder__q" data-q="${i + 1}"><legend>${esc(q)}</legend><div class="finder__opts">${opts
-      .map(([value, label]) => `<button class="finder__opt" type="button" data-value="${value}" aria-pressed="false">${esc(label)}</button>`)
-      .join('')}</div></fieldset>`)
-    .join('\n');
-  const data = { result: f.result, link: f.link, restart: f.restart, soon: f.closing.soon, later: f.closing.later, names };
+  const data = {
+    hello: c.hello, progress: c.progress, typing: c.typing, questions: f.questions, names, prices, lines: c.lines,
+    link: f.link, ask: c.ask, restart: f.restart, soon: f.closing.soon, later: f.closing.later,
+    mail: config.contact_email, subject: t.pricing.subjectPrefix,
+  };
   return `<section class="section finder bg-lav edge" id="finder" aria-labelledby="finder-title">
 <div class="wrap">
 <div class="finder__card">
-<h2 id="finder-title">${accent(f.h2)}</h2>
+<h2 id="finder-title" data-enter="lines">${accent(f.h2)}</h2>
 <ul class="finder__static" role="list">
 ${list}
 </ul>
-<div class="finder__app" hidden>
-${questions}
-<div class="finder__result" aria-live="polite" data-text="${esc(JSON.stringify(data))}"></div>
+<div class="chat" hidden data-text="${esc(JSON.stringify(data))}">
+<div class="chat__head">${mascotScene('avatar', [[1, 'idle']])}<div><p class="chat__name">${esc(c.title)}<span class="chat__demo"> · ${esc(c.demo)}</span></p><p class="chat__note">${esc(c.note)}</p></div><p class="chat__progress" aria-live="polite"></p></div>
+<div class="chat__log" role="log"></div>
+<div class="chat__chips" role="group"></div>
 </div>
 </div>
 </div>
 </section>`;
 }
+

@@ -3,6 +3,7 @@
 import { pathToFileURL } from 'node:url';
 import { chromium, repoRoot } from './browsers.mjs';
 import { startServer } from './serve.mjs';
+import { warm } from './warm.mjs';
 
 export const PAGES = ['/', '/en/', '/impressum/', '/datenschutz/', '/en/legal-notice/', '/en/privacy/', '/404.html'];
 export const WIDTHS = [360, 390, 768, 1024, 1280, 1440];
@@ -32,7 +33,7 @@ export async function checkOverflow(browser, base) {
   for (const [p, width] of JS_CASES) {
     const page = await browser.newPage({ viewport: { width, height: 900 } });
     await page.goto(base + p, { waitUntil: 'load' });
-    await page.waitForSelector('.tone.is-tabs', { state: 'attached', timeout: 8000 });
+    await warm(page);
     const r = await page.evaluate(measure);
     if (r.sw > r.vw) problems.push(`${p} @${width} after main.js: scrollWidth ${r.sw} > ${r.vw} (${r.wide.join(', ')})`);
     await page.close();

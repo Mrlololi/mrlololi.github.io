@@ -10,6 +10,7 @@ import { layout } from './templates/layout.mjs';
 import { home } from './templates/home.mjs';
 import { impressum, privacy, notFound } from './templates/legal.mjs';
 import { robots, sitemap, cname, manifest } from './templates/seo.mjs';
+import { kiData } from './templates/ki.mjs';
 
 export { sitemap, cname };
 
@@ -52,6 +53,9 @@ export async function build({ outDir = root } = {}) {
     await writeFile(target, html, 'utf8');
     console.log(`page: ${file}`);
   }
+  // Stage 4: the 20 KI-demo examples per language, fetched by assets/js/kidemo.js on first view.
+  await mkdir(path.join(outDir, 'assets/data'), { recursive: true });
+  for (const t of [de, en]) await writeFile(path.join(outDir, `assets/data/ki-${t.lang}.json`), JSON.stringify(kiData(t)), 'utf8');
   await writeFile(path.join(outDir, 'robots.txt'), robots(config), 'utf8');
   await writeFile(path.join(outDir, 'sitemap.xml'), sitemap(config), 'utf8');
   await writeFile(path.join(outDir, 'site.webmanifest'), manifest(), 'utf8');

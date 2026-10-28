@@ -1,4 +1,5 @@
-// Behaviour checks for the interactive parts (hero flow, problem cards, run log, path line, details, calculator).
+// Behaviour checks for the interactive parts (hero flow, details, calculator, reduced motion, no JS).
+// The Stage 4 demos (problem cards, story, KI, chat, FAQ, contact, replay on re-entry) are in stage4.mjs.
 // Usage: node src/qa/behaviour.mjs   (exit code 1 on failure; screenshots in qa/shots/behaviour)
 import { mkdir } from 'node:fs/promises';
 import path from 'node:path';
@@ -18,18 +19,8 @@ const runState = (page) => page.evaluate(() =>
 );
 const allDone = (s) => s.every((x) => x.done === 1 && x.check === 0);
 
-// Problem cards: is each «Lösung» panel in place (no transform left)?
-const fixesIn = (page) => page.$$eval('.pc__fix', (els) => els.map((e) => getComputedStyle(e).transform === 'none'));
 // Hero flow: opacity of each node's check.
 const flowChecks = (page) => page.$$eval('.hf__check', (els) => els.map((e) => Number(getComputedStyle(e).opacity)));
-// The run log is step 2 of the story: scroll the story into view and choose that step.
-const showRun = async (page) => {
-  await page.$eval('.story', (el) => el.scrollIntoView({ block: 'center' }));
-  await page.waitForTimeout(150);
-  await page.click('#story-tab-2');
-};
-const pathDrawn = (page) => page.$eval('.path', (el) => getComputedStyle(el, '::after').transform === 'none');
-
 export async function checkBehaviour(browser, base) {
   await mkdir(shots, { recursive: true });
   const results = [];
@@ -45,50 +36,11 @@ export async function checkBehaviour(browser, base) {
     await page.waitForTimeout(1000);
     const flowMid = await flowChecks(page);
     await page.screenshot({ path: path.join(shots, 'hero-mid-1280.png') });
-    const waiting = await runState(page);
-    const fixesBefore = await fixesIn(page);
     await page.waitForTimeout(3600);
     const flowEnd = await flowChecks(page);
     await page.screenshot({ path: path.join(shots, 'hero-end-1280.png') });
     check('hero flow: first node lit at 1.0 s, last not yet', flowMid[0] === 1 && flowMid[3] < 1, JSON.stringify(flowMid));
     check('hero flow: all nodes lit by 4.6 s (plays once, under 5 s)', flowEnd.every((v) => v === 1), JSON.stringify(flowEnd));
-    check('desktop: run log below the fold waits', !allDone(waiting), JSON.stringify(waiting.map((x) => x.done)));
-    check('problems: solution panels wait below their cards before the section', fixesBefore.every((v) => !v), JSON.stringify(fixesBefore));
-
-    // 2. Problems: panels slide up once the cards are in view.
-    await page.$eval('.pcs', (el) => el.scrollIntoView({ block: 'center' }));
-    await page.waitForTimeout(1800);
-    const fixesAfter = await fixesIn(page);
-    await page.screenshot({ path: path.join(shots, 'problems-1280.png') });
-    check('problems: all solution panels in place after entering the view', fixesAfter.every(Boolean), JSON.stringify(fixesAfter));
-
-    // 3. Run log: plays when its story step is shown, times count up.
-    await showRun(page);
-    await page.waitForTimeout(1000);
-    const mid = await runState(page);
-    await page.waitForTimeout(2600);
-    const end = await runState(page);
-    await page.screenshot({ path: path.join(shots, 'run-end-1280.png') });
-    check('desktop: run is mid-way 1.0 s after showing step 2', !allDone(mid), JSON.stringify(mid.map((x) => x.done)));
-    check('desktop: all six steps done 3.6 s after showing step 2', allDone(end), JSON.stringify(end));
-    check('desktop: times count up to their final values', end.map((x) => x.time).join('|') === '0,2 s|0,6 s|0,9 s|1,4 s|1,9 s|2,3 s', end.map((x) => x.time).join('|'));
-
-    // 4. Replay: double click mid-run must not leave half states.
-    await page.click('.run__replay');
-    await page.waitForTimeout(250);
-    await page.click('.run__replay');
-    await page.dblclick('.run__replay');
-    await page.waitForTimeout(3000);
-    check('replay: rapid clicks end with all steps done', allDone(await runState(page)));
-    const status = await page.$eval('#run-status', (s) => s.textContent);
-    check('replay: result announced in the live region', status.includes('6 Schritte'), status);
-
-    // 5. About: the path line draws once in view.
-    const pathBefore = await pathDrawn(page);
-    await page.$eval('.path', (el) => el.scrollIntoView({ block: 'center' }));
-    await page.waitForTimeout(2600);
-    const pathAfter = await pathDrawn(page);
-    check('about: path line undrawn before, drawn after entering the view', !pathBefore && pathAfter, `${pathBefore} -> ${pathAfter}`);
     check('desktop: no console errors', errors.length === 0, errors.join(' | '));
 
     // 6. Price details open and close with keyboard.
@@ -127,32 +79,13 @@ export async function checkBehaviour(browser, base) {
     await page.waitForTimeout(150);
     check('reduced motion: hero flow lit at load', (await flowChecks(page)).every((v) => v === 1));
     check('reduced motion: run complete at load', allDone(await runState(page)));
-    check('reduced motion: solution panels in place at load', (await fixesIn(page)).every(Boolean));
-    check('reduced motion: path line drawn at load', await pathDrawn(page));
-    await showRun(page);
+    await page.$eval('.screen', (el) => el.scrollIntoView({ block: 'center' }));
+    await page.waitForSelector('.run__replay:not([hidden])', { timeout: 8000 });
     await page.click('.run__replay');
     await page.waitForTimeout(200);
     const status = await page.$eval('#run-status', (s) => s.textContent);
-    check('reduced motion: replay announces the result', status.includes('6 Schritte'), status);
+    check('reduced motion: «Nochmal abspielen» announces the result', status.includes('6 Schritte'), status);
     await page.screenshot({ path: path.join(shots, 'reduced-1280.png') });
-    await page.close();
-  }
-
-  // 9. Phone: run starts when scrolled into view; each card's panel slides up on its own.
-  {
-    const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
-    await page.goto(base + '/', { waitUntil: 'load' });
-    await page.waitForTimeout(400);
-    const waiting = await runState(page);
-    await page.$eval('.pc', (el) => el.scrollIntoView({ block: 'center' }));
-    await page.waitForTimeout(1600);
-    const cards = await fixesIn(page);
-    await page.screenshot({ path: path.join(shots, 'problems-390.png') });
-    check('phone: first card solved on enter, last card still waiting', cards[0] && !cards[2], JSON.stringify(cards));
-    await showRun(page);
-    await page.waitForTimeout(3200);
-    const done = await runState(page);
-    check('phone: run waits until step 2 is shown, then completes', !allDone(waiting) && allDone(done));
     await page.close();
   }
 

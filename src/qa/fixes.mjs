@@ -6,6 +6,7 @@ import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { chromium, repoRoot, qaDir } from './browsers.mjs';
 import { startServer } from './serve.mjs';
+import { warm } from './warm.mjs';
 
 const SHORT = ['/impressum/', '/datenschutz/', '/en/legal-notice/', '/en/privacy/', '/404.html'];
 
@@ -112,14 +113,17 @@ export async function checkFixes(browser, base) {
   // A5: tone tabs know Home and End; the before/after range speaks «Vorher 51 %».
   for (const [p, want] of [['/', 'Vorher 51 %'], ['/en/', 'Before 51 %']]) {
     const page = await open(p, { width: 1280, height: 900 });
-    await page.waitForSelector('.tone.is-tabs', { state: 'attached', timeout: 8000 });
+    await warm(page);
     await page.focus('.tone__tab');
     await page.keyboard.press('End');
     const end = await page.evaluate(() => { const t = [...document.querySelectorAll('.tone__tab')]; return t.at(-1).getAttribute('aria-selected') === 'true' && document.activeElement === t.at(-1); });
     await page.keyboard.press('Home');
     const home = await page.evaluate(() => { const t = [...document.querySelectorAll('.tone__tab')]; return t[0].getAttribute('aria-selected') === 'true' && document.activeElement === t[0]; });
     await page.focus('.ba__range');
-    await page.keyboard.press('ArrowRight');
+    await page.waitForTimeout(1500); // focusing scrolls into the pinned wipe; let it settle
+    await page.$eval('.ba__range', (r) => { r.value = '50'; r.dispatchEvent(new Event('input')); });
+    await page.keyboard.press('ArrowLeft');
+    await page.waitForTimeout(100);
     const text = await page.$eval('.ba__range', (el) => el.getAttribute('aria-valuetext'));
     check(`tone tabs Home/End and range value text (${p})`, end && home && text === want, JSON.stringify({ end, home, text }));
     await page.close();

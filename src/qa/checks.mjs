@@ -203,8 +203,10 @@ export async function keyboard(browser, base) {
         visible: r.width > 0 && r.height > 0 && r.bottom > 0 && r.top < innerHeight,
         // The skip link sits above the header on purpose (z-index), so it is never covered.
         covered: !inHeader && !el.matches('.skip') && r.top < header.bottom - 2 && getComputedStyle(document.querySelector('.site-header')).transform === 'none',
-        y: r.top + scrollY,
-        x: r.left,
+        // Layout position (offsetTop chain): scroll-driven transforms (docking drift, pins) and the
+        // scrolling FAQ list do not count as the order going back up.
+        y: (() => { let v = 0; for (let e = el; e; e = e.offsetParent) v += e.offsetTop; return v; })(),
+        x: (() => { let v = 0; for (let e = el; e; e = e.offsetParent) v += e.offsetLeft; return v; })(),
       };
     });
     if (!s) break;
@@ -213,15 +215,16 @@ export async function keyboard(browser, base) {
   const noOutline = stops.filter((s) => !s.outline).map((s) => s.label);
   const hidden = stops.filter((s) => !s.visible || s.covered).map((s) => s.label);
   let backwards = 0;
+  const jumps = [];
   // Reading order: left to right, then down. Moving up into the next column to the right is fine.
-  for (let i = 1; i < stops.length; i++) if (stops[i].y < stops[i - 1].y - 40 && stops[i].x <= stops[i - 1].x + 40) backwards++;
+  for (let i = 1; i < stops.length; i++) if (stops[i].y < stops[i - 1].y - 40 && stops[i].x <= stops[i - 1].x + 40) { backwards++; jumps.push(`${stops[i - 1].label} -> ${stops[i].label}`); }
   // Accordions and replay with keys.
-  await page.focus('.faq__item summary');
+  // The first question is open already on wide screens (FAQ box): try the second one.
+  await page.focus('.faq__item:nth-child(2) summary');
   await page.keyboard.press('Space');
-  const faqOpen = await page.$eval('.faq__item', (d) => d.open);
-  await page.focus('#story-tab-2');
-  await page.keyboard.press('Enter');
-  await page.waitForTimeout(3200);
+  const faqOpen = await page.$eval('.faq__item:nth-child(2)', (d) => d.open);
+  await page.$eval('.screen', (el) => el.scrollIntoView({ block: 'center' }));
+  await page.waitForTimeout(5200);
   await page.focus('.run__replay');
   await page.keyboard.press('Enter');
   await page.waitForTimeout(400);
@@ -230,7 +233,7 @@ export async function keyboard(browser, base) {
   return [
     ok(`keyboard: ${stops.length} tab stops, all with a visible focus outline`, noOutline.length === 0, noOutline.join(', ')),
     ok('keyboard: focused element always on screen and not under the header', hidden.length === 0, hidden.join(', ')),
-    ok('keyboard: tab order follows the page top to bottom', backwards <= 1, `${backwards} jumps back up`),
+    ok('keyboard: tab order follows the page top to bottom', backwards <= 1, `${backwards} jumps back up: ${jumps.join(' | ')}`),
     ok('keyboard: Space opens a FAQ item, Enter replays the run', faqOpen && restarted),
   ];
 }
@@ -238,7 +241,7 @@ export async function keyboard(browser, base) {
 /* Budget: total JS <= 90 KB gzip incl. GSAP. */
 export async function budget() {
   const own = (await readdir(path.join(repoRoot, 'assets/js'))).filter((f) => f.endsWith('.js')).map((f) => `assets/js/${f}`);
-  const files = ['assets/vendor/gsap.min.js', 'assets/vendor/ScrollTrigger.min.js', ...own];
+  const files = ['assets/vendor/gsap.min.js', 'assets/vendor/ScrollTrigger.min.js', 'assets/vendor/SplitText.min.js', ...own];
   let total = 0;
   const parts = [];
   for (const f of files) {
@@ -246,5 +249,6 @@ export async function budget() {
     total += kb;
     parts.push(`${path.basename(f)} ${kb.toFixed(1)}`);
   }
-  return [ok(`budget: JS ${total.toFixed(1)} KB gzip (limit 90)`, total <= 90, parts.join(', '))];
+  // Stage 4 budget (docs/superpowers/specs/2026-10-21-stage4-motion.md): all JS incl. the lazy section modules <= 115 KB.
+  return [ok(`budget: JS ${total.toFixed(1)} KB gzip (limit 115)`, total <= 115, parts.join(', '))];
 }

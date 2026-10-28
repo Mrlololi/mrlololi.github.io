@@ -17,10 +17,10 @@ test('story step 1 is a real local form: inputs, submit, note, inline error', ()
   assert.match(form, /<input id="story-name" name="name" type="text" value="Anna K\." autocomplete="off">/);
   assert.match(form, /<input id="story-email" name="email" type="email" value="anna@example\.com" autocomplete="off" aria-describedby="story-email-error">/);
   assert.match(form, /<p class="story__error" id="story-email-error" hidden>Bitte geben Sie eine gültige E-Mail-Adresse ein\.<\/p>/);
-  assert.match(form, /<button class="btn btn--primary" type="submit">Jetzt anmelden<\/button>/);
+  assert.match(form, /<button class="btn btn--primary btn--sm" type="submit">Jetzt anmelden<\/button>/);
   assert.match(form, /<p class="story__note small">Nur eine Vorschau: Es wird nichts gesendet oder gespeichert\.<\/p>/);
   assert.ok(!/action=/.test(form), 'nothing is sent anywhere');
-  assert.match(de, /Willkommen im Kurs, <span class="js-first">Anna<\/span>!/);
+  assert.match(de, /Willkommen, <span class="js-first">Anna<\/span>!/);
   assert.match(de, /<li class="toast">Neue Anmeldung: <span class="js-name">Anna K\.<\/span><\/li>/);
   assert.match(en, /Preview only: nothing is sent or stored\./);
 });
@@ -34,7 +34,7 @@ test('KI demo: real approve / edit buttons with their follow-up texts', () => {
 });
 
 test('price cards: one «Anfragen» mail link each, package in the subject', () => {
-  const items = [...de.matchAll(/<li class="item" id="pkg-(\w+)">[\s\S]*?<\/a>\n<\/li>/g)];
+  const items = [...de.matchAll(/<li class="item item--\w+" id="pkg-(\w+)" data-tilt>[\s\S]*?<\/a>\n<\/li>/g)];
   assert.equal(items.length, 6);
   for (const [li] of items) {
     const name = li.match(/<h4 class="item__name">([^<]+)<\/h4>/)[1];
@@ -59,14 +59,14 @@ test('hero: chip links to «Über mich», flow nodes are buttons with one line e
 });
 
 test('labels share one style; pause controls are icon buttons with a label', () => {
-  for (const t of ['Beispiel', 'Beispielwerte', 'Problem', 'Lösung', 'Chaos', 'Geordnet', 'Thema: Login', 'dringend']) {
+  for (const t of ['Beispiel', 'Beispielwerte', 'Problem', 'Lösung', 'Chaos', 'Geordnet', 'Beispielrechnung', 'Empfohlener Start']) {
     assert.match(de, new RegExp(`class="label[^"]*">${t}<`), t);
   }
   assert.ok(!/class="(demo-tag|pc__tag|ba__tag|chip)\b/.test(de), 'old tag classes gone');
   const pauses = [...de.matchAll(/<button class="loop-btn" type="button" hidden aria-label="Animation anhalten" data-pause="Animation anhalten" data-play="Animation fortsetzen">/g)];
-  // Four loops: hero ribbon, tool marquee, toast stack, 6 vs 1.
-  assert.equal(pauses.length, 4);
-  assert.equal(count(de, /<span class="loop-btn__tip" aria-hidden="true">Animation anhalten<\/span>/g), 4);
+  // Five loops (Stage 4): hero ribbon, tool marquee, story screen, 6 vs 1, the tool rows in «Über mich».
+  assert.equal(pauses.length, 5);
+  assert.equal(count(de, /<span class="loop-btn__tip" aria-hidden="true">Animation anhalten<\/span>/g), 5);
 });
 
 // Own contrast test (axe skips text on gradients): every text colour on every surface it sits on.
