@@ -13,7 +13,8 @@ const wait = (page, ms) => page.waitForTimeout(ms);
 const center = (page, sel) => page.$eval(sel, (el) => el.scrollIntoView({ block: 'center' }));
 const away = (page) => page.evaluate(() => scrollTo(0, 0));
 
-export async function checkStage4(browser, base) {
+// query: appended to the page address (e.g. "?v=4" for the live site behind the CDN cache).
+export async function checkStage4(browser, base, query = '') {
   await mkdir(shots, { recursive: true });
   const results = [];
   const check = (name, pass, details = '') => results.push({ name, pass: Boolean(pass), details: typeof details === 'string' ? details : JSON.stringify(details) });
@@ -26,7 +27,7 @@ export async function checkStage4(browser, base) {
     const errors = [];
     page.on('pageerror', (e) => errors.push(e.message));
     page.on('console', (m) => m.type() === 'error' && errors.push(m.text()));
-    await page.goto(base + '/', { waitUntil: 'load' });
+    await page.goto(base + '/' + query, { waitUntil: 'load' });
     await page.waitForFunction(() => window.ScrollTrigger, null, { timeout: 10000 });
     await warm(page);
 
@@ -176,7 +177,7 @@ export async function checkStage4(browser, base) {
   /* ---------- phone: no pins, story panes as tabs that follow the run ---------- */
   {
     const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
-    await page.goto(base + '/', { waitUntil: 'load' });
+    await page.goto(base + '/' + query, { waitUntil: 'load' });
     await page.waitForFunction(() => window.ScrollTrigger, null, { timeout: 10000 });
     await warm(page);
     const pins = await page.$$eval('.pin-spacer', (p) => p.length);
@@ -197,7 +198,7 @@ export async function checkStage4(browser, base) {
   /* ---------- reduced motion: final states, no pins, no auto-play ---------- */
   {
     const page = await browser.newPage({ viewport: { width: 1280, height: 900 }, reducedMotion: 'reduce' });
-    await page.goto(base + '/', { waitUntil: 'load' });
+    await page.goto(base + '/' + query, { waitUntil: 'load' });
     await wait(page, 2500);
     await warm(page);
     await center(page, '.screen');
@@ -222,7 +223,7 @@ export async function checkStage4(browser, base) {
   {
     const ctx = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 1280, height: 900 } });
     const page = await ctx.newPage();
-    await page.goto(base + '/', { waitUntil: 'load' });
+    await page.goto(base + '/' + query, { waitUntil: 'load' });
     const n = await page.evaluate(() => ({
       brief: getComputedStyle(document.querySelector('.brief')).display === 'none',
       mail: document.querySelector('.brief__open').getAttribute('href').startsWith('mailto:hello@mrlololi.com?subject='),
@@ -241,9 +242,11 @@ export async function checkStage4(browser, base) {
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1]).href) {
-  const server = await startServer({ root: repoRoot });
+  // Usage: node src/qa/stage4.mjs [https://mrlololi.com ?v=4]  (no argument: the local build)
+  const [live, query = ''] = process.argv.slice(2);
+  const server = live ? { url: live.replace(/\/$/, ''), close: async () => {} } : await startServer({ root: repoRoot });
   const browser = await chromium.launch();
-  const results = await checkStage4(browser, server.url);
+  const results = await checkStage4(browser, server.url, query);
   await browser.close();
   await server.close();
   for (const r of results) console.log(`${r.pass ? 'PASS' : 'FAIL'}  ${r.name}${r.pass ? '' : `  -> ${r.details}`}`);

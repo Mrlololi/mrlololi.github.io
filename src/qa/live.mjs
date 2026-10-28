@@ -75,11 +75,9 @@ await page.goto(base + '/', { waitUntil: 'load' });
 await page.waitForTimeout(3500);
 await mkdir(path.join(qaDir, 'shots'), { recursive: true });
 await page.screenshot({ path: path.join(qaDir, 'shots', 'live-home-1280.png') });
-// The run log is step 2 of the story: scroll there and choose that step.
-await page.$eval('.story', (el) => el.scrollIntoView({ block: 'center' }));
-await page.waitForTimeout(300);
-await page.click('#story-tab-2');
-await page.waitForTimeout(3500);
+// Stage 4: the story plays when its screen comes into view and ends with the whole log done.
+await page.$eval('.screen', (el) => el.scrollIntoView({ block: 'center' }));
+await page.waitForTimeout(5500);
 const done = await page.$$eval('.run__done', (cs) => cs.every((c) => getComputedStyle(c).opacity === '1'));
 check('live home: run log finished, no console errors', done && errors.length === 0, errors.join(' | '));
 await browser.close();
