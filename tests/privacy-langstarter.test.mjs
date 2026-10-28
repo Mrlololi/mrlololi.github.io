@@ -40,6 +40,6 @@ test('privacy date and sitemap lastmod: 28.10.2026 for the home and privacy page
   assert.match(xml, /<loc>https:\/\/mrlololi\.com\/datenschutz\/<\/loc>\s*(<[^>]+>\s*)*?<lastmod>2026-10-28<\/lastmod>/);
   assert.equal(config.page_dates.home, '2026-10-28');
   for (const loc of ['', 'en/', 'datenschutz/', 'en/privacy/']) assert.match(xml, new RegExp(`<loc>https://mrlololi\\.com/${loc}</loc>\\s*<lastmod>2026-10-28</lastmod>`), loc || '/');
-  assert.equal((xml.match(/<lastmod>2026-10-28<\/lastmod>/g) || []).length, 14, 'plus the ten Stage 5 service pages');
+  assert.equal((xml.match(/<lastmod>2026-10-28<\/lastmod>/g) || []).length, 10, 'plus six Stage 5 service pages (spam and ActiveCampaign: 29.10)');
   assert.equal((xml.match(/<lastmod>2026-10-21<\/lastmod>/g) || []).length, 2, 'Impressum and legal notice');
 });

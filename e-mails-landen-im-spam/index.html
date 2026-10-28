@@ -1448,7 +1448,10 @@ html:not(.js) .brief { display: none; }
 .ratgeber-list { display: grid; gap: var(--space-5); }
 .ratgeber-teaser { display: grid; gap: var(--space-2); }
 .ratgeber-teaser h2 { font-size: var(--step-2); }
-.ratgeber-more ul { display: grid; gap: var(--space-1); }</style>
+.ratgeber-more ul { display: grid; gap: var(--space-1); }
+.svc-explain { display: grid; gap: var(--space-2); padding: var(--space-5); background: var(--sheet); border: 1px solid var(--line); border-radius: var(--radius-card); }
+.svc-explain h3 { font-size: var(--step-1); }
+.svc-explain p { line-height: 1.6; }</style>
 <script>document.documentElement.classList.add('js')</script>
 <script type="module">requestAnimationFrame(()=>requestAnimationFrame(()=>import('/assets/js/main.js')))</script>
 <link rel="modulepreload" href="/assets/js/demos.js" fetchpriority="low">
@@ -1497,6 +1500,10 @@ html:not(.js) .brief { display: none; }
 <div class="wrap svc-sec__in">
 <h2 id="svc-problem">Das Problem</h2>
 <p class="svc-text">Launch-Mails landen im Spam. Diesen Fehler sehe ich bei Launches immer wieder, und er kostet Anmeldungen, Umsatz oder Nerven.</p>
+<aside class="svc-explain" aria-labelledby="svc-explain">
+<h3 id="svc-explain">Kurz erklärt</h3>
+<p>SPF legt fest, welche Server im Namen Ihrer Domain senden dürfen. DKIM signiert jede Mail, damit der Empfänger sieht, dass sie unterwegs nicht verändert wurde. DMARC sagt dem Empfänger, was mit Mails passieren soll, die die Prüfung nicht bestehen, und schickt Ihnen Berichte. Seit 2024 verlangen Gmail und Yahoo von Absendern mit vielen Mails alle drei Einträge, seit 2025 auch Microsoft für Outlook und Hotmail.</p>
+</aside>
 </div>
 </section>
 <section class="svc-sec bg-blue edge" aria-labelledby="svc-does">

@@ -79,7 +79,8 @@ test('every page carries #business and #iva, identical on all pages', () => {
 
 test('Über mich starts with the full name and pronouns', () => {
   assert.match(de.about.paragraphs[0], /^Ich bin Iva Tsatskrialashvili \(er\/ihm\) und lebe in Graz\. Ich habe Informationstechnologie/);
-  assert.match(en.about.paragraphs[0], /^I'm Iva Tsatskrialashvili \(he\/him\) and I live in Graz\. I studied information technology/);
+  // Iva 29.10.2026: «Austria» stays in the English sentence.
+  assert.match(en.about.paragraphs[0], /^I'm Iva Tsatskrialashvili \(he\/him\) and I live in Graz, Austria\. I studied information technology/);
   assert.match(byFile['index.html'], /<p data-enter="lines">Ich bin Iva Tsatskrialashvili \(er\/ihm\) und lebe in Graz\./);
   assert.match(byFile['en/index.html'], /<p data-enter="lines">I&#39;m Iva Tsatskrialashvili \(he\/him\)|<p data-enter="lines">I'm Iva Tsatskrialashvili \(he\/him\)/);
 });
@@ -232,6 +233,17 @@ test('service pages: structure (problem, what I do, steps, example, 3 to 5 FAQ, 
   assert.ok(!by(de, 'ki').includes(config.ki_portfolio_url));
   const live = pages(config, { live: { kiPortfolio: true } });
   assert.ok(live.find((p) => p.file === 'ki-antwortentwuerfe/index.html').html.includes(`href="${config.ki_portfolio_url}"`));
+  // Iva 29.10.2026: the anonymous launch reference also on the ActiveCampaign pages.
+  for (const t of [de, en]) assert.ok(by(t, 'activecampaign').includes(`<h3>${t.refs.case2.title}</h3>`), `${t.lang} activecampaign example`);
+  // Iva 29.10.2026: «Kurz erklärt» right after «Das Problem» on the spam pages, wording from Iva.
+  const explain = (h) => tag(h, /<h2 id="svc-problem">[\s\S]*?(<aside class="svc-explain"[\s\S]*?<\/aside>)\n<\/div>\n<\/section>/);
+  const deBox = explain(by(de, 'spam'));
+  assert.ok(deBox, 'DE box right after the problem');
+  assert.ok(deBox.includes('>Kurz erklärt</h3>'));
+  assert.ok(deBox.includes('SPF legt fest, welche Server im Namen Ihrer Domain senden dürfen. DKIM signiert jede Mail, damit der Empfänger sieht, dass sie unterwegs nicht verändert wurde. DMARC sagt dem Empfänger, was mit Mails passieren soll, die die Prüfung nicht bestehen, und schickt Ihnen Berichte. Seit 2024 verlangen Gmail und Yahoo von Absendern mit vielen Mails alle drei Einträge, seit 2025 auch Microsoft für Outlook und Hotmail.'));
+  const enBox = explain(by(en, 'spam'));
+  assert.ok(enBox && enBox.includes('>In short</h3>') && /Since 2024 Gmail and Yahoo/.test(enBox) && /since 2025 Microsoft/.test(enBox));
+  for (const k of ['launch', 'activecampaign', 'ki', 'website']) assert.ok(!by(de, k).includes('<aside class="svc-explain"'), k);
   // ActiveCampaign page names the three countries once.
   const ac = by(de, 'activecampaign').replace(/<[^>]+>/g, ' ');
   assert.equal((ac.match(/Österreich, Deutschland und der Schweiz/g) || []).length, 1);
@@ -332,7 +344,9 @@ test('sitemap contains exactly the live pages, with lastmod from page_dates', ()
     .sort();
   assert.deepEqual(locs, live);
   assert.equal(locs.length, 16);
-  for (const k of ['launch', 'spam', 'activecampaign', 'ki', 'website']) assert.equal(config.page_dates[k], '2026-10-28', k);
+  for (const k of ['launch', 'ki', 'website']) assert.equal(config.page_dates[k], '2026-10-28', k);
+  // Iva's corrections of 29.10.2026 changed these two pages.
+  for (const k of ['spam', 'activecampaign']) assert.equal(config.page_dates[k], '2026-10-29', k);
   assert.match(xml, new RegExp(`<loc>${SITE}/en/course-launch-tech/</loc>\\s*<lastmod>2026-10-28</lastmod>\\s*<xhtml:link rel="alternate" hreflang="de" href="${SITE}/launch-technik/"/>`));
 });
 

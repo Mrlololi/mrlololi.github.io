@@ -405,7 +405,7 @@ export default {
     h2: 'About *me*',
     photoAlt: 'Iva Tsatskrialashvili',
     paragraphs: [
-      "I'm Iva Tsatskrialashvili (he/him) and I live in Graz. I studied information technology and mobile software development and now study marketing and sales part-time at FH CAMPUS 02. So I understand both: the funnel and the API behind it.",
+      "I'm Iva Tsatskrialashvili (he/him) and I live in Graz, Austria. I studied information technology and mobile software development and now study marketing and sales part-time at FH CAMPUS 02. So I understand both: the funnel and the API behind it.",
       'Since 2023 I have worked for online shops, and since 2026 also for online course creators, in Germany, Switzerland, Italy and Austria. I speak German and English at C1 level, Russian and Georgian natively and Spanish at B1.',
       'My business is registered in Austria. You get proper invoices and one person who is responsible.',
     ],
@@ -629,6 +629,8 @@ export default {
         promise: 'I set up SPF, DKIM and DMARC correctly and test delivery.',
         packages: ['quick'],
         problem: ['Launch emails land in spam.', 'I see this failure again and again, and it costs sign-ups, revenue or nerves.'],
+        // Iva 29.10.2026 (German original in de.mjs).
+        explain: { title: 'In short', text: 'SPF sets which servers may send email on behalf of your domain. DKIM signs every email, so the recipient can see it was not changed on the way. DMARC tells the recipient what to do with emails that fail the check, and sends you reports. Since 2024 Gmail and Yahoo require all three records from senders of large volumes of email, and since 2025 Microsoft does too for Outlook and Hotmail.' },
         does: ['Set up SPF, DKIM and DMARC correctly', 'Test delivery'],
         withSummary: true,
         steps: [
@@ -662,7 +664,7 @@ export default {
           ['Build.', 'I work in your accounts, document every step and test with test contacts.'],
           ['Support.', 'Afterwards I look after your automations by the hour, billed at the end of the month.'],
         ],
-        example: null,
+        example: 'case2',
         faq: [
           ['What do I get from the tech check?', 'You get a list with priorities, effort and prices and a 45-minute call. If you book a project within 30 days, the €290 is fully credited.'],
           ['How is support billed?', 'At €45 per hour, from 5 hours a month. Billed by the hour at the end of the month.'],

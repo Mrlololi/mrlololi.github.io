@@ -1448,7 +1448,10 @@ html:not(.js) .brief { display: none; }
 .ratgeber-list { display: grid; gap: var(--space-5); }
 .ratgeber-teaser { display: grid; gap: var(--space-2); }
 .ratgeber-teaser h2 { font-size: var(--step-2); }
-.ratgeber-more ul { display: grid; gap: var(--space-1); }</style>
+.ratgeber-more ul { display: grid; gap: var(--space-1); }
+.svc-explain { display: grid; gap: var(--space-2); padding: var(--space-5); background: var(--sheet); border: 1px solid var(--line); border-radius: var(--radius-card); }
+.svc-explain h3 { font-size: var(--step-1); }
+.svc-explain p { line-height: 1.6; }</style>
 <script>document.documentElement.classList.add('js')</script>
 <script type="module">requestAnimationFrame(()=>requestAnimationFrame(()=>import('/assets/js/main.js')))</script>
 <link rel="modulepreload" href="/assets/js/demos.js" fetchpriority="low">
@@ -1497,6 +1500,10 @@ html:not(.js) .brief { display: none; }
 <div class="wrap svc-sec__in">
 <h2 id="svc-problem">The problem</h2>
 <p class="svc-text">Launch emails land in spam. I see this failure again and again, and it costs sign-ups, revenue or nerves.</p>
+<aside class="svc-explain" aria-labelledby="svc-explain">
+<h3 id="svc-explain">In short</h3>
+<p>SPF sets which servers may send email on behalf of your domain. DKIM signs every email, so the recipient can see it was not changed on the way. DMARC tells the recipient what to do with emails that fail the check, and sends you reports. Since 2024 Gmail and Yahoo require all three records from senders of large volumes of email, and since 2025 Microsoft does too for Outlook and Hotmail.</p>
+</aside>
 </div>
 </section>
 <section class="svc-sec bg-blue edge" aria-labelledby="svc-does">

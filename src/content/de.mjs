@@ -632,6 +632,8 @@ export default {
         promise: 'Ich richte SPF, DKIM und DMARC richtig ein und teste die Zustellung.',
         packages: ['quick'],
         problem: ['Launch-Mails landen im Spam.', 'Diesen Fehler sehe ich bei Launches immer wieder, und er kostet Anmeldungen, Umsatz oder Nerven.'],
+        // Iva 29.10.2026, wörtlich.
+        explain: { title: 'Kurz erklärt', text: 'SPF legt fest, welche Server im Namen Ihrer Domain senden dürfen. DKIM signiert jede Mail, damit der Empfänger sieht, dass sie unterwegs nicht verändert wurde. DMARC sagt dem Empfänger, was mit Mails passieren soll, die die Prüfung nicht bestehen, und schickt Ihnen Berichte. Seit 2024 verlangen Gmail und Yahoo von Absendern mit vielen Mails alle drei Einträge, seit 2025 auch Microsoft für Outlook und Hotmail.' },
         does: ['SPF, DKIM und DMARC richtig einrichten', 'Die Zustellung testen'],
         withSummary: true,
         steps: [
@@ -665,7 +667,7 @@ export default {
           ['Umsetzung.', 'Ich arbeite in Ihren Konten, dokumentiere jeden Schritt und teste mit Testkontakten.'],
           ['Betreuung.', 'Danach pflege ich Ihre Automationen nach Stunden, abgerechnet am Monatsende.'],
         ],
-        example: null,
+        example: 'case2',
         faq: [
           ['Was bekomme ich beim Technik-Check?', 'Sie bekommen eine Liste mit Prioritäten, Aufwand und Preisen und ein Gespräch von 45 Minuten. Beauftragen Sie innerhalb von 30 Tagen ein Projekt, rechne ich die 290 € voll an.'],
           ['Wie wird die Betreuung abgerechnet?', 'Mit 45 € pro Stunde, ab 5 Stunden im Monat. Abgerechnet wird am Monatsende nach Stunden.'],

@@ -163,7 +163,11 @@ ${pkgs.map(priceChip).join('\n')}
 <p><a class="btn btn--primary" href="${esc(mailto(t, config, pkgs[0]))}">${esc(t.pricing.cta)}<span class="sr-only">: ${esc(pkgs[0].name)}</span></a></p>
 </div>
 </section>
-${section('problem', 'bg-pink', L.problem, `<p class="svc-text">${s.problem.map(esc).join(' ')}</p>`)}
+${section('problem', 'bg-pink', L.problem, `<p class="svc-text">${s.problem.map(esc).join(' ')}</p>${s.explain ? `
+<aside class="svc-explain" aria-labelledby="svc-explain">
+<h3 id="svc-explain">${esc(s.explain.title)}</h3>
+<p>${esc(s.explain.text)}</p>
+</aside>` : ''}`)}
 ${section('does', 'bg-blue', L.does, `<ul class="svc-list">${list.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>
 ${text.map((p) => `<p class="svc-text">${esc(p)}</p>`).join('\n')}
 <ul class="svc-pkgs" role="list">
