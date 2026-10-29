@@ -64,11 +64,14 @@ test('run-log demo behind «Ablauf selbst ausprobieren»: a template, nothing lo
   assert.match(js('main.js'), /\/assets\/css\/runlog\.css/);
 });
 
-test('«Über mich» row: what clients can rely on, the password item left out (it contradicts the FAQ)', () => {
+test('«Über mich» row: what clients can rely on; the access item in the FAQ wording (Iva 29.10.2026)', () => {
   assert.match(deHome, /<div class="aboutrow demo" data-demo="about"/);
   for (const x of de.s6.e.aboutRow) assert.ok(deHome.includes(`<li>${x}</li>`), x);
+  assert.ok(de.s6.e.aboutRow.includes('Eigener Zugang statt Ihres Passworts'));
+  assert.ok(en.s6.e.aboutRow.includes('Own access instead of your password'));
   assert.ok(!/nie Ihr Passwort/.test(deHome) && !/never your password/.test(byFile['en/index.html']));
-  assert.equal(en.s6.e.aboutRow.length, de.s6.e.aboutRow.length);
+  assert.equal(en.s6.e.aboutRow.length, 8);
+  assert.equal(de.s6.e.aboutRow.length, 8);
 });
 
 test('FAQ chat: question list and chat panel, F1 photo, «Auch gefragt» for all eight questions', () => {

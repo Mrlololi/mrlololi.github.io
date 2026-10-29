@@ -583,7 +583,7 @@ export default {
       open: 'Ablauf selbst ausprobieren',
       short: ['Anmeldung', 'Automation', 'Drin'],
       aboutLabel: 'Worauf Sie sich verlassen können',
-      aboutRow: ['Festpreise', 'Testkontakte vor dem Livegang', 'Dokumentation und Übergabe', 'Deutsch und Englisch', 'Antwort in 2 Werktagen', '30-Tage-Zusage', 'Gewerbe in Österreich'],
+      aboutRow: ['Festpreise', 'Testkontakte vor dem Livegang', 'Dokumentation und Übergabe', 'Eigener Zugang statt Ihres Passworts', 'Deutsch und Englisch', 'Antwort in 2 Werktagen', '30-Tage-Zusage', 'Gewerbe in Österreich'],
     },
     // Stage 6c (29.10.2026): every looping demo has one pause button; its name says which demo.
     c: {

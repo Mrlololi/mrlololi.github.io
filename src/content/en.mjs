@@ -582,7 +582,7 @@ export default {
       open: 'Try the flow yourself',
       short: ['Sign-up', 'Automation', 'In'],
       aboutLabel: 'What you can rely on',
-      aboutRow: ['Fixed prices', 'Test contacts before go-live', 'Documentation and handover', 'German and English', 'Reply within 2 working days', '30-day promise', 'Registered business in Austria'],
+      aboutRow: ['Fixed prices', 'Test contacts before go-live', 'Documentation and handover', 'Own access instead of your password', 'German and English', 'Reply within 2 working days', '30-day promise', 'Registered business in Austria'],
     },
     // Stage 6c (29.10.2026): every looping demo has one pause button; its name says which demo.
     c: {
