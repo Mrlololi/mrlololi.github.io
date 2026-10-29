@@ -7,3 +7,4 @@ Disallow: /package.json
 Disallow: /package-lock.json
 
 Sitemap: https://mrlololi.com/sitemap.xml
+Sitemap: https://mrlololi.com/Webprojekte/sitemap.xml
