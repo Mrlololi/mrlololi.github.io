@@ -11,11 +11,12 @@ const all = pages(config, { live: {} });
 const byFile = Object.fromEntries(all.map((p) => [p.file, p.html]));
 const root = (p) => new URL(`../${p}`, import.meta.url);
 
-test('new photos: the badge and «Über mich» come from the 29.10 photos; the old ones are kept in _alt', () => {
+test('photos (Iva 29.10.2026): badge F1, «Über mich» Hallstatt again; the others kept in _alt', () => {
   const images = readFileSync(root('src/tools/images.mjs'), 'utf8');
-  assert.match(images, /src\('avatar-iva-2026-10-29\.jpg'\), 'avatar'/);
-  assert.match(images, /src\('about-iva-2026-10-29\.jpg'\), 'about'/);
-  for (const f of ['src/images/avatar-iva-2026-10-29.jpg', 'src/images/about-iva-2026-10-29.jpg', 'src/_alt/stage5/img/avatar-laecheln.jpg', 'src/_alt/stage5/img/about-hallstatt.jpg', 'src/_alt/stage5/img/about-680.jpg']) assert.ok(existsSync(root(f)), f);
+  assert.match(images, /src\('avatar-iva-badge-F1\.jpg'\), 'avatar'/);
+  assert.match(images, /src\('about-hallstatt\.jpg'\), 'about'/);
+  for (const f of ['src/images/avatar-iva-badge-F1.jpg', 'src/images/about-hallstatt.jpg', 'src/_alt/stage5/img/avatar-laecheln.jpg', 'src/_alt/stage6b/img/about-iva-2026-10-29.jpg', 'src/_alt/stage6b/img/about-680.jpg', 'src/_alt/stage6b/img/avatar-iva-2026-10-29.jpg', 'src/_alt/stage6b/img/avatar-88.jpg']) assert.ok(existsSync(root(f)), f);
+  assert.ok(!existsSync(root('src/images/about-iva-2026-10-29.jpg')) && !existsSync(root('src/images/avatar-iva-2026-10-29.jpg')), 'the 6b photos are no longer sources');
   for (const f of ['avatar-44', 'avatar-88', 'about-340', 'about-680']) for (const ext of ['avif', 'webp', 'jpg']) assert.ok(existsSync(root(`assets/img/${f}.${ext}`)), `${f}.${ext}`);
   assert.match(byFile['index.html'], /alt="Iva Tsatskrialashvili"/);
   assert.match(byFile['en/index.html'], /alt="Iva Tsatskrialashvili"/);
