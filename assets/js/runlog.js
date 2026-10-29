@@ -7,7 +7,10 @@
 import { demo } from './loops.js';
 import { firstName } from './pure.js';
 
-const SPEED = 1500; // ms per second of the log's clock (0,2 s ... 2,3 s), slow enough to watch
+// 30.10.2026: 1 s on the start frame after opening, then about 6.5 s per run and 3 s on the end frame.
+const SPEED = 2500; // ms per second of the log's clock (0,2 s ... 2,3 s): slow motion, noted under the screen
+const FIRST = 1000;
+const LAST = 2.6; // the course pane comes back into focus last
 const NODE_AT = [0.2, 0.4, 0.5, 0.6, 1.2, 1.4, 1.9];
 
 export function open(slot, tpl, { locale }) {
@@ -61,15 +64,22 @@ export function open(slot, tpl, { locale }) {
     at(0.9, () => focus(1));
     at(1.9, () => { focus(3); screen.classList.add('is-done'); });
     at(2.3, () => { focus(2); mails[1].classList.add('is-on'); });
-    at(2.6, () => focus(3));
-    return 3 * SPEED;
+    at(LAST, () => focus(3));
+    return LAST * SPEED;
   };
-  const d = demo(root, { reset, play, finish, rest: 3000, frames: 3, frame, button: root.querySelector('.runlog__ctl .loopctl') });
+  // The first round waits a second, so the opened demo is seen at rest before it moves.
+  reset();
+  root.dataset.play = 'start';
+  let d = null;
+  const ready = new Promise((resolve) => setTimeout(() => {
+    d = demo(root, { reset, play, finish, rest: 3000, frames: 3, frame, button: root.querySelector('.runlog__ctl .loopctl') });
+    resolve(d);
+  }, matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : FIRST));
 
   stepButtons.forEach((b, i) => b.addEventListener('click', () => { d?.skip(); frame(i); }));
   root.querySelector('.runlog__replay').addEventListener('click', () => d?.replay());
   wireForm(root, () => d?.replay());
-  return d;
+  return ready;
 }
 
 // Step 1 is a real local form: it checks the e-mail, takes the typed name and plays the run.

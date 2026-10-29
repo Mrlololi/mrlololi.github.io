@@ -1351,7 +1351,61 @@ html:not(.js) .runlog__wrap { display: none; }
 .rows { container-type: inline-size; }
 @container (min-width: 46rem) { .row { grid-template-columns: minmax(0, 1fr) 10rem minmax(14rem, auto) auto; } }
 @container (min-width: 60rem) { .row.row--viz { grid-template-columns: 11rem minmax(0, 1fr) 10rem minmax(14rem, auto) auto; } }
-@container (min-width: 46rem) and (max-width: 59.98rem) { .row.row--viz { grid-template-columns: minmax(0, 1fr) 10rem minmax(14rem, auto) auto; } .row--viz .viz { display: none; } }</style>
+@container (min-width: 46rem) and (max-width: 59.98rem) { .row.row--viz { grid-template-columns: minmax(0, 1fr) 10rem minmax(14rem, auto) auto; } .row--viz .viz { display: none; } }
+.contact__form { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4); min-width: 0; }
+html:not(.js) .contact__fields, html:not(.js) .contact__submit { display: none; }
+.js .contact__alt:not(.is-open) { display: none; }
+.contact__alt { display: grid; gap: var(--space-3); }
+.contact__alt .contact__actions { margin-top: 0; }
+.contact__fields { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4); }
+@media (min-width: 640px) {
+.contact__fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.field--wide, .field--check { grid-column: 1 / -1; }
+}
+.field { display: grid; gap: var(--space-1); align-content: start; min-width: 0; }
+.field > label { font-size: var(--step--1); font-weight: 700; }
+.field input:not([type="checkbox"]), .field textarea { width: 100%; min-height: var(--target); padding: 0.55rem 0.8rem; border: 1px solid var(--field); border-radius: var(--radius-field); background: #fff; color: var(--ink); font: inherit; font-size: var(--step-0); }
+.field textarea { min-height: 6.5rem; resize: vertical; }
+.field [aria-invalid="true"] { border-color: var(--pink-ink); box-shadow: 0 0 0 1px var(--pink-ink); }
+.field__err { color: var(--pink-ink); font-size: var(--step--1); font-weight: 700; }
+.field__err[hidden] { display: none; }
+.field--check { grid-template-columns: auto minmax(0, 1fr); column-gap: var(--space-3); align-items: start; }
+.field--check input { appearance: none; width: var(--target); height: var(--target); margin: -0.45rem -0.6rem 0 -0.7rem; border: 0; border-radius: 10px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 22'%3E%3Crect x='1' y='1' width='20' height='20' rx='5' fill='%23fff' stroke='%238A8592' stroke-width='1.6'/%3E%3C/svg%3E") center / 1.375rem no-repeat; cursor: pointer; }
+.field--check input:checked { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 22'%3E%3Crect x='1' y='1' width='20' height='20' rx='5' fill='%232B2A33' stroke='%232B2A33' stroke-width='1.6'/%3E%3Cpath d='M6 11.5l3.4 3.4L16.5 7.5' fill='none' stroke='%23fff' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
+.field--check input[aria-invalid="true"] { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 22'%3E%3Crect x='1' y='1' width='20' height='20' rx='5' fill='%23fff' stroke='%239C3F58' stroke-width='2.5'/%3E%3C/svg%3E"); box-shadow: none; }
+.field--check input:focus-visible { outline: 3px solid var(--ink); outline-offset: -0.55rem; }
+.field--check > label { font-size: var(--step-0); font-weight: 400; cursor: pointer; }
+.field--check .field__err { grid-column: 2; }
+.field--check a { display: inline-block; padding-block: 0.6875rem; margin-block: -0.6875rem; }
+.hp { position: absolute; left: -10000px; top: auto; width: 1px; height: 1px; overflow: hidden; }
+.contact__submit { display: grid; gap: var(--space-2); justify-items: start; }
+.contact__send { min-width: 12rem; }
+.contact__send[disabled] { opacity: 0.75; cursor: progress; }
+.contact__showcase { font-weight: 700; }
+.contact__submit .brief__note { color: var(--ink-soft); }
+.contact__failed { padding: var(--space-3) var(--space-4); border-radius: 14px; background: var(--pink-tint); border: 1px solid var(--pink-ink); font-weight: 700; }
+.contact__failed[hidden], .contact__done[hidden], .contact__form[hidden] { display: none; }
+.contact__done { display: flex; gap: var(--space-4); align-items: center; padding: var(--space-5); border-radius: 20px; background: var(--pist-tint); border: 1px solid var(--line); font-size: var(--step-1); line-height: 1.45; }
+.contact__done:focus { outline: none; }
+.contact__done:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+.contact__done .mscene { flex: none; }
+.contact__done .mscene .mascot { width: 4.5rem; height: auto; overflow: visible; }
+@media (prefers-reduced-motion: no-preference) {
+.contact__done:not([hidden]) { animation: fade-in 0.4s ease-out both; }
+.contact__done .mascot { animation: pop 0.5s var(--ease-soft) 0.15s both; }
+}
+.pkgs-wrap { display: grid; gap: var(--space-4); min-width: 0; container-type: inline-size; }
+.promise-row { display: grid; grid-template-columns: minmax(0, 1fr); justify-items: center; gap: var(--space-3); }
+.promise-row .promise { width: 100%; max-width: 51.25rem; align-items: center; justify-content: center; }
+.promise .viz-check { margin-top: 0; align-self: center; }
+.tariff__ctl { margin: 0; justify-content: center; }
+@container (min-width: 66rem) {
+.promise-row { grid-template-columns: minmax(0, 1fr) minmax(0, 51.25rem) minmax(0, 1fr); align-items: center; }
+.promise-row .promise { grid-column: 2; }
+.promise-row .tariff__ctl { grid-column: 3; justify-self: start; }
+}
+.more__head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-4); }
+.more__head .loopctl { margin: 0; }</style>
 <script>document.documentElement.classList.add('js')</script>
 <script type="module">requestAnimationFrame(()=>requestAnimationFrame(()=>import('/assets/js/main.js')))</script>
 <link rel="modulepreload" href="/assets/js/loops.js" fetchpriority="low">
@@ -1524,7 +1578,7 @@ html:not(.js) .runlog__wrap { display: none; }
 </details>
 </figure>
 <div class="runlog__wrap">
-<p class="runlog__open-row"><button class="btn btn--secondary runlog__open" type="button" aria-expanded="false" aria-controls="runlog">Ablauf selbst ausprobieren</button></p>
+<p class="runlog__open-row"><button class="btn btn--secondary runlog__open" type="button" aria-expanded="false" aria-controls="runlog" data-close="Schließen">Ablauf selbst ausprobieren</button></p>
 <div class="runlog-slot" id="runlog" hidden></div>
 <template id="runlog-tpl"><div class="runlog demo" data-demo="runlog">
 <ol class="runlog__steps" role="list" aria-label="Ablauf in drei Schritten"><li><button class="chip runlog__step" type="button" data-step="0"><span class="runlog__n" aria-hidden="true">1</span><span class="runlog__label">Eine Anmeldung kommt herein</span><span class="runlog__short" aria-hidden="true">Anmeldung</span></button></li><li><button class="chip runlog__step" type="button" data-step="1"><span class="runlog__n" aria-hidden="true">2</span><span class="runlog__label">Die Automation läuft</span><span class="runlog__short" aria-hidden="true">Automation</span></button></li><li><button class="chip runlog__step" type="button" data-step="2" aria-current="step"><span class="runlog__n" aria-hidden="true">3</span><span class="runlog__label">Ihre Teilnehmerin ist drin</span><span class="runlog__short" aria-hidden="true">Drin</span></button></li></ol>
@@ -1548,7 +1602,7 @@ html:not(.js) .runlog__wrap { display: none; }
 </div>
 <figure class="run"><figcaption class="run__bar">Protokoll</figcaption><ol class="run__steps" role="list"><li class="run__step" data-seconds="0.2"><span class="run__node" aria-hidden="true"><svg viewBox="0 0 20 20" focusable="false"><circle class="run__idle" cx="10" cy="10" r="9"/><circle class="run__done" cx="10" cy="10" r="9"/><path class="run__check" d="M5.6 10.3l2.9 2.9 5.9-6.4"/></svg></span><span class="run__text">Anmeldung über das Formular</span><span class="run__time">0,2 s</span></li><li class="run__step" data-seconds="0.6"><span class="run__node" aria-hidden="true"><svg viewBox="0 0 20 20" focusable="false"><circle class="run__idle" cx="10" cy="10" r="9"/><circle class="run__done" cx="10" cy="10" r="9"/><path class="run__check" d="M5.6 10.3l2.9 2.9 5.9-6.4"/></svg></span><span class="run__text">E-Mail-Adresse bestätigt</span><span class="run__time">0,6 s</span></li><li class="run__step" data-seconds="0.9"><span class="run__node" aria-hidden="true"><svg viewBox="0 0 20 20" focusable="false"><circle class="run__idle" cx="10" cy="10" r="9"/><circle class="run__done" cx="10" cy="10" r="9"/><path class="run__check" d="M5.6 10.3l2.9 2.9 5.9-6.4"/></svg></span><span class="run__text">Kontakt in ActiveCampaign angelegt</span><span class="run__time">0,9 s</span></li><li class="run__step" data-seconds="1.4"><span class="run__node" aria-hidden="true"><svg viewBox="0 0 20 20" focusable="false"><circle class="run__idle" cx="10" cy="10" r="9"/><circle class="run__done" cx="10" cy="10" r="9"/><path class="run__check" d="M5.6 10.3l2.9 2.9 5.9-6.4"/></svg></span><span class="run__text">Zahlung erhalten, Rechnung erstellt</span><span class="run__time">1,4 s</span></li><li class="run__step" data-seconds="1.9"><span class="run__node" aria-hidden="true"><svg viewBox="0 0 20 20" focusable="false"><circle class="run__idle" cx="10" cy="10" r="9"/><circle class="run__done" cx="10" cy="10" r="9"/><path class="run__check" d="M5.6 10.3l2.9 2.9 5.9-6.4"/></svg></span><span class="run__text">Kurszugang freigeschaltet</span><span class="run__time">1,9 s</span></li><li class="run__step" data-seconds="2.3"><span class="run__node" aria-hidden="true"><svg viewBox="0 0 20 20" focusable="false"><circle class="run__idle" cx="10" cy="10" r="9"/><circle class="run__done" cx="10" cy="10" r="9"/><path class="run__check" d="M5.6 10.3l2.9 2.9 5.9-6.4"/></svg></span><span class="run__text">Willkommens-Mail angekommen</span><span class="run__time">2,3 s</span></li></ol><p class="run__summary">6 Schritte, 2,3 Sekunden, 0 Fehler (vereinfachtes Beispiel)</p></figure>
 </div>
-<div class="runlog__ctl"><button class="btn btn--secondary btn--sm runlog__replay" type="button">Nochmal abspielen</button><button class="loopctl btn btn--secondary btn--sm" type="button" hidden data-pause-label="Pause" data-play-label="Abspielen" data-step-label="Nächster Schritt"><svg class="loopctl__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path class="loopctl__pause" d="M9 6v12M15 6v12"/><path class="loopctl__play" d="M8 5.5v13l10.5-6.5z"/><path class="loopctl__step" d="M5 12h12M13 7l5 5-5 5"/></svg><span class="loopctl__text">Pause</span><span class="sr-only">: Ablauf-Demo</span></button></div>
+<div class="runlog__ctl"><p class="runlog__slow">Zeitlupe, in Wirklichkeit 2,3 Sekunden</p><button class="btn btn--secondary btn--sm runlog__replay" type="button">Nochmal von vorn</button><button class="loopctl btn btn--secondary btn--sm" type="button" hidden data-pause-label="Pause" data-play-label="Abspielen" data-step-label="Nächster Schritt"><svg class="loopctl__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path class="loopctl__pause" d="M9 6v12M15 6v12"/><path class="loopctl__play" d="M8 5.5v13l10.5-6.5z"/><path class="loopctl__step" d="M5 12h12M13 7l5 5-5 5"/></svg><span class="loopctl__text">Pause</span><span class="sr-only">: Ablauf-Demo</span></button></div>
 <p class="sr-only runlog__status" role="status" aria-live="polite"></p>
 </div></template>
 </div>
@@ -1561,7 +1615,7 @@ html:not(.js) .runlog__wrap { display: none; }
 <h2 id="services-title" data-enter="lines">Leistungen und <em class="accent">Preise</em></h2>
 <p class="lead">Feste Preise, klarer Umfang. Ich arbeite mit wenigen Kund:innen gleichzeitig.</p>
 </div>
-<div class="tariff" id="pricing" data-demo="prices">
+<div class="tariff" id="pricing">
 <nav class="chooser card" aria-labelledby="chooser-title">
 <p class="chooser__title" id="chooser-title">Welches Paket passt?</p>
 <ul class="chooser__list" role="list">
@@ -1572,6 +1626,7 @@ html:not(.js) .runlog__wrap { display: none; }
 <li><a class="chooser__row" href="#pkg-ki"><span>Ihr Postfach ist zu voll</span><span class="chooser__to"><span aria-hidden="true">→</span> <strong>KI im Kundenservice</strong></span></a></li>
 </ul>
 </nav>
+<div class="pkgs-wrap demo" data-demo="prices">
 <ul class="pkgs" role="list">
 <li class="item item--quick card card--lift" id="pkg-quick">
 <div class="item__head"><h3 class="item__name">Quick-Fix</h3>
@@ -1614,12 +1669,15 @@ html:not(.js) .runlog__wrap { display: none; }
 </div>
 </li>
 </ul>
+<div class="promise-row">
 <div class="promise"><svg class="viz-check" viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="7.5"/><path d="M4.6 8.3l2.2 2.2 4.6-5"/></svg><p>30-Tage-Zusage: Läuft ein von mir gebauter Ablauf in den ersten 30 Tagen nach Übergabe nicht wie vereinbart, behebe ich das ohne Berechnung. Zusätzlich zur gesetzlichen Gewährleistung.</p>
 <ol class="days" role="list" aria-hidden="true"><li>Tag 1</li><li>Tag 14</li><li>Tag 30</li></ol>
 </div>
 <p class="tariff__ctl"><button class="loopctl btn btn--secondary btn--sm" type="button" hidden data-pause-label="Pause" data-play-label="Abspielen" data-step-label="Nächster Schritt"><svg class="loopctl__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path class="loopctl__pause" d="M9 6v12M15 6v12"/><path class="loopctl__play" d="M8 5.5v13l10.5-6.5z"/><path class="loopctl__step" d="M5 12h12M13 7l5 5-5 5"/></svg><span class="loopctl__text">Pause</span><span class="sr-only">: Bilder der Pakete</span></button></p>
-<div class="more">
-<h3 class="more__title">Weitere Leistungen</h3>
+</div>
+</div>
+<div class="more demo" data-demo="more">
+<div class="more__head"><h3 class="more__title">Weitere Leistungen</h3><button class="loopctl btn btn--secondary btn--sm" type="button" hidden data-pause-label="Pause" data-play-label="Abspielen" data-step-label="Nächster Schritt"><svg class="loopctl__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path class="loopctl__pause" d="M9 6v12M15 6v12"/><path class="loopctl__play" d="M8 5.5v13l10.5-6.5z"/><path class="loopctl__step" d="M5 12h12M13 7l5 5-5 5"/></svg><span class="loopctl__text">Pause</span><span class="sr-only">: Bilder bei «Weitere Leistungen»</span></button></div>
 <ul class="rows" role="list">
 <li class="row card row--viz" id="pkg-website">
 <div class="viz viz--site" aria-hidden="true"><div class="mini-browser"><p class="mini-browser__bar"><i></i><i></i><i></i><span>ihre-website.at</span></p><div class="mini-browser__page"><span class="blk blk--1">Header</span><span class="blk blk--2">Hero</span><span class="blk blk--3">Termin</span><span class="blk blk--4">Impressum</span></div></div></div>
@@ -1848,6 +1906,7 @@ html:not(.js) .runlog__wrap { display: none; }
 <h2 class="contact__title" id="contact-title">Erzählen Sie mir, <em class="accent">was hakt.</em></h2>
 <p class="lead">Ich antworte innerhalb von zwei Werktagen.</p>
 <p class="contact__free">Das Erstgespräch (20 Minuten) ist kostenlos.</p>
+<form class="contact__form" id="contact-form" method="post" novalidate data-endpoint="https://hook.eu1.make.com/49mmc0uciouni5rlvys2vb6drzdhhlph" data-lang="de" data-sending="Wird gesendet…" data-err-name="Bitte geben Sie Ihren Namen ein." data-err-email="Bitte geben Sie Ihre E-Mail-Adresse ein." data-err-emailbad="Bitte prüfen Sie die E-Mail-Adresse, zum Beispiel name@beispiel.at." data-err-consent="Bitte setzen Sie das Häkchen, damit ich Ihre Anfrage beantworten darf.">
 <div class="brief" role="group" aria-labelledby="brief-label" data-sentence="Ich verkaufe {what} über {via}. Es hakt bei {issue}. Start: {start}." data-sentence-open="Ich verkaufe {what}. Die Plattform ist noch offen. Es hakt bei {issue}. Start: {start}." data-via-open="noch offen" data-lower data-greeting="Hallo Iva," data-closing="Viele Grüße">
 <p class="brief__label" id="brief-label">Kurzes Briefing</p>
 <p class="brief__sentence">Ich verkaufe <label class="sr-only" for="brief-what">Was</label><select class="brief__select" id="brief-what" name="what"><option>einen Onlinekurs</option><option>ein Coaching-Programm</option><option>eine Mitgliedschaft</option><option>einen Workshop</option><option>digitale Produkte</option></select> über <label class="sr-only" for="brief-via">Über</label><select class="brief__select" id="brief-via" name="via"><option>Leadpages</option><option>WordPress</option><option>Wix</option><option>Somba</option><option>Skool</option><option>eine eigene Website</option><option>noch offen</option></select>. Es hakt bei <label class="sr-only" for="brief-issue">Es hakt bei</label><select class="brief__select" id="brief-issue" name="issue"><option>Zahlungen</option><option>Anmeldungen</option><option>E-Mails im Spam</option><option>Automationen</option><option>Ratenzahlungen</option><option>der Website</option></select>. Start: <label class="sr-only" for="brief-start">Start</label><select class="brief__select" id="brief-start" name="start"><option>in 4 Wochen</option><option>in 2 Wochen</option><option>sofort</option><option>in 2 bis 3 Monaten</option><option>noch offen</option></select>.</p>
@@ -1856,8 +1915,21 @@ html:not(.js) .runlog__wrap { display: none; }
 <p class="brief__meta"><span>An:</span> hello@mrlololi.com<br><span>Betreff:</span> Anfrage über mrlololi.com</p>
 <p class="brief__body">Hallo Iva,<br><br>ich verkaufe einen Onlinekurs über Leadpages. Es hakt bei Zahlungen. Start: in 4 Wochen.<br><br>Viele Grüße</p>
 </div>
-<p class="brief__note small">Nichts wird über diese Seite gesendet oder gespeichert: Die E-Mail öffnet sich in Ihrem Mailprogramm.</p>
 </div>
+<div class="contact__fields">
+<div class="field"><label for="cf-name">Ihr Name</label><input id="cf-name" name="name" type="text" autocomplete="name" maxlength="120" required aria-describedby="cf-name-err"><p class="field__err" id="cf-name-err" hidden></p></div>
+<div class="field"><label for="cf-email">Ihre E-Mail-Adresse</label><input id="cf-email" name="email" type="email" autocomplete="email" maxlength="160" spellcheck="false" required aria-describedby="cf-email-err"><p class="field__err" id="cf-email-err" hidden></p></div>
+<div class="field field--wide"><label for="cf-text">Möchten Sie noch etwas ergänzen? (optional)</label><textarea id="cf-text" name="text" rows="4" maxlength="3000"></textarea></div>
+<div class="field field--check"><input id="cf-consent" name="consent" type="checkbox" required aria-describedby="cf-consent-err"><label for="cf-consent">Ich bin einverstanden, dass meine Angaben zur Beantwortung meiner Anfrage verarbeitet werden. Mehr in der <a href="/datenschutz/#form">Datenschutzerklärung</a>.</label><p class="field__err" id="cf-consent-err" hidden></p></div>
+<div class="hp" aria-hidden="true"><label for="cf-website">Bitte leer lassen</label><input id="cf-website" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true"></div>
+</div>
+<div class="contact__submit">
+<button class="btn btn--primary contact__send" type="submit">Anfrage senden</button>
+<p class="contact__showcase small">Diese Anfrage läuft über eine Automation, wie ich sie für Sie baue.</p>
+<p class="brief__note small">Ihre Angaben gehen nur an mich, über eine Automation in der EU. Keine Cookies, kein Tracking.</p>
+</div>
+<div class="contact__alt">
+<p class="contact__failed" role="alert" tabindex="-1" hidden>Das hat leider nicht geklappt. Schreiben Sie mir direkt an <a href="mailto:hello@mrlololi.com?subject=Anfrage%20%C3%BCber%20mrlololi.com">hello@mrlololi.com</a></p>
 <div class="contact__actions">
 <a class="btn btn--primary brief__open" href="mailto:hello@mrlololi.com?subject=Anfrage%20%C3%BCber%20mrlololi.com" data-mail="hello@mrlololi.com" data-subject="Anfrage über mrlololi.com">E-Mail öffnen</a>
 <button class="btn btn--secondary contact__copy" type="button" hidden data-done="Text kopiert">Text kopieren</button>
@@ -1868,6 +1940,9 @@ html:not(.js) .runlog__wrap { display: none; }
 <button class="btn btn--secondary btn--sm contact__copymail" type="button" hidden data-mail="hello@mrlololi.com" data-done="Text kopiert">Adresse kopieren</button>
 <label class="contact__manual" hidden><span class="small">Ihr Text zum Kopieren</span><textarea readonly rows="6"></textarea></label>
 </div>
+</div>
+</form>
+<div class="contact__done" role="status" tabindex="-1" hidden data-text="Danke, {name}! Sie bekommen gleich eine Bestätigung per E-Mail. Ich melde mich innerhalb von zwei Werktagen."><span class="mscene mscene--contact-done" data-scene="contact-done" aria-hidden="true"><svg viewBox="-8 -8 120 124" data-mascot="2" data-emo="joy" class="mascot mascot--live" data-base="joy" focusable="false"><ellipse data-part="shadow" class="m-shadow" cx="50" cy="109" rx="23" ry="3.6" fill="#2B2A33" opacity=".13"/><g data-part="rig"><g data-part="legs"><path class="o" d="M41 92v12M59 92v12" fill="none" stroke="#2B2A33" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><path class="o" d="M36 105h9M55 105h9" fill="none" stroke="#2B2A33" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g><g data-part="body"><clipPath id="mb-live-joy-contact-done"><path d="M50 17C55 17 82 40 82 66A32 32 0 0 1 18 66C18 40 45 17 50 17z"/></clipPath><path d="M50 17C55 17 82 40 82 66A32 32 0 0 1 18 66C18 40 45 17 50 17z" fill="#CFE3C2"/><g data-part="belly"><ellipse clip-path="url(#mb-live-joy-contact-done)" cx="50" cy="109" rx="36" ry="26" fill="#EAF4E3"/></g><circle cx="30" cy="72" r="4.6" fill="#3F6B31" opacity=".22"/><circle cx="70" cy="72" r="4.6" fill="#3F6B31" opacity=".22"/><ellipse cx="36" cy="44" rx="8" ry="4.8" fill="#fff" opacity=".6" transform="rotate(-48 36 44)"/><path class="o" d="M50 17C55 17 82 40 82 66A32 32 0 0 1 18 66C18 40 45 17 50 17z" fill="none" stroke="#2B2A33" stroke-width="3.5" stroke-linejoin="round"/></g><g data-part="eyes"><path d="M33 63.5q6-8 12 0M55 63.5q6-8 12 0" fill="none" stroke="#2B2A33" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></g><g data-part="mouth"><path d="M42 76q8 13 16 0z" fill="#2B2A33" stroke="#2B2A33" stroke-width="1.6" stroke-linejoin="round"/><path d="M46 82q4 3 8 0q-4-2-8 0z" fill="#E8838F"/></g><g data-part="accessory"><path class="o" d="M50 18V6" fill="none" stroke="#2B2A33" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path class="o" d="M50-5.6l1.8 4.2 4.5.4-3.4 2.9 1 4.4L50 4l-3.9 2.3 1-4.4-3.4-2.9 4.5-.4z" fill="#F7DCC8" stroke="#2B2A33" stroke-width="2" stroke-linejoin="round"/><path class="o" d="M39 2l-5-3M61 2l5-3" fill="none" stroke="#2B2A33" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></g><g data-part="arms"><path class="o" d="M19 74q-9 -6 -6 -20" fill="none" stroke="#2B2A33" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><circle class="o" cx="13" cy="54" r="4.4" fill="#CFE3C2" stroke="#2B2A33" stroke-width="2.4"/><path class="o" d="M81 74q9 -6 6 -20" fill="none" stroke="#2B2A33" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><circle class="o" cx="87" cy="54" r="4.4" fill="#CFE3C2" stroke="#2B2A33" stroke-width="2.4"/></g></g></svg></span><p class="contact__done-text"></p></div>
 <div class="contact__thanks" role="status"></div>
 <template id="contact-thanks"><div class="thanks"><span class="mscene mscene--contact" data-scene="contact" aria-hidden="true"><svg viewBox="-8 -8 120 124" data-mascot="2" data-emo="wave" class="mascot mascot--live" data-base="wave" focusable="false"><ellipse data-part="shadow" class="m-shadow" cx="50" cy="109" rx="23" ry="3.6" fill="#2B2A33" opacity=".13"/><g data-part="rig"><g data-part="legs"><path class="o" d="M41 92v12M59 92v12" fill="none" stroke="#2B2A33" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><path class="o" d="M36 105h9M55 105h9" fill="none" stroke="#2B2A33" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g><g data-part="body"><clipPath id="mb-live-wave-contact"><path d="M50 17C55 17 82 40 82 66A32 32 0 0 1 18 66C18 40 45 17 50 17z"/></clipPath><path d="M50 17C55 17 82 40 82 66A32 32 0 0 1 18 66C18 40 45 17 50 17z" fill="#CFE3C2"/><g data-part="belly"><ellipse clip-path="url(#mb-live-wave-contact)" cx="50" cy="109" rx="36" ry="26" fill="#EAF4E3"/></g><circle cx="30" cy="72" r="4.6" fill="#3F6B31" opacity=".22"/><circle cx="70" cy="72" r="4.6" fill="#3F6B31" opacity=".22"/><ellipse cx="36" cy="44" rx="8" ry="4.8" fill="#fff" opacity=".6" transform="rotate(-48 36 44)"/><path class="o" d="M50 17C55 17 82 40 82 66A32 32 0 0 1 18 66C18 40 45 17 50 17z" fill="none" stroke="#2B2A33" stroke-width="3.5" stroke-linejoin="round"/></g><g data-part="eyes"><g class="m-eye"><circle cx="39" cy="62" r="5.6" fill="#2B2A33"/><circle cx="40.96" cy="59.872" r="1.9" fill="#fff"/></g><g class="m-eye"><circle cx="61" cy="62" r="5.6" fill="#2B2A33"/><circle cx="62.96" cy="59.872" r="1.9" fill="#fff"/></g></g><g data-part="mouth"><path d="M44 77q6 5.5 12 0" fill="none" stroke="#2B2A33" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></g><g data-part="accessory"><path class="o" d="M50 18V6" fill="none" stroke="#2B2A33" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path class="o" d="M50-5.6l1.8 4.2 4.5.4-3.4 2.9 1 4.4L50 4l-3.9 2.3 1-4.4-3.4-2.9 4.5-.4z" fill="#F7DCC8" stroke="#2B2A33" stroke-width="2" stroke-linejoin="round"/></g><g data-part="arms"><path class="o" d="M19 74q-7 4 -7 13" fill="none" stroke="#2B2A33" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><circle class="o" cx="12" cy="87" r="4.4" fill="#CFE3C2" stroke="#2B2A33" stroke-width="2.4"/><g class="m-wave" data-origin="81 74"><path class="o" d="M81 74q12-2 12-19" fill="none" stroke="#2B2A33" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><circle class="o" cx="93" cy="55" r="4.8" fill="#CFE3C2" stroke="#2B2A33" stroke-width="2.4"/></g></g></g></svg></span><div class="thanks__text"><p>Danke! Sobald Ihre Mail da ist, melde ich mich innerhalb von zwei Werktagen.</p></div></div></template>
 </div>

@@ -116,8 +116,10 @@ ${items}
 }
 
 // Kontakt (Stage 4). Left: a fill-in brief («Ich verkaufe [..] über [..]. Es hakt bei [..]. Start: [..].»)
-// with a live preview of the e-mail; «E-Mail öffnen» opens the visitor's mail program, nothing is
-// sent from the site. Right: Iva's photo with a speech bubble, reply time, Graz time, LinkedIn and
+// with a live preview of the e-mail. Kontaktformular 30.10.2026: name, e-mail, optional text and consent
+// below it; «Anfrage senden» posts JSON to a Make scenario (config.contact_hook, assets/js/contact.js).
+// «E-Mail öffnen» and «Text kopieren» show only when sending fails (and without JS, where the form
+// fields stay hidden). Right: Iva's photo with a speech bubble, reply time, Graz time, LinkedIn and
 // Malt. After a mailto click a thank-you note with Live waving appears (assets/js/contact.js).
 export function contact(t, config) {
   const c = t.s4.contact;
@@ -131,6 +133,9 @@ export function contact(t, config) {
   };
   const sentence = fill(esc(c.sentence), Object.fromEntries(Object.keys(c.fields).map((k) => [k, select(k)])));
   const booking = config.booking_url ? `<a class="btn btn--ghost" href="${esc(config.booking_url)}" rel="noopener">${esc(t.contact.booking)}</a>` : '';
+  const f = c.form;
+  const errs = Object.entries(f.errors).map(([k, v]) => ` data-err-${k.toLowerCase()}="${esc(v)}"`).join('');
+  const field = (key, type, attrs) => `<div class="field"><label for="cf-${key}">${esc(f[key])}</label><input id="cf-${key}" name="${key}" type="${type}" ${attrs} aria-describedby="cf-${key}-err"><p class="field__err" id="cf-${key}-err" hidden></p></div>`;
   const thanks = `<div class="thanks">${mascotScene('contact', [[2, 'wave']])}<div class="thanks__text"><p>${esc(c.thanks)}</p></div></div>`;
   return `<section class="section contact bg-pink edge" id="contact" aria-labelledby="contact-title">
 <div class="wrap contact__grid">
@@ -138,6 +143,7 @@ export function contact(t, config) {
 <h2 class="contact__title" id="contact-title">${accent(t.contact.h2)}</h2>
 <p class="lead">${esc(t.contact.text)}</p>
 <p class="contact__free">${esc(t.contact.free)}</p>
+<form class="contact__form" id="contact-form" method="post" novalidate data-endpoint="${esc(config.contact_hook)}" data-lang="${t.lang}" data-sending="${esc(f.sending)}"${errs}>
 <div class="brief" role="group" aria-labelledby="brief-label" data-sentence="${esc(c.sentence)}" data-sentence-open="${esc(c.sentenceOpen)}" data-via-open="${esc(c.viaOpen)}"${c.lower ? ' data-lower' : ''} data-greeting="${esc(c.greeting)}" data-closing="${esc(c.closing)}">
 <p class="brief__label" id="brief-label">${esc(c.builderLabel)}</p>
 <p class="brief__sentence">${sentence}</p>
@@ -146,8 +152,21 @@ export function contact(t, config) {
 <p class="brief__meta"><span>${esc(c.to)}:</span> ${esc(email)}<br><span>${esc(c.subjectLabel)}:</span> ${esc(mail.subject)}</p>
 <p class="brief__body">${esc(mail.body).replace(/\n/g, '<br>')}</p>
 </div>
+</div>
+<div class="contact__fields">
+${field('name', 'text', 'autocomplete="name" maxlength="120" required')}
+${field('email', 'email', 'autocomplete="email" maxlength="160" spellcheck="false" required')}
+<div class="field field--wide"><label for="cf-text">${esc(f.text)}</label><textarea id="cf-text" name="text" rows="4" maxlength="3000"></textarea></div>
+<div class="field field--check"><input id="cf-consent" name="consent" type="checkbox" required aria-describedby="cf-consent-err"><label for="cf-consent">${fill(esc(f.consent), { link: `<a href="${t.paths.privacy}#form">${esc(f.consentLink)}</a>` })}</label><p class="field__err" id="cf-consent-err" hidden></p></div>
+<div class="hp" aria-hidden="true"><label for="cf-website">${esc(f.honeypot)}</label><input id="cf-website" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true"></div>
+</div>
+<div class="contact__submit">
+<button class="btn btn--primary contact__send" type="submit">${esc(f.submit)}</button>
+<p class="contact__showcase small">${esc(f.showcase)}</p>
 <p class="brief__note small">${esc(c.note)}</p>
 </div>
+<div class="contact__alt">
+<p class="contact__failed" role="alert" tabindex="-1" hidden>${fill(esc(f.failed), { email: `<a href="${esc(subjectOnly)}">${esc(email)}</a>` })}</p>
 <div class="contact__actions">
 <a class="btn btn--primary brief__open" href="${esc(subjectOnly)}" data-mail="${esc(email)}" data-subject="${esc(c.subject)}">${esc(c.open)}</a>
 <button class="btn btn--secondary contact__copy" type="button" hidden data-done="${esc(t.s6.contact.copied)}">${esc(t.s6.contact.copy)}</button>
@@ -158,6 +177,9 @@ ${booking}
 <button class="btn btn--secondary btn--sm contact__copymail" type="button" hidden data-mail="${esc(email)}" data-done="${esc(t.s6.contact.copied)}">${esc(t.s6.b.copyMail)}</button>
 <label class="contact__manual" hidden><span class="small">${esc(t.s6.contact.manual)}</span><textarea readonly rows="6"></textarea></label>
 </div>
+</div>
+</form>
+<div class="contact__done" role="status" tabindex="-1" hidden data-text="${esc(f.done)}">${mascotScene('contact-done', [[2, 'joy']])}<p class="contact__done-text"></p></div>
 <div class="contact__thanks" role="status"></div>
 <template id="contact-thanks">${thanks}</template>
 </div>

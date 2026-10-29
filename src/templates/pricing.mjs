@@ -9,10 +9,9 @@ const check = '<svg class="viz-check" viewBox="0 0 16 16" focusable="false"><cir
 const MAIN = ['quick', 'check', 'launch'];
 const MORE = ['website', 'ki', 'support'];
 
-// Pictures of the solved state (HTML = end frame). Stage 6d: they move again, one after the other
-// (assets/js/prices.js through loops.js): the checkout gets fixed, a lens ticks the list, the four
-// tools come out of the launch, blocks drop into the One-Pager, the KI draft types itself, the
-// 30-day strip ticks; then rest and again while the prices are on screen.
+// Pictures of the solved state (HTML = end frame). Stage 6d: they move again (assets/js/prices.js
+// through loops.js). 30.10.2026: two chains, each with its pause button beside it: the three cards
+// and the 30-day strip (.pkgs-wrap), and «Weitere Leistungen» (One-Pager, KI) on its own.
 const VIZ = {
   quick: (t) => {
     const q = t.s4.starter.quick;
@@ -89,22 +88,26 @@ export function pricing(t, config) {
 <h2 id="services-title" data-enter="lines">${accent(t.pricing.h2)}</h2>
 <p class="lead">${esc(p.intro)}</p>
 </div>
-<div class="tariff" id="pricing" data-demo="prices">
+<div class="tariff" id="pricing">
 <nav class="chooser card" aria-labelledby="chooser-title">
 <p class="chooser__title" id="chooser-title">${esc(p.chooser)}</p>
 <ul class="chooser__list" role="list">
 ${chooser}
 </ul>
 </nav>
+<div class="pkgs-wrap demo" data-demo="prices">
 <ul class="pkgs" role="list">
 ${MAIN.map((id) => card(t, items[id], config.contact_email)).join('\n')}
 </ul>
+<div class="promise-row">
 <div class="promise">${check}<p>${esc(p.promise)}</p>
 <ol class="days" role="list" aria-hidden="true">${t.s6.c.days.map((d) => `<li>${esc(d)}</li>`).join('')}</ol>
 </div>
 <p class="tariff__ctl">${loopButton(t, 'prices')}</p>
-<div class="more">
-<h3 class="more__title">${esc(p.more)}</h3>
+</div>
+</div>
+<div class="more demo" data-demo="more">
+<div class="more__head"><h3 class="more__title">${esc(p.more)}</h3>${loopButton(t, 'more')}</div>
 <ul class="rows" role="list">
 ${MORE.map((id) => row(t, items[id], config.contact_email)).join('\n')}
 </ul>

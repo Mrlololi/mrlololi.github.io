@@ -54,11 +54,12 @@ test('dates come from the content, not from the build day', () => {
   for (const f of ['datenschutz/index.html', 'en/privacy/index.html']) {
     assert.equal(later.find((p) => p.file === f).html, html(f), f);
   }
-  assert.match(html('datenschutz/index.html'), /Stand: 28\.10\.2026/); // Language Starter section, 28.10.2026
+  assert.match(html('datenschutz/index.html'), /Stand: 30\.10\.2026/); // Kontaktformular section, 30.10.2026
   assert.equal(sitemap(config, new Date('2027-03-01')), sitemap(config, new Date('2026-01-01')));
   assert.equal((sitemap(config).match(/<lastmod>2026-10-21<\/lastmod>/g) || []).length, 0, 'Impressum and legal notice moved to 29.10 (Legal 29.10.2026)');
-  assert.equal((sitemap(config).match(/<lastmod>2026-10-28<\/lastmod>/g) || []).length, 4, 'privacy and the website pages (Stage 6 moved home, KI and launch to 29.10)');
-  assert.equal((sitemap(config).match(/<lastmod>2026-10-29<\/lastmod>/g) || []).length, 12, 'spam and ActiveCampaign (Iva), Impressum and legal notice (Legal), home, KI and launch (Stage 6)');
+  assert.equal((sitemap(config).match(/<lastmod>2026-10-28<\/lastmod>/g) || []).length, 2, 'the website pages (home and privacy moved to 30.10 with the contact form)');
+  assert.equal((sitemap(config).match(/<lastmod>2026-10-29<\/lastmod>/g) || []).length, 10, 'spam and ActiveCampaign (Iva), Impressum and legal notice (Legal), KI and launch (Stage 6)');
+  assert.equal((sitemap(config).match(/<lastmod>2026-10-30<\/lastmod>/g) || []).length, 4, 'home and privacy (Kontaktformular 30.10.2026)');
 });
 
 test('external links open in a new tab and say so', () => {

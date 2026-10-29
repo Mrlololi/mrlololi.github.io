@@ -1351,7 +1351,61 @@ html:not(.js) .runlog__wrap { display: none; }
 .rows { container-type: inline-size; }
 @container (min-width: 46rem) { .row { grid-template-columns: minmax(0, 1fr) 10rem minmax(14rem, auto) auto; } }
 @container (min-width: 60rem) { .row.row--viz { grid-template-columns: 11rem minmax(0, 1fr) 10rem minmax(14rem, auto) auto; } }
-@container (min-width: 46rem) and (max-width: 59.98rem) { .row.row--viz { grid-template-columns: minmax(0, 1fr) 10rem minmax(14rem, auto) auto; } .row--viz .viz { display: none; } }</style>
+@container (min-width: 46rem) and (max-width: 59.98rem) { .row.row--viz { grid-template-columns: minmax(0, 1fr) 10rem minmax(14rem, auto) auto; } .row--viz .viz { display: none; } }
+.contact__form { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4); min-width: 0; }
+html:not(.js) .contact__fields, html:not(.js) .contact__submit { display: none; }
+.js .contact__alt:not(.is-open) { display: none; }
+.contact__alt { display: grid; gap: var(--space-3); }
+.contact__alt .contact__actions { margin-top: 0; }
+.contact__fields { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4); }
+@media (min-width: 640px) {
+.contact__fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.field--wide, .field--check { grid-column: 1 / -1; }
+}
+.field { display: grid; gap: var(--space-1); align-content: start; min-width: 0; }
+.field > label { font-size: var(--step--1); font-weight: 700; }
+.field input:not([type="checkbox"]), .field textarea { width: 100%; min-height: var(--target); padding: 0.55rem 0.8rem; border: 1px solid var(--field); border-radius: var(--radius-field); background: #fff; color: var(--ink); font: inherit; font-size: var(--step-0); }
+.field textarea { min-height: 6.5rem; resize: vertical; }
+.field [aria-invalid="true"] { border-color: var(--pink-ink); box-shadow: 0 0 0 1px var(--pink-ink); }
+.field__err { color: var(--pink-ink); font-size: var(--step--1); font-weight: 700; }
+.field__err[hidden] { display: none; }
+.field--check { grid-template-columns: auto minmax(0, 1fr); column-gap: var(--space-3); align-items: start; }
+.field--check input { appearance: none; width: var(--target); height: var(--target); margin: -0.45rem -0.6rem 0 -0.7rem; border: 0; border-radius: 10px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 22'%3E%3Crect x='1' y='1' width='20' height='20' rx='5' fill='%23fff' stroke='%238A8592' stroke-width='1.6'/%3E%3C/svg%3E") center / 1.375rem no-repeat; cursor: pointer; }
+.field--check input:checked { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 22'%3E%3Crect x='1' y='1' width='20' height='20' rx='5' fill='%232B2A33' stroke='%232B2A33' stroke-width='1.6'/%3E%3Cpath d='M6 11.5l3.4 3.4L16.5 7.5' fill='none' stroke='%23fff' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
+.field--check input[aria-invalid="true"] { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 22'%3E%3Crect x='1' y='1' width='20' height='20' rx='5' fill='%23fff' stroke='%239C3F58' stroke-width='2.5'/%3E%3C/svg%3E"); box-shadow: none; }
+.field--check input:focus-visible { outline: 3px solid var(--ink); outline-offset: -0.55rem; }
+.field--check > label { font-size: var(--step-0); font-weight: 400; cursor: pointer; }
+.field--check .field__err { grid-column: 2; }
+.field--check a { display: inline-block; padding-block: 0.6875rem; margin-block: -0.6875rem; }
+.hp { position: absolute; left: -10000px; top: auto; width: 1px; height: 1px; overflow: hidden; }
+.contact__submit { display: grid; gap: var(--space-2); justify-items: start; }
+.contact__send { min-width: 12rem; }
+.contact__send[disabled] { opacity: 0.75; cursor: progress; }
+.contact__showcase { font-weight: 700; }
+.contact__submit .brief__note { color: var(--ink-soft); }
+.contact__failed { padding: var(--space-3) var(--space-4); border-radius: 14px; background: var(--pink-tint); border: 1px solid var(--pink-ink); font-weight: 700; }
+.contact__failed[hidden], .contact__done[hidden], .contact__form[hidden] { display: none; }
+.contact__done { display: flex; gap: var(--space-4); align-items: center; padding: var(--space-5); border-radius: 20px; background: var(--pist-tint); border: 1px solid var(--line); font-size: var(--step-1); line-height: 1.45; }
+.contact__done:focus { outline: none; }
+.contact__done:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+.contact__done .mscene { flex: none; }
+.contact__done .mscene .mascot { width: 4.5rem; height: auto; overflow: visible; }
+@media (prefers-reduced-motion: no-preference) {
+.contact__done:not([hidden]) { animation: fade-in 0.4s ease-out both; }
+.contact__done .mascot { animation: pop 0.5s var(--ease-soft) 0.15s both; }
+}
+.pkgs-wrap { display: grid; gap: var(--space-4); min-width: 0; container-type: inline-size; }
+.promise-row { display: grid; grid-template-columns: minmax(0, 1fr); justify-items: center; gap: var(--space-3); }
+.promise-row .promise { width: 100%; max-width: 51.25rem; align-items: center; justify-content: center; }
+.promise .viz-check { margin-top: 0; align-self: center; }
+.tariff__ctl { margin: 0; justify-content: center; }
+@container (min-width: 66rem) {
+.promise-row { grid-template-columns: minmax(0, 1fr) minmax(0, 51.25rem) minmax(0, 1fr); align-items: center; }
+.promise-row .promise { grid-column: 2; }
+.promise-row .tariff__ctl { grid-column: 3; justify-self: start; }
+}
+.more__head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-4); }
+.more__head .loopctl { margin: 0; }</style>
 <script>document.documentElement.classList.add('js')</script>
 <script type="module">requestAnimationFrame(()=>requestAnimationFrame(()=>import('/assets/js/main.js')))</script>
 <link rel="modulepreload" href="/assets/js/loops.js" fetchpriority="low">
@@ -1378,39 +1432,43 @@ html:not(.js) .runlog__wrap { display: none; }
 <main id="main" tabindex="-1">
 <article class="doc">
 <h1>Privacy policy</h1>
-<section>
+<section id="controller">
 <h2>Controller</h2>
 <p>Iva Tsatskrialashvili, Herbersteinstraße 4/4181, 8020 Graz, Austria, <a href="mailto:hello@mrlololi.com">hello@mrlololi.com</a></p>
 </section>
-<section>
+<section id="hosting">
 <h2>Hosting</h2>
 <p>This website is hosted on GitHub Pages (GitHub Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, USA). When you visit it, GitHub processes technically necessary data such as your IP address, date and time, the page requested and browser information in order to deliver the page and keep it secure. The legal basis is my legitimate interest in secure and reliable operation (Art. 6(1)(f) GDPR). Data may be transferred to the USA in the process. GitHub is certified under the EU-US Data Privacy Framework; the transfer to the USA relies on it (Art. 45 GDPR).</p>
 </section>
-<section>
+<section id="cookies">
 <h2>No cookies, no analytics</h2>
 <p>This website sets no cookies and uses no analytics or tracking tools. Fonts and scripts are loaded from the website's own server.</p>
 </section>
-<section>
+<section id="email">
 <h2>Contact by email</h2>
 <p>If you write to me, I process your details in order to answer your enquiry (Art. 6(1)(b) GDPR, for general enquiries Art. 6(1)(f) GDPR). Emails to hello@mrlololi.com are forwarded via Cloudflare Email Routing (Cloudflare, Inc., USA) to my mailbox at Google (Gmail). The transfer to the USA relies on the EU-US Data Privacy Framework (Art. 45 GDPR). I delete enquiries that do not lead to an assignment after 12 months at the latest. If an assignment follows, I keep business-relevant correspondence until the statutory retention period ends (usually 7 years, § 132 BAO).</p>
 </section>
-<section>
+<section id="form">
+<h2>Contact form</h2>
+<p>When you send the contact form, I process your name, your email address, the phrases you selected, your optional text and the time of sending. The purpose is to answer your request and, where applicable, to take pre-contractual steps (Art. 6(1)(b) GDPR). The request is processed via Make, a service of Celonis (Celonis Inc., New York, USA, and its subsidiaries), which acts as my processor. The scenario runs in Make’s EU region. Where data is transferred to the USA, this relies on the EU-US Data Privacy Framework (Art. 45 GDPR); Celonis Inc. is certified under it. From Make, the request is sent to me by email via Google Gmail, and you receive an automatic confirmation (see <a href="#email">Contact by email</a>). Make keeps execution logs only for a limited time. I keep the emails as long as your request requires and statutory retention duties demand; after that I delete them. You do not have to use the form: you can always write to me directly at <a href="mailto:hello@mrlololi.com">hello@mrlololi.com</a>.</p>
+</section>
+<section id="links">
 <h2>External links</h2>
 <p>Links to LinkedIn, Malt or reference websites lead to third-party sites. Data is only transferred to these providers when you click them.</p>
 </section>
-<section>
+<section id="langstarter">
 <h2>Language Starter (Webprojekte)</h2>
 <p>The “Anhören” (listen) feature in Language Starter (mrlololi.com/Webprojekte/language-starter) uses the speech output of your browser or device. With some voices, for example the “Google” voices in Google Chrome, the sentence to be read aloud is sent to the browser maker’s speech service to be turned into speech. I do not transmit any data myself. The app sets no cookies, uses no tracking and stores your learning progress only locally in your browser (localStorage).</p>
 </section>
-<section>
+<section id="rights">
 <h2>Your rights</h2>
 <p>Access, rectification, erasure, restriction of processing, data portability and objection (Art. 15 to 21 GDPR). Write to <a href="mailto:hello@mrlololi.com">hello@mrlololi.com</a>.</p>
 </section>
-<section>
+<section id="complaint">
 <h2>Complaints</h2>
 <p>You can lodge a complaint with the Austrian Data Protection Authority: Barichgasse 40-42, 1030 Vienna, www.dsb.gv.at.</p>
 </section>
-<p class="small">Last updated: 28 October 2026</p>
+<p class="small">Last updated: 30 October 2026</p>
 </article>
 </main>
 <footer class="site-footer bg-ink edge">

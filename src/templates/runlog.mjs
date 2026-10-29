@@ -7,7 +7,8 @@ import { firstName } from '../../assets/js/pure.js';
 // click (assets/js/runlog.js). Iva's fixes to the Stage 4 version: the three steps are buttons that
 // jump to their step (a 3-step bar on phones), replay and pause buttons of 44 px, one pane in focus
 // (the others step back by their background, never by text opacity), the log only once (no toasts
-// in the course pane), no small mascots, text at least 13 px.
+// in the course pane), no small mascots, text at least 13 px. 30.10.2026: the open button reads
+// «Schließen» while open; a note says the run is slowed down (really 2,3 s); «Nochmal von vorn».
 const runNode = '<span class="run__node" aria-hidden="true"><svg viewBox="0 0 20 20" focusable="false"><circle class="run__idle" cx="10" cy="10" r="9"/><circle class="run__done" cx="10" cy="10" r="9"/><path class="run__check" d="M5.6 10.3l2.9 2.9 5.9-6.4"/></svg></span>';
 const lockIcon = '<svg class="course__lock" viewBox="0 0 24 28" aria-hidden="true" focusable="false"><path class="course__shackle" d="M7 13V8a5 5 0 0 1 10 0"/><rect x="3" y="12" width="18" height="14" rx="4"/></svg>';
 
@@ -51,7 +52,7 @@ export function runlog(t) {
   const panes = st.panes.map((title, i) => `<div class="pane pane--${kinds[i]}" data-step="${stepOf[i]}"><p class="pane__title">${esc(title)}</p>${bodies[i]}</div>`).join('\n');
   const log = t.run.steps.map((x) => `<li class="run__step" data-seconds="${x.seconds}">${runNode}<span class="run__text">${esc(x.text)}</span><span class="run__time">${seconds(x.seconds, t.locale)}</span></li>`).join('');
   return `<div class="runlog__wrap">
-<p class="runlog__open-row"><button class="btn btn--secondary runlog__open" type="button" aria-expanded="false" aria-controls="runlog">${esc(t.s6.e.open)}</button></p>
+<p class="runlog__open-row"><button class="btn btn--secondary runlog__open" type="button" aria-expanded="false" aria-controls="runlog" data-close="${esc(t.s6.e.close)}">${esc(t.s6.e.open)}</button></p>
 <div class="runlog-slot" id="runlog" hidden></div>
 <template id="runlog-tpl"><div class="runlog demo" data-demo="runlog">
 <ol class="runlog__steps" role="list" aria-label="${esc(s.label)}">${s.steps.map((title, i) => `<li><button class="chip runlog__step" type="button" data-step="${i}"${i === 2 ? ' aria-current="step"' : ''}><span class="runlog__n" aria-hidden="true">${i + 1}</span><span class="runlog__label">${esc(title)}</span><span class="runlog__short" aria-hidden="true">${esc(t.s6.e.short[i])}</span></button></li>`).join('')}</ol>
@@ -62,7 +63,7 @@ ${panes}
 </div>
 <figure class="run"><figcaption class="run__bar">${esc(st.log)}</figcaption><ol class="run__steps" role="list">${log}</ol><p class="run__summary">${esc(t.run.summary)}</p></figure>
 </div>
-<div class="runlog__ctl"><button class="btn btn--secondary btn--sm runlog__replay" type="button">${esc(t.run.replay)}</button>${loopButton(t, 'runlog')}</div>
+<div class="runlog__ctl"><p class="runlog__slow">${esc(t.s6.e.slow)}</p><button class="btn btn--secondary btn--sm runlog__replay" type="button">${esc(t.s6.e.again)}</button>${loopButton(t, 'runlog')}</div>
 <p class="sr-only runlog__status" role="status" aria-live="polite"></p>
 </div></template>
 </div>`;

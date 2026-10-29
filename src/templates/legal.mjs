@@ -44,13 +44,15 @@ ${facts(L.disclosure, config)}
 
 export function privacy(t, config, { date }) {
   const P = t.privacyPage;
+  // {emailSection} (contact form) links to the e-mail section by its key.
+  const emailTitle = P.sections.find((s) => s.key === 'email')?.title ?? '';
   const sections = P.sections
     .filter((s) => s.key !== 'booking' || config.booking_url)
     .map((s) => {
       // {email} becomes a mailto link; everything else is escaped text.
-      let text = fill(esc(s.text), { email: mail(config) });
+      let text = fill(esc(s.text), { email: mail(config), emailSection: `<a href="#email">${esc(emailTitle)}</a>` });
       if (s.dpf && config.github_dpf_verified) text += ` ${esc(s.dpf)}`;
-      return `<section>
+      return `<section id="${s.key}">
 <h2>${esc(s.title)}</h2>
 <p>${text}</p>
 </section>`;

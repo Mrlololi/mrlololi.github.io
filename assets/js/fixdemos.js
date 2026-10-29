@@ -2,13 +2,15 @@
 // solved, with the quiet «before» next to the «after». The CSS draws the frames by data-play (start
 // = broken, run = the film, end = solved); this file counts the sign-ups and turns the lead mascot
 // from worried to calm. Stage 6c (Iva): it loops while visible. Where the three stand in one row
-// (1100 px and up) they play as one chain: card 1, 1.5 s, card 2, 1.5 s, card 3, 3 s rest, again;
-// one pause button for the row. Stacked (phones), each card loops on its own with its own button.
+// (1100 px and up) they play as one chain, one pause button for the row. 30.10.2026 (Iva: no picture
+// rests longer than about 3 s while in view): each card starts 1.2 s after the one before (a wave
+// from left to right), 0.6 s rest after the third, again; so every card moves again after 3 s. Stacked (phones), each card loops on its own with its own button.
 import { demo } from './loops.js';
 import { setPose } from './mascots.js';
 
 const LENGTH = 3600;
 const PAUSE = 1500;
+const STEP = 1200;
 const CALM_AT = 2100;
 
 export function init({ locale }) {
@@ -24,18 +26,18 @@ export function init({ locale }) {
   const clear = () => { timers.forEach(clearTimeout); timers = []; };
   demo(document.querySelector('.pcs'), {
     button: document.querySelector('.pcs__ctl .loopctl'),
-    rest: 3000,
+    rest: 600,
     frames: 2,
     reset: () => { clear(); cards.forEach((c) => { c.hooks.reset(); set(c, 'start'); }); },
     finish: () => { clear(); cards.forEach((c) => { c.hooks.finish(); set(c, 'end'); }); },
     frame: (i) => cards.forEach((c) => { c.hooks.frame(i); set(c, i ? 'end' : 'start'); }),
     play: () => {
       cards.forEach((c, i) => {
-        const at = i * (LENGTH + PAUSE);
+        const at = i * STEP;
         timers.push(setTimeout(() => { void c.fig.offsetWidth; set(c, 'run'); c.hooks.play(); }, at));
         timers.push(setTimeout(() => { c.hooks.finish(); set(c, 'end'); }, at + LENGTH));
       });
-      return cards.length * LENGTH + (cards.length - 1) * PAUSE;
+      return (cards.length - 1) * STEP + LENGTH;
     },
   });
 }

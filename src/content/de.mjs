@@ -551,7 +551,27 @@ export default {
       greeting: 'Hallo Iva,',
       closing: 'Viele Grüße',
       open: 'E-Mail öffnen',
-      note: 'Nichts wird über diese Seite gesendet oder gespeichert: Die E-Mail öffnet sich in Ihrem Mailprogramm.',
+      // Kontaktformular 30.10.2026: the request goes to a Make scenario (EU); the mail program is the fallback.
+      note: 'Ihre Angaben gehen nur an mich, über eine Automation in der EU. Keine Cookies, kein Tracking.',
+      form: {
+        name: 'Ihr Name',
+        email: 'Ihre E-Mail-Adresse',
+        text: 'Möchten Sie noch etwas ergänzen? (optional)',
+        consent: 'Ich bin einverstanden, dass meine Angaben zur Beantwortung meiner Anfrage verarbeitet werden. Mehr in der {link}.',
+        consentLink: 'Datenschutzerklärung',
+        honeypot: 'Bitte leer lassen',
+        submit: 'Anfrage senden',
+        sending: 'Wird gesendet…',
+        showcase: 'Diese Anfrage läuft über eine Automation, wie ich sie für Sie baue.',
+        errors: {
+          name: 'Bitte geben Sie Ihren Namen ein.',
+          email: 'Bitte geben Sie Ihre E-Mail-Adresse ein.',
+          emailBad: 'Bitte prüfen Sie die E-Mail-Adresse, zum Beispiel name@beispiel.at.',
+          consent: 'Bitte setzen Sie das Häkchen, damit ich Ihre Anfrage beantworten darf.',
+        },
+        done: 'Danke, {name}! Sie bekommen gleich eine Bestätigung per E-Mail. Ich melde mich innerhalb von zwei Werktagen.',
+        failed: 'Das hat leider nicht geklappt. Schreiben Sie mir direkt an {email}',
+      },
       bubble: 'Erzählen Sie mir, was hakt.',
       reply: 'Antwort innerhalb von 2 Werktagen',
       time: 'Ortszeit Graz: {time}',
@@ -581,6 +601,9 @@ export default {
     // Stage 6e (29.10.2026): what comes back.
     e: {
       open: 'Ablauf selbst ausprobieren',
+      close: 'Schließen',
+      again: 'Nochmal von vorn',
+      slow: 'Zeitlupe, in Wirklichkeit 2,3 Sekunden',
       short: ['Anmeldung', 'Automation', 'Drin'],
       aboutLabel: 'Worauf Sie sich verlassen können',
       aboutRow: ['Festpreise', 'Testkontakte vor dem Livegang', 'Dokumentation und Übergabe', 'Eigener Zugang statt Ihres Passworts', 'Deutsch und Englisch', 'Antwort in 2 Werktagen', '30-Tage-Zusage', 'Gewerbe in Österreich'],
@@ -590,7 +613,7 @@ export default {
       pause: 'Pause',
       play: 'Abspielen',
       step: 'Nächster Schritt',
-      names: { runlog: 'Ablauf-Demo', about: 'Leiste in «Über mich»', hero: 'Ablauf oben', problems: 'Beispiele zu den Problemen', card: 'Beispiel', prices: 'Bilder der Pakete', process: 'Ablauf der Zusammenarbeit', tools: 'Werkzeug-Leiste', ki: 'KI-Beispiel', notFound: 'Bild der Leitung' },
+      names: { more: 'Bilder bei «Weitere Leistungen»', runlog: 'Ablauf-Demo', about: 'Leiste in «Über mich»', hero: 'Ablauf oben', problems: 'Beispiele zu den Problemen', card: 'Beispiel', prices: 'Bilder der Pakete', process: 'Ablauf der Zusammenarbeit', tools: 'Werkzeug-Leiste', ki: 'KI-Beispiel', notFound: 'Bild der Leitung' },
       days: ['Tag 1', 'Tag 14', 'Tag 30'],
       faqTyping: 'Logik schreibt',
     },
@@ -946,6 +969,8 @@ export default {
       },
       { key: 'cookies', title: 'Keine Cookies, keine Analyse', text: 'Diese Website setzt keine Cookies und verwendet keine Analyse- oder Tracking-Werkzeuge. Schriften und Skripte werden vom eigenen Server geladen.' },
       { key: 'email', title: 'Kontakt per E-Mail', text: 'Wenn Sie mir schreiben, verarbeite ich Ihre Angaben, um Ihre Anfrage zu beantworten (Art. 6 Abs. 1 lit. b DSGVO, bei allgemeinen Anfragen lit. f). E-Mails an hello@mrlololi.com werden über Cloudflare Email Routing (Cloudflare, Inc., USA) an mein Postfach bei Google (Gmail) weitergeleitet. Die Übermittlung in die USA stützt sich auf das EU-US Data Privacy Framework (Art. 45 DSGVO). Anfragen ohne Auftrag lösche ich nach spätestens 12 Monaten. Entsteht ein Auftrag, bewahre ich geschäftsrelevante Korrespondenz bis zum Ende der gesetzlichen Aufbewahrungsfrist auf (in der Regel 7 Jahre, § 132 BAO).' },
+      // Kontaktformular 30.10.2026 (docs/PROMPT_Kontaktformular_2026-10-30.md).
+      { key: 'form', title: 'Kontaktformular', text: 'Wenn Sie das Kontaktformular absenden, verarbeite ich Ihren Namen, Ihre E-Mail-Adresse, die ausgewählten Satzteile, Ihren optionalen Text und den Zeitpunkt des Absendens. Zweck ist die Beantwortung Ihrer Anfrage und gegebenenfalls vorvertragliche Schritte (Art. 6 Abs. 1 lit. b DSGVO). Die Anfrage wird über Make verarbeitet, einen Dienst von Celonis (Celonis Inc., New York, USA, und ihre Tochtergesellschaften), der als Auftragsverarbeiter für mich tätig ist. Das Szenario läuft in der EU-Region von Make. Soweit Daten in die USA übermittelt werden, stützt sich das auf das EU-US Data Privacy Framework (Art. 45 DSGVO); Celonis Inc. ist danach zertifiziert. Von Make aus wird die Anfrage per E-Mail über Google Gmail an mich geschickt, und Sie erhalten eine automatische Bestätigung (siehe {emailSection}). Make bewahrt Ausführungsprotokolle nur für begrenzte Zeit auf. Die E-Mails bewahre ich so lange auf, wie es für Ihre Anfrage nötig ist und gesetzliche Aufbewahrungspflichten es verlangen; danach lösche ich sie. Sie müssen das Formular nicht nutzen: Sie können mir jederzeit direkt an {email} schreiben.' },
       { key: 'booking', title: 'Terminbuchung', text: 'Der Button „Termin buchen“ führt zu einem externen Anbieter. Dort gelten dessen Datenschutzbestimmungen. Daten werden erst übertragen, wenn Sie den Link anklicken.' },
       { key: 'links', title: 'Externe Links', text: 'Links zu LinkedIn, Malt oder Referenz-Websites führen zu fremden Seiten. Erst beim Anklicken werden Daten an diese Anbieter übertragen.' },
       // Datenschutz-Ergänzung 28.10.2026 (Iva, wörtlich; Ich-Form wie der Rest der Seite).

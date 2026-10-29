@@ -25,7 +25,7 @@ const ctx = { motion, reduceMotion, locale };
 lazy('#problems', () => import('./fixdemos.js'));
 lazy('.ba', () => import('./slider.js'));
 lazy('[data-video]', () => import('./video.js'));
-lazy('.tariff[data-demo="prices"]', () => import('./prices.js'));
+lazy('#pricing', () => import('./prices.js'));
 lazy('.kidemo', () => import('./kidemo.js'));
 lazy('#ki-rechner', () => import('./kicalc.js'));
 lazy('#process', () => import('./sections.js'));
@@ -108,10 +108,12 @@ function initRunlog() {
   const button = document.querySelector('.runlog__open');
   if (!button) return;
   const slot = document.getElementById('runlog');
+  const label = button.textContent;
   let loaded = null;
   button.addEventListener('click', async () => {
     const open = button.getAttribute('aria-expanded') !== 'true';
     button.setAttribute('aria-expanded', String(open));
+    button.textContent = open ? button.dataset.close : label;
     slot.hidden = !open;
     if (!open || loaded) return;
     loaded = new Promise((resolve) => {

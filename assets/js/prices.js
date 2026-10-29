@@ -1,42 +1,51 @@
-// Stage 6d, prices: the package pictures move again, one after the other, while the prices are on
-// screen (loops.js, one pause button for all): the checkout gets fixed, a lens ticks the list, the
-// four tools come out of the launch, blocks drop into the One-Pager, the KI draft types itself and
-// the 30-day strip ticks Tag 1, 14, 30. Then a rest and again. The HTML shows every picture solved;
-// each picture's CSS reads its own data-play (start, run, end).
+// Stage 6d, prices: the package pictures move again while they are on screen (loops.js). The HTML
+// shows every picture solved; each picture's CSS reads its own data-play (start, run, end).
+// 30.10.2026 (Iva: no picture rests longer than about 3 s while in view): two chains, each with its
+// pause button right next to it.
+// - The three package cards and the 30-day strip: checkout fixed, lens ticks the list, the four
+//   tools come out of the launch, Tag 1, 14, 30. Each starts while the one before is still finishing
+//   (a wave from left to right), so every picture moves again after about 3 s.
+// - «Weitere Leistungen» on its own: blocks drop into the One-Pager, 1 s, the KI draft types itself,
+//   1 s, again; it runs whenever that list is visible (outside the one-focus rule).
 import { demo } from './loops.js';
 
-const GAP = 450;
-
 export function init() {
-  const box = document.querySelector('.tariff[data-demo="prices"]');
-  if (!box) return;
-  const parts = [
-    ['.viz--quick', 1800],
-    ['.viz--check', 2300],
-    ['.viz--hub', 1700],
-    ['.viz--site', 1500],
-    ['.viz--chat', 1900, typer],
-    ['.days', 1800],
-  ].map(([sel, ms, extra]) => {
-    const el = box.querySelector(sel);
-    return el && { el, ms, extra: extra?.(el) };
+  const cards = document.querySelector('.pkgs-wrap[data-demo="prices"]');
+  if (cards) {
+    chain(cards, [['.viz--quick', 0, 1800], ['.viz--check', 1000, 2300], ['.viz--hub', 2100, 1700], ['.days', 2600, 1800]], {
+      button: cards.querySelector('.tariff__ctl .loopctl'),
+      rest: 600,
+    });
+  }
+  const more = document.querySelector('.more[data-demo="more"]');
+  if (more) {
+    chain(more, [['.viz--site', 0, 1500], ['.viz--chat', 2500, 1900, typer]], {
+      button: more.querySelector('.more__head .loopctl'),
+      rest: 1000,
+      ambient: true,
+    });
+  }
+}
+
+// parts: [selector, start in ms, length in ms, extra?]. The round ends when the last part ends.
+function chain(root, list, opts) {
+  const parts = list.map(([sel, at, ms, extra]) => {
+    const el = root.querySelector(sel);
+    return el && { el, at, ms, extra: extra?.(el) };
   }).filter(Boolean);
   let timers = [];
   const clear = () => { timers.forEach(clearTimeout); timers = []; parts.forEach((p) => p.extra?.stop()); };
   const all = (phase) => parts.forEach((p) => { p.el.dataset.play = phase; if (phase === 'end') p.extra?.finish(); if (phase === 'start') p.extra?.reset(); });
-  demo(box, {
-    button: box.querySelector('.tariff__ctl .loopctl'),
-    rest: 3000,
+  return demo(root, {
+    ...opts,
     reset: () => { clear(); all('start'); },
     finish: () => { clear(); all('end'); },
     play: () => {
-      let at = 0;
       for (const p of parts) {
-        timers.push(setTimeout(() => { void p.el.offsetWidth; p.el.dataset.play = 'run'; p.extra?.play(); }, at));
-        timers.push(setTimeout(() => { p.extra?.finish(); p.el.dataset.play = 'end'; }, at + p.ms));
-        at += p.ms + GAP;
+        timers.push(setTimeout(() => { void p.el.offsetWidth; p.el.dataset.play = 'run'; p.extra?.play(); }, p.at));
+        timers.push(setTimeout(() => { p.extra?.finish(); p.el.dataset.play = 'end'; }, p.at + p.ms));
       }
-      return at - GAP;
+      return Math.max(...parts.map((p) => p.at + p.ms));
     },
   });
 }

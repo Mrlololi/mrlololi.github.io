@@ -117,7 +117,8 @@ test('contact: brief builder with a live preview, mailto, Iva bubble, Graz time,
   assert.match(c, /<time class="contact__time"/);
   assert.match(c, /<div class="contact__thanks" role="status"><\/div>/, 'empty until the click');
   assert.match(c, /<template id="contact-thanks">[\s\S]*data-scene="contact"[\s\S]*Danke! Sobald Ihre Mail da ist, melde ich mich innerhalb von zwei Werktagen\.[\s\S]*<\/template>/);
-  const outside = c.replace(/<template[\s\S]*?<\/template>/, '');
+  // The success panel (Kontaktformular 30.10.2026) stays hidden until the form was sent.
+  const outside = c.replace(/<template[\s\S]*?<\/template>/, '').replace(/<div class="contact__done"[\s\S]*?<\/div>/, '');
   assert.ok(!outside.includes('class="mascot'), 'no mascot next to the buttons before the click');
   assert.match(section(EN, 'contact'), /Thank you! Once your email arrives, I'll reply within two working days\./);
 });

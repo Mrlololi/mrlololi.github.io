@@ -52,7 +52,7 @@ test('slider «Chaos / Geordnet» is back as the opener of the problem cards, co
 
 test('run-log demo behind «Ablauf selbst ausprobieren»: a template, nothing loaded before the click', () => {
   for (const h of [deHome, byFile['en/index.html']]) {
-    assert.match(h, /<button class="btn btn--secondary runlog__open" type="button" aria-expanded="false" aria-controls="runlog">/);
+    assert.match(h, /<button class="btn btn--secondary runlog__open" type="button" aria-expanded="false" aria-controls="runlog" data-close="(Schließen|Close)">/);
     assert.match(h, /<template id="runlog-tpl"><div class="runlog demo" data-demo="runlog">/);
     assert.ok(!/runlog\.(css|js)/.test(h.replace(/<template[\s\S]*?<\/template>/g, '')), 'not linked in the page');
   }
