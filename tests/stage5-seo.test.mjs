@@ -273,7 +273,7 @@ test('home: each package card links «Mehr zu …» to its page; problem links s
     // Stage 6b: Technik-Check and Betreuung have no «Mehr …» link; the others in the right case.
     for (const [id, key] of Object.entries(t.services.byPackage).filter(([id]) => !['check', 'support'].includes(id))) {
       const p = t.services.pages.find((x) => x.key === key);
-      const card = tag(h, new RegExp(`(<li class="(?:item item--${id} card card--lift|row card)" id="pkg-${id}"[\\s\\S]*?</li>\\n(?=<li|</ul>))`));
+      const card = tag(h, new RegExp(`(<li class="(?:item item--${id} card card--lift|row card[^"]*)" id="pkg-${id}"[\\s\\S]*?</li>\\n(?=<li|</ul>))`));
       assert.ok(card, `${t.lang} ${id}`);
       assert.ok(card.includes(`__more" href="${p.path}">${p.moreLabel ?? `${t.services.ui.more} ${p.short}`}</a>`), `${t.lang} ${id}`);
     }

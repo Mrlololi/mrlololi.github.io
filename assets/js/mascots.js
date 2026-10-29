@@ -1,8 +1,9 @@
 // Mascots Logik, Lösung, Live (Identity 21.10.2026, drawings v2 28.10.2026). Without this file they
-// stand still in their pose. Stage 6, calm: no idle loops. A click makes one jump; in the hero each
-// hops once when the flow line lights its node (on load and on every replay of the line); the
-// footer three wave once when the footer comes into view. Reduced motion: nothing moves, a click
-// only shows the happy face for a moment.
+// stand still in their pose. A click makes one jump; in the hero each hops when the flow line
+// lights its node (every round of the line). Stage 6d: the idles are back (bob, blink, eyes that
+// follow the pointer), running while the hero loops and stopping with its pause button
+// («hero:motion»). The footer three wave when the footer comes into view. Reduced motion: nothing
+// moves, a click only shows the happy face for a moment.
 import { parts } from './mascot-art.js';
 import { reduceMotion } from './loops.js';
 
@@ -75,4 +76,76 @@ function footer() {
     seen = true;
     arms.forEach((arm, i) => arm.animate?.([{ transform: 'rotate(0)' }, { transform: 'rotate(-22deg)' }, { transform: 'rotate(0)' }], { duration: 600, iterations: 3, delay: i * 150, easing: 'ease-in-out' }));
   }, { threshold: 0.6 }).observe(box);
+}
+
+const mark = (svgs, on) => svgs.forEach((x) => { x.dataset.moving = String(on); });
+
+// A blink every 4-6 s (random) while running; only open eyes blink.
+function blinker(gsap, svg) {
+  let call = null;
+  const blink = () => {
+    const eyes = svg.querySelectorAll('.m-eye');
+    if (eyes.length) gsap.to(eyes, { scaleY: 0.1, transformOrigin: '50% 50%', duration: 0.07, yoyo: true, repeat: 1, ease: 'power1.in' });
+    call = gsap.delayedCall(gsap.utils.random(4, 6), blink);
+  };
+  return {
+    start: () => { call?.kill(); call = gsap.delayedCall(gsap.utils.random(1.5, 4), blink); },
+    stop: () => { call?.kill(); call = null; },
+  };
+}
+
+function heroMotion(gsap, svgs) {
+  const visual = document.querySelector('.hero__visual');
+  const bobs = svgs.map((svg, i) => {
+    const rig = svg.querySelector('[data-part="rig"]');
+    const shadow = svg.querySelector('[data-part="shadow"]');
+    const ease = 'sine.inOut';
+    const tl = gsap.timeline({ repeat: -1, paused: true })
+      .to(rig, { y: -4, scaleX: 0.98, scaleY: 1.03, svgOrigin: '50 107', duration: 0.9, ease })
+      .to(shadow, { scaleX: 0.85, opacity: 0.08, svgOrigin: '50 110', duration: 0.9, ease }, 0)
+      .to(rig, { y: 0, scaleX: 1.04, scaleY: 0.96, svgOrigin: '50 107', duration: 0.8, ease })
+      .to(shadow, { scaleX: 1, opacity: 0.13, svgOrigin: '50 110', duration: 0.8, ease }, '<')
+      .to(rig, { scaleX: 1, scaleY: 1, svgOrigin: '50 107', duration: 0.35, ease: 'sine.out' });
+    tl.progress(i / svgs.length); // not in step with each other
+    return tl;
+  });
+  const blinks = svgs.map((svg) => blinker(gsap, svg));
+  // Desktop with a mouse: the eyes look a little towards the pointer.
+  const follow = matchMedia('(hover: hover) and (pointer: fine) and (min-width: 800px)').matches
+    && svgs.map((svg) => {
+      const eyes = svg.querySelector('[data-part="eyes"]');
+      return { svg, x: gsap.quickTo(eyes, 'x', { duration: 0.5, ease: 'power3' }), y: gsap.quickTo(eyes, 'y', { duration: 0.5, ease: 'power3' }) };
+    });
+  let running = false;
+  const onMove = (e) => {
+    for (const f of follow) {
+      const r = f.svg.getBoundingClientRect();
+      const dx = e.clientX - (r.left + r.width / 2);
+      const dy = e.clientY - (r.top + r.height * 0.45);
+      const d = Math.hypot(dx, dy) || 1;
+      const k = Math.min(1, d / 240);
+      f.x((dx / d) * 2.6 * k);
+      f.y((dy / d) * 2 * k);
+    }
+  };
+  const set = (on) => {
+    if (on === running) return;
+    running = on;
+    bobs.forEach((tl) => (on ? tl.play() : tl.pause()));
+    blinks.forEach((b) => (on ? b.start() : b.stop()));
+    if (follow) {
+      if (on) addEventListener('pointermove', onMove, { passive: true });
+      else { removeEventListener('pointermove', onMove); follow.forEach((f) => { f.x(0); f.y(0); }); }
+    }
+    mark(svgs, on);
+  };
+  set(visual?.dataset.motion === 'on');
+  document.addEventListener('hero:motion', (e) => set(e.detail));
+}
+
+// After GSAP has loaded (main.js).
+export function startMascotMotion(gsap) {
+  if (reduceMotion.matches || !gsap) return;
+  const hero = [...document.querySelectorAll('.mascot-spot .mascot')];
+  if (hero.length) heroMotion(gsap, hero);
 }

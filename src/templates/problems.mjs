@@ -1,6 +1,7 @@
 import { esc, accent, fill } from './util.mjs';
 import { mascotScene } from './mascots.mjs';
-import { replayButton } from './hero.mjs';
+import { loopButton } from './hero.mjs';
+import { beforeAfter } from './slider.mjs';
 
 // Stage 6: each problem card is a mini-demo of its fix that ends looking solved. The HTML is the
 // solved frame (no JS, reduced motion); assets/js/fixdemos.js resets a card to «broken» while it is
@@ -76,7 +77,7 @@ ${ART[kind](fd[kind], t.s6)}
 ${cardScene(kind)}
 </div>
 <figcaption class="sr-only">${esc(fd[kind].alt)}</figcaption>
-${replayButton(t)}
+${loopButton(t, 'card', 'loopctl--card')}
 </figure>
 <div class="pc__fix"><span class="label label--pist">${esc(t.ui.fix)}</span>
 <p>${esc(item.fix)}</p>
@@ -91,9 +92,11 @@ ${replayButton(t)}
 <h2 id="problems-title" data-enter="lines">${accent(t.problems.h2)}</h2>
 <p class="lead">${esc(t.problems.intro)}</p>
 </div>
-<ul class="pcs" role="list" data-demo="problems">
+${beforeAfter(t)}
+<ul class="pcs" role="list" data-demo="problems" data-enter="stagger">
 ${cards}
 </ul>
+<p class="pcs__ctl">${loopButton(t, 'problems', 'loopctl--row')}</p>
 </div>
 </section>`;
 }

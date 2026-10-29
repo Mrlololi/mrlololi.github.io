@@ -528,7 +528,7 @@ export default {
       intro: 'Short answers to what I am asked most often.',
       also: 'Also asked:',
       missing: 'Question not here? → Write to me',
-      related: [[3, 6], [2, 6], [6, 1], [0, 4], [3, 5], [6, 0], [2, 0]],
+      related: [[3, 7], [2, 6], [6, 1], [0, 4], [3, 5], [7, 0], [2, 4], [2, 0]],
     },
     contact: {
       builderLabel: 'Short brief',
@@ -577,6 +577,22 @@ export default {
   // the KI demo on its service page and the 404. Shortened from the texts above, nothing new.
   s6: {
     replay: 'Watch again',
+    // Stage 6e (29.10.2026): what comes back.
+    e: {
+      open: 'Try the flow yourself',
+      short: ['Sign-up', 'Automation', 'In'],
+      aboutLabel: 'What you can rely on',
+      aboutRow: ['Fixed prices', 'Test contacts before go-live', 'Documentation and handover', 'German and English', 'Reply within 2 working days', '30-day promise', 'Registered business in Austria'],
+    },
+    // Stage 6c (29.10.2026): every looping demo has one pause button; its name says which demo.
+    c: {
+      pause: 'Pause',
+      play: 'Play',
+      step: 'Next step',
+      names: { runlog: 'Flow demo', about: 'Row in «About»', hero: 'Flow at the top', problems: 'Examples for the problems', card: 'Example', prices: 'Package pictures', process: 'How we work', tools: 'Tool row', ki: 'AI example', notFound: 'Picture of the line' },
+      days: ['Day 1', 'Day 14', 'Day 30'],
+      faqTyping: 'Logik is typing',
+    },
     // Stage 6b (29.10.2026): corrections after the review.
     b: {
       before: { signup: '45/47', spam: 'Spam', rate: 'Instalment 2 failed' },

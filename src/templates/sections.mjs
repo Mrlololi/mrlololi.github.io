@@ -1,5 +1,6 @@
 import { esc, accent, extLink, fill } from './util.mjs';
 import { mascotScene } from './mascots.mjs';
+import { loopButton } from './hero.mjs';
 import { ctaStrip } from './pricing.mjs';
 import { briefMail } from '../../assets/js/pure.js';
 import { MASCOTS, mascotSvg } from '../../assets/js/mascot-art.js';
@@ -13,8 +14,9 @@ const ICONS = {
 };
 const ICON_KEYS = ['cal', 'offer', 'blocks', 'key'];
 
-// «So arbeiten wir zusammen»: the four steps on one line, static (Stage 6: moved up under the prices,
-// text unchanged), closed by the «Nicht sicher, was passt?» strip.
+// «So arbeiten wir zusammen» (moved up under the prices, text unchanged), closed by the «Nicht sicher,
+// was passt?» strip. Stage 6c: the line draws again, each number fills when the line reaches it and
+// its pictogram moves; it loops while visible (loops.js) with its pause button. HTML: line full.
 export function processSteps(t) {
   const steps = t.process.steps
     .map(
@@ -31,11 +33,12 @@ export function processSteps(t) {
 <div class="section__head">
 <h2 id="process-title" data-enter="lines">${accent(t.process.h2)}</h2>
 </div>
-<div class="steps-wrap">
+<div class="steps-wrap demo" data-demo="process">
 <span class="steps__line" aria-hidden="true"><span></span></span>
 <ol class="steps" role="list">
 ${steps}
 </ol>
+${loopButton(t, 'process')}
 </div>
 ${ctaStrip(t)}
 </div>
@@ -49,7 +52,8 @@ function brandLine(text) {
   return esc(text).replace(/\p{L}+/gu, (word) => (w < 3 ? `<span class="${cls[w++]}">${word.slice(0, 2)}</span>${word.slice(2)}` : word));
 }
 
-// Stage 6: two short paragraphs, the photo and the four-point timeline (no tool rows, no projects link).
+// Stage 6: two short paragraphs, the photo and the four-point timeline. Stage 6e: a calm moving row
+// again, with what matters to clients instead of tools (same component as the tool row).
 export function about(t) {
   const s = t.s4.about;
   return `<section class="section about bg-peach edge" id="about" aria-labelledby="about-title">
@@ -68,6 +72,11 @@ export function about(t) {
 <h2 id="about-title" data-enter="lines">${accent(t.about.h2)}</h2>
 <p class="about__line">${brandLine(s.line)}</p>
 ${t.about.paragraphs.map((p) => `<p data-enter="lines">${esc(p)}</p>`).join('\n')}
+<div class="aboutrow demo" data-demo="about" role="group" aria-labelledby="aboutrow-label">
+<p class="aboutrow__label" id="aboutrow-label">${esc(t.s6.e.aboutLabel)}</p>
+<div class="marquee"><div class="marquee__track"><ul class="tools__list" role="list">${t.s6.e.aboutRow.map((x) => `<li>${esc(x)}</li>`).join('')}</ul><ul class="tools__list tools__copy" role="list" aria-hidden="true">${t.s6.e.aboutRow.map((x) => `<li>${esc(x)}</li>`).join('')}</ul></div></div>
+${loopButton(t, 'about')}
+</div>
 <ol class="path" role="list" aria-label="${esc(t.about.pathLabel)}">
 ${t.about.path.map((stop, i) => `<li class="path__stop"><span class="path__label">${esc(stop)}</span><p class="path__story" id="path-story-${i + 1}">${esc(s.stories[i])}</p></li>`).join('\n')}
 </ol>
@@ -76,9 +85,10 @@ ${t.about.path.map((stop, i) => `<li class="path__stop"><span class="path__label
 </section>`;
 }
 
-// FAQ (Stage 6): all questions visible as <details>, no inner scroll box. On the first open of a
-// question Logik (40 px, the only mascot that small) reads it for half a second, then the answer
-// fades in (assets/js/faq.js); its height is reserved, so nothing jumps. Reopening is instant.
+// FAQ (Stage 6d: the chat panel is back). All questions visible as <details> (no inner scroll box).
+// Wide screens: the chosen question as a bubble on the right, Logik (40 px) types for about 0.8 s,
+// then Iva's answer (F1 photo) and «Auch gefragt» chips. Phones: the accordion with the same
+// typing beat on the first open. Reduced motion: instant (assets/js/faq.js). Without JS: details.
 export function faq(t) {
   const s = t.s4.faq;
   const items = t.faq.items
@@ -91,7 +101,7 @@ export function faq(t) {
     .join('\n');
   const reader = mascotSvg(0, 'think', `class="mascot mascot--${MASCOTS[0].key} faq__logik" data-base="think" focusable="false"`, '-faq');
   return `<section class="section faq bg-lav edge" id="faq" aria-labelledby="faq-title">
-<div class="wrap faq__grid">
+<div class="wrap faq__grid faqbox" data-also="${esc(s.also)}" data-related="${esc(JSON.stringify(s.related))}" data-photo="/assets/img/avatar-88.webp" data-typing="${esc(t.s6.c.faqTyping)}">
 <div class="faq__side">
 <h2 id="faq-title">${accent(t.faq.h2)}</h2>
 <p class="faq__intro">${esc(s.intro)}</p>

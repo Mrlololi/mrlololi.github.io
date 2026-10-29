@@ -22,7 +22,8 @@ test('home: no KI demo, no finder, no slider, no run log; block order as in the 
   for (const h of [deHome, enHome]) {
     assert.ok(!/id="ki-demo"|class="kidemo|id="ki-rechner"/.test(h), 'KI demo and calculator only on the KI page');
     assert.ok(!/id="finder"|class="chat\b/.test(h), 'no finder section');
-    assert.ok(!/class="ba\b|class="run\b|id="signup"|class="marquee|class="ribbon|class="trows|class="notdo"/.test(h), 'removed blocks stay removed');
+    // Stage 6e brought back the slider, the run-log (behind its button) and the marquees.
+    assert.ok(!/id="signup"|class="ribbon|class="trows|class="notdo"/.test(h), 'removed blocks stay removed');
   }
   const order = ['hero-title', 'tools-title', 'id="problems"', 'id="video"', 'id="services"', 'id="process"', 'id="references"', 'id="projects"', 'id="about"', 'id="faq"', 'id="contact"'];
   const at = order.map((k) => deHome.indexOf(k));
@@ -107,7 +108,7 @@ test('problem cards: solved HTML, card 3 never says «fehlgeschlagen» there, li
   assert.ok(!/Kartenzahlung fehlgeschlagen/.test(text(cards[2])), 'the big red chip only in the start frame');
   assert.match(cards[0], /<span class="sig__n">47<\/span>\/47/);
   for (const [i, c] of cards.entries()) {
-    assert.match(c, /<button class="replay btn btn--secondary btn--sm" type="button" hidden>/);
+    assert.match(c, /<button class="loopctl btn btn--secondary btn--sm loopctl--card" type="button" hidden/);
     assert.match(c, new RegExp(`<a class="pc__link" href="#pkg-${de.problems.items[i].pkg}">`));
   }
   assert.equal(de.problems.intro, 'Typische Stellen, an denen Launches haken.');
@@ -130,8 +131,8 @@ test('prices: chooser, three main cards with at most four bullets, more services
   assert.match(s, /Mehr zu KI-Antwortentwürfen/);
   assert.match(s, /<p class="notdo-line">Was ich nicht mache: Werbetexte, Werbeanzeigen und laufenden Kundensupport\./);
   assert.match(s, /30-Tage-Zusage: Läuft ein von mir gebauter Ablauf in den ersten 30 Tagen nach Übergabe/);
-  assert.deepEqual([...s.matchAll(/<li class="row card" id="pkg-(\w+)">/g)].map((m) => m[1]), ['website', 'ki', 'support']);
-  assert.match(s, /<p class="promise">[\s\S]*?30-Tage-Zusage/);
+  assert.deepEqual([...s.matchAll(/<li class="row card[^"]*" id="pkg-(\w+)">/g)].map((m) => m[1]), ['website', 'ki', 'support']);
+  assert.match(s, /<div class="promise">[\s\S]*?30-Tage-Zusage/);
   assert.match(s, /Kleinunternehmer gemäß § 6 Abs\. 1 Z 27 UStG/);
   assert.ok(!/Garantie/.test(text(s)));
 });
@@ -142,8 +143,9 @@ test('process right under the prices, then the CTA strip; references with their 
   assert.match(process, /<div class="ctastrip">\n<p class="ctastrip__text">Nicht sicher, was passt\? 20 Minuten, kostenlos\. Ich sage ehrlich, ob ich helfen kann\.<\/p>/);
   const refs = deHome.slice(deHome.indexOf('id="references"'), deHome.indexOf('id="projects"'));
   const cards = refs.match(/<li class="ref card ref--(\w+)">/g).map((c) => c.match(/ref--(\w+)/)[1]);
-  assert.deepEqual(cards, ['course', 'site', 'shop', 'earlier']);
-  assert.match(refs, /ref--site">[\s\S]*Alexandra Fry[\s\S]*?<\/li>\n<li class="ref card ref--shop">[\s\S]*Ditoma GmbH[\s\S]*?<\/li>\n<li class="ref card ref--earlier">[\s\S]*CMX Solutions/);
+  assert.deepEqual(cards, ['course', 'site', 'shop']);
+  // Stage 6d: the quotes are back in the fanned stack (Fry pink, Ditoma blue, CMX white with its line).
+  assert.match(refs, /<li class="qcard qcard--pink">[\s\S]*Alexandra Fry[\s\S]*<li class="qcard qcard--blue">[\s\S]*Ditoma GmbH[\s\S]*<li class="qcard qcard--pist"><span class="label label--peach">Frühere Tätigkeit<\/span>[\s\S]*CMX Solutions[\s\S]*Daher kenne ich Support-Teams/);
   assert.match(refs, /Zitate aus schriftlichen Referenzen, Original auf Anfrage\./);
   assert.match(refs, /class="ctastrip"/);
 });
@@ -167,15 +169,17 @@ test('about: two paragraphs, photo, four-point timeline; no tool rows, no projec
   const a = deHome.slice(deHome.indexOf('id="about"'), deHome.indexOf('id="faq"'));
   assert.equal((a.match(/<p data-enter="lines">/g) || []).length, 2);
   assert.equal((a.match(/<li class="path__stop">/g) || []).length, 4);
-  assert.ok(!/trow|about__project/.test(a));
+  assert.ok(!/class="trow|about__project/.test(a));
 });
 
 test('FAQ: every question visible, no inner scroll box, the reading Logik at 40 px', () => {
   const f = deHome.slice(deHome.indexOf('id="faq"'), deHome.indexOf('id="contact"'));
   assert.equal((f.match(/<details class="faq__item"/g) || []).length, 8);
   assert.match(f, /Sind Sie am Launch-Tag erreichbar\?/);
-  assert.match(readFileSync(new URL('../assets/js/faq.js', import.meta.url), 'utf8'), /const BEAT = 350;/);
-  assert.ok(!/faqbox|faq__chat/.test(f));
+  // Stage 6d: the chat panel is back; Logik types about 0.8 s before each answer.
+  assert.match(f, /class="wrap faq__grid faqbox" data-also="Auch gefragt:" data-related="/);
+  assert.match(readFileSync(new URL('../assets/js/faq.js', import.meta.url), 'utf8'), /const TYPE = 800;/);
+  assert.ok(!/faq__list[^>]*style=/.test(f), 'no inner scroll box (the chat panel of Stage 6d sits beside the list)');
   assert.ok(!/\.faq__list[^{]*\{[^}]*overflow/.test(css), 'no scroll container');
   assert.match(f, /<template id="faq-reader">/);
   assert.match(css, /\.faq__logik \{ width: 2\.5rem;/);
@@ -232,7 +236,7 @@ test('motion budget: no scale or 3D hover on cards, hover only on real pointers,
   assert.match(css, /--lift: -2px;/);
   // Shared design file (Stage 7: Webprojekte takes it over).
   const comp = readFileSync(new URL('../assets/css/components.css', import.meta.url), 'utf8');
-  for (const sel of [':root {', '.btn {', '.btn--primary', '.btn--secondary', '.chip {', '.btn--sm', '.label {', '.card, .instrument {', '.replay {']) assert.ok(comp.includes(sel), sel);
+  for (const sel of [':root {', '.btn {', '.btn--primary', '.btn--secondary', '.chip {', '.btn--sm', '.label {', '.card, .instrument {', '.loopctl {']) assert.ok(comp.includes(sel), sel);
   // Stage 6b: no other pill styles of their own in main.css.
   for (const old of ['.vid__chip {', '.kitone {', '.kisteps__btn {', '.kidemo__other {', '.contact__copy {']) assert.ok(!css.includes(`\n${old} min-height`) && !new RegExp(`\\n\\${old.replace(' {', '')} \\{ (display: inline-flex; )?(align-items: center; gap: var\\(--space-2\\); )?min-height`).test(css), old);
 });

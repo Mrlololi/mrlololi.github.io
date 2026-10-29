@@ -1,5 +1,6 @@
 import { esc, fill, formatDate } from './util.mjs';
 import { mascotSvg } from '../../assets/js/mascot-art.js';
+import { loopButton } from './hero.mjs';
 
 const mail = (config) => `<a href="mailto:${esc(config.contact_email)}">${esc(config.contact_email)}</a>`;
 
@@ -103,6 +104,7 @@ export function notFound(t, alt, { ratgeber = false } = {}) {
 <div class="nf__in">
 ${nfScene(t)}
 <p class="nf__caption">${esc(t.s6.b.repaired)}</p>
+<p class="nf__ctl">${loopButton(t, 'notFound')}</p>
 <h1>${esc(t.s6.notFound.h1)}</h1>
 <p class="lead">${esc(t.s6.notFound.lead)}</p>
 ${nfLinks(t, ratgeber)}

@@ -48,8 +48,9 @@ test('prices: chooser rows with an arrow, rows with a small outline «Anfragen»
   const h = byFile['index.html'];
   assert.equal((h.match(/<a class="chooser__row" href="#pkg-\w+"><span>[^<]+<\/span><span class="chooser__to"><span aria-hidden="true">→<\/span> <strong>/g) || []).length, 5);
   assert.equal((h.match(/class="btn btn--secondary btn--sm row__ask"/g) || []).length, 3);
-  assert.match(h, /<a class="row__more" href="\/ki-antwortentwuerfe\/#ki-demo">Beispiel ansehen<\/a>/);
-  const support = h.match(/<li class="row card" id="pkg-support">[\s\S]*?<\/li>/)[0];
+  // Stage 6e: a visible secondary button with a small mail icon.
+  assert.match(h, /<a class="btn btn--secondary btn--sm row__example" href="\/ki-antwortentwuerfe\/#ki-demo"><svg class="row__icon"[^>]*>[\s\S]*?<\/svg>Beispiel ansehen<\/a>/);
+  const support = h.match(/<li class="row card[^"]*" id="pkg-support">[\s\S]*?<\/li>/)[0];
   assert.ok(!/row__more/.test(support), 'Betreuung without «Mehr …»');
 });
 
@@ -61,7 +62,7 @@ test('video: flat posters from the film, a quiet CTA line under the block', () =
 });
 
 test('404: «Repariert. Hier geht es weiter:» under the scene', () => {
-  assert.match(byFile['404.html'], /<\/div>\n<p class="nf__caption">Repariert\. Hier geht es weiter:<\/p>\n<h1>Hier ist die Leitung unterbrochen\.<\/h1>/);
+  assert.match(byFile['404.html'], /<\/div>\n<p class="nf__caption">Repariert\. Hier geht es weiter:<\/p>\n<p class="nf__ctl"><button class="loopctl[^"]*"[\s\S]*?<\/p>\n<h1>Hier ist die Leitung unterbrochen\.<\/h1>/);
 });
 
 test('contact mail in EN: «not decided yet» as its own sentence', async () => {

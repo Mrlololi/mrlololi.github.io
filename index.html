@@ -115,14 +115,19 @@ box-shadow: var(--shadow-soft);
 }
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
 .btn--primary:hover { transform: translateY(var(--lift)); }
-.card { transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; }
-a.card:hover, .card--lift:hover { transform: translateY(var(--lift)); box-shadow: var(--shadow-hover); }
+.card { transition: box-shadow 0.2s ease, border-color 0.2s ease; }
+a.card:hover, .card--lift:hover { box-shadow: var(--shadow-hover); }
 }
-.replay { gap: 0.4rem; padding-inline: var(--space-3) var(--space-4); }
-.replay__icon { width: 1.1rem; height: 1.1rem; flex: none; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
-.demo > .replay, .kidemo__controls .replay { display: flex; width: fit-content; margin: var(--space-3) 0 0 auto; }
-html:not(.js) .replay { display: none !important; }
-.js .replay[hidden] { visibility: hidden; }
+.loopctl { gap: 0.4rem; padding-inline: var(--space-3) var(--space-4); }
+.loopctl__icon { width: 1.1rem; height: 1.1rem; flex: none; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.loopctl__play { fill: currentColor; stroke: none; display: none; }
+.loopctl__step { display: none; }
+.loopctl[data-mode="play"] .loopctl__pause, .loopctl[data-mode="step"] .loopctl__pause { display: none; }
+.loopctl[data-mode="play"] .loopctl__play { display: inline; }
+.loopctl[data-mode="step"] .loopctl__step { display: inline; }
+.demo > .loopctl, .kidemo__controls .loopctl { display: flex; width: fit-content; margin: var(--space-3) 0 0 auto; }
+html:not(.js) .loopctl { display: none !important; }
+.loopctl[hidden] { display: none !important; }
 @font-face {
 font-family: "Bricolage Grotesque";
 src: url("/assets/fonts/bricolage-grotesque-latin.woff2") format("woff2");
@@ -456,7 +461,6 @@ background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' vi
 .item { position: relative; }
 .item__cta { align-self: flex-start; margin-top: auto; background: var(--ink); color: #fff; }
 .item__cta:hover { color: #fff; }
-.item__cta::after { content: ""; position: absolute; inset: 0; border-radius: var(--radius-card); }
 .price-details { position: relative; z-index: 1; }
 .pc__fix { display: flex; flex-direction: column; align-items: flex-start; }
 .pc__link { margin-top: auto; padding-top: var(--space-2); font-weight: 700; display: inline-flex; min-height: 2.75rem; align-items: center; }
@@ -659,7 +663,7 @@ html:not(.js) .brief { display: none; }
 .mascot-spot { width: max(17.06%, 3.5rem); }
 .hero__flow { display: grid; }
 .js .hf__lines { padding-inline: 0; }
-.hero__flow > .replay { margin-top: var(--space-2); }
+.hero__flow > .loopctl { margin-top: var(--space-2); }
 @media (prefers-reduced-motion: no-preference) {
 :is(.js .hero__flow:not([data-play]), .hero__flow[data-play="run"]) .hf__node rect { animation: hf-lit 0.45s ease both; }
 :is(.js .hero__flow:not([data-play]), .hero__flow[data-play="run"]) .hf__check { transform-box: fill-box; transform-origin: center; animation: hf-check 0.35s var(--ease-soft) both; }
@@ -882,7 +886,6 @@ html:not(.js) .brief { display: none; }
 .more__title { font-size: var(--step-1); }
 .rows { display: grid; gap: var(--space-2); }
 .row { display: grid; gap: var(--space-1) var(--space-5); align-items: center; padding: var(--space-3) var(--space-5); border-radius: 16px; scroll-margin-top: calc(var(--header-h) + var(--space-5)); }
-@media (min-width: 760px) { .row { grid-template-columns: minmax(0, 1fr) 9rem auto; } }
 .row__name { font-size: var(--step-0); font-weight: 700; }
 .row__line { font-size: var(--step--1); color: var(--ink-soft); }
 .row__price { font-family: var(--font-display); font-weight: 750; font-variant-numeric: tabular-nums lining-nums; }
@@ -992,7 +995,7 @@ html:not(.js) .kisteps, html:not(.js) .kidemo__controls, html:not(.js) .kidemo__
 .kidemo__approve { justify-self: start; }
 .kidemo__approve.is-done { background: #3F7531; border-color: #3F7531; }
 .kidemo__controls { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2); }
-.kidemo__controls .replay { margin: 0; }
+.kidemo__controls .loopctl { margin: 0; }
 .kidemo__bg summary { display: inline-flex; align-items: center; min-height: 2.75rem; font-weight: 700; cursor: pointer; }
 .kidemo__system { color: var(--ink-soft); max-width: var(--measure); }
 .kidemo__all a { display: inline-flex; align-items: center; min-height: 2.75rem; font-weight: 700; }
@@ -1093,7 +1096,6 @@ html:not(.js) .calc__fields { display: none; }
 .chooser__to { white-space: nowrap; color: var(--lav-ink); }
 .chooser__to strong { color: var(--ink); }
 @media (hover: hover) { .chooser__row:hover { border-color: var(--lav-ink); color: var(--ink); } .chooser__row:hover strong { text-decoration: underline; } }
-@media (min-width: 760px) { .row { grid-template-columns: minmax(0, 1fr) 10rem minmax(14rem, auto) auto; } }
 .row__links { flex-direction: column; align-items: flex-start; gap: 0; }
 .row__ask { justify-self: start; }
 .notdo-line { max-width: 46rem; font-size: var(--step--1); color: var(--ink); }
@@ -1125,7 +1127,231 @@ html:not(.js) .calc__fields { display: none; }
 .nf__links { grid-template-columns: 1fr 1fr; }
 .nf__card { min-height: 2.75rem; padding: var(--space-2) var(--space-3); font-size: var(--step--1); }
 .nf__card::after { display: none; }
-}</style>
+}
+.tools { padding-block: var(--space-5) calc(var(--space-5) + var(--dock-r)); }
+.tools__in { position: relative; gap: var(--space-2); }
+.tools__in > .loopctl { margin: 0; justify-self: end; }
+.marquee { width: 100%; }
+.marquee__track { display: flex; }
+.tools__copy { display: none; }
+.tools__list { row-gap: var(--space-2); }
+@media (prefers-reduced-motion: no-preference) {
+.js .tools__in:is([data-play="start"], [data-play="run"]) .marquee { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); }
+.js .tools__in:is([data-play="start"], [data-play="run"]) .marquee__track { width: max-content; }
+.js .tools__in:is([data-play="start"], [data-play="run"]) .tools__list { flex-wrap: nowrap; padding-inline-end: var(--space-2); }
+.js .tools__in:is([data-play="start"], [data-play="run"]) .tools__copy { display: flex; }
+.tools__in[data-play="run"] .marquee__track { animation: marquee 40s linear infinite; }
+.tools__in[data-play="run"] .marquee:hover .marquee__track { animation-play-state: paused; }
+}
+@keyframes marquee { to { transform: translateX(-50%); } }
+.pcs__ctl { display: none; margin-top: var(--space-4); }
+.pcs__ctl .loopctl { margin-left: auto; }
+@media (min-width: 1100px) {
+.pcs__ctl { display: flex; }
+.fixdemo > .loopctl--card { display: none !important; }
+}
+.mini-co__state { display: inline-grid; }
+.mini-co__bad, .mini-co__ok { grid-area: 1 / 1; }
+.mini-co__bad { padding: 0 0.35rem; border-radius: 4px; background: #FBE7EC; color: #8A2F45; visibility: hidden; }
+.viz--quick[data-play="start"] .mini-co__bad { visibility: visible; }
+.viz--quick[data-play="start"] .mini-co__ok { visibility: hidden; }
+.viz--quick[data-play="start"] .mini-co__line { background: repeating-linear-gradient(90deg, #B5473A 0 6px, transparent 6px 10px); }
+.viz--check { position: relative; }
+.scan__lens { position: absolute; right: var(--space-4); top: var(--space-2); width: 1.6rem; height: 1.6rem; border-radius: 50%; border: 3px solid var(--lav-ink); background: rgb(220 211 240 / 0.35); opacity: 0; }
+.scan__lens::after { content: ""; position: absolute; right: -0.55rem; bottom: -0.45rem; width: 0.7rem; height: 3px; border-radius: 2px; background: var(--lav-ink); transform: rotate(45deg); }
+.viz--check[data-play="start"] .scan li::before { background-color: var(--wire); }
+.viz--hub[data-play="start"] .hub__sat { opacity: 0; transform: scale(0.6); }
+.viz--site[data-play="start"] .blk { opacity: 0; }
+.viz { position: relative; }
+.row--viz { grid-template-columns: 1fr; }
+.row--viz .viz { min-height: 0; padding: var(--space-2); }
+.mini-browser { border-radius: 10px; border: 1px solid var(--line); background: #fff; overflow: hidden; }
+.mini-browser__bar { display: flex; align-items: center; gap: 0.25rem; padding: 0.2rem 0.45rem; background: var(--lav-tint); font-size: 0.8125rem; color: var(--ink-soft); }
+.mini-browser__bar i { width: 0.4rem; height: 0.4rem; border-radius: 50%; background: var(--wire); font-weight: 400; }
+.mini-browser__page { display: grid; gap: 0.2rem; padding: 0.35rem; }
+.blk { padding: 0.05rem 0.4rem; border-radius: 4px; font-size: 0.8125rem; }
+.blk--1 { background: var(--pink); } .blk--2 { background: var(--blue); } .blk--3 { background: var(--pist); } .blk--4 { background: var(--wire); }
+.viz--chat { gap: 0.3rem; }
+.tchat__q { justify-self: end; max-width: 90%; padding: 0.2rem 0.5rem; border-radius: 10px 10px 4px 10px; background: var(--ink); color: #fff; }
+.tchat__a { display: grid; gap: 0.15rem; padding: 0.3rem 0.5rem; border-radius: 10px 10px 10px 4px; background: #EEEAF8; border: 1px dashed var(--lav-ink); }
+.tchat__tag { justify-self: start; padding: 0 0.35rem; border-radius: 4px; background: var(--lav-ink); color: #fff; font-size: 0.8125rem; }
+.tchat__text { min-height: 2.6em; }
+.promise { flex-wrap: wrap; align-items: center; }
+.promise p { flex: 1 1 24rem; }
+.days { flex: 1 1 14rem; display: grid; grid-template-columns: repeat(3, 1fr); position: relative; padding-top: 1.6rem; font-size: 0.8125rem; font-weight: 700; color: var(--pist-ink); }
+.days::before { content: ""; position: absolute; left: 0.55rem; right: 1.5rem; top: 0.5rem; height: 3px; border-radius: 3px; background: var(--done); transform-origin: left; }
+.days li { position: relative; }
+.days li::before { content: ""; position: absolute; left: 0; top: -1.6rem; width: 1.15rem; height: 1.15rem; border-radius: 50%; background: var(--done) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.6 8.3l2.2 2.2 4.6-5' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% no-repeat; box-shadow: 0 0 0 3px var(--pist-tint); }
+.days[data-play="start"]::before { transform: scaleX(0); }
+.days[data-play="start"] li::before { background-color: var(--wire); }
+.tariff__ctl { display: flex; justify-content: flex-end; margin-top: calc(-1 * var(--space-3)); }
+@media (prefers-reduced-motion: no-preference) {
+.viz--quick[data-play="run"] .mini-co__bad { visibility: visible; animation: gone 0.01s linear 0.9s forwards; }
+.viz--quick[data-play="run"] .mini-co__ok { animation: pop 0.35s var(--pop) 0.9s both; }
+.viz--quick[data-play="run"] .mini-co__line { animation: fill-in 0.5s var(--ease-soft) 0.6s both; }
+.viz--check[data-play="run"] .scan__lens { opacity: 1; animation: lens 2.1s ease-in-out both; }
+.viz--check[data-play="run"] .scan li::before { animation: tick-in 0.01s linear calc(0.25s + var(--i) * 0.38s) both; }
+.viz--hub[data-play="run"] .hub__centre { animation: pop 0.35s var(--pop) both; }
+.viz--hub[data-play="run"] .hub__sat { animation: fly-out 0.5s var(--ease-soft) both; }
+.viz--hub[data-play="run"] .hub__sat--2 { animation-delay: 0.25s; } .viz--hub[data-play="run"] .hub__sat--3 { animation-delay: 0.5s; } .viz--hub[data-play="run"] .hub__sat--4 { animation-delay: 0.75s; }
+.viz--site[data-play="run"] .blk { animation: drop 0.4s cubic-bezier(0.3, 1.12, 0.6, 1) both; }
+.viz--site[data-play="run"] .blk--2 { animation-delay: 0.25s; } .viz--site[data-play="run"] .blk--3 { animation-delay: 0.5s; } .viz--site[data-play="run"] .blk--4 { animation-delay: 0.75s; }
+.days[data-play="run"]::before { animation: fill-in 1.4s ease both; }
+.days[data-play="run"] li::before { animation: tick-in 0.01s linear both; }
+.days[data-play="run"] li:nth-child(2)::before { animation-delay: 0.65s; } .days[data-play="run"] li:nth-child(3)::before { animation-delay: 1.35s; }
+}
+@keyframes lens { 0% { transform: translate(0, 0); } 100% { transform: translate(-0.5rem, 6rem); } }
+@keyframes tick-in { from { background-color: var(--wire); } to { background-color: var(--done); } }
+@keyframes fly-out { from { opacity: 0; transform: scale(0.6); } }
+@keyframes drop { from { opacity: 0; transform: translateY(-0.9rem); } }
+.steps-wrap > .loopctl { margin-top: var(--space-4); }
+.steps-wrap[data-play="start"] .steps__line span { transform: scaleY(0); }
+.steps-wrap[data-play="start"] .step__n { background: #fff; }
+@media (min-width: 768px) { .steps-wrap[data-play="start"] .steps__line span { transform: scaleX(0); } }
+@media (prefers-reduced-motion: no-preference) {
+.steps-wrap[data-play="run"] .steps__line span { animation: line-y 2.6s linear both; }
+.steps-wrap[data-play="run"] .step__n { animation: num-on 0.01s linear both; }
+.steps-wrap[data-play="run"] .step:nth-child(1) .step__n { animation-delay: 0.05s; }
+.steps-wrap[data-play="run"] .step:nth-child(2) .step__n { animation-delay: 0.85s; }
+.steps-wrap[data-play="run"] .step:nth-child(3) .step__n { animation-delay: 1.7s; }
+.steps-wrap[data-play="run"] .step:nth-child(4) .step__n { animation-delay: 2.55s; }
+.steps-wrap[data-play="run"] .pi--tick, .steps-wrap[data-play="run"] :is(.pi--l1, .pi--l2, .pi--l3) { stroke-dasharray: 20; animation: draw-path 0.45s ease both; }
+.steps-wrap[data-play="run"] .step:nth-child(1) .pi--tick { animation-delay: 0.15s; }
+.steps-wrap[data-play="run"] .pi--l1 { animation-delay: 0.95s; } .steps-wrap[data-play="run"] .pi--l2 { animation-delay: 1.07s; } .steps-wrap[data-play="run"] .pi--l3 { animation-delay: 1.19s; }
+.steps-wrap[data-play="run"] .pi--drop { animation: drop 0.5s cubic-bezier(0.3, 1.12, 0.6, 1) 1.8s both; }
+.steps-wrap[data-play="run"] .pi--key { transform-box: fill-box; animation: hand-over 0.7s var(--ease-soft) 2.6s both; }
+}
+@media (prefers-reduced-motion: no-preference) and (min-width: 768px) {
+.steps-wrap[data-play="run"] .steps__line span { animation-name: line-x; }
+}
+@keyframes line-y { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+@keyframes line-x { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes num-on { from { background: #fff; } }
+@keyframes draw-path { from { stroke-dashoffset: 20; } to { stroke-dashoffset: 0; } }
+@keyframes hand-over { from { transform: translateX(-6px) rotate(-20deg); opacity: 0; } }
+@media (min-width: 860px) {
+.refs__list { display: grid; columns: auto; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-areas: "course site" "shop site"; gap: var(--space-5); align-items: start; }
+.ref { margin: 0; }
+.ref--course { grid-area: course; } .ref--site { grid-area: site; } .ref--shop { grid-area: shop; }
+}
+.ref--site .browser__view { aspect-ratio: 16 / 10; overflow: hidden; }
+.ref--site .browser__view img { width: 100%; height: auto; }
+.qcards { display: grid; gap: var(--space-5); margin-top: var(--space-7); }
+.qcard { display: grid; gap: var(--space-2); align-content: start; }
+.qcard .quote { margin: 0; height: 100%; padding: var(--space-5); border-radius: 22px; border: 1px solid var(--line); border-left: 1px solid var(--line); }
+.qcard--pink .quote { background: rgb(244 201 211 / 0.75); }
+.qcard--blue .quote { background: rgb(191 216 238 / 0.75); }
+.qcard--pist .quote { background: rgb(255 255 255 / 0.7); }
+.qcard--pist { padding: var(--space-4); border-radius: 22px; background: rgb(255 255 255 / 0.55); border: 1px solid var(--line); }
+.qcard--pist .quote { padding: 0; border: 0; background: none; }
+.qcards:focus-visible { outline-offset: 6px; }
+@media (min-width: 768px) {
+.qcards { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; }
+.qcard { transform: rotate(var(--tilt, 0deg)); }
+.qcard--pink { --tilt: -2.5deg; }
+.qcard--blue { --tilt: 2deg; margin-top: var(--space-6); }
+.qcard--pist { --tilt: -1.5deg; }
+}
+@media (max-width: 767.98px) {
+.qcards { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: var(--space-4); padding-bottom: var(--space-3); margin-inline: calc(-1 * var(--gutter)); padding-inline: var(--gutter); scroll-padding-inline: var(--gutter); }
+.qcard { flex: 0 0 85%; scroll-snap-align: start; }
+}
+.faqbox { display: grid; gap: var(--space-6); }
+.faq__chat { display: none; }
+@media (min-width: 960px) {
+.faqbox.is-chat { grid-template-columns: minmax(0, 4fr) minmax(0, 5fr) minmax(0, 5fr); grid-template-areas: "side list chat"; align-items: start; }
+.faqbox.is-chat .faq__side { grid-area: side; }
+.faqbox.is-chat .faq__list { grid-area: list; }
+.faqbox.is-chat .faq__item .faq__a { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.faqbox.is-chat .faq__item summary { font-size: var(--step-0); padding-block: var(--space-3); }
+.faqbox.is-chat .faq__item summary::after { content: "\2192"; }
+.faqbox.is-chat .faq__item[open] { border-color: var(--lav-ink); }
+.faqbox.is-chat .faq__item[open] summary { color: var(--lav-ink); }
+.faqbox.is-chat .faq__chat { grid-area: chat; position: sticky; top: calc(var(--header-h) + var(--space-5)); display: grid; align-content: start; gap: var(--space-3); min-height: 22rem; padding: var(--space-5); border-radius: 22px; background: #fff; border: 1px solid var(--line); }
+}
+.bubble { max-width: 92%; margin: 0; padding: var(--space-3) var(--space-4); border-radius: 18px; line-height: 1.5; }
+.bubble--visitor { justify-self: end; background: var(--ink); color: #fff; border-bottom-right-radius: 6px; font-weight: 600; }
+.bubble--typing { justify-self: start; position: relative; display: flex; align-items: center; min-height: 3.5rem; background: var(--lav-tint); }
+.bubble--typing .faq__dots { position: static; margin-inline-start: var(--space-2); }
+.bubble-row { display: flex; align-items: flex-end; gap: var(--space-2); }
+.bubble__photo { width: 2.25rem; height: 2.25rem; border-radius: 50%; object-fit: cover; flex: none; }
+.bubble--iva { background: var(--lav-tint); border-bottom-left-radius: 6px; }
+.faq__also { display: grid; gap: var(--space-2); }
+.faq__also-title { font-size: var(--step--1); font-weight: 700; color: var(--ink-soft); }
+.faq__also-list { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.faq__chip { text-align: left; }
+.faq__chat .bubble--link { justify-self: start; background: var(--pist-tint); font-weight: 700; color: var(--ink); text-decoration: none; }
+@media (hover: hover) { .faq__chat .bubble--link:hover { text-decoration: underline; color: var(--ink); } }
+@media (prefers-reduced-motion: no-preference) {
+.faq__chat .bubble { animation: bubble-in 0.3s var(--ease-soft) both; }
+}
+@keyframes bubble-in { from { opacity: 0; transform: translateY(0.4rem); } }
+.nf__ctl .loopctl { margin: 0; }
+.ba { display: grid; gap: var(--space-2); justify-items: center; margin: 0 0 var(--space-6); }
+.ba__stage { position: relative; width: 100%; max-width: 34rem; aspect-ratio: 440 / 180; overflow: hidden; border-radius: var(--radius-card); background: var(--sheet); border: 1px solid var(--line); }
+.ba__side { position: absolute; inset: 0; padding: var(--space-2); background: #fff; }
+.ba__side--after { background: #F2F8EE; }
+.ba__tag--before, .ba__tag--after { position: absolute; top: var(--space-2); z-index: 1; }
+.ba__tag--before { right: var(--space-2); }
+.ba__tag--after { left: var(--space-2); }
+.ba__svg { width: 100%; height: 100%; }
+.ba__node rect { stroke-width: 1.5; }
+.ba__node text { font-family: var(--font-body); font-size: 16px; font-weight: 700; fill: var(--ink); }
+.ba__node--grey rect { fill: #F4F1EE; stroke: #CFC7C1; }
+.ba__node--grey text { fill: var(--ink-soft); }
+.ba__node--1 rect { fill: var(--pink); stroke: var(--pink-ink); }
+.ba__node--2 rect { fill: var(--blue); stroke: var(--blue-ink); }
+.ba__node--3 rect { fill: var(--lav); stroke: var(--lav-ink); }
+.ba__node--4 rect { fill: var(--pist); stroke: var(--pist-ink); }
+.ba__node--5 rect { fill: #F7DCC8; stroke: #8A5A35; }
+.ba__link { fill: none; stroke: #CFC7C1; stroke-width: 2; }
+.ba__link--broken { stroke: #B5473A; stroke-dasharray: 6 6; }
+.ba__link--ok { stroke: var(--done); stroke-width: 2.5; }
+.ba__x circle { fill: #B5473A; }
+.ba__x path, .ba__ok path { fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.ba__ok circle { fill: var(--done); }
+.ba__mask, .ba__inner { position: absolute; inset: 0; overflow: hidden; }
+.ba__track { position: absolute; inset: 0; pointer-events: none; display: none; }
+.ba__divider { position: absolute; top: 0; bottom: 0; left: 0; width: 2px; margin-left: -1px; background: var(--ink); }
+.ba__divider::after { content: ""; position: absolute; top: 50%; left: 50%; width: 2.75rem; height: 2.75rem; margin: -1.375rem 0 0 -1.375rem; border-radius: 50%; background: var(--ink) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 7l-5 5 5 5M15 7l5 5-5 5' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 1.25rem no-repeat; }
+.ba__control { display: none; width: min(100%, 34rem); gap: var(--space-1); justify-items: center; font-size: var(--step--1); font-weight: 700; color: var(--ink-soft); }
+.ba__range { width: 100%; min-height: 2.75rem; accent-color: var(--ink); cursor: ew-resize; }
+html:not(.js) .ba__side--before { display: none; }
+.ba.is-ready .ba__stage { cursor: ew-resize; touch-action: pan-y; user-select: none; }
+.ba.is-ready .ba__track { display: block; }
+.ba.is-ready .ba__control { display: grid; }
+.aboutrow { display: grid; gap: var(--space-2); margin-top: var(--space-2); }
+.aboutrow__label { font-size: var(--step--1); font-weight: 700; color: var(--ink-soft); }
+.aboutrow > .loopctl { margin: 0; justify-self: end; }
+@media (prefers-reduced-motion: no-preference) {
+.js .aboutrow:is([data-play="start"], [data-play="run"]) .marquee { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent); mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent); }
+.js .aboutrow:is([data-play="start"], [data-play="run"]) .marquee__track { width: max-content; }
+.js .aboutrow:is([data-play="start"], [data-play="run"]) .tools__list { flex-wrap: nowrap; padding-inline-end: var(--space-2); }
+.js .aboutrow:is([data-play="start"], [data-play="run"]) .tools__copy { display: flex; }
+.aboutrow[data-play="run"] .marquee__track { animation: marquee 50s linear infinite; }
+.aboutrow[data-play="run"] .marquee:hover .marquee__track { animation-play-state: paused; }
+}
+.row__example { gap: 0.4rem; }
+.row__icon { width: 1rem; height: 0.8rem; fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; }
+.runlog__wrap { width: 100%; max-width: 64rem; margin: var(--space-5) auto 0; }
+.runlog__open-row { display: flex; justify-content: center; }
+html:not(.js) .runlog__wrap { display: none; }
+.tools__in, .aboutrow { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "label ctl" "row row"; align-items: center; justify-items: stretch; }
+.tools__label, .aboutrow__label { grid-area: label; }
+.tools__in > .loopctl, .aboutrow > .loopctl { grid-area: ctl; justify-self: end; }
+.tools__in > .marquee, .aboutrow > .marquee { grid-area: row; }
+.qcard--pink .quote { background: #F7D5DD; }
+.qcard--blue .quote { background: #D2E3F3; }
+.qcard--pist { background: #FBFCF9; }
+.marquee { min-width: 0; contain: inline-size; }
+.viz--hub[data-play="start"] .hub__sat, .viz--site[data-play="start"] .blk { opacity: 1; visibility: hidden; }
+.tariff { grid-template-columns: minmax(0, 1fr); }
+.chooser__to { white-space: normal; }
+.more { grid-template-columns: minmax(0, 1fr); }
+.rows { container-type: inline-size; }
+@container (min-width: 46rem) { .row { grid-template-columns: minmax(0, 1fr) 10rem minmax(14rem, auto) auto; } }
+@container (min-width: 60rem) { .row.row--viz { grid-template-columns: 11rem minmax(0, 1fr) 10rem minmax(14rem, auto) auto; } }
+@container (min-width: 46rem) and (max-width: 59.98rem) { .row.row--viz { grid-template-columns: minmax(0, 1fr) 10rem minmax(14rem, auto) auto; } .row--viz .viz { display: none; } }</style>
 <script>document.documentElement.classList.add('js')</script>
 <script type="module">requestAnimationFrame(()=>requestAnimationFrame(()=>import('/assets/js/main.js')))</script>
 <link rel="modulepreload" href="/assets/js/loops.js" fetchpriority="low">
@@ -1174,15 +1400,21 @@ html:not(.js) .calc__fields { display: none; }
 <button class="hf__btn hf__btn--1" type="button" aria-expanded="false" aria-controls="hf-line-1">Formular</button><span class="mascot-spot mascot-spot--logik" data-node="1" data-scene="hero"><svg viewBox="-8 -8 120 124" data-mascot="0" data-emo="think" class="mascot" data-base="think" aria-hidden="true" focusable="false"><ellipse data-part="shadow" class="m-shadow" cx="50" cy="109" rx="23" ry="3.6" fill="#2B2A33" opacity=".13"/><g data-part="rig"><g data-part="legs"><path class="o" d="M41 92v12M59 92v12" fill="none" stroke="#2B2A33" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><path class="o" d="M36 105h9M55 105h9" fill="none" stroke="#2B2A33" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g><g data-part="body"><clipPath id="mb-logik-think"><path d="M25.5 30.5A16 16 0 0 1 39.7 22H60.3A16 16 0 0 1 74.5 30.5L86.1 52.5A16 16 0 0 1 86.1 67.5L74.5 89.5A16 16 0 0 1 60.3 98H39.7A16 16 0 0 1 25.5 89.5L13.9 67.5A16 16 0 0 1 13.9 52.5z"/></clipPath><path d="M25.5 30.5A16 16 0 0 1 39.7 22H60.3A16 16 0 0 1 74.5 30.5L86.1 52.5A16 16 0 0 1 86.1 67.5L74.5 89.5A16 16 0 0 1 60.3 98H39.7A16 16 0 0 1 25.5 89.5L13.9 67.5A16 16 0 0 1 13.9 52.5z" fill="#F4C9D3"/><g data-part="belly"><ellipse clip-path="url(#mb-logik-think)" cx="50" cy="103" rx="36" ry="26" fill="#FBE6EC"/></g><circle cx="28.5" cy="65" r="4.6" fill="#9C3F58" opacity=".22"/><circle cx="71.5" cy="65" r="4.6" fill="#9C3F58" opacity=".22"/><ellipse cx="33" cy="34" rx="8" ry="4.8" fill="#fff" opacity=".6" transform="rotate(-32 33 34)"/><path class="o" d="M25.5 30.5A16 16 0 0 1 39.7 22H60.3A16 16 0 0 1 74.5 30.5L86.1 52.5A16 16 0 0 1 86.1 67.5L74.5 89.5A16 16 0 0 1 60.3 98H39.7A16 16 0 0 1 25.5 89.5L13.9 67.5A16 16 0 0 1 13.9 52.5z" fill="none" stroke="#2B2A33" stroke-width="3.5" stroke-linejoin="round"/></g><g data-part="eyes"><g class="m-eye"><circle cx="38.7" cy="53.8" r="4.6" fill="#2B2A33"/><circle cx="40.540000000000006" cy="52.419999999999995" r="1.6" fill="#fff"/></g><g class="m-eye"><circle cx="63.7" cy="53.8" r="4.6" fill="#2B2A33"/><circle cx="65.54" cy="52.419999999999995" r="1.6" fill="#fff"/></g><path d="M56.5 43q6-4 12-1" fill="none" stroke="#2B2A33" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></g><g data-part="mouth"><path d="M47 72q4-2.5 9-.5" fill="none" stroke="#2B2A33" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></g><g data-part="accessory"><g class="m-glasses" fill="none" stroke="#2B2A33" stroke-width="2.6"><circle cx="37.5" cy="55" r="9.5"/><circle cx="62.5" cy="55" r="9.5"/><path d="M47 55h6" stroke-linecap="round"/></g></g><g data-part="arms"><path class="o" d="M17 72q-7 4 -7 13" fill="none" stroke="#2B2A33" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><circle class="o" cx="10" cy="85" r="4.4" fill="#F4C9D3" stroke="#2B2A33" stroke-width="2.4"/><path d="M83 72C92 78 67 82 58 79" fill="none" stroke="#2B2A33" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="58" cy="79" r="4.4" fill="#F4C9D3" stroke="#2B2A33" stroke-width="2.4"/></g></g></svg><button class="mascot-btn" type="button" aria-label="Logik springt"></button></span><button class="hf__btn hf__btn--2" type="button" aria-expanded="false" aria-controls="hf-line-2">ActiveCampaign</button><span class="mascot-spot mascot-spot--loesung" data-node="2" data-scene="hero"><svg viewBox="-8 -8 120 124" data-mascot="1" data-emo="idle" class="mascot" data-base="idle" aria-hidden="true" focusable="false"><ellipse data-part="shadow" class="m-shadow" cx="50" cy="109" rx="23" ry="3.6" fill="#2B2A33" opacity=".13"/><g data-part="rig"><g data-part="legs"><path class="o" d="M41 92v12M59 92v12" fill="none" stroke="#2B2A33" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><path class="o" d="M36 105h9M55 105h9" fill="none" stroke="#2B2A33" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g><g data-part="body"><clipPath id="mb-loesung-idle"><path d="M50 22a38 38 0 1 1 0 76a38 38 0 1 1 0-76z"/></clipPath><path d="M50 22a38 38 0 1 1 0 76a38 38 0 1 1 0-76z" fill="#BFD8EE"/><g data-part="belly"><ellipse clip-path="url(#mb-loesung-idle)" cx="50" cy="103" rx="36" ry="26" fill="#E4F0FA"/></g><circle cx="29" cy="66" r="4.6" fill="#2F6A9E" opacity=".22"/><circle cx="71" cy="66" r="4.6" fill="#2F6A9E" opacity=".22"/><ellipse cx="33" cy="39" rx="8" ry="4.8" fill="#fff" opacity=".6" transform="rotate(-38 33 39)"/><path class="o" d="M50 22a38 38 0 1 1 0 76a38 38 0 1 1 0-76z" fill="none" stroke="#2B2A33" stroke-width="3.5" stroke-linejoin="round"/></g><g data-part="eyes"><g class="m-eye"><circle cx="38" cy="56" r="5.6" fill="#2B2A33"/><circle cx="39.96" cy="53.872" r="1.9" fill="#fff"/></g><g class="m-eye"><circle cx="62" cy="56" r="5.6" fill="#2B2A33"/><circle cx="63.96" cy="53.872" r="1.9" fill="#fff"/></g></g><g data-part="mouth"><path d="M44 71q6 5.5 12 0" fill="none" stroke="#2B2A33" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></g><g data-part="accessory"><g transform="translate(93 83) rotate(24)" fill="#fff" stroke="#2B2A33" stroke-width="2.2" stroke-linejoin="round"><rect x="-2.4" y="-18" width="4.8" height="22" rx="2.4"/><path d="M-2.4-17l-3.6-4a6.5 6.5 0 0 1 2.8-8l1.5 5h3.4l1.5-5a6.5 6.5 0 0 1 2.8 8l-3.6 4z"/></g></g><g data-part="arms"><path class="o" d="M14 70q-7 4 -7 13" fill="none" stroke="#2B2A33" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><circle class="o" cx="7" cy="83" r="4.4" fill="#BFD8EE" stroke="#2B2A33" stroke-width="2.4"/><path class="o" d="M86 70q7 4 7 13" fill="none" stroke="#2B2A33" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><circle class="o" cx="93" cy="83" r="4.4" fill="#BFD8EE" stroke="#2B2A33" stroke-width="2.4"/></g></g></svg><button class="mascot-btn" type="button" aria-label="Lösung springt"></button></span><button class="hf__btn hf__btn--3" type="button" aria-expanded="false" aria-controls="hf-line-3">Zahlung</button><span class="mascot-spot mascot-spot--live" data-node="4" data-scene="hero"><svg viewBox="-8 -8 120 124" data-mascot="2" data-emo="joy" class="mascot" data-base="joy" aria-hidden="true" focusable="false"><ellipse data-part="shadow" class="m-shadow" cx="50" cy="109" rx="23" ry="3.6" fill="#2B2A33" opacity=".13"/><g data-part="rig"><g data-part="legs"><path class="o" d="M41 92v12M59 92v12" fill="none" stroke="#2B2A33" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><path class="o" d="M36 105h9M55 105h9" fill="none" stroke="#2B2A33" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g><g data-part="body"><clipPath id="mb-live-joy"><path d="M50 17C55 17 82 40 82 66A32 32 0 0 1 18 66C18 40 45 17 50 17z"/></clipPath><path d="M50 17C55 17 82 40 82 66A32 32 0 0 1 18 66C18 40 45 17 50 17z" fill="#CFE3C2"/><g data-part="belly"><ellipse clip-path="url(#mb-live-joy)" cx="50" cy="109" rx="36" ry="26" fill="#EAF4E3"/></g><circle cx="30" cy="72" r="4.6" fill="#3F6B31" opacity=".22"/><circle cx="70" cy="72" r="4.6" fill="#3F6B31" opacity=".22"/><ellipse cx="36" cy="44" rx="8" ry="4.8" fill="#fff" opacity=".6" transform="rotate(-48 36 44)"/><path class="o" d="M50 17C55 17 82 40 82 66A32 32 0 0 1 18 66C18 40 45 17 50 17z" fill="none" stroke="#2B2A33" stroke-width="3.5" stroke-linejoin="round"/></g><g data-part="eyes"><path d="M33 63.5q6-8 12 0M55 63.5q6-8 12 0" fill="none" stroke="#2B2A33" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></g><g data-part="mouth"><path d="M42 76q8 13 16 0z" fill="#2B2A33" stroke="#2B2A33" stroke-width="1.6" stroke-linejoin="round"/><path d="M46 82q4 3 8 0q-4-2-8 0z" fill="#E8838F"/></g><g data-part="accessory"><path class="o" d="M50 18V6" fill="none" stroke="#2B2A33" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path class="o" d="M50-5.6l1.8 4.2 4.5.4-3.4 2.9 1 4.4L50 4l-3.9 2.3 1-4.4-3.4-2.9 4.5-.4z" fill="#F7DCC8" stroke="#2B2A33" stroke-width="2" stroke-linejoin="round"/><path class="o" d="M39 2l-5-3M61 2l5-3" fill="none" stroke="#2B2A33" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></g><g data-part="arms"><path class="o" d="M19 74q-9 -6 -6 -20" fill="none" stroke="#2B2A33" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><circle class="o" cx="13" cy="54" r="4.4" fill="#CFE3C2" stroke="#2B2A33" stroke-width="2.4"/><path class="o" d="M81 74q9 -6 6 -20" fill="none" stroke="#2B2A33" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><circle class="o" cx="87" cy="54" r="4.4" fill="#CFE3C2" stroke="#2B2A33" stroke-width="2.4"/></g></g></svg><button class="mascot-btn" type="button" aria-label="Live springt"></button></span><button class="hf__btn hf__btn--4" type="button" aria-expanded="false" aria-controls="hf-line-4">Kurs offen</button>
 </div>
 <ul class="hf__lines" role="list"><li id="hf-line-1">Die Anmeldung kommt herein und wird geprüft.</li><li id="hf-line-2">Kontakt und Tag werden gesetzt, die Willkommens-Mail wird verschickt.</li><li id="hf-line-3">Zahlung oder Rate wird erkannt, die Rechnung geht raus.</li><li id="hf-line-4">Der Zugang wird freigeschaltet, ohne Handarbeit.</li></ul>
-<button class="replay btn btn--secondary btn--sm" type="button" hidden><svg class="replay__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3"/><path d="M4 4.5v4h4"/></svg><span>Nochmal ansehen</span></button>
+<button class="loopctl btn btn--secondary btn--sm" type="button" hidden data-pause-label="Pause" data-play-label="Abspielen" data-step-label="Nächster Schritt"><svg class="loopctl__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path class="loopctl__pause" d="M9 6v12M15 6v12"/><path class="loopctl__play" d="M8 5.5v13l10.5-6.5z"/><path class="loopctl__step" d="M5 12h12M13 7l5 5-5 5"/></svg><span class="loopctl__text">Pause</span><span class="sr-only">: Ablauf oben</span></button>
 </figure>
 </div>
 </div>
 </section>
 <section class="tools bg-peach edge" aria-labelledby="tools-title">
-<div class="wrap tools__in">
+<div class="wrap tools__in demo" data-demo="tools">
 <p class="tools__label" id="tools-title">Ich arbeite mit</p>
+<div class="marquee">
+<div class="marquee__track">
 <ul class="tools__list" role="list"><li>ActiveCampaign</li><li>Zapier</li><li>Make</li><li>Leadpages</li><li>Stripe</li><li>Quaderno</li><li>Somba</li><li>WordPress</li><li>Wix</li><li>Google Apps Script</li></ul>
+<ul class="tools__list tools__copy" role="list" aria-hidden="true"><li>ActiveCampaign</li><li>Zapier</li><li>Make</li><li>Leadpages</li><li>Stripe</li><li>Quaderno</li><li>Somba</li><li>WordPress</li><li>Wix</li><li>Google Apps Script</li></ul>
+</div>
+</div>
+<button class="loopctl btn btn--secondary btn--sm" type="button" hidden data-pause-label="Pause" data-play-label="Abspielen" data-step-label="Nächster Schritt"><svg class="loopctl__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path class="loopctl__pause" d="M9 6v12M15 6v12"/><path class="loopctl__play" d="M8 5.5v13l10.5-6.5z"/><path class="loopctl__step" d="M5 12h12M13 7l5 5-5 5"/></svg><span class="loopctl__text">Pause</span><span class="sr-only">: Werkzeug-Leiste</span></button>
 </div>
 </section>
 <section class="section problems bg-blue edge" id="problems" aria-labelledby="problems-title">
@@ -1191,7 +1423,16 @@ html:not(.js) .calc__fields { display: none; }
 <h2 id="problems-title" data-enter="lines">Wo es bei Launches <em class="accent">meistens hakt</em></h2>
 <p class="lead">Typische Stellen, an denen Launches haken.</p>
 </div>
-<ul class="pcs" role="list" data-demo="problems">
+<figure class="ba">
+<div class="ba__stage">
+<div class="ba__side ba__side--before"><span class="label label--pink ba__tag--before">Chaos</span><svg class="ba__svg" viewBox="0 0 440 180" aria-hidden="true" focusable="false"><g transform="scale(1 0.6)"><path class="ba__link" vector-effect="non-scaling-stroke" d="M128 51C260 60 250 250 318 243"/><path class="ba__link ba__link--broken" vector-effect="non-scaling-stroke" d="M346 60C320 140 120 170 78 236"/><path class="ba__link" vector-effect="non-scaling-stroke" d="M220 132C230 90 300 80 330 60"/><path class="ba__link ba__link--broken" vector-effect="non-scaling-stroke" d="M76 68C90 110 120 120 160 132"/><path class="ba__link ba__link--broken" vector-effect="non-scaling-stroke" d="M318 250C250 280 160 270 116 254"/><path class="ba__link" vector-effect="non-scaling-stroke" d="M290 149C380 150 400 200 380 226"/></g><g class="ba__node ba__node--grey"><rect x="24" y="20" width="104" height="32" rx="12"/><text x="76" y="42" text-anchor="middle">Formular</text></g><g class="ba__node ba__node--grey"><rect x="150" y="79" width="140" height="32" rx="12"/><text x="220" y="101" text-anchor="middle">ActiveCampaign</text></g><g class="ba__node ba__node--grey"><rect x="300" y="16" width="92" height="32" rx="12"/><text x="346" y="38" text-anchor="middle">Zapier</text></g><g class="ba__node ba__node--grey"><rect x="318" y="136" width="86" height="32" rx="12"/><text x="361" y="158" text-anchor="middle">Stripe</text></g><g class="ba__node ba__node--grey"><rect x="40" y="142" width="76" height="32" rx="12"/><text x="78" y="164" text-anchor="middle">Kurs</text></g><g class="ba__x"><circle cx="214" cy="86" r="9"/><path d="M210 82l8 8M218 82l-8 8"/></g><g class="ba__x"><circle cx="104" cy="62" r="9"/><path d="M100 58l8 8M108 58l-8 8"/></g><g class="ba__x"><circle cx="214" cy="162" r="9"/><path d="M210 158l8 8M218 158l-8 8"/></g></svg></div>
+<div class="ba__mask"><div class="ba__inner"><div class="ba__side ba__side--after"><span class="label label--pist ba__tag--after">Geordnet</span><svg class="ba__svg" viewBox="0 0 440 180" aria-hidden="true" focusable="false"><g transform="scale(1 0.6)"><path class="ba__link ba__link--ok" vector-effect="non-scaling-stroke" d="M120 87H146"/><path class="ba__link ba__link--ok" vector-effect="non-scaling-stroke" d="M286 87H312"/><path class="ba__link ba__link--ok" vector-effect="non-scaling-stroke" d="M358 104V196"/><path class="ba__link ba__link--ok" vector-effect="non-scaling-stroke" d="M312 213H222"/></g><g class="ba__node ba__node--1"><rect x="16" y="42" width="104" height="32" rx="12"/><text x="68" y="64" text-anchor="middle">Formular</text></g><g class="ba__node ba__node--2"><rect x="146" y="42" width="140" height="32" rx="12"/><text x="216" y="64" text-anchor="middle">ActiveCampaign</text></g><g class="ba__node ba__node--3"><rect x="312" y="42" width="92" height="32" rx="12"/><text x="358" y="64" text-anchor="middle">Zapier</text></g><g class="ba__node ba__node--4"><rect x="312" y="118" width="86" height="32" rx="12"/><text x="355" y="140" text-anchor="middle">Stripe</text></g><g class="ba__node ba__node--5"><rect x="146" y="118" width="76" height="32" rx="12"/><text x="184" y="140" text-anchor="middle">Kurs</text></g><g class="ba__ok"><circle cx="133" cy="52" r="8"/><path d="M129 52l2.6 2.6 5-5.2"/></g><g class="ba__ok"><circle cx="299" cy="52" r="8"/><path d="M295 52l2.6 2.6 5-5.2"/></g><g class="ba__ok"><circle cx="358" cy="90" r="8"/><path d="M354 90l2.6 2.6 5-5.2"/></g><g class="ba__ok"><circle cx="267" cy="128" r="8"/><path d="M263 128l2.6 2.6 5-5.2"/></g></svg></div></div></div>
+<span class="ba__track" aria-hidden="true"><span class="ba__divider"></span></span>
+</div>
+<label class="ba__control"><span>Vorher / Nachher ziehen</span><input class="ba__range" type="range" min="0" max="100" step="1" value="50" aria-valuetext="Vorher 50 %" data-valuetext="Vorher {v} %"></label>
+<figcaption class="sr-only">Vorher: Formular, ActiveCampaign, Zapier, Stripe und Kurs kreuz und quer verbunden, drei Verbindungen gerissen. Nachher: dieselben Werkzeuge in einem klaren Ablauf.</figcaption>
+</figure>
+<ul class="pcs" role="list" data-demo="problems" data-enter="stagger">
 <li class="pc card">
 <div class="pc__problem"><span class="label label--pink">Problem</span>
 <h3 class="pc__title">Anmeldungen verschwinden zwischen Formular und CRM.</h3></div>
@@ -1207,7 +1448,7 @@ html:not(.js) .calc__fields { display: none; }
 <span class="mscene mscene--problems mscene--pair" data-scene="problems" aria-hidden="true"><svg viewBox="-8 -8 120 124" data-mascot="0" data-emo="idle" class="mascot mascot--logik mscene__lead" data-base="idle" focusable="false"><ellipse data-part="shadow" class="m-shadow" cx="50" cy="109" rx="23" ry="3.6" fill="#2B2A33" opacity=".13"/><g data-part="rig"><g data-part="legs"><path class="o" d="M41 92v12M59 92v12" fill="none" stroke="#2B2A33" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><path class="o" d="M36 105h9M55 105h9" fill="none" stroke="#2B2A33" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g><g data-part="body"><clipPath id="mb-logik-idle-problems-signup"><path d="M25.5 30.5A16 16 0 0 1 39.7 22H60.3A16 16 0 0 1 74.5 30.5L86.1 52.5A16 16 0 0 1 86.1 67.5L74.5 89.5A16 16 0 0 1 60.3 98H39.7A16 16 0 0 1 25.5 89.5L13.9 67.5A16 16 0 0 1 13.9 52.5z"/></clipPath><path d="M25.5 30.5A16 16 0 0 1 39.7 22H60.3A16 16 0 0 1 74.5 30.5L86.1 52.5A16 16 0 0 1 86.1 67.5L74.5 89.5A16 16 0 0 1 60.3 98H39.7A16 16 0 0 1 25.5 89.5L13.9 67.5A16 16 0 0 1 13.9 52.5z" fill="#F4C9D3"/><g data-part="belly"><ellipse clip-path="url(#mb-logik-idle-problems-signup)" cx="50" cy="103" rx="36" ry="26" fill="#FBE6EC"/></g><circle cx="28.5" cy="65" r="4.6" fill="#9C3F58" opacity=".22"/><circle cx="71.5" cy="65" r="4.6" fill="#9C3F58" opacity=".22"/><ellipse cx="33" cy="34" rx="8" ry="4.8" fill="#fff" opacity=".6" transform="rotate(-32 33 34)"/><path class="o" d="M25.5 30.5A16 16 0 0 1 39.7 22H60.3A16 16 0 0 1 74.5 30.5L86.1 52.5A16 16 0 0 1 86.1 67.5L74.5 89.5A16 16 0 0 1 60.3 98H39.7A16 16 0 0 1 25.5 89.5L13.9 67.5A16 16 0 0 1 13.9 52.5z" fill="none" stroke="#2B2A33" stroke-width="3.5" stroke-linejoin="round"/></g><g data-part="eyes"><g class="m-eye"><circle cx="37.5" cy="55" r="5.6" fill="#2B2A33"/><circle cx="39.46" cy="52.872" r="1.9" fill="#fff"/></g><g class="m-eye"><circle cx="62.5" cy="55" r="5.6" fill="#2B2A33"/><circle cx="64.46" cy="52.872" r="1.9" fill="#fff"/></g></g><g data-part="mouth"><path d="M44 71q6 5.5 12 0" fill="none" stroke="#2B2A33" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></g><g data-part="accessory"><g class="m-glasses" fill="none" stroke="#2B2A33" stroke-width="2.6"><circle cx="37.5" cy="55" r="9.5"/><circle cx="62.5" cy="55" r="9.5"/><path d="M47 55h6" stroke-linecap="round"/></g></g><g data-part="arms"><path class="o" d="M17 72q-7 4 -7 13" fill="none" stroke="#2B2A33" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><circle class="o" cx="10" cy="85" r="4.4" fill="#F4C9D3" stroke="#2B2A33" stroke-width="2.4"/><path class="o" d="M83 72q7 4 7 13" fill="none" stroke="#2B2A33" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><circle class="o" cx="90" cy="85" r="4.4" fill="#F4C9D3" stroke="#2B2A33" stroke-width="2.4"/></g></g></svg><svg viewBox="-8 -8 120 124" data-mascot="2" data-emo="joy" class="mascot mascot--live mscene__live" data-base="joy" focusable="false"><ellipse data-part="shadow" class="m-shadow" cx="50" cy="109" rx="23" ry="3.6" fill="#2B2A33" opacity=".13"/><g data-part="rig"><g data-part="legs"><path class="o" d="M41 92v12M59 92v12" fill="none" stroke="#2B2A33" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><path class="o" d="M36 105h9M55 105h9" fill="none" stroke="#2B2A33" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g><g data-part="body"><clipPath id="mb-live-joy-problems-signup"><path d="M50 17C55 17 82 40 82 66A32 32 0 0 1 18 66C18 40 45 17 50 17z"/></clipPath><path d="M50 17C55 17 82 40 82 66A32 32 0 0 1 18 66C18 40 45 17 50 17z" fill="#CFE3C2"/><g data-part="belly"><ellipse clip-path="url(#mb-live-joy-problems-signup)" cx="50" cy="109" rx="36" ry="26" fill="#EAF4E3"/></g><circle cx="30" cy="72" r="4.6" fill="#3F6B31" opacity=".22"/><circle cx="70" cy="72" r="4.6" fill="#3F6B31" opacity=".22"/><ellipse cx="36" cy="44" rx="8" ry="4.8" fill="#fff" opacity=".6" transform="rotate(-48 36 44)"/><path class="o" d="M50 17C55 17 82 40 82 66A32 32 0 0 1 18 66C18 40 45 17 50 17z" fill="none" stroke="#2B2A33" stroke-width="3.5" stroke-linejoin="round"/></g><g data-part="eyes"><path d="M33 63.5q6-8 12 0M55 63.5q6-8 12 0" fill="none" stroke="#2B2A33" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></g><g data-part="mouth"><path d="M42 76q8 13 16 0z" fill="#2B2A33" stroke="#2B2A33" stroke-width="1.6" stroke-linejoin="round"/><path d="M46 82q4 3 8 0q-4-2-8 0z" fill="#E8838F"/></g><g data-part="accessory"><path class="o" d="M50 18V6" fill="none" stroke="#2B2A33" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path class="o" d="M50-5.6l1.8 4.2 4.5.4-3.4 2.9 1 4.4L50 4l-3.9 2.3 1-4.4-3.4-2.9 4.5-.4z" fill="#F7DCC8" stroke="#2B2A33" stroke-width="2" stroke-linejoin="round"/><path class="o" d="M39 2l-5-3M61 2l5-3" fill="none" stroke="#2B2A33" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></g><g data-part="arms"><path class="o" d="M19 74q-9 -6 -6 -20" fill="none" stroke="#2B2A33" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><circle class="o" cx="13" cy="54" r="4.4" fill="#CFE3C2" stroke="#2B2A33" stroke-width="2.4"/><path class="o" d="M81 74q9 -6 6 -20" fill="none" stroke="#2B2A33" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><circle class="o" cx="87" cy="54" r="4.4" fill="#CFE3C2" stroke="#2B2A33" stroke-width="2.4"/></g></g></svg></span>
 </div>
 <figcaption class="sr-only">Animation: Anmeldungen fliegen vom Formular ins CRM, zwei gehen verloren. Mit «Prüfen + Wiederholen» kommen alle 47 an.</figcaption>
-<button class="replay btn btn--secondary btn--sm" type="button" hidden><svg class="replay__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3"/><path d="M4 4.5v4h4"/></svg><span>Nochmal ansehen</span></button>
+<button class="loopctl btn btn--secondary btn--sm loopctl--card" type="button" hidden data-pause-label="Pause" data-play-label="Abspielen" data-step-label="Nächster Schritt"><svg class="loopctl__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path class="loopctl__pause" d="M9 6v12M15 6v12"/><path class="loopctl__play" d="M8 5.5v13l10.5-6.5z"/><path class="loopctl__step" d="M5 12h12M13 7l5 5-5 5"/></svg><span class="loopctl__text">Pause</span><span class="sr-only">: Beispiel</span></button>
 </figure>
 <div class="pc__fix"><span class="label label--pist">Lösung</span>
 <p>Ich baue Abläufe, die jede Anmeldung prüfen und bei Fehlern automatisch neu senden, auch wenn viele gleichzeitig kommen.</p>
@@ -1227,7 +1468,7 @@ html:not(.js) .calc__fields { display: none; }
 <span class="mscene mscene--problems mscene--pair" data-scene="problems" aria-hidden="true"><svg viewBox="-8 -8 120 124" data-mascot="0" data-emo="idle" class="mascot mascot--logik mscene__lead" data-base="idle" focusable="false"><ellipse data-part="shadow" class="m-shadow" cx="50" cy="109" rx="23" ry="3.6" fill="#2B2A33" opacity=".13"/><g data-part="rig"><g data-part="legs"><path class="o" d="M41 92v12M59 92v12" fill="none" stroke="#2B2A33" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><path class="o" d="M36 105h9M55 105h9" fill="none" stroke="#2B2A33" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g><g data-part="body"><clipPath id="mb-logik-idle-problems-spam"><path d="M25.5 30.5A16 16 0 0 1 39.7 22H60.3A16 16 0 0 1 74.5 30.5L86.1 52.5A16 16 0 0 1 86.1 67.5L74.5 89.5A16 16 0 0 1 60.3 98H39.7A16 16 0 0 1 25.5 89.5L13.9 67.5A16 16 0 0 1 13.9 52.5z"/></clipPath><path d="M25.5 30.5A16 16 0 0 1 39.7 22H60.3A16 16 0 0 1 74.5 30.5L86.1 52.5A16 16 0 0 1 86.1 67.5L74.5 89.5A16 16 0 0 1 60.3 98H39.7A16 16 0 0 1 25.5 89.5L13.9 67.5A16 16 0 0 1 13.9 52.5z" fill="#F4C9D3"/><g data-part="belly"><ellipse clip-path="url(#mb-logik-idle-problems-spam)" cx="50" cy="103" rx="36" ry="26" fill="#FBE6EC"/></g><circle cx="28.5" cy="65" r="4.6" fill="#9C3F58" opacity=".22"/><circle cx="71.5" cy="65" r="4.6" fill="#9C3F58" opacity=".22"/><ellipse cx="33" cy="34" rx="8" ry="4.8" fill="#fff" opacity=".6" transform="rotate(-32 33 34)"/><path class="o" d="M25.5 30.5A16 16 0 0 1 39.7 22H60.3A16 16 0 0 1 74.5 30.5L86.1 52.5A16 16 0 0 1 86.1 67.5L74.5 89.5A16 16 0 0 1 60.3 98H39.7A16 16 0 0 1 25.5 89.5L13.9 67.5A16 16 0 0 1 13.9 52.5z" fill="none" stroke="#2B2A33" stroke-width="3.5" stroke-linejoin="round"/></g><g data-part="eyes"><g class="m-eye"><circle cx="37.5" cy="55" r="5.6" fill="#2B2A33"/><circle cx="39.46" cy="52.872" r="1.9" fill="#fff"/></g><g class="m-eye"><circle cx="62.5" cy="55" r="5.6" fill="#2B2A33"/><circle cx="64.46" cy="52.872" r="1.9" fill="#fff"/></g></g><g data-part="mouth"><path d="M44 71q6 5.5 12 0" fill="none" stroke="#2B2A33" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></g><g data-part="accessory"><g class="m-glasses" fill="none" stroke="#2B2A33" stroke-width="2.6"><circle cx="37.5" cy="55" r="9.5"/><circle cx="62.5" cy="55" r="9.5"/><path d="M47 55h6" stroke-linecap="round"/></g></g><g data-part="arms"><path class="o" d="M17 72q-7 4 -7 13" fill="none" stroke="#2B2A33" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><circle class="o" cx="10" cy="85" r="4.4" fill="#F4C9D3" stroke="#2B2A33" stroke-width="2.4"/><path class="o" d="M83 72q7 4 7 13" fill="none" stroke="#2B2A33" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><circle class="o" cx="90" cy="85" r="4.4" fill="#F4C9D3" stroke="#2B2A33" stroke-width="2.4"/></g></g></svg><svg viewBox="-8 -8 120 124" data-mascot="2" data-emo="joy" class="mascot mascot--live mscene__live" data-base="joy" focusable="false"><ellipse data-part="shadow" class="m-shadow" cx="50" cy="109" rx="23" ry="3.6" fill="#2B2A33" opacity=".13"/><g data-part="rig"><g data-part="legs"><path class="o" d="M41 92v12M59 92v12" fill="none" stroke="#2B2A33" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><path class="o" d="M36 105h9M55 105h9" fill="none" stroke="#2B2A33" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g><g data-part="body"><clipPath id="mb-live-joy-problems-spam"><path d="M50 17C55 17 82 40 82 66A32 32 0 0 1 18 66C18 40 45 17 50 17z"/></clipPath><path d="M50 17C55 17 82 40 82 66A32 32 0 0 1 18 66C18 40 45 17 50 17z" fill="#CFE3C2"/><g data-part="belly"><ellipse clip-path="url(#mb-live-joy-problems-spam)" cx="50" cy="109" rx="36" ry="26" fill="#EAF4E3"/></g><circle cx="30" cy="72" r="4.6" fill="#3F6B31" opacity=".22"/><circle cx="70" cy="72" r="4.6" fill="#3F6B31" opacity=".22"/><ellipse cx="36" cy="44" rx="8" ry="4.8" fill="#fff" opacity=".6" transform="rotate(-48 36 44)"/><path class="o" d="M50 17C55 17 82 40 82 66A32 32 0 0 1 18 66C18 40 45 17 50 17z" fill="none" stroke="#2B2A33" stroke-width="3.5" stroke-linejoin="round"/></g><g data-part="eyes"><path d="M33 63.5q6-8 12 0M55 63.5q6-8 12 0" fill="none" stroke="#2B2A33" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></g><g data-part="mouth"><path d="M42 76q8 13 16 0z" fill="#2B2A33" stroke="#2B2A33" stroke-width="1.6" stroke-linejoin="round"/><path d="M46 82q4 3 8 0q-4-2-8 0z" fill="#E8838F"/></g><g data-part="accessory"><path class="o" d="M50 18V6" fill="none" stroke="#2B2A33" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path class="o" d="M50-5.6l1.8 4.2 4.5.4-3.4 2.9 1 4.4L50 4l-3.9 2.3 1-4.4-3.4-2.9 4.5-.4z" fill="#F7DCC8" stroke="#2B2A33" stroke-width="2" stroke-linejoin="round"/><path class="o" d="M39 2l-5-3M61 2l5-3" fill="none" stroke="#2B2A33" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></g><g data-part="arms"><path class="o" d="M19 74q-9 -6 -6 -20" fill="none" stroke="#2B2A33" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><circle class="o" cx="13" cy="54" r="4.4" fill="#CFE3C2" stroke="#2B2A33" stroke-width="2.4"/><path class="o" d="M81 74q9 -6 6 -20" fill="none" stroke="#2B2A33" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><circle class="o" cx="87" cy="54" r="4.4" fill="#CFE3C2" stroke="#2B2A33" stroke-width="2.4"/></g></g></svg></span>
 </div>
 <figcaption class="sr-only">Animation: Eine Launch-Mail landet im Spam. Nach SPF, DKIM und DMARC kommt sie im Posteingang an.</figcaption>
-<button class="replay btn btn--secondary btn--sm" type="button" hidden><svg class="replay__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3"/><path d="M4 4.5v4h4"/></svg><span>Nochmal ansehen</span></button>
+<button class="loopctl btn btn--secondary btn--sm loopctl--card" type="button" hidden data-pause-label="Pause" data-play-label="Abspielen" data-step-label="Nächster Schritt"><svg class="loopctl__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path class="loopctl__pause" d="M9 6v12M15 6v12"/><path class="loopctl__play" d="M8 5.5v13l10.5-6.5z"/><path class="loopctl__step" d="M5 12h12M13 7l5 5-5 5"/></svg><span class="loopctl__text">Pause</span><span class="sr-only">: Beispiel</span></button>
 </figure>
 <div class="pc__fix"><span class="label label--pist">Lösung</span>
 <p>SPF, DKIM und DMARC richtig einrichten und die Zustellung testen.</p>
@@ -1247,13 +1488,14 @@ html:not(.js) .calc__fields { display: none; }
 <span class="mscene mscene--problems mscene--pair" data-scene="problems" aria-hidden="true"><svg viewBox="-8 -8 120 124" data-mascot="1" data-emo="joy" class="mascot mascot--loesung mscene__lead" data-base="joy" focusable="false"><ellipse data-part="shadow" class="m-shadow" cx="50" cy="109" rx="23" ry="3.6" fill="#2B2A33" opacity=".13"/><g data-part="rig"><g data-part="legs"><path class="o" d="M41 92v12M59 92v12" fill="none" stroke="#2B2A33" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><path class="o" d="M36 105h9M55 105h9" fill="none" stroke="#2B2A33" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g><g data-part="body"><clipPath id="mb-loesung-joy-problems-rate"><path d="M50 22a38 38 0 1 1 0 76a38 38 0 1 1 0-76z"/></clipPath><path d="M50 22a38 38 0 1 1 0 76a38 38 0 1 1 0-76z" fill="#BFD8EE"/><g data-part="belly"><ellipse clip-path="url(#mb-loesung-joy-problems-rate)" cx="50" cy="103" rx="36" ry="26" fill="#E4F0FA"/></g><circle cx="29" cy="66" r="4.6" fill="#2F6A9E" opacity=".22"/><circle cx="71" cy="66" r="4.6" fill="#2F6A9E" opacity=".22"/><ellipse cx="33" cy="39" rx="8" ry="4.8" fill="#fff" opacity=".6" transform="rotate(-38 33 39)"/><path class="o" d="M50 22a38 38 0 1 1 0 76a38 38 0 1 1 0-76z" fill="none" stroke="#2B2A33" stroke-width="3.5" stroke-linejoin="round"/></g><g data-part="eyes"><path d="M32 57.5q6-8 12 0M56 57.5q6-8 12 0" fill="none" stroke="#2B2A33" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></g><g data-part="mouth"><path d="M42 70q8 13 16 0z" fill="#2B2A33" stroke="#2B2A33" stroke-width="1.6" stroke-linejoin="round"/><path d="M46 76q4 3 8 0q-4-2-8 0z" fill="#E8838F"/></g><g data-part="accessory"><g transform="translate(92 50) rotate(10)" fill="#fff" stroke="#2B2A33" stroke-width="2.2" stroke-linejoin="round"><rect x="-2.4" y="-18" width="4.8" height="22" rx="2.4"/><path d="M-2.4-17l-3.6-4a6.5 6.5 0 0 1 2.8-8l1.5 5h3.4l1.5-5a6.5 6.5 0 0 1 2.8 8l-3.6 4z"/></g></g><g data-part="arms"><path class="o" d="M14 70q-9 -6 -6 -20" fill="none" stroke="#2B2A33" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><circle class="o" cx="8" cy="50" r="4.4" fill="#BFD8EE" stroke="#2B2A33" stroke-width="2.4"/><path class="o" d="M86 70q9 -6 6 -20" fill="none" stroke="#2B2A33" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><circle class="o" cx="92" cy="50" r="4.4" fill="#BFD8EE" stroke="#2B2A33" stroke-width="2.4"/></g></g></svg><svg viewBox="-8 -8 120 124" data-mascot="2" data-emo="joy" class="mascot mascot--live mscene__live" data-base="joy" focusable="false"><ellipse data-part="shadow" class="m-shadow" cx="50" cy="109" rx="23" ry="3.6" fill="#2B2A33" opacity=".13"/><g data-part="rig"><g data-part="legs"><path class="o" d="M41 92v12M59 92v12" fill="none" stroke="#2B2A33" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><path class="o" d="M36 105h9M55 105h9" fill="none" stroke="#2B2A33" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g><g data-part="body"><clipPath id="mb-live-joy-problems-rate"><path d="M50 17C55 17 82 40 82 66A32 32 0 0 1 18 66C18 40 45 17 50 17z"/></clipPath><path d="M50 17C55 17 82 40 82 66A32 32 0 0 1 18 66C18 40 45 17 50 17z" fill="#CFE3C2"/><g data-part="belly"><ellipse clip-path="url(#mb-live-joy-problems-rate)" cx="50" cy="109" rx="36" ry="26" fill="#EAF4E3"/></g><circle cx="30" cy="72" r="4.6" fill="#3F6B31" opacity=".22"/><circle cx="70" cy="72" r="4.6" fill="#3F6B31" opacity=".22"/><ellipse cx="36" cy="44" rx="8" ry="4.8" fill="#fff" opacity=".6" transform="rotate(-48 36 44)"/><path class="o" d="M50 17C55 17 82 40 82 66A32 32 0 0 1 18 66C18 40 45 17 50 17z" fill="none" stroke="#2B2A33" stroke-width="3.5" stroke-linejoin="round"/></g><g data-part="eyes"><path d="M33 63.5q6-8 12 0M55 63.5q6-8 12 0" fill="none" stroke="#2B2A33" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></g><g data-part="mouth"><path d="M42 76q8 13 16 0z" fill="#2B2A33" stroke="#2B2A33" stroke-width="1.6" stroke-linejoin="round"/><path d="M46 82q4 3 8 0q-4-2-8 0z" fill="#E8838F"/></g><g data-part="accessory"><path class="o" d="M50 18V6" fill="none" stroke="#2B2A33" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path class="o" d="M50-5.6l1.8 4.2 4.5.4-3.4 2.9 1 4.4L50 4l-3.9 2.3 1-4.4-3.4-2.9 4.5-.4z" fill="#F7DCC8" stroke="#2B2A33" stroke-width="2" stroke-linejoin="round"/><path class="o" d="M39 2l-5-3M61 2l5-3" fill="none" stroke="#2B2A33" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></g><g data-part="arms"><path class="o" d="M19 74q-9 -6 -6 -20" fill="none" stroke="#2B2A33" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><circle class="o" cx="13" cy="54" r="4.4" fill="#CFE3C2" stroke="#2B2A33" stroke-width="2.4"/><path class="o" d="M81 74q9 -6 6 -20" fill="none" stroke="#2B2A33" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><circle class="o" cx="87" cy="54" r="4.4" fill="#CFE3C2" stroke="#2B2A33" stroke-width="2.4"/></g></g></svg></span>
 </div>
 <figcaption class="sr-only">Animation: Eine Rate schlägt fehl, der Kurs bleibt offen. Danach: Erinnerung 1, Erinnerung 2, Zugang pausiert, Zahlung da, Zugang wieder offen.</figcaption>
-<button class="replay btn btn--secondary btn--sm" type="button" hidden><svg class="replay__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3"/><path d="M4 4.5v4h4"/></svg><span>Nochmal ansehen</span></button>
+<button class="loopctl btn btn--secondary btn--sm loopctl--card" type="button" hidden data-pause-label="Pause" data-play-label="Abspielen" data-step-label="Nächster Schritt"><svg class="loopctl__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path class="loopctl__pause" d="M9 6v12M15 6v12"/><path class="loopctl__play" d="M8 5.5v13l10.5-6.5z"/><path class="loopctl__step" d="M5 12h12M13 7l5 5-5 5"/></svg><span class="loopctl__text">Pause</span><span class="sr-only">: Beispiel</span></button>
 </figure>
 <div class="pc__fix"><span class="label label--pist">Lösung</span>
 <p>Automatische Erinnerungen, Sperre und Freischaltung, abgestimmt mit Quaderno, Somba oder Stripe.</p>
 <a class="pc__link" href="#pkg-launch">Passendes Paket: Launch-Setup</a></div>
 </li>
 </ul>
+<p class="pcs__ctl"><button class="loopctl btn btn--secondary btn--sm loopctl--row" type="button" hidden data-pause-label="Pause" data-play-label="Abspielen" data-step-label="Nächster Schritt"><svg class="loopctl__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path class="loopctl__pause" d="M9 6v12M15 6v12"/><path class="loopctl__play" d="M8 5.5v13l10.5-6.5z"/><path class="loopctl__step" d="M5 12h12M13 7l5 5-5 5"/></svg><span class="loopctl__text">Pause</span><span class="sr-only">: Beispiele zu den Problemen</span></button></p>
 </div>
 </section>
 <section class="section video bg-pist edge" id="video" aria-labelledby="video-title">
@@ -1281,6 +1523,35 @@ html:not(.js) .calc__fields { display: none; }
 <ol class="vid__lines" role="list"><li><p>Eine Anmeldung. Was jetzt passiert, entscheidet über Ihren Launch.</p><p class="vid__scene">Bild: Ein Anmeldeformular für den Herbst-Kurs, Anna trägt Name und E-Mail ein und klickt auf «Jetzt anmelden».</p></li><li><p>Beim Launch kommen hunderte gleichzeitig. Ein Teil geht verloren.</p><p class="vid__scene">Bild: Viele Punkte fliegen vom Formular zu ActiveCampaign, an einer Sperre bleiben einige hängen, Logik schaut besorgt.</p></li><li><p>Warteschlange mit Wiederholung: 300 von 300.</p><p class="vid__scene">Bild: Die Punkte stellen sich in eine Warteschlange, der Zähler steigt bis «300 von 300», Lösung hält den Schraubenschlüssel.</p></li><li><p>SPF, DKIM, DMARC: die Mail kommt an.</p><p class="vid__scene">Bild: SPF, DKIM und DMARC bekommen nacheinander einen Haken, die Mail wandert vom Spam in den Posteingang.</p></li><li><p>Rate fehlgeschlagen? Erinnerung, Sperre, Freischaltung. Automatisch.</p><p class="vid__scene">Bild: «Rate 2 fehlgeschlagen», dann Erinnerung, Sperre und Freischaltung, das Schloss am Kurs geht wieder auf.</p></li><li><p>Anna ist drin. Ohne Handarbeit.</p><p class="vid__scene">Bild: Die Tür zum Kurs leuchtet, «Kurs offen», daneben ein Handy, Live freut sich.</p></li><li><p>Gebaut, getestet, betreut. mrlololi.com</p><p class="vid__scene">Bild: Das Logo mrlololi mit «Logik, Lösung, Live.» und den drei Figuren.</p></li></ol>
 </details>
 </figure>
+<div class="runlog__wrap">
+<p class="runlog__open-row"><button class="btn btn--secondary runlog__open" type="button" aria-expanded="false" aria-controls="runlog">Ablauf selbst ausprobieren</button></p>
+<div class="runlog-slot" id="runlog" hidden></div>
+<template id="runlog-tpl"><div class="runlog demo" data-demo="runlog">
+<ol class="runlog__steps" role="list" aria-label="Ablauf in drei Schritten"><li><button class="chip runlog__step" type="button" data-step="0"><span class="runlog__n" aria-hidden="true">1</span><span class="runlog__label">Eine Anmeldung kommt herein</span><span class="runlog__short" aria-hidden="true">Anmeldung</span></button></li><li><button class="chip runlog__step" type="button" data-step="1"><span class="runlog__n" aria-hidden="true">2</span><span class="runlog__label">Die Automation läuft</span><span class="runlog__short" aria-hidden="true">Automation</span></button></li><li><button class="chip runlog__step" type="button" data-step="2" aria-current="step"><span class="runlog__n" aria-hidden="true">3</span><span class="runlog__label">Ihre Teilnehmerin ist drin</span><span class="runlog__short" aria-hidden="true">Drin</span></button></li></ol>
+<div class="screen" role="group" aria-label="Beispiel-Bildschirm: Anmeldung, Automation, Postfach und Kursbereich">
+<div class="screen__bar"><span class="screen__dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="screen__title">Ablauf: Neue Kursanmeldung</span><span class="label">Beispiel-Durchlauf</span></div>
+<div class="screen__panes">
+<div class="pane pane--form" data-step="0"><p class="pane__title">Formular</p><form class="story__form" method="dialog" novalidate>
+<p class="story__card-title">Anmeldung zum Herbst-Kurs</p>
+<div class="story__field"><label for="story-name">Name</label><input id="story-name" name="name" type="text" value="Anna K." autocomplete="off"></div>
+<div class="story__field"><label for="story-email">E-Mail</label><input id="story-email" name="email" type="email" value="anna@example.com" autocomplete="off" aria-describedby="story-email-error"><p class="story__error" id="story-email-error" hidden>Bitte geben Sie eine gültige E-Mail-Adresse ein.</p></div>
+<button class="btn btn--primary btn--sm" type="submit">Jetzt anmelden</button>
+<p class="story__note">Nur eine Vorschau: Es wird nichts gesendet oder gespeichert.</p>
+</form></div>
+<div class="pane pane--flow" data-step="1"><p class="pane__title">Automation</p><ol class="canvas" role="list"><li class="anode anode--1"><span class="anode__kind">Trigger</span><span class="anode__name">Formular</span></li><li class="anode anode--2"><span class="anode__kind">Tag</span><span class="anode__name">Herbst-Kurs</span></li><li class="anode anode--3"><span class="anode__kind">Mail</span><span class="anode__name">Bestätigung</span></li><li class="anode anode--4"><span class="anode__kind">Warten</span><span class="anode__name">bis bestätigt</span></li><li class="anode anode--5"><span class="anode__kind">Zahlung</span><span class="anode__name">Stripe</span></li><li class="anode anode--6"><span class="anode__kind">Rechnung</span><span class="anode__name">Quaderno</span></li><li class="anode anode--7"><span class="anode__kind">Zugang</span><span class="anode__name">Somba</span></li></ol></div>
+<div class="pane pane--phone" data-step="1"><p class="pane__title">Postfach</p><div class="phone"><p class="phone__bar">Posteingang</p><ul class="phone__mails" role="list"><li class="pmail pmail--1"><span class="pmail__from">E-Mail-Tool</span><span class="pmail__subject">Bitte bestätigen</span><span class="pmail__text">Ein Klick, dann sind Sie dabei.</span></li><li class="pmail pmail--2"><span class="pmail__from">E-Mail-Tool</span><span class="pmail__subject">Willkommen, <span class="js-first">Anna</span>!</span><span class="pmail__text">Ihr Zugang ist bereit.</span></li></ul></div></div>
+<div class="pane pane--course" data-step="2"><p class="pane__title">Kursbereich</p><div class="course">
+<p class="course__state"><svg class="course__lock" viewBox="0 0 24 28" aria-hidden="true" focusable="false"><path class="course__shackle" d="M7 13V8a5 5 0 0 1 10 0"/><rect x="3" y="12" width="18" height="14" rx="4"/></svg><span class="course__locked">Gesperrt</span><span class="course__open">Freigeschaltet</span></p>
+<p class="course__name">Herbst-Kurs</p>
+<p class="course__module">Modul 1: Willkommen</p>
+</div></div>
+</div>
+<figure class="run"><figcaption class="run__bar">Protokoll</figcaption><ol class="run__steps" role="list"><li class="run__step" data-seconds="0.2"><span class="run__node" aria-hidden="true"><svg viewBox="0 0 20 20" focusable="false"><circle class="run__idle" cx="10" cy="10" r="9"/><circle class="run__done" cx="10" cy="10" r="9"/><path class="run__check" d="M5.6 10.3l2.9 2.9 5.9-6.4"/></svg></span><span class="run__text">Anmeldung über das Formular</span><span class="run__time">0,2 s</span></li><li class="run__step" data-seconds="0.6"><span class="run__node" aria-hidden="true"><svg viewBox="0 0 20 20" focusable="false"><circle class="run__idle" cx="10" cy="10" r="9"/><circle class="run__done" cx="10" cy="10" r="9"/><path class="run__check" d="M5.6 10.3l2.9 2.9 5.9-6.4"/></svg></span><span class="run__text">E-Mail-Adresse bestätigt</span><span class="run__time">0,6 s</span></li><li class="run__step" data-seconds="0.9"><span class="run__node" aria-hidden="true"><svg viewBox="0 0 20 20" focusable="false"><circle class="run__idle" cx="10" cy="10" r="9"/><circle class="run__done" cx="10" cy="10" r="9"/><path class="run__check" d="M5.6 10.3l2.9 2.9 5.9-6.4"/></svg></span><span class="run__text">Kontakt in ActiveCampaign angelegt</span><span class="run__time">0,9 s</span></li><li class="run__step" data-seconds="1.4"><span class="run__node" aria-hidden="true"><svg viewBox="0 0 20 20" focusable="false"><circle class="run__idle" cx="10" cy="10" r="9"/><circle class="run__done" cx="10" cy="10" r="9"/><path class="run__check" d="M5.6 10.3l2.9 2.9 5.9-6.4"/></svg></span><span class="run__text">Zahlung erhalten, Rechnung erstellt</span><span class="run__time">1,4 s</span></li><li class="run__step" data-seconds="1.9"><span class="run__node" aria-hidden="true"><svg viewBox="0 0 20 20" focusable="false"><circle class="run__idle" cx="10" cy="10" r="9"/><circle class="run__done" cx="10" cy="10" r="9"/><path class="run__check" d="M5.6 10.3l2.9 2.9 5.9-6.4"/></svg></span><span class="run__text">Kurszugang freigeschaltet</span><span class="run__time">1,9 s</span></li><li class="run__step" data-seconds="2.3"><span class="run__node" aria-hidden="true"><svg viewBox="0 0 20 20" focusable="false"><circle class="run__idle" cx="10" cy="10" r="9"/><circle class="run__done" cx="10" cy="10" r="9"/><path class="run__check" d="M5.6 10.3l2.9 2.9 5.9-6.4"/></svg></span><span class="run__text">Willkommens-Mail angekommen</span><span class="run__time">2,3 s</span></li></ol><p class="run__summary">6 Schritte, 2,3 Sekunden, 0 Fehler (vereinfachtes Beispiel)</p></figure>
+</div>
+<div class="runlog__ctl"><button class="btn btn--secondary btn--sm runlog__replay" type="button">Nochmal abspielen</button><button class="loopctl btn btn--secondary btn--sm" type="button" hidden data-pause-label="Pause" data-play-label="Abspielen" data-step-label="Nächster Schritt"><svg class="loopctl__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path class="loopctl__pause" d="M9 6v12M15 6v12"/><path class="loopctl__play" d="M8 5.5v13l10.5-6.5z"/><path class="loopctl__step" d="M5 12h12M13 7l5 5-5 5"/></svg><span class="loopctl__text">Pause</span><span class="sr-only">: Ablauf-Demo</span></button></div>
+<p class="sr-only runlog__status" role="status" aria-live="polite"></p>
+</div></template>
+</div>
 <p class="vid__cta"><span>Fragen zu Ihrem Ablauf? 20 Minuten, kostenlos.</span> <a class="btn btn--secondary btn--sm" href="#contact">Kostenloses Erstgespräch</a></p>
 </div>
 </section>
@@ -1290,7 +1561,7 @@ html:not(.js) .calc__fields { display: none; }
 <h2 id="services-title" data-enter="lines">Leistungen und <em class="accent">Preise</em></h2>
 <p class="lead">Feste Preise, klarer Umfang. Ich arbeite mit wenigen Kund:innen gleichzeitig.</p>
 </div>
-<div class="tariff" id="pricing">
+<div class="tariff" id="pricing" data-demo="prices">
 <nav class="chooser card" aria-labelledby="chooser-title">
 <p class="chooser__title" id="chooser-title">Welches Paket passt?</p>
 <ul class="chooser__list" role="list">
@@ -1307,7 +1578,7 @@ html:not(.js) .calc__fields { display: none; }
 <p class="item__price">190 € fix</p></div>
 <div class="viz viz--quick" aria-hidden="true">
 <p class="mini-co__title">Checkout</p>
-<p class="mini-co__row"><span class="mini-co__line"></span><span class="mini-co__ok"><svg class="viz-check" viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="7.5"/><path d="M4.6 8.3l2.2 2.2 4.6-5"/></svg>Alles läuft</span></p>
+<p class="mini-co__row"><span class="mini-co__line"></span><span class="mini-co__state"><span class="mini-co__bad">Link defekt</span><span class="mini-co__ok"><svg class="viz-check" viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="7.5"/><path d="M4.6 8.3l2.2 2.2 4.6-5"/></svg>Alles läuft</span></span></p>
 <p class="mini-co__pay">Bezahlen</p>
 </div>
 <p class="item__line">Eine konkrete Aufgabe, Aufwand bis zu 4 Stunden.</p>
@@ -1320,7 +1591,7 @@ html:not(.js) .calc__fields { display: none; }
 <li class="item item--check card card--lift" id="pkg-check">
 <div class="item__head"><span class="label label--lav item__badge">Empfohlener Start</span><h3 class="item__name">Technik-Check</h3>
 <p class="item__price">290 € fix</p></div>
-<div class="viz viz--check" aria-hidden="true"><ul class="scan" role="list"><li>ActiveCampaign</li><li>Zapier/Make</li><li>Zahlung</li><li>Landingpages</li><li>Double-Opt-In</li></ul></div>
+<div class="viz viz--check" aria-hidden="true"><ul class="scan" role="list"><li style="--i:0">ActiveCampaign</li><li style="--i:1">Zapier/Make</li><li style="--i:2">Zahlung</li><li style="--i:3">Landingpages</li><li style="--i:4">Double-Opt-In</li></ul><span class="scan__lens"></span></div>
 <p class="item__line">Ein Analysetag mit Lesezugriff auf die Tools oben, danach wissen Sie, wo es hakt.</p>
 <ul class="item__bullets" role="list"><li><svg class="viz-check" viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="7.5"/><path d="M4.6 8.3l2.2 2.2 4.6-5"/></svg><span>Liste mit Prioritäten, Aufwand und Preisen</span></li><li><svg class="viz-check" viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="7.5"/><path d="M4.6 8.3l2.2 2.2 4.6-5"/></svg><span>Gespräch von 45 Minuten</span></li><li><svg class="viz-check" viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="7.5"/><path d="M4.6 8.3l2.2 2.2 4.6-5"/></svg><span>Bei einem Auftrag innerhalb von 30 Tagen voll angerechnet</span></li></ul>
 <div class="item__actions">
@@ -1343,23 +1614,29 @@ html:not(.js) .calc__fields { display: none; }
 </div>
 </li>
 </ul>
-<p class="promise"><svg class="viz-check" viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="7.5"/><path d="M4.6 8.3l2.2 2.2 4.6-5"/></svg><span>30-Tage-Zusage: Läuft ein von mir gebauter Ablauf in den ersten 30 Tagen nach Übergabe nicht wie vereinbart, behebe ich das ohne Berechnung. Zusätzlich zur gesetzlichen Gewährleistung.</span></p>
+<div class="promise"><svg class="viz-check" viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="7.5"/><path d="M4.6 8.3l2.2 2.2 4.6-5"/></svg><p>30-Tage-Zusage: Läuft ein von mir gebauter Ablauf in den ersten 30 Tagen nach Übergabe nicht wie vereinbart, behebe ich das ohne Berechnung. Zusätzlich zur gesetzlichen Gewährleistung.</p>
+<ol class="days" role="list" aria-hidden="true"><li>Tag 1</li><li>Tag 14</li><li>Tag 30</li></ol>
+</div>
+<p class="tariff__ctl"><button class="loopctl btn btn--secondary btn--sm" type="button" hidden data-pause-label="Pause" data-play-label="Abspielen" data-step-label="Nächster Schritt"><svg class="loopctl__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path class="loopctl__pause" d="M9 6v12M15 6v12"/><path class="loopctl__play" d="M8 5.5v13l10.5-6.5z"/><path class="loopctl__step" d="M5 12h12M13 7l5 5-5 5"/></svg><span class="loopctl__text">Pause</span><span class="sr-only">: Bilder der Pakete</span></button></p>
 <div class="more">
 <h3 class="more__title">Weitere Leistungen</h3>
 <ul class="rows" role="list">
-<li class="row card" id="pkg-website">
+<li class="row card row--viz" id="pkg-website">
+<div class="viz viz--site" aria-hidden="true"><div class="mini-browser"><p class="mini-browser__bar"><i></i><i></i><i></i><span>ihre-website.at</span></p><div class="mini-browser__page"><span class="blk blk--1">Header</span><span class="blk blk--2">Hero</span><span class="blk blk--3">Termin</span><span class="blk blk--4">Impressum</span></div></div></div>
 <div class="row__text"><h4 class="row__name">Website als One-Pager</h4><p class="row__line">Ein One-Pager, fertig veröffentlicht.</p></div>
 <p class="row__price">ab 990 €</p>
 <p class="row__links"><a class="row__more" href="/website-one-pager/">Mehr zur Website als One-Pager</a></p>
 <a class="btn btn--secondary btn--sm row__ask" href="mailto:hello@mrlololi.com?subject=Anfrage%3A%20Website%20als%20One-Pager">Anfragen<span class="sr-only">: Website als One-Pager</span></a>
 </li>
-<li class="row card" id="pkg-ki">
+<li class="row card row--viz" id="pkg-ki">
+<div class="viz viz--chat" aria-hidden="true"><p class="tchat__q">Hallo, wo finde ich meinen Login?</p><p class="tchat__a"><span class="tchat__tag">KI-Entwurf</span><span class="tchat__text">Liebe Mia, Ihren Zugang habe ich neu verschickt. Schauen Sie bitte auch im Spam-Ordner nach.</span></p></div>
 <div class="row__text"><h4 class="row__name">KI im Kundenservice</h4><p class="row__line">Antwortentwürfe, die Ihr Team nur noch prüft. Pflege optional 90 € pro Monat.</p></div>
 <p class="row__price">ab 590 €</p>
-<p class="row__links"><a class="row__more" href="/ki-antwortentwuerfe/">Mehr zu KI-Antwortentwürfen</a><a class="row__more" href="/ki-antwortentwuerfe/#ki-demo">Beispiel ansehen</a></p>
+<p class="row__links"><a class="row__more" href="/ki-antwortentwuerfe/">Mehr zu KI-Antwortentwürfen</a><a class="btn btn--secondary btn--sm row__example" href="/ki-antwortentwuerfe/#ki-demo"><svg class="row__icon" viewBox="0 0 24 18" aria-hidden="true" focusable="false"><rect x="1.5" y="1.5" width="21" height="15" rx="3"/><path d="M3 3.5l9 7 9-7"/></svg>Beispiel ansehen</a></p>
 <a class="btn btn--secondary btn--sm row__ask" href="mailto:hello@mrlololi.com?subject=Anfrage%3A%20KI%20im%20Kundenservice">Anfragen<span class="sr-only">: KI im Kundenservice</span></a>
 </li>
 <li class="row card" id="pkg-support">
+
 <div class="row__text"><h4 class="row__name">Betreuung nach Stunden</h4><p class="row__line">Pflege und alles außerhalb der Pakete, ab 5 Stunden im Monat.</p></div>
 <p class="row__price">45 € pro Stunde</p>
 <p class="row__links"></p>
@@ -1377,7 +1654,7 @@ html:not(.js) .calc__fields { display: none; }
 <div class="section__head">
 <h2 id="process-title" data-enter="lines">So arbeiten wir <em class="accent">zusammen</em></h2>
 </div>
-<div class="steps-wrap">
+<div class="steps-wrap demo" data-demo="process">
 <span class="steps__line" aria-hidden="true"><span></span></span>
 <ol class="steps" role="list">
 <li class="step">
@@ -1405,6 +1682,7 @@ html:not(.js) .calc__fields { display: none; }
 <p>Eine schriftliche Anleitung, auf Wunsch ein kurzes Video, damit Ihr Team alles selbst pflegen kann.</p>
 </li>
 </ol>
+<button class="loopctl btn btn--secondary btn--sm" type="button" hidden data-pause-label="Pause" data-play-label="Abspielen" data-step-label="Nächster Schritt"><svg class="loopctl__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path class="loopctl__pause" d="M9 6v12M15 6v12"/><path class="loopctl__play" d="M8 5.5v13l10.5-6.5z"/><path class="loopctl__step" d="M5 12h12M13 7l5 5-5 5"/></svg><span class="loopctl__text">Pause</span><span class="sr-only">: Ablauf der Zusammenarbeit</span></button>
 </div>
 <div class="ctastrip">
 <p class="ctastrip__text">Nicht sicher, was passt? 20 Minuten, kostenlos. Ich sage ehrlich, ob ich helfen kann.</p>
@@ -1418,7 +1696,7 @@ html:not(.js) .calc__fields { display: none; }
 <h2 id="refs-title" data-enter="lines">Arbeit und <em class="accent">Referenzen</em></h2>
 <p class="small refs__note">Zitate aus schriftlichen Referenzen, Original auf Anfrage.</p>
 </div>
-<ul class="refs__list" role="list">
+<ul class="refs__list" role="list" data-enter="stagger">
 <li class="ref card ref--course"><span class="label label--lav">Online-Kurse</span>
 <h3>Launch-Technik für eine Online-Kursanbieterin, seit April 2026</h3>
 <p>ActiveCampaign- und Zapier-Abläufe für Anmeldung, Launch, Onboarding und Zahlungserinnerungen, Landingpages in Leadpages, Rechnungen, Ratenzahlungen und Kurszugänge mit Quaderno und Somba, Live-Termine mit Zoom und Ecamm.</p>
@@ -1428,32 +1706,33 @@ html:not(.js) .calc__fields { display: none; }
 <li class="ref card ref--site"><span class="label label--pink">Website</span>
 <h3><a class="ext" href="https://alexandrafry.ch" target="_blank" rel="noopener">alexandrafry.ch<span class="sr-only"> (öffnet in neuem Tab)</span></a>, Website für eine Executive-Coachin in Bern</h3>
 <div class="browser"><div class="browser__bar" aria-hidden="true"><i></i><i></i><i></i><span>alexandrafry.ch</span></div>
-<picture>
-<source type="image/avif" srcset="/assets/img/case-alexandrafry-640.avif 640w, /assets/img/case-alexandrafry-1280.avif 1280w" sizes="(min-width: 800px) 34rem, 100vw">
-<source type="image/webp" srcset="/assets/img/case-alexandrafry-640.webp 640w, /assets/img/case-alexandrafry-1280.webp 1280w" sizes="(min-width: 800px) 34rem, 100vw">
-<img src="/assets/img/case-alexandrafry-640.jpg" srcset="/assets/img/case-alexandrafry-640.jpg 640w, /assets/img/case-alexandrafry-1280.jpg 1280w" sizes="(min-width: 800px) 34rem, 100vw" width="640" height="400" loading="lazy" decoding="async" alt="Startseite von alexandrafry.ch">
+<div class="browser__view">
+<picture class="case__shot">
+<source type="image/avif" srcset="/assets/img/case-alexandrafry-long-640.avif 640w, /assets/img/case-alexandrafry-long-1280.avif 1280w" sizes="(min-width: 800px) 34rem, 100vw">
+<source type="image/webp" srcset="/assets/img/case-alexandrafry-long-640.webp 640w, /assets/img/case-alexandrafry-long-1280.webp 1280w" sizes="(min-width: 800px) 34rem, 100vw">
+<img src="/assets/img/case-alexandrafry-long-640.jpg" srcset="/assets/img/case-alexandrafry-long-640.jpg 640w, /assets/img/case-alexandrafry-long-1280.jpg 1280w" sizes="(min-width: 800px) 34rem, 100vw" width="640" height="1067" loading="lazy" decoding="async" alt="Startseite von alexandrafry.ch">
 </picture>
 </div>
-<p>One-Pager mit Leadpages: responsives Design, Terminbuchung über Calendly, Cookie-Hinweis, SEO-Grundeinstellungen, Rechtsseiten, Domain und Übergabe-Gespräch.</p>
-<figure class="quote">
+</div>
+<p>One-Pager mit Leadpages: responsives Design, Terminbuchung über Calendly, Cookie-Hinweis, SEO-Grundeinstellungen, Rechtsseiten, Domain und Übergabe-Gespräch.</p></li>
+<li class="ref card ref--shop"><span class="label label--blue">E-Commerce</span>
+<h3>E-Commerce für zwei deutsche Onlineshops, zweieinhalb Jahre</h3>
+<p>Relaunch zweier Onlineshops, Produktdaten und SEO-Inhalte in CMS- und PIM-Systemen, Markt- und Wettbewerbsanalysen und Auswertungen der Shop-Statistiken.</p></li>
+</ul>
+<ul class="qcards" role="list" tabindex="0" aria-label="Kundenstimmen">
+<li class="qcard qcard--pink"><figure class="quote">
 <blockquote><p>„Sehr gerne bestätige ich, dass Iva Tsatskrialashvili diese Aufgabe hervorragend erfüllt und die Erwartungen übertroffen hat.“</p></blockquote>
 <figcaption>Alexandra Fry, Geschäftsführerin FRY-CPC GmbH, Bern</figcaption>
 </figure></li>
-<li class="ref card ref--shop"><span class="label label--blue">E-Commerce</span>
-<h3>E-Commerce für zwei deutsche Onlineshops, zweieinhalb Jahre</h3>
-<p>Relaunch zweier Onlineshops, Produktdaten und SEO-Inhalte in CMS- und PIM-Systemen, Markt- und Wettbewerbsanalysen und Auswertungen der Shop-Statistiken.</p>
-<figure class="quote">
+<li class="qcard qcard--blue"><figure class="quote">
 <blockquote><p>„[…] halten wir Iva Tsatskrialashvili als Dienstleister für Projekte im Bereich Online Marketing und E-Commerce für sehr qualifiziert und möchten ihn ohne jegliche Vorbehalte an potenzielle Auftraggeber weiterempfehlen.“</p></blockquote>
 <figcaption>Ditoma GmbH, Ludwigsburg</figcaption>
 </figure></li>
-<li class="ref card ref--earlier"><span class="label label--peach">Frühere Tätigkeit</span>
-<h3>Kundensupport auf Deutsch bei CMX Solutions</h3>
-<figure class="quote">
+<li class="qcard qcard--pist"><span class="label label--peach">Frühere Tätigkeit</span><figure class="quote">
 <blockquote lang="en"><p>“He was also highly adaptable, quickly learning new tools and processes specific to each project.”</p></blockquote>
 <p class="quote__translation">Übersetzung: „Er war außerdem sehr anpassungsfähig und hat sich schnell in die Tools und Abläufe des jeweiligen Projekts eingearbeitet.“</p>
 <figcaption>Tamar Tsvimitidze, Operations Manager, CMX Solutions (Kundensupport-Dienstleister)</figcaption>
-</figure>
-<p class="ref__line">Daher kenne ich Support-Teams von innen, die Grundlage für die KI-Antwortentwürfe.</p></li>
+</figure><p class="ref__line">Daher kenne ich Support-Teams von innen, die Grundlage für die KI-Antwortentwürfe.</p></li>
 </ul>
 
 <div class="ctastrip">
@@ -1505,6 +1784,11 @@ html:not(.js) .calc__fields { display: none; }
 <p class="about__line"><span class="tl-pink">Lo</span>gik, <span class="tl-blue">Lö</span>sung, <span class="tl-pist">Li</span>ve: so arbeite ich.</p>
 <p data-enter="lines">Ich bin Iva Tsatskrialashvili (er/ihm) und lebe in Graz. Ich habe Informationstechnologie studiert und studiere jetzt berufsbegleitend Marketing &amp; Sales an der FH CAMPUS 02. So verstehe ich beides: den Funnel und die API dahinter.</p>
 <p data-enter="lines">Seit 2023 arbeite ich für Kund:innen in Deutschland, der Schweiz, Italien und Österreich, zuerst für Onlineshops, seit 2026 auch für eine Online-Kursanbieterin. Mein Gewerbe ist in Österreich angemeldet: ordentliche Rechnungen, ein fester Ansprechpartner.</p>
+<div class="aboutrow demo" data-demo="about" role="group" aria-labelledby="aboutrow-label">
+<p class="aboutrow__label" id="aboutrow-label">Worauf Sie sich verlassen können</p>
+<div class="marquee"><div class="marquee__track"><ul class="tools__list" role="list"><li>Festpreise</li><li>Testkontakte vor dem Livegang</li><li>Dokumentation und Übergabe</li><li>Deutsch und Englisch</li><li>Antwort in 2 Werktagen</li><li>30-Tage-Zusage</li><li>Gewerbe in Österreich</li></ul><ul class="tools__list tools__copy" role="list" aria-hidden="true"><li>Festpreise</li><li>Testkontakte vor dem Livegang</li><li>Dokumentation und Übergabe</li><li>Deutsch und Englisch</li><li>Antwort in 2 Werktagen</li><li>30-Tage-Zusage</li><li>Gewerbe in Österreich</li></ul></div></div>
+<button class="loopctl btn btn--secondary btn--sm" type="button" hidden data-pause-label="Pause" data-play-label="Abspielen" data-step-label="Nächster Schritt"><svg class="loopctl__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path class="loopctl__pause" d="M9 6v12M15 6v12"/><path class="loopctl__play" d="M8 5.5v13l10.5-6.5z"/><path class="loopctl__step" d="M5 12h12M13 7l5 5-5 5"/></svg><span class="loopctl__text">Pause</span><span class="sr-only">: Leiste in «Über mich»</span></button>
+</div>
 <ol class="path" role="list" aria-label="Mein Weg">
 <li class="path__stop"><span class="path__label">Tbilisi</span><p class="path__story" id="path-story-1">Schule mit Deutsch-Schwerpunkt, danach IT-Studium in Tbilisi.</p></li>
 <li class="path__stop"><span class="path__label">DACH-Vertrieb ab 2020</span><p class="path__story" id="path-story-2">Vertrieb für den DACH-Raum, später stellvertretende Teamleitung; danach Kundensupport auf Deutsch bei CMX Solutions.</p></li>
@@ -1515,7 +1799,7 @@ html:not(.js) .calc__fields { display: none; }
 </div>
 </section>
 <section class="section faq bg-lav edge" id="faq" aria-labelledby="faq-title">
-<div class="wrap faq__grid">
+<div class="wrap faq__grid faqbox" data-also="Auch gefragt:" data-related="[[3,7],[2,6],[6,1],[0,4],[3,5],[7,0],[2,4],[2,0]]" data-photo="/assets/img/avatar-88.webp" data-typing="Logik schreibt">
 <div class="faq__side">
 <h2 id="faq-title">Häufige <em class="accent">Fragen</em></h2>
 <p class="faq__intro">Kurze Antworten auf das, was ich am häufigsten gefragt werde.</p>

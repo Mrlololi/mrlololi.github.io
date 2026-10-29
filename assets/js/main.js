@@ -1,7 +1,8 @@
 // mrlololi: navigation, header, the hero line; loads GSAP (home pages) and the section modules.
 // Progressive enhancement: the HTML/CSS already shows every end frame; the modules only reset
 // and play them (through loops.js). Without JS, without GSAP or with reduced motion nothing moves.
-// Stage 6: each demo module is imported when its section comes within a viewport.
+// Stage 6: each demo module is imported when its section comes within a viewport. Stage 6c: every
+// demo loops while visible (loops.js), each with its pause button.
 import { demo } from './loops.js';
 
 const root = document.documentElement;
@@ -13,17 +14,21 @@ initNav();
 initHeader();
 initFlowNodes();
 initHeroLine();
+initMarquee();
+initRunlog();
 const home = Boolean(document.querySelector('.hero'));
 // Mascots: their own module, so pages without mascots never load it.
-if (document.querySelector('.mascot')) import('./mascots.js').then((m) => m.initMascots()).catch(report);
+const mascots = document.querySelector('.mascot') ? import('./mascots.js').then((m) => { m.initMascots(); return m; }).catch(report) : null;
 // Resolves to { gsap, ScrollTrigger, refresh } once the animation code is there, or null.
 const motion = home ? loadMotion() : Promise.resolve(null);
 const ctx = { motion, reduceMotion, locale };
 lazy('#problems', () => import('./fixdemos.js'));
+lazy('.ba', () => import('./slider.js'));
 lazy('[data-video]', () => import('./video.js'));
+lazy('.tariff[data-demo="prices"]', () => import('./prices.js'));
 lazy('.kidemo', () => import('./kidemo.js'));
 lazy('#ki-rechner', () => import('./kicalc.js'));
-lazy('.path', () => import('./sections.js'));
+lazy('#process', () => import('./sections.js'));
 lazy('#faq', () => import('./faq.js'));
 lazy('#contact', () => import('./contact.js'));
 lazy('.nf__scene', () => import('./notfound.js'), true);
@@ -59,6 +64,7 @@ async function loadMotion() {
   const { gsap, ScrollTrigger } = window;
   if (!gsap || !ScrollTrigger) return null;
   gsap.registerPlugin(ScrollTrigger);
+  mascots?.then((m) => m?.startMascotMotion(gsap));
   const { initMotion } = await import('./motion.js');
   return initMotion(gsap, ScrollTrigger, loadScript);
 }
@@ -73,11 +79,50 @@ function loadScript(src) {
   });
 }
 
-/* ---------- Hero line: plays from CSS on load (4.2 s), then again on re-entry via loops.js ---------- */
+/* ---------- Hero line: plays from CSS on load (4.2 s), then loops while visible (loops.js) ---------- */
+// The mascot idles follow the loop: «hero:motion» on (looping) or off (paused, away, hidden).
 function initHeroLine() {
   const flow = document.querySelector('.hero__flow');
   if (!flow) return;
-  demo(flow, { duration: 4300, loadMs: Math.max(0, 4300 - performance.now()), frames: 2 });
+  let d = null;
+  const tell = () => {
+    const on = Boolean(d && (d.looping || d.phase === 'load')) && !d.paused;
+    flow.closest('.hero__visual').dataset.motion = on ? 'on' : 'off';
+    document.dispatchEvent(new CustomEvent('hero:motion', { detail: on }));
+  };
+  d = demo(flow, { duration: 4300, rest: 3000, loadMs: Math.max(0, 4300 - performance.now()), button: flow.querySelector(':scope > .loopctl'), state: () => queueMicrotask(tell) });
+  if (d && !d.paused && d.timer) { d.phase = 'load'; tell(); }
+  flow.querySelector(':scope > .loopctl')?.addEventListener('click', () => queueMicrotask(tell));
+}
+
+/* ---------- Tool row: a marquee while visible (ambient: it never takes the focus), with its button ---------- */
+// The «Über mich» row (Stage 6e) is the same component.
+function initMarquee() {
+  for (const box of document.querySelectorAll('.tools__in[data-demo="tools"], .aboutrow[data-demo="about"]')) {
+    demo(box, { ambient: true, duration: 2147483000, rest: 0, button: box.querySelector(':scope > .loopctl') });
+  }
+}
+
+/* ---------- «Ablauf selbst ausprobieren»: the run-log demo, its CSS and JS on the first click ---------- */
+function initRunlog() {
+  const button = document.querySelector('.runlog__open');
+  if (!button) return;
+  const slot = document.getElementById('runlog');
+  let loaded = null;
+  button.addEventListener('click', async () => {
+    const open = button.getAttribute('aria-expanded') !== 'true';
+    button.setAttribute('aria-expanded', String(open));
+    slot.hidden = !open;
+    if (!open || loaded) return;
+    loaded = new Promise((resolve) => {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = '/assets/css/runlog.css';
+      link.onload = resolve;
+      link.onerror = resolve;
+      document.head.append(link);
+    }).then(() => import('./runlog.js')).then((m) => m.open(slot, document.getElementById('runlog-tpl'), { locale })).catch(report);
+  });
 }
 
 /* ---------- Hero flow: each node explains its step in one line under the diagram ---------- */

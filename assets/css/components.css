@@ -100,8 +100,8 @@
 .label--lav { background: #EEEAF8; color: var(--lav-ink); }
 .label--peach { background: #FBEDE3; color: #7A4E2D; }
 
-/* ---------- Cards: one surface for every card (.card); a card that is a link (a.card) or holds one
-   for the whole card (.card--lift) lifts 2 px on real pointers ---------- */
+/* ---------- Cards: one surface for every card (.card); a card that is a link (a.card) or a package
+   card (.card--lift) gets a soft shadow on real pointers (Stage 6c: no movement, so no flicker) ---------- */
 .card, .instrument {
   background: var(--surface);
   border: var(--surface-line);
@@ -111,15 +111,19 @@
 /* Cards with text: no scale, no 3D; hover is a shadow, a border colour or 2 px up, real pointers only. */
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
   .btn--primary:hover { transform: translateY(var(--lift)); }
-  .card { transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; }
-  a.card:hover, .card--lift:hover { transform: translateY(var(--lift)); box-shadow: var(--shadow-hover); }
+  .card { transition: box-shadow 0.2s ease, border-color 0.2s ease; }
+  a.card:hover, .card--lift:hover { box-shadow: var(--shadow-hover); }
 }
 
-/* ---------- Demo replay button («Nochmal ansehen»): one style for every demo ---------- */
-/* Shared replay button: icon plus text, at least 44 x 44 px, bottom right of its demo. Its space is
-   kept while it waits (no layout shift when it appears); without JS there is nothing to replay. */
-.replay { gap: 0.4rem; padding-inline: var(--space-3) var(--space-4); }
-.replay__icon { width: 1.1rem; height: 1.1rem; flex: none; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
-.demo > .replay, .kidemo__controls .replay { display: flex; width: fit-content; margin: var(--space-3) 0 0 auto; }
-html:not(.js) .replay { display: none !important; }
-.js .replay[hidden] { visibility: hidden; }
+/* ---------- Demo pause button («Pause» / «Abspielen»; «Nächster Schritt» under reduced motion) ---------- */
+/* Stage 6c: every looping demo has one, a secondary button with an icon, at least 44 px. */
+.loopctl { gap: 0.4rem; padding-inline: var(--space-3) var(--space-4); }
+.loopctl__icon { width: 1.1rem; height: 1.1rem; flex: none; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.loopctl__play { fill: currentColor; stroke: none; display: none; }
+.loopctl__step { display: none; }
+.loopctl[data-mode="play"] .loopctl__pause, .loopctl[data-mode="step"] .loopctl__pause { display: none; }
+.loopctl[data-mode="play"] .loopctl__play { display: inline; }
+.loopctl[data-mode="step"] .loopctl__step { display: inline; }
+.demo > .loopctl, .kidemo__controls .loopctl { display: flex; width: fit-content; margin: var(--space-3) 0 0 auto; }
+html:not(.js) .loopctl { display: none !important; }
+.loopctl[hidden] { display: none !important; }

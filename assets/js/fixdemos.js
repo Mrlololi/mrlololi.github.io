@@ -1,10 +1,9 @@
-// Stage 6, «Wo es meistens hakt»: each problem card plays «broken, then solved» (about 3.6 s) and
-// ends looking solved. The CSS draws the frames by data-play (start = broken, run = the film,
-// end = solved); this file counts the sign-ups and turns the lead mascot from worried to calm.
-// Stage 6b: where the three stand in one row (1100 px and up) they play as one chain, one card
-// after the other with 1.5 s between, once per entry of the section (at most twice per visit),
-// then rest; each card's button replays that card alone. Stacked (phones), each card plays on
-// its own entry. loops.js decides when.
+// «Wo es meistens hakt»: each problem card plays «broken, then solved» (about 3.6 s) and ends looking
+// solved, with the quiet «before» next to the «after». The CSS draws the frames by data-play (start
+// = broken, run = the film, end = solved); this file counts the sign-ups and turns the lead mascot
+// from worried to calm. Stage 6c (Iva): it loops while visible. Where the three stand in one row
+// (1100 px and up) they play as one chain: card 1, 1.5 s, card 2, 1.5 s, card 3, 3 s rest, again;
+// one pause button for the row. Stacked (phones), each card loops on its own with its own button.
 import { demo } from './loops.js';
 import { setPose } from './mascots.js';
 
@@ -17,17 +16,19 @@ export function init({ locale }) {
   const cards = figs.map((fig) => card(fig, locale));
   const row = matchMedia('(min-width: 1100px)').matches;
   if (!row) {
-    cards.forEach((c) => demo(c.fig, c.hooks));
+    cards.forEach((c) => demo(c.fig, { ...c.hooks, rest: PAUSE, button: c.fig.querySelector(':scope > .loopctl') }));
     return;
   }
-  // One row: the cards keep their own buttons (manual), the list plays the chain.
-  cards.forEach((c) => demo(c.fig, { ...c.hooks, manual: true }));
   let timers = [];
   const set = (c, phase) => { c.fig.dataset.play = phase; };
+  const clear = () => { timers.forEach(clearTimeout); timers = []; };
   demo(document.querySelector('.pcs'), {
-    button: false,
-    reset: () => { timers.forEach(clearTimeout); timers = []; cards.forEach((c) => { c.hooks.reset(); set(c, 'start'); }); },
-    finish: () => { timers.forEach(clearTimeout); timers = []; cards.forEach((c) => { c.hooks.finish(); set(c, 'end'); }); },
+    button: document.querySelector('.pcs__ctl .loopctl'),
+    rest: 3000,
+    frames: 2,
+    reset: () => { clear(); cards.forEach((c) => { c.hooks.reset(); set(c, 'start'); }); },
+    finish: () => { clear(); cards.forEach((c) => { c.hooks.finish(); set(c, 'end'); }); },
+    frame: (i) => cards.forEach((c) => { c.hooks.frame(i); set(c, i ? 'end' : 'start'); }),
     play: () => {
       cards.forEach((c, i) => {
         const at = i * (LENGTH + PAUSE);

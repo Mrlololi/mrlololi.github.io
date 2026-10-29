@@ -11,7 +11,26 @@ export function init() {
   if (!section) return;
   builder(section);
   thanks(section);
+  bubble(section);
   clock(section);
+}
+
+// «Erzählen Sie mir, was hakt.» types itself each time the card comes into view (Stage 6d: back).
+function bubble(section) {
+  const p = section.querySelector('.contact__bubble');
+  if (!p || matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
+  const full = p.dataset.text;
+  let timer = 0;
+  let inView = false;
+  new IntersectionObserver(([e]) => {
+    if (e.isIntersecting === inView) return;
+    inView = e.isIntersecting;
+    clearInterval(timer);
+    if (!inView) { p.textContent = full; return; }
+    let n = 0;
+    p.textContent = '';
+    timer = setInterval(() => { n += 1; p.textContent = full.slice(0, n); if (n >= full.length) clearInterval(timer); }, 45);
+  }, { threshold: 0.8 }).observe(p);
 }
 
 function builder(section) {

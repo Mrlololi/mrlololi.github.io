@@ -25,20 +25,22 @@ function study(t, s) {
 </article>`;
 }
 
-// Stage 6: four equal cards, readable at once (no stacking, no scroll effects). The course creator
-// first (most relevant), then alexandrafry.ch with Alexandra Fry's quote, the shop work with the
-// Ditoma quote, and CMX as earlier work. Each quote sits with its case. Stage 6b: the course card
-// as strong as the others (tools, the honest line, the video); two columns that fill (CSS columns).
+// Stage 6/6b: the course creator first (tools, the honest line, the video), alexandrafry.ch with its
+// long screenshot scrolling inside the browser frame, the shop work. Stage 6d: the three quotes are
+// back in the fanned stack (Fry pink, Ditoma blue, CMX white with «Frühere Tätigkeit»); it opens as
+// soon as it enters the window and is fully spread by the time its centre is at 60 % (sections.js).
 export function references(t, config) {
   const r = t.refs;
   const L = t.s6.refs.labels;
   const B = t.s6.b.refs;
   const shot = `<div class="browser"><div class="browser__bar" aria-hidden="true"><i></i><i></i><i></i><span>${esc(r.case1.domain)}</span></div>
-<picture>
-<source type="image/avif" srcset="/assets/img/case-alexandrafry-640.avif 640w, /assets/img/case-alexandrafry-1280.avif 1280w" sizes="(min-width: 800px) 34rem, 100vw">
-<source type="image/webp" srcset="/assets/img/case-alexandrafry-640.webp 640w, /assets/img/case-alexandrafry-1280.webp 1280w" sizes="(min-width: 800px) 34rem, 100vw">
-<img src="/assets/img/case-alexandrafry-640.jpg" srcset="/assets/img/case-alexandrafry-640.jpg 640w, /assets/img/case-alexandrafry-1280.jpg 1280w" sizes="(min-width: 800px) 34rem, 100vw" width="640" height="400" loading="lazy" decoding="async" alt="${esc(t.ui.caseImageAlt)}">
+<div class="browser__view">
+<picture class="case__shot">
+<source type="image/avif" srcset="/assets/img/case-alexandrafry-long-640.avif 640w, /assets/img/case-alexandrafry-long-1280.avif 1280w" sizes="(min-width: 800px) 34rem, 100vw">
+<source type="image/webp" srcset="/assets/img/case-alexandrafry-long-640.webp 640w, /assets/img/case-alexandrafry-long-1280.webp 1280w" sizes="(min-width: 800px) 34rem, 100vw">
+<img src="/assets/img/case-alexandrafry-long-640.jpg" srcset="/assets/img/case-alexandrafry-long-640.jpg 640w, /assets/img/case-alexandrafry-long-1280.jpg 1280w" sizes="(min-width: 800px) 34rem, 100vw" width="640" height="1067" loading="lazy" decoding="async" alt="${esc(t.ui.caseImageAlt)}">
 </picture>
+</div>
 </div>`;
   const cards = [
     `<li class="ref card ref--course"><span class="label label--lav">${esc(L.course)}</span>
@@ -50,16 +52,10 @@ export function references(t, config) {
     `<li class="ref card ref--site"><span class="label label--pink">${esc(L.site)}</span>
 <h3>${extLink(config.case1_url, esc(r.case1.domain), t)}${esc(r.case1.titleRest)}</h3>
 ${shot}
-<p>${esc(r.case1.text)}</p>
-${quote(t, r.case1.quote)}</li>`,
+<p>${esc(r.case1.text)}</p></li>`,
     `<li class="ref card ref--shop"><span class="label label--blue">${esc(L.shop)}</span>
 <h3>${esc(r.case3.title)}</h3>
-<p>${esc(r.case3.text)}</p>
-${quote(t, r.case3.quote)}</li>`,
-    `<li class="ref card ref--earlier"><span class="label label--peach">${esc(L.earlier)}</span>
-<h3>${esc(t.s6.refs.earlier)}</h3>
-${quote(t, r.quote4)}
-<p class="ref__line">${esc(B.earlierLine)}</p></li>`,
+<p>${esc(r.case3.text)}</p></li>`,
   ];
   return `<section class="section refs bg-pist edge" id="references" aria-labelledby="refs-title">
 <div class="wrap">
@@ -67,8 +63,13 @@ ${quote(t, r.quote4)}
 <h2 id="refs-title" data-enter="lines">${accent(r.h2)}</h2>
 <p class="small refs__note">${esc(t.s6.refs.note)}</p>
 </div>
-<ul class="refs__list" role="list">
+<ul class="refs__list" role="list" data-enter="stagger">
 ${cards.join('\n')}
+</ul>
+<ul class="qcards" role="list" tabindex="0" aria-label="${esc(t.s4.refs.quotes)}">
+<li class="qcard qcard--pink">${quote(t, r.case1.quote)}</li>
+<li class="qcard qcard--blue">${quote(t, r.case3.quote)}</li>
+<li class="qcard qcard--pist"><span class="label label--peach">${esc(L.earlier)}</span>${quote(t, r.quote4)}<p class="ref__line">${esc(B.earlierLine)}</p></li>
 </ul>
 ${config.case_study ? study(t, config.case_study) : ''}
 ${ctaStrip(t)}

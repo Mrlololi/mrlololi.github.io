@@ -1,4 +1,5 @@
 import { esc, accent, absUrl, fill } from './util.mjs';
+import { runlog } from './runlog.mjs';
 
 // Stage 6: the video «Der Weg einer Anmeldung» (50 s, German, no sound, text in the picture).
 // Phones get the 9:16 file, wider screens the 16:9 one: <source media> is ignored for <video>, so
@@ -58,6 +59,7 @@ export function videoBlock(t) {
 <p class="lead">${esc(v.text)}</p>
 </div>
 ${videoFigure(t)}
+${runlog(t)}
 <p class="vid__cta"><span>${esc(t.s6.b.ctaLine)}</span> <a class="btn btn--secondary btn--sm" href="#contact">${esc(t.s6.b.cta)}</a></p>
 </div>
 </section>`;
@@ -76,6 +78,7 @@ export function stepStrip(t) {
 <ol class="strip" role="list">
 ${f.nodes.map((n, i) => `<li class="strip__step card strip__step--${i + 1}"><span class="strip__node">${esc(n)}</span><p>${esc(f.lines[i])}</p></li>`).join('\n')}
 </ol>
+${runlog(t)}
 <p class="vid__cta"><span>${esc(t.s6.b.ctaLine)}</span> <a class="btn btn--secondary btn--sm" href="#contact">${esc(t.s6.b.cta)}</a></p>
 </div>
 </section>`;

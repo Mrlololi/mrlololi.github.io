@@ -62,7 +62,13 @@ export function init() {
     ls.forEach((l, i) => at(draftAt + ARROW + (i * DRAFT) / ls.length, () => l.classList.add('is-on')));
     return draftAt + ARROW + DRAFT + 200;
   };
-  const d = demo(box, { reset, play, finish, frames: 3, frame: (i) => { clear(); settle(); show(i); } });
+  let rounds = 0;
+  const loopPlay = () => {
+    // From the second round on, each round shows the next example.
+    if (rounds++ > 0) { current = (current + 1) % examples.length; render(); marks().forEach((m) => m.classList.remove('is-on')); lines().forEach((l) => l.classList.remove('is-on')); }
+    return play();
+  };
+  const d = demo(box, { reset, play: loopPlay, finish, rest: 3000, frames: 3, button: box.querySelector('.kidemo__controls .loopctl'), frame: (i) => { clear(); settle(); show(i); } });
 
   // A tap on the picture skips to the end (never «tap to replay»: phones tap by accident).
   grid.addEventListener('click', () => d?.skip());

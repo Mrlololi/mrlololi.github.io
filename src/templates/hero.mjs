@@ -1,9 +1,13 @@
 import { esc, headline } from './util.mjs';
 import { heroMascots } from './mascots.mjs';
 
-// Stage 6: one button style for every demo (Nochmal ansehen / Watch again), bottom right, at least
-// 44 x 44 px, icon plus text. Hidden without JS; assets/js/loops.js shows it in the end state.
-export const replayButton = (t, cls = '') => `<button class="replay btn btn--secondary btn--sm${cls ? ` ${cls}` : ''}" type="button" hidden><svg class="replay__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3"/><path d="M4 4.5v4h4"/></svg><span>${esc(t.s6.replay)}</span></button>`;
+// Stage 6c: one pause button for every looping demo (WCAG 2.2.2), a secondary button with icon and
+// text, at least 44 px: «Pause» / «Abspielen», under reduced motion «Nächster Schritt». Its name for
+// screen readers says which demo. Hidden without JS; assets/js/loops.js wires it.
+export const loopButton = (t, name, cls = '') => {
+  const c = t.s6.c;
+  return `<button class="loopctl btn btn--secondary btn--sm${cls ? ` ${cls}` : ''}" type="button" hidden data-pause-label="${esc(c.pause)}" data-play-label="${esc(c.play)}" data-step-label="${esc(c.step)}"><svg class="loopctl__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path class="loopctl__pause" d="M9 6v12M15 6v12"/><path class="loopctl__play" d="M8 5.5v13l10.5-6.5z"/><path class="loopctl__step" d="M5 12h12M13 7l5 5-5 5"/></svg><span class="loopctl__text">${esc(c.pause)}</span><span class="sr-only">: ${esc(c.names[name])}</span></button>`;
+};
 
 // Hero diagram: four nodes on a zigzag, three wires. The HTML/CSS shows every node lit (the end
 // frame); with JS the line plays once from unlit to lit, again on re-entry (loops.js, at most twice).
@@ -51,19 +55,28 @@ ${h.flow.nodes.map((n, i) => {
 }).join('')}
 </div>
 <ul class="hf__lines" role="list">${h.flow.lines.map((l, i) => `<li id="hf-line-${i + 1}">${esc(l)}</li>`).join('')}</ul>
-${replayButton(t)}
+${loopButton(t, 'hero')}
 </figure>
 </div>
 </div>
 </section>`;
 }
 
-// «Ich arbeite mit»: one static row of text pills (no logos, no marquee).
+// «Ich arbeite mit»: the label inside the peach band right above the pills (Iva 29.10.2026). Stage
+// 6d: the row moves again as a marquee (a copy for the seamless loop, hidden from screen readers)
+// with its pause button; without JS or with reduced motion the pills simply wrap.
 export function tools(t) {
+  const pills = t.tools.items.map((name) => `<li>${esc(name)}</li>`).join('');
   return `<section class="tools bg-peach edge" aria-labelledby="tools-title">
-<div class="wrap tools__in">
+<div class="wrap tools__in demo" data-demo="tools">
 <p class="tools__label" id="tools-title">${esc(t.tools.label)}</p>
-<ul class="tools__list" role="list">${t.tools.items.map((name) => `<li>${esc(name)}</li>`).join('')}</ul>
+<div class="marquee">
+<div class="marquee__track">
+<ul class="tools__list" role="list">${pills}</ul>
+<ul class="tools__list tools__copy" role="list" aria-hidden="true">${pills}</ul>
+</div>
+</div>
+${loopButton(t, 'tools')}
 </div>
 </section>`;
 }

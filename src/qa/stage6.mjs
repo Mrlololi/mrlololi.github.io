@@ -2,10 +2,14 @@
 // - 390 and 1440 px, DE and EN: no a/button/input/summary/select under 44 x 44 px, no horizontal
 //   overflow, no text with an effective opacity under 0.7, no mascot under 40 px (56 px for the
 //   acting ones; 40 px only for Logik in the FAQ);
-// - reduced motion: no autoplay, every demo in its end frame, the replay buttons there;
+// - reduced motion: no autoplay, every demo in its end frame, the pause buttons step the frames;
 // - no JS: every demo in its end frame (card 3 never shows «fehlgeschlagen»);
 // - 320 px and 200 % text: no horizontal overflow;
-// - autoplay: at most two automatic plays per demo, one demo at a time.
+// - Stage 6c: every demo runs within 3 s of coming into view, loops while visible, runs again after
+//   leaving and coming back, stays paused with its button (also after a reload), one at a time;
+// - Stage 6d/6e: reveals never leave a section empty (jump to the bottom, then up step by step),
+//   the quote stack is spread at 60 %, the FAQ types before it answers, the marquees move, the
+//   slider follows mouse, touch and keys, the run-log loads only on its button and then plays.
 // Usage: node src/qa/stage6.mjs (exit code 1 on failure). Also run by tests/stage6-browser.test.mjs.
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import path from 'node:path';
@@ -48,7 +52,8 @@ function measure() {
     if (!n.textContent.trim() || seen.has(el) || !visible(el)) continue;
     seen.add(el);
     const o = opacity(el);
-    if (o < 0.7) out.faint.push(`${name(el)} ${o.toFixed(2)}`);
+    const fading = () => { for (let e = el; e && e.nodeType === 1; e = e.parentElement) if (e.getAnimations?.().some((a) => a.playState === 'running')) return true; return false; };
+    if (o < 0.7 && !fading()) out.faint.push(`${name(el)} ${o.toFixed(2)}`);
   }
   // The drawn size without transforms (a start frame may scale a mascot down on purpose).
   for (const m of document.querySelectorAll('svg.mascot')) {
@@ -132,22 +137,25 @@ export async function checkStage6(browser, base) {
       await page.waitForTimeout(1500);
       const r = await page.evaluate(() => ({
         frames: [...document.querySelectorAll('[data-demo]')].map((d) => d.dataset.play || 'none'),
-        hidden: [...document.querySelectorAll('[data-demo] .replay')].filter((b) => b.hidden).length,
+        // Card buttons rest while the three cards loop as one row (1100 px and up).
+        hidden: [...document.querySelectorAll('.loopctl')].filter((b) => b.hidden && !(innerWidth >= 1100 && b.classList.contains('loopctl--card'))).length,
         runs: window.__runs,
       }));
       check(`reduced motion ${p}: every demo in its end frame`, r.frames.every((f) => f === 'end' || f === 'none'), r.frames.join(','));
       check(`reduced motion ${p}: no autoplay`, r.runs === 0, String(r.runs));
-      check(`reduced motion ${p}: replay buttons shown`, r.hidden === 0, String(r.hidden));
+      check(`reduced motion ${p}: the buttons are there (as «Nächster Schritt»)`, r.hidden === 0, String(r.hidden));
       if (p === '/') {
         // The button steps through the frames: broken, then solved again.
         const card = page.locator('.fixdemo--rate');
+        const btn = page.locator('.pcs__ctl .loopctl');
         log('reduced: click');
-        await card.scrollIntoViewIfNeeded();
-        await card.locator('.replay').click();
+        await btn.scrollIntoViewIfNeeded();
+        await btn.click();
         const a = await card.getAttribute('data-play');
-        await card.locator('.replay').click();
+        await btn.click();
         const b = await card.getAttribute('data-play');
-        check('reduced motion: the replay button steps start -> end', a === 'start' && b === 'end', `${a} -> ${b}`);
+        const label = await btn.locator('.loopctl__text').textContent();
+        check('reduced motion: the button steps start -> end («Nächster Schritt»)', a === 'start' && b === 'end' && label === 'Nächster Schritt', `${a} -> ${b}, ${label}`);
       }
       await page.close();
     }
@@ -191,47 +199,194 @@ export async function checkStage6(browser, base) {
     }
   }
 
-  log('autoplay');
-  // 5. Autoplay: at most two automatic plays per demo, one demo at a time.
-  {
-    const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
-    await page.goto(base + '/', { waitUntil: 'load' });
-    await page.evaluate(() => {
-      window.__runs = {};
-      window.__maxRunning = 0;
-      document.addEventListener('demo:run', (e) => { const k = e.target.dataset.demo; window.__runs[k] = (window.__runs[k] || 0) + 1; }, true);
-      setInterval(() => { window.__maxRunning = Math.max(window.__maxRunning, document.querySelectorAll('[data-play="run"]:not(:has([data-play="run"]))').length); }, 50);
-    });
-    for (let i = 0; i < 4; i += 1) {
-      await page.evaluate(() => document.querySelector('.pcs').scrollIntoView({ block: 'center' }));
-      await page.waitForTimeout(6000);
-      await page.evaluate(() => scrollTo(0, document.querySelector('#about').offsetTop));
+  log('loops');
+  // 5. Stage 6c: every demo runs within 3 s of coming into view, loops, comes back, pauses.
+  const DEMOS = (w) => [
+    ['/', w >= 1100 ? '.pcs' : '.fixdemo--signup', w >= 1100 ? 21000 : 9000],
+    ['/', '.tariff[data-demo="prices"]', 20000],
+    ['/', '.steps-wrap', 9000],
+    ['/ki-antwortentwuerfe/', '.kidemo', 14000],
+  ];
+  for (const w of [1440, 390]) {
+    for (const [path, sel, cycle] of DEMOS(w)) {
+      const page = await browser.newPage({ viewport: { width: w, height: 860 } });
+      await page.goto(base + path, { waitUntil: 'load' });
       await page.waitForTimeout(600);
+      await page.evaluate((x) => { window.__runs = 0; window.__max = 0; document.querySelector(x).addEventListener('demo:run', () => { window.__runs += 1; }); setInterval(() => { window.__max = Math.max(window.__max, document.querySelectorAll('[data-play="run"]:not(:has([data-play="run"]))').length); }, 60); }, sel);
+      const state = () => page.evaluate((x) => document.querySelector(x).dataset.play, sel);
+      const waitRun = async (ms) => { const t0 = Date.now(); while (Date.now() - t0 < ms) { if (await state() === 'run') return (Date.now() - t0) / 1000; await page.waitForTimeout(100); } return null; };
+      await page.evaluate((x) => document.querySelector(x).scrollIntoView({ block: 'center' }), sel);
+      const first = await waitRun(3000);
+      check(`loop ${path} ${sel} @${w}: runs within 3 s`, first != null, String(first));
+      await page.waitForTimeout(cycle);
+      const runs = await page.evaluate(() => window.__runs);
+      check(`loop ${path} ${sel} @${w}: loops while visible`, runs >= 2, String(runs));
+      await page.evaluate(() => scrollTo(0, document.body.scrollHeight));
+      await page.waitForTimeout(800);
+      await page.evaluate((x) => document.querySelector(x).scrollIntoView({ block: 'center' }), sel);
+      const again = await waitRun(3000);
+      check(`loop ${path} ${sel} @${w}: runs again after coming back`, again != null, String(again));
+      const max = await page.evaluate(() => window.__max);
+      check(`loop ${path} ${sel} @${w}: one demo at a time`, max <= 1, String(max));
+      // Pause: it stops on its end frame and stays paused, also after a reload (for the visit).
+      const btn = await page.evaluateHandle((x) => { const d = document.querySelector(x); return d.querySelector(':scope > .loopctl') || d.querySelector('.kidemo__controls .loopctl') || d.parentElement.querySelector('.pcs__ctl .loopctl') || d.querySelector('.tariff__ctl .loopctl'); }, sel);
+      await btn.asElement().scrollIntoViewIfNeeded();
+      await btn.asElement().click();
+      await page.evaluate((x) => document.querySelector(x).scrollIntoView({ block: 'center' }), sel);
+      const r0 = await page.evaluate(() => window.__runs);
+      await page.waitForTimeout(3500);
+      const p1 = { runs: await page.evaluate(() => window.__runs), play: await state(), label: await btn.asElement().evaluate((b) => b.querySelector('.loopctl__text').textContent) };
+      check(`loop ${path} ${sel} @${w}: the pause button stops it`, p1.runs === r0 && p1.play === 'end' && /Abspielen|Play/.test(p1.label), JSON.stringify(p1));
+      await page.reload({ waitUntil: 'load' });
+      await page.evaluate((x) => document.querySelector(x).scrollIntoView({ block: 'center' }), sel);
+      const still = await waitRun(3000);
+      check(`loop ${path} ${sel} @${w}: still paused after a reload`, still == null, String(still));
+      await page.evaluate(() => sessionStorage.clear());
+      await page.close();
     }
-    const r = await page.evaluate(() => ({ runs: window.__runs, max: window.__maxRunning }));
-    const card = r.runs.problems || 0;
-    check('autoplay: the problem chain plays, at most twice in four visits', card >= 1 && card <= 2, JSON.stringify(r.runs));
-    check('autoplay: one demo at a time', r.max <= 1, String(r.max));
-    // The start frame is set only off-screen: on entry the card is never «solved» first.
+  }
+  // The hero line and the 404 scene: they play from CSS on load, then loop; away and back runs again.
+  for (const [path, sel] of [['/', '.hero__flow'], ['/diese-seite-gibt-es-nicht/', '.nf__scene']]) {
+    const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+    await page.goto(base + path, { waitUntil: 'load' });
+    await page.waitForTimeout(9000);
+    const runs1 = await page.evaluate((x) => document.querySelector(x).dataset.play, sel);
+    await page.evaluate(() => scrollTo(0, document.body.scrollHeight));
+    await page.waitForTimeout(700);
     await page.evaluate(() => scrollTo(0, 0));
+    let again = null;
+    for (let i = 0; i < 30 && again == null; i += 1) { if (await page.evaluate((x) => document.querySelector(x).dataset.play, sel) === 'run') again = i * 0.1; await page.waitForTimeout(100); }
+    check(`loop ${path} ${sel}: loops after its first play and runs again after coming back`, runs1 != null && again != null, `${runs1}, ${again}`);
     await page.close();
   }
-  // 6. Three cards in view: they play one after the other and all end solved.
+
+  log('marquees, slider, run-log, faq, quotes, reveals');
+  // 6. The marquees move and have their buttons.
   {
     const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
     await page.goto(base + '/', { waitUntil: 'load' });
+    for (const sel of ['.tools__in', '.aboutrow']) {
+      await page.evaluate((x) => document.querySelector(x).scrollIntoView({ block: 'center' }), sel);
+      await page.waitForTimeout(900);
+      const x1 = await page.evaluate((x) => document.querySelector(`${x} .marquee__track`).getBoundingClientRect().left, sel);
+      await page.waitForTimeout(1200);
+      const x2 = await page.evaluate((x) => document.querySelector(`${x} .marquee__track`).getBoundingClientRect().left, sel);
+      const btn = await page.evaluate((x) => { const b = document.querySelector(`${x} > .loopctl`); const r = b.getBoundingClientRect(); return !b.hidden && r.width >= 44 && r.height >= 44; }, sel);
+      check(`${sel}: the row moves and has its pause button`, x2 < x1 - 2 && btn, `${x1} -> ${x2}, button ${btn}`);
+    }
+    // Price pictures: each one runs during the chain.
+    await page.evaluate(() => document.querySelector('.tariff').scrollIntoView({ block: 'center' }));
+    const seen = new Set();
+    for (let i = 0; i < 70; i += 1) {
+      for (const k of await page.evaluate(() => [...document.querySelectorAll('.tariff .viz, .tariff .days')].filter((v) => v.dataset.play === 'run').map((v) => v.className))) seen.add(k);
+      await page.waitForTimeout(200);
+    }
+    check('price pictures: every picture moves (checkout, list, launch, One-Pager, KI, 30 days)', seen.size >= 6, [...seen].join(' | '));
+    await page.close();
+  }
+  // The slider: mouse, touch and keys.
+  for (const touch of [false, true]) {
+    const ctx = await browser.newContext({ viewport: touch ? { width: 390, height: 844 } : { width: 1440, height: 900 }, hasTouch: touch, isMobile: touch });
+    const page = await ctx.newPage();
+    await page.goto(base + '/', { waitUntil: 'load' });
+    await page.locator('.ba').scrollIntoViewIfNeeded();
+    await page.waitForSelector('.ba.is-ready');
+    await page.waitForTimeout(1600);
+    const b = await page.locator('.ba__stage').boundingBox();
+    const y = b.y + b.height / 2;
+    if (touch) {
+      const id = 7;
+      const ev = (type, x) => page.locator('.ba__stage').dispatchEvent(type, { pointerId: id, pointerType: 'touch', isPrimary: true, button: 0, buttons: type === 'pointerup' ? 0 : 1, clientX: x, clientY: y, bubbles: true });
+      await ev('pointerdown', b.x + b.width * 0.5);
+      await ev('pointermove', b.x + b.width * 0.8);
+      await ev('pointerup', b.x + b.width * 0.8);
+    } else {
+      await page.mouse.move(b.x + b.width * 0.5, y);
+      await page.mouse.down();
+      await page.mouse.move(b.x + b.width * 0.8, y, { steps: 6 });
+      await page.mouse.up();
+    }
+    const v1 = Number(await page.locator('.ba__range').inputValue());
+    check(`slider: ${touch ? 'touch' : 'mouse'} drag moves the divider`, v1 >= 75, String(v1));
+    if (!touch) {
+      await page.locator('.ba__range').focus();
+      await page.keyboard.press('ArrowLeft');
+      await page.keyboard.press('ArrowLeft');
+      const v2 = Number(await page.locator('.ba__range').inputValue());
+      const now = await page.locator('.ba__range').getAttribute('aria-valuenow');
+      check('slider: arrow keys move it, aria-valuenow follows', v2 === v1 - 2 && now === String(v2), `${v1} -> ${v2}, ${now}`);
+    }
+    await page.close();
+    await ctx.close();
+  }
+  // The run-log: nothing loads before the click; the click opens it and it plays.
+  {
+    const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+    const files = [];
+    page.on('request', (r) => { if (/runlog\.(css|js)/.test(r.url())) files.push(r.url()); });
+    await page.goto(base + '/', { waitUntil: 'load' });
+    await walk(page);
+    await page.waitForTimeout(800);
+    check('run-log: its CSS and JS do not load before the click', files.length === 0, files.join(' '));
+    await page.locator('.runlog__open').scrollIntoViewIfNeeded();
+    await page.locator('.runlog__open').click();
+    await page.waitForSelector('.runlog', { timeout: 5000 });
+    let ran = false;
+    for (let i = 0; i < 40 && !ran; i += 1) { ran = await page.evaluate(() => document.querySelector('.runlog').dataset.play === 'run'); await page.waitForTimeout(100); }
+    const exp = await page.locator('.runlog__open').getAttribute('aria-expanded');
+    check('run-log: the button opens it (aria-expanded) and it plays', ran && exp === 'true' && files.length === 2, `${ran} ${exp} ${files.length}`);
+    await page.close();
+  }
+  // FAQ: Logik types (three dots), then the answer.
+  {
+    const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+    await page.goto(base + '/', { waitUntil: 'load' });
+    await page.locator('#faq').scrollIntoViewIfNeeded();
+    await page.waitForSelector('.faqbox.is-chat');
+    await page.locator('#faq summary').nth(3).click();
+    await page.waitForTimeout(150);
+    const dots = await page.evaluate(() => Boolean(document.querySelector('.faq__chat .bubble--typing .faq__dots')) && !document.querySelector('.faq__chat .bubble--iva'));
+    const logik = await page.evaluate(() => document.querySelector('.faq__chat .bubble--typing .faq__logik')?.getBoundingClientRect().width || 0);
+    await page.waitForTimeout(1000);
+    const answer = await page.evaluate(() => document.querySelector('.faq__chat .bubble--iva')?.textContent || '');
+    check('FAQ: Logik (40 px) types with three dots, then the answer', dots && logik >= 39.5 && answer.length > 20, `${dots} ${logik} ${answer.slice(0, 30)}`);
+    const listFits = await page.evaluate(() => { const l = document.querySelector('.faq__list'); return l.scrollHeight <= l.clientHeight + 1 && getComputedStyle(l).overflowY !== 'auto'; });
+    check('FAQ: every question visible (no inner scroll box)', listFits, String(listFits));
+    await page.close();
+  }
+  // References: the quote stack is fully spread (no overlap) when its centre is at 60 %.
+  {
+    const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+    await page.goto(base + '/', { waitUntil: 'load' });
+    await walk(page);
+    await page.addStyleTag({ content: SHOW_ALL });
+    const box = await page.evaluate(() => { const r = document.querySelector('.qcards').getBoundingClientRect(); return { top: r.top + scrollY, h: r.height }; });
+    await page.evaluate((v) => scrollTo(0, v), box.top + box.h / 2 - 900 * 0.6);
     await page.waitForTimeout(1500);
-    await page.evaluate(() => document.querySelector('.pcs').scrollIntoView({ block: 'center' }));
-    await page.waitForTimeout(16500);
-    const frames = await page.evaluate(() => [...document.querySelectorAll('.fixdemo')].map((f) => f.dataset.play));
-    check('problem cards: all three play in turn and end solved', frames.every((f) => f === 'end'), frames.join(','));
-    const pairs = await page.evaluate(() => [...document.querySelectorAll('.fixdemo')].map((f) => {
-      const was = f.querySelector('.fd-was');
-      return was && getComputedStyle(was).visibility === 'visible' && getComputedStyle(was).opacity === '1';
-    }));
-    check('problem cards: the end frame keeps the quiet «before» next to the «after»', pairs.every(Boolean), pairs.join(','));
-    const text = await page.evaluate(() => document.querySelector('.fixdemo--rate .fixdemo__art').innerText);
-    check('problem card 3 ends «Rate 2 fehlgeschlagen» -> «Rate 2 bezahlt»', /Rate 2 fehlgeschlagen[\s\S]*Rate 2 bezahlt/.test(text), text);
+    const rects = await page.evaluate(() => [...document.querySelectorAll('.qcard')].map((c) => { const r = c.getBoundingClientRect(); return [r.left, r.right]; }));
+    const apart = rects.every((r, i) => i === 0 || r[0] >= rects[i - 1][1] - 12);
+    check('references: the quote stack is spread and readable at 60 %', apart, JSON.stringify(rects.map((r) => r.map(Math.round))));
+    await page.close();
+  }
+  // Reveals (Stage 6e): jump to the bottom, then up step by step: every [data-enter] is visible.
+  for (const w of [1440, 390]) {
+    const page = await browser.newPage({ viewport: { width: w, height: 860 } });
+    await page.goto(base + '/', { waitUntil: 'load' });
+    await page.waitForTimeout(2500);
+    await page.evaluate(() => scrollTo(0, document.body.scrollHeight));
+    await page.waitForTimeout(800);
+    const H = await page.evaluate(() => document.body.scrollHeight);
+    for (let yy = H; yy > 0; yy -= 700) { await page.evaluate((v) => scrollTo(0, v), yy); await page.waitForTimeout(250); }
+    await page.addStyleTag({ content: SHOW_ALL });
+    await page.waitForTimeout(900);
+    const hidden = await page.evaluate(() => [...document.querySelectorAll('[data-enter], [data-enter="stagger"] > *')].filter((el) => {
+      let o = 1;
+      for (let e = el; e && e.nodeType === 1; e = e.parentElement) o *= Number(getComputedStyle(e).opacity);
+      const lines = [...el.querySelectorAll('[class*="line"]')].filter((l) => l.parentElement?.style.overflow === 'clip' || getComputedStyle(l.parentElement).overflow === 'clip');
+      const pushed = lines.some((l) => l.getBoundingClientRect().top - l.parentElement.getBoundingClientRect().top > 2);
+      return o < 0.99 || pushed;
+    }).map((el) => el.id || el.className || el.tagName));
+    check(`reveals @${w}: nothing stays hidden after a jump to the bottom and back up`, hidden.length === 0, hidden.join(', '));
     await page.close();
   }
   return results;

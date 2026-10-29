@@ -529,7 +529,7 @@ export default {
       intro: 'Kurze Antworten auf das, was ich am häufigsten gefragt werde.',
       also: 'Auch gefragt:',
       missing: 'Frage nicht dabei? → Schreiben Sie mir',
-      related: [[3, 6], [2, 6], [6, 1], [0, 4], [3, 5], [6, 0], [2, 0]],
+      related: [[3, 7], [2, 6], [6, 1], [0, 4], [3, 5], [7, 0], [2, 4], [2, 0]],
     },
     contact: {
       builderLabel: 'Kurzes Briefing',
@@ -578,6 +578,22 @@ export default {
   // the video, the KI demo on its service page and the 404. Shortened from the texts above, nothing new.
   s6: {
     replay: 'Nochmal ansehen',
+    // Stage 6e (29.10.2026): what comes back.
+    e: {
+      open: 'Ablauf selbst ausprobieren',
+      short: ['Anmeldung', 'Automation', 'Drin'],
+      aboutLabel: 'Worauf Sie sich verlassen können',
+      aboutRow: ['Festpreise', 'Testkontakte vor dem Livegang', 'Dokumentation und Übergabe', 'Deutsch und Englisch', 'Antwort in 2 Werktagen', '30-Tage-Zusage', 'Gewerbe in Österreich'],
+    },
+    // Stage 6c (29.10.2026): every looping demo has one pause button; its name says which demo.
+    c: {
+      pause: 'Pause',
+      play: 'Abspielen',
+      step: 'Nächster Schritt',
+      names: { runlog: 'Ablauf-Demo', about: 'Leiste in «Über mich»', hero: 'Ablauf oben', problems: 'Beispiele zu den Problemen', card: 'Beispiel', prices: 'Bilder der Pakete', process: 'Ablauf der Zusammenarbeit', tools: 'Werkzeug-Leiste', ki: 'KI-Beispiel', notFound: 'Bild der Leitung' },
+      days: ['Tag 1', 'Tag 14', 'Tag 30'],
+      faqTyping: 'Logik schreibt',
+    },
     // Stage 6b (29.10.2026): corrections after the review.
     b: {
       before: { signup: '45/47', spam: 'Spam', rate: 'Rate 2 fehlgeschlagen' },

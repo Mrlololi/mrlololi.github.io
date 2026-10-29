@@ -1,7 +1,7 @@
 import { esc, accent, fill, extLink } from './util.mjs';
 import { KI_EXAMPLES } from '../content/ki-examples.mjs';
 import { calcSavings, formatResult } from '../../assets/js/calc.js';
-import { replayButton } from './hero.mjs';
+import { loopButton } from './hero.mjs';
 
 // Highlight types (blue, pink, lavender, peach).
 export const KI_TYPES = ['anliegen', 'fehlt', 'stimmung', 'dringlichkeit'];
@@ -62,7 +62,7 @@ export function kiDemo(t, config, { live = {} } = {}) {
 </div>
 <div class="kidemo__controls">
 <button class="kidemo__other btn btn--secondary btn--sm" type="button">${esc(d.other)}</button>
-${replayButton(t)}
+${loopButton(t, 'ki')}
 </div>
 <details class="kidemo__bg">
 <summary>${esc(d.background)}</summary>

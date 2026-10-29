@@ -7,7 +7,7 @@ import { demo } from './loops.js';
 export function init({ reduceMotion }) {
   const scene = document.querySelector('.nf__scene');
   if (!scene) return;
-  demo(scene, { duration: 2800, loadMs: Math.max(0, 2800 - performance.now()) });
+  demo(scene, { duration: 2800, rest: 3500, loadMs: Math.max(0, 2800 - performance.now()), button: document.querySelector('.nf__ctl .loopctl') });
   if (reduceMotion.matches) return;
   const pulse = scene.querySelector('.nf__pulse');
   let last = 0;
