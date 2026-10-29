@@ -1,4 +1,5 @@
 import { esc, fill, formatDate } from './util.mjs';
+import { mascotSvg } from '../../assets/js/mascot-art.js';
 
 const mail = (config) => `<a href="mailto:${esc(config.contact_email)}">${esc(config.contact_email)}</a>`;
 
@@ -61,25 +62,55 @@ ${sections}
 </article>`;
 }
 
-// One 404.html serves both languages: German first, the English line below it.
-// Stage 5: both lists of service pages, so a wrong link still leads somewhere useful.
-const serviceList = (t) => `<ul class="doc__links" role="list">
-${t.services.pages.map((p) => `<li><a href="${p.path}">${esc(p.h1)}</a></li>`).join('\n')}
-</ul>`;
+// Stage 6: one 404.html for both languages (German first, English below), noindex (layout).
+// The scene: Logik looks at a flow line broken between two nodes, Lösung walks in and snaps it
+// together once, Live waves; then everything rests. The HTML is the repaired still (no JS, reduced
+// motion); assets/js/notfound.js plays it once from the broken frame. Hovering or focusing a link
+// card sends one pulse along the repaired line.
+// A mascot nested in the scene's SVG at x (66 units wide, about 56 px at a 340 px wide scene).
+const nfMascot = (i, emo, cls, x) => `<g class="nf__m nf__m--${cls}">${mascotSvg(i, emo, `class="mascot" data-base="${emo}" x="${x}" y="78" width="66" height="68"`, '-404')}</g>`;
 
-export function notFound(t, alt) {
-  return `<article class="doc">
-<h1>${esc(t.notFound.h1)}</h1>
-<p class="lead">${esc(t.notFound.text)}</p>
-<p><a class="btn btn--primary" href="${t.paths.home}">${esc(t.notFound.link)}</a></p>
-<section aria-labelledby="nf-services">
-<h2 id="nf-services">${esc(t.services.ui.notFound)}</h2>
-${serviceList(t)}
-</section>
-<p class="doc__alt" lang="${alt.lang}">${esc(alt.notFound.h1)} ${esc(alt.notFound.text)} <a href="${alt.paths.home}">${esc(alt.notFound.link)}</a></p>
-<section lang="${alt.lang}" aria-labelledby="nf-services-alt">
-<h2 id="nf-services-alt">${esc(alt.services.ui.notFound)}</h2>
-${serviceList(alt)}
+function nfScene(t) {
+  const [a, b] = t.s6.notFound.nodes;
+  return `<div class="nf__scene demo" data-demo="404" aria-hidden="true">
+<svg class="nf__line" viewBox="0 0 400 150" focusable="false">
+<path class="nf__wire nf__wire--a" d="M138 40H186"/><path class="nf__wire nf__wire--b" d="M214 40H262"/>
+<path class="nf__fixed" pathLength="1" d="M138 40H262"/>
+<path class="nf__pulse" pathLength="100" d="M138 40H262"/>
+<g class="nf__node nf__node--a"><rect x="8" y="20" width="130" height="40" rx="14"/><text x="73" y="45" text-anchor="middle">${esc(a)}</text></g>
+<g class="nf__node nf__node--b"><rect x="262" y="20" width="130" height="40" rx="14"/><text x="327" y="45" text-anchor="middle">${esc(b)}</text></g>
+${nfMascot(0, 'think', 'logik', 150)}${nfMascot(1, 'joy', 'loesung', 214)}${nfMascot(2, 'wave', 'live', 300)}
+</svg>
+</div>`;
+}
+
+function nfLinks(t, ratgeber) {
+  const n = t.s6.notFound;
+  const links = [
+    [t.paths.home, n.home],
+    ...t.services.pages.map((p) => [p.path, p.short]),
+    ...(ratgeber && t.ratgeber ? [[t.ratgeber.path, t.ratgeber.h1]] : []),
+    [`${t.paths.home}#projects`, n.projects],
+    [`${t.paths.home}#contact`, n.contact],
+  ];
+  return `<ul class="nf__links" role="list" aria-label="${esc(n.label)}">
+${links.map(([href, label]) => `<li><a class="nf__card card" href="${href}">${esc(label)}</a></li>`).join('\n')}
+</ul>`;
+}
+
+export function notFound(t, alt, { ratgeber = false } = {}) {
+  return `<article class="nf">
+<div class="nf__in">
+${nfScene(t)}
+<p class="nf__caption">${esc(t.s6.b.repaired)}</p>
+<h1>${esc(t.s6.notFound.h1)}</h1>
+<p class="lead">${esc(t.s6.notFound.lead)}</p>
+${nfLinks(t, ratgeber)}
+</div>
+<section class="nf__in nf__alt" lang="${alt.lang}" aria-labelledby="nf-alt">
+<h2 id="nf-alt">${esc(alt.s6.notFound.h1)}</h2>
+<p class="lead">${esc(alt.s6.notFound.lead)}</p>
+${nfLinks(alt, false)}
 </section>
 </article>`;
 }

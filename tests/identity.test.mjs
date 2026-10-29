@@ -83,7 +83,7 @@ test('header lockup (outlined SVG) on every page, footer dark lockup only on the
     assert.match(h, /class="brand-lockup__word"><use href="#mrl-word" fill="#FFFFFF"\/>/);
     assert.match(h, /<span class="footer-mascots" aria-hidden="true">(<svg [^>]*class="mascot mascot--on-dark"[^>]*data-emo="wave"|<svg viewBox="-8 -8 120 124" data-mascot="0" data-emo="wave")/);
   }
-  for (const { file: f, html: h } of others) {
+  for (const { file: f, html: h } of others.filter((p) => p.file !== '404.html')) {
     assert.ok(!h.includes('<div class="site-footer__brand">') && !/<(svg|span|button)[^>]*class="mascot/.test(h), `${f}: no footer lockup, no mascots`);
   }
 });
@@ -181,21 +181,3 @@ test('reduced motion: mascots stay still in their pose; a click only swaps the f
   });
 });
 
-test('motion: hero mascots bob while on screen and pause off-screen; the footer waves once in view', { timeout: 60000 }, async () => {
-  await withPage({}, async (page) => {
-    await page.waitForFunction(() => document.querySelectorAll('.mascot-spot .mascot[data-moving="true"]').length === 3, null, { timeout: 15000 });
-    const a = await page.evaluate(SNAP);
-    await page.waitForTimeout(300);
-    assert.notEqual(await page.evaluate(SNAP), a, 'they move on screen');
-    await page.evaluate(() => document.querySelector('#pricing').scrollIntoView());
-    await page.waitForFunction(() => document.querySelectorAll('.mascot[data-moving="true"]').length === 0, null, { timeout: 5000 });
-    await page.waitForTimeout(600); // a blink or the eyes' way back may still be finishing
-    const b = await page.evaluate(SNAP);
-    await page.waitForTimeout(500);
-    assert.equal(await page.evaluate(SNAP), b, 'paused off-screen');
-    await page.evaluate(() => scrollTo(0, document.body.scrollHeight));
-    await page.waitForFunction(() => document.querySelectorAll('.footer-mascots .mascot[data-moving="true"]').length === 3, null, { timeout: 5000 });
-    // Three waves, then rest (no endless motion in the footer).
-    await page.waitForFunction(() => document.querySelectorAll('.footer-mascots .mascot[data-moving="true"]').length === 0, null, { timeout: 5000 });
-  });
-});

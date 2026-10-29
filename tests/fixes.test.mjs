@@ -57,8 +57,8 @@ test('dates come from the content, not from the build day', () => {
   assert.match(html('datenschutz/index.html'), /Stand: 28\.10\.2026/); // Language Starter section, 28.10.2026
   assert.equal(sitemap(config, new Date('2027-03-01')), sitemap(config, new Date('2026-01-01')));
   assert.equal((sitemap(config).match(/<lastmod>2026-10-21<\/lastmod>/g) || []).length, 0, 'Impressum and legal notice moved to 29.10 (Legal 29.10.2026)');
-  assert.equal((sitemap(config).match(/<lastmod>2026-10-28<\/lastmod>/g) || []).length, 10, 'home (Stage 4), privacy and six service pages (Stage 5)');
-  assert.equal((sitemap(config).match(/<lastmod>2026-10-29<\/lastmod>/g) || []).length, 6, 'spam and ActiveCampaign pages (Iva 29.10.2026), Impressum and legal notice (Legal 29.10.2026)');
+  assert.equal((sitemap(config).match(/<lastmod>2026-10-28<\/lastmod>/g) || []).length, 4, 'privacy and the website pages (Stage 6 moved home, KI and launch to 29.10)');
+  assert.equal((sitemap(config).match(/<lastmod>2026-10-29<\/lastmod>/g) || []).length, 12, 'spam and ActiveCampaign (Iva), Impressum and legal notice (Legal), home, KI and launch (Stage 6)');
 });
 
 test('external links open in a new tab and say so', () => {
@@ -84,8 +84,8 @@ test('footers: same structure and the agreed copyright lines', () => {
 test('performance hints: three font preloads incl. the accent, module preloads, one .calc__fields rule set', () => {
   assert.equal((deHome.match(/<link rel="preload"[^>]*as="font"/g) || []).length, 3);
   assert.match(deHome, /<link rel="preload" href="\/assets\/fonts\/eb-garamond-italic-500\.woff2" as="font" type="font\/woff2" crossorigin>/);
-  // finder.js now comes with the lazy chat module (Stage 4).
-  for (const m of ['demos', 'calc', 'loops']) assert.match(deHome, new RegExp(`<link rel="modulepreload" href="/assets/js/${m}\\.js"`));
+  // Stage 6: the demo controller; the rest comes lazily with its section.
+  for (const m of ['loops']) assert.match(deHome, new RegExp(`<link rel="modulepreload" href="/assets/js/${m}\\.js"`));
   const css = readFileSync(root('assets/css/main.css'), 'utf8');
   assert.equal((css.match(/^\.calc__fields \{/gm) || []).length, 1);
 });
@@ -96,12 +96,10 @@ test('wording: new strings exist in DE and EN alike', () => {
     assert.ok(t.contact.free.includes('20'));
     assert.ok(!/Cart-Open|cart open|\(DSGVO\)\.|\(GDPR\)\.|Strecke/.test(JSON.stringify(t)));
   }
-  assert.match(deHome, /<ul class="item__bullets" role="list">(<li>[^<]+<\/li>){5}<\/ul>/);
   assert.match(deHome, /<p class="contact__free">Das Erstgespräch \(20 Minuten\) ist kostenlos\.<\/p>/);
   assert.match(deHome, /„\[…\] halten wir Iva Tsatskrialashvili/);
   assert.match(deHome, /Übersetzung: „Er war außerdem sehr anpassungsfähig/);
   assert.match(enHome, /subject=Enquiry%20via%20mrlololi\.com/);
-  assert.match(deHome, /<input class="ba__range" type="range" min="0" max="100" step="1" value="50" aria-valuetext="Vorher 50 %" data-valuetext="Vorher \{v\} %">/);
 });
 
 // WCAG relative luminance and contrast ratio for #RRGGBB.
@@ -113,7 +111,7 @@ const ratio = (a, b) => { const [hi, lo] = [lum(a), lum(b)].sort((x, y) => y - x
 
 test('«Freigegeben» button: white on the darker green reaches 4.5:1', () => {
   const css = readFileSync(root('assets/css/main.css'), 'utf8');
-  const bg = css.match(/\.kidemo__actions \.btn\[aria-disabled="true"\] \{[^}]*background: (#[0-9A-Fa-f]{6})/)[1];
+  const bg = css.match(/\.kidemo__approve\.is-done \{[^}]*background: (#[0-9A-Fa-f]{6})/)[1];
   assert.equal(bg, '#3F7531');
   assert.ok(ratio('#FFFFFF', bg) >= 4.5, ratio('#FFFFFF', bg).toFixed(2));
 });

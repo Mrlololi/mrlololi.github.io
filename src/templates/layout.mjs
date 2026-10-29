@@ -4,8 +4,9 @@ import { alternatesFor, jsonLd } from './seo.mjs';
 import { lockup, wordmark, iconTight, taglineHtml, WHITE } from './brand.mjs';
 import { footerMascots } from './mascots.mjs';
 
-// Source of truth stays assets/css/main.css; comments and indentation are stripped when inlined.
-const css = readFileSync(new URL('../../assets/css/main.css', import.meta.url), 'utf8')
+// Sources of truth: assets/css/components.css (tokens and shared components, Stage 6) and
+// assets/css/main.css; comments and indentation are stripped when inlined.
+const css = ['components', 'main'].map((f) => readFileSync(new URL(`../../assets/css/${f}.css`, import.meta.url), 'utf8')).join('\n')
   .replace(/\/\*[\s\S]*?\*\//g, '')
   .replace(/\n\s*/g, '\n')
   .replace(/\n{2,}/g, '\n')
@@ -62,7 +63,7 @@ export function layout({ t, other, config, page, main, ratgeber = false }) {
     // main.js in turn loads the GSAP files after load (home pages only).
     `<script type="module">requestAnimationFrame(()=>requestAnimationFrame(()=>import('/assets/js/main.js')))</script>`,
     // main.js's own imports are fetched early at low priority, so they are ready when it runs.
-    ...['demos', 'calc', 'loops', ...(isHome ? ['mascots', 'mascot-art'] : [])].map((m) => `<link rel="modulepreload" href="/assets/js/${m}.js" fetchpriority="low">`),
+    ...['loops', ...(isHome ? ['mascots', 'mascot-art'] : [])].map((m) => `<link rel="modulepreload" href="/assets/js/${m}.js" fetchpriority="low">`),
     // Stage 5: the business and Iva (#business, #iva) on every page, plus the page's own nodes.
     jsonLd(t, config, page.ld || []),
   ]);

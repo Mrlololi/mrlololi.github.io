@@ -1,7 +1,8 @@
 import { esc, accent, extLink, fill } from './util.mjs';
 import { mascotScene } from './mascots.mjs';
-import { loopButton } from './hero.mjs';
+import { ctaStrip } from './pricing.mjs';
 import { briefMail } from '../../assets/js/pure.js';
+import { MASCOTS, mascotSvg } from '../../assets/js/mascot-art.js';
 
 // Small pictograms for the four steps (assets/js/sections.js animates each once the line reaches it).
 const ICONS = {
@@ -12,8 +13,8 @@ const ICONS = {
 };
 const ICON_KEYS = ['cal', 'offer', 'blocks', 'key'];
 
-// «So arbeiten wir zusammen» (Stage 4): the steps on a line that draws with the scroll (vertical on
-// phones); each number fills with its pastel when the line reaches it. HTML: line full, all filled.
+// «So arbeiten wir zusammen»: the four steps on one line, static (Stage 6: moved up under the prices,
+// text unchanged), closed by the «Nicht sicher, was passt?» strip.
 export function processSteps(t) {
   const steps = t.process.steps
     .map(
@@ -36,6 +37,7 @@ export function processSteps(t) {
 ${steps}
 </ol>
 </div>
+${ctaStrip(t)}
 </div>
 </section>`;
 }
@@ -47,11 +49,9 @@ function brandLine(text) {
   return esc(text).replace(/\p{L}+/gu, (word) => (w < 3 ? `<span class="${cls[w++]}">${word.slice(0, 2)}</span>${word.slice(2)}` : word));
 }
 
-export function about(t, config) {
+// Stage 6: two short paragraphs, the photo and the four-point timeline (no tool rows, no projects link).
+export function about(t) {
   const s = t.s4.about;
-  const tools = t.about.tools.split(', ');
-  const half = Math.ceil(tools.length / 2);
-  const row = (items, k) => `<div class="trow-wrap"><div class="trow__track"><ul class="trow trow--${k}" role="list">${items.map((x) => `<li>${esc(x)}</li>`).join('')}</ul><ul class="trow__copy" role="list" aria-hidden="true">${items.map((x) => `<li>${esc(x)}</li>`).join('')}</ul></div></div>`;
   return `<section class="section about bg-peach edge" id="about" aria-labelledby="about-title">
 <div class="wrap about__grid">
 <div class="about__photo">
@@ -66,57 +66,43 @@ export function about(t, config) {
 </div>
 <div class="about__text">
 <h2 id="about-title" data-enter="lines">${accent(t.about.h2)}</h2>
-<p class="about__line">${brandLine(s.line)}${mascotScene('about', [[0, 'idle', 'trio__logik'], [1, 'joy', 'trio__loesung'], [2, 'wave', 'trio__live']])}</p>
+<p class="about__line">${brandLine(s.line)}</p>
 ${t.about.paragraphs.map((p) => `<p data-enter="lines">${esc(p)}</p>`).join('\n')}
 <ol class="path" role="list" aria-label="${esc(t.about.pathLabel)}">
 ${t.about.path.map((stop, i) => `<li class="path__stop"><span class="path__label">${esc(stop)}</span><p class="path__story" id="path-story-${i + 1}">${esc(s.stories[i])}</p></li>`).join('\n')}
 </ol>
-<div class="trows" role="group" aria-label="${esc(s.toolsLabel)}">
-${row(tools.slice(0, half), 1)}
-${row(tools.slice(half), 2)}
-${loopButton(t)}
-</div>
-<p class="about__project">${extLink(config.projects_url, esc(t.about.projects), t)}</p>
 </div>
 </div>
 </section>`;
 }
 
-// FAQ (Stage 4): one box of fixed height. Left: title (Logik thinks next to it), intro, the questions
-// scrolling inside. Right (faqbox.js, wide screens): question bubble, answer, «Auch gefragt» chips,
-// «Frage nicht dabei?». Phones: accordion. Without JS: <details>.
+// FAQ (Stage 6): all questions visible as <details>, no inner scroll box. On the first open of a
+// question Logik (40 px, the only mascot that small) reads it for half a second, then the answer
+// fades in (assets/js/faq.js); its height is reserved, so nothing jumps. Reopening is instant.
 export function faq(t) {
   const s = t.s4.faq;
   const items = t.faq.items
     .map(
       (f, i) => `<details class="faq__item" id="faq-${i + 1}">
 <summary>${esc(f.q)}</summary>
-<p>${esc(f.a)}</p>
+<div class="faq__a"><p>${esc(f.a)}</p></div>
 </details>`
     )
     .join('\n');
+  const reader = mascotSvg(0, 'think', `class="mascot mascot--${MASCOTS[0].key} faq__logik" data-base="think" focusable="false"`, '-faq');
   return `<section class="section faq bg-lav edge" id="faq" aria-labelledby="faq-title">
-<div class="wrap">
-<div class="faqbox" data-also="${esc(s.also)}" data-related="${esc(JSON.stringify(s.related))}" data-typing="${esc(t.faq.typing)}" data-photo="/assets/img/avatar-88.webp">
-<div class="faqbox__side">
-<h2 id="faq-title">${accent(t.faq.h2)}${mascotScene('faq', [[0, 'think']])}</h2>
+<div class="wrap faq__grid">
+<div class="faq__side">
+<h2 id="faq-title">${accent(t.faq.h2)}</h2>
 <p class="faq__intro">${esc(s.intro)}</p>
+<a class="faq__more" href="#contact">${esc(s.missing)}</a>
+</div>
 <div class="faq__list">
 ${items}
 </div>
-<a class="faq__more" href="#contact">${esc(s.missing)}</a>
-</div>
-</div>
+<template id="faq-reader"><span class="faq__reading" aria-hidden="true">${reader}<span class="faq__dots"><i></i><i></i><i></i></span></span></template>
 </div>
 </section>`;
-}
-
-export function notDo(t) {
-  return `<aside class="notdo bg-peach">
-<div class="wrap">
-<p class="notdo__text"><strong>${esc(t.notdo.label)}</strong> ${esc(t.notdo.text)}</p>
-</div>
-</aside>`;
 }
 
 // Kontakt (Stage 4). Left: a fill-in brief («Ich verkaufe [..] über [..]. Es hakt bei [..]. Start: [..].»)
@@ -135,14 +121,14 @@ export function contact(t, config) {
   };
   const sentence = fill(esc(c.sentence), Object.fromEntries(Object.keys(c.fields).map((k) => [k, select(k)])));
   const booking = config.booking_url ? `<a class="btn btn--ghost" href="${esc(config.booking_url)}" rel="noopener">${esc(t.contact.booking)}</a>` : '';
-  const thanks = `<div class="thanks">${mascotScene('contact', [[2, 'wave']])}<div class="thanks__text"><p>${esc(c.thanks)}</p><p class="thanks__fallback">${fill(esc(c.fallback), { email: `<span class="thanks__mail">${esc(email)}</span>` })} <button class="thanks__copy" type="button" data-done="${esc(c.copied)}">${esc(c.copy)}</button></p></div></div>`;
+  const thanks = `<div class="thanks">${mascotScene('contact', [[2, 'wave']])}<div class="thanks__text"><p>${esc(c.thanks)}</p></div></div>`;
   return `<section class="section contact bg-pink edge" id="contact" aria-labelledby="contact-title">
 <div class="wrap contact__grid">
 <div class="contact__main">
 <h2 class="contact__title" id="contact-title">${accent(t.contact.h2)}</h2>
 <p class="lead">${esc(t.contact.text)}</p>
 <p class="contact__free">${esc(t.contact.free)}</p>
-<div class="brief" role="group" aria-labelledby="brief-label" data-sentence="${esc(c.sentence)}" data-greeting="${esc(c.greeting)}" data-closing="${esc(c.closing)}">
+<div class="brief" role="group" aria-labelledby="brief-label" data-sentence="${esc(c.sentence)}" data-sentence-open="${esc(c.sentenceOpen)}" data-via-open="${esc(c.viaOpen)}"${c.lower ? ' data-lower' : ''} data-greeting="${esc(c.greeting)}" data-closing="${esc(c.closing)}">
 <p class="brief__label" id="brief-label">${esc(c.builderLabel)}</p>
 <p class="brief__sentence">${sentence}</p>
 <div class="brief__preview">
@@ -153,8 +139,14 @@ export function contact(t, config) {
 <p class="brief__note small">${esc(c.note)}</p>
 </div>
 <div class="contact__actions">
-<a class="btn btn--primary brief__open" href="${esc(subjectOnly)}" data-mail="${esc(email)}" data-subject="${esc(c.subject)}" data-magnet>${esc(c.open)}</a>
+<a class="btn btn--primary brief__open" href="${esc(subjectOnly)}" data-mail="${esc(email)}" data-subject="${esc(c.subject)}">${esc(c.open)}</a>
+<button class="btn btn--secondary contact__copy" type="button" hidden data-done="${esc(t.s6.contact.copied)}">${esc(t.s6.contact.copy)}</button>
 ${booking}
+</div>
+<div class="contact__fallback">
+<p class="small">${fill(esc(t.s6.contact.fallback), { email: `<a href="${esc(subjectOnly)}">${esc(email)}</a>` })}</p>
+<button class="btn btn--secondary btn--sm contact__copymail" type="button" hidden data-mail="${esc(email)}" data-done="${esc(t.s6.contact.copied)}">${esc(t.s6.b.copyMail)}</button>
+<label class="contact__manual" hidden><span class="small">${esc(t.s6.contact.manual)}</span><textarea readonly rows="6"></textarea></label>
 </div>
 <div class="contact__thanks" role="status"></div>
 <template id="contact-thanks">${thanks}</template>

@@ -30,9 +30,11 @@ async function variants(input, name, sizes, { crop } = {}) {
 
 await mkdir(out, { recursive: true });
 // Über mich: Hallstatt photo 900x1200 -> 4:5 crop (a little sky trimmed), shown at 340 px.
-await variants(src('about-hallstatt.jpg'), 'about', [[340, 425], [680, 850]], { crop: { left: 0, top: 75, width: 900, height: 1125 } });
+// Stage 6b (29.10.2026): new photo (green plants, smiling), 1440x1920 -> 4:5 with the face in the upper third.
+await variants(src('about-iva-2026-10-29.jpg'), 'about', [[340, 425], [680, 850]], { crop: { left: 0, top: 100, width: 1440, height: 1800 } });
 // Hero chip and FAQ chat avatar: the smiling face, square, shown round at 44 / 36 px.
-await variants(src('avatar-laecheln.jpg'), 'avatar', [[44, 44], [88, 88]]);
+// Stage 6b: the new square face crop (Iva 29.10.2026; the old one is in src/_alt/stage5/img/).
+await variants(src('avatar-iva-2026-10-29.jpg'), 'avatar', [[44, 44], [88, 88]]);
 // Case 1 screenshot 1440x900 (16:10), shown at up to 640 px.
 await variants(src('case-alexandrafry.png'), 'case-alexandrafry', [[640, 400], [1280, 800]]);
 // Stage 4: the long capture that scrolls inside the browser frame (capture-case.mjs --long).

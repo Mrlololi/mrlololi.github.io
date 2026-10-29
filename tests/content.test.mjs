@@ -23,10 +23,10 @@ for (const [name, t] of [['de', de], ['en', en]]) {
     assert.equal(t.pricing.groups.length, 3);
     assert.deepEqual(t.pricing.groups.map((g) => g.items.length), [2, 3, 1]);
     assert.equal(t.process.steps.length, 4);
-    assert.equal(t.faq.items.length, 7);
+    assert.equal(t.faq.items.length, 8); // Stage 6b: «Sind Sie am Launch-Tag erreichbar?»
     assert.equal(t.about.path.length, 4);
     assert.equal(t.hero.flow.nodes.length, 4);
-    assert.equal(t.about.paragraphs.length, 3);
+    assert.equal(t.about.paragraphs.length, 2); // Stage 6: two short paragraphs
     assert.equal(t.calc.inputs.length, 4);
     assert.deepEqual(t.calc.inputs.map((i) => i.value), [120, 6, 60, 25]);
   });
@@ -57,14 +57,14 @@ for (const [name, t] of [['de', de], ['en', en]]) {
 }
 
 test('de: hero copy is verbatim', () => {
-  assert.equal(de.hero.h1, 'Die Technik hinter Ihrem Kurs-Launch. *Gebaut, getestet, betreut.*');
+  assert.equal(de.hero.h1, 'Die Technik hinter Ihrem *Kurs-Launch.*'); // Stage 6 brief
   assert.equal(de.contact.h2, 'Erzählen Sie mir, *was hakt.*');
   assert.equal(de.lang, 'de');
   assert.equal(de.locale, 'de-AT');
 });
 
 test('en: hero copy is verbatim', () => {
-  assert.equal(en.hero.h1, 'The tech behind your course launch. *Built, tested, maintained.*');
+  assert.equal(en.hero.h1, 'The tech behind your *course launch.*'); // Stage 6
   assert.equal(en.contact.h2, "Tell me *what's not working.*");
   assert.equal(en.lang, 'en');
   assert.equal(en.locale, 'en-GB');
@@ -86,5 +86,6 @@ test('prices as decided by Iva (16.10.2026)', () => {
   assert.equal(de.pricing.hourly, 'Alles außerhalb der Pakete: 45 € pro Stunde.');
   assert.equal(de.pricing.groups[1].items[2].extra.label, 'Optional: Pflege 90 € pro Monat');
   assert.equal(de.faq.items[0].q, 'Muss ich mich mit Technik auskennen?');
-  assert.equal(de.faq.items[4].a, 'Ich bekomme einen eigenen Benutzer in Ihren Konten, nie Ihr Passwort. Nach Projektende entfernen Sie meinen Zugang, und ich lösche alle Kopien Ihrer Daten.');
+  // Stage 6b: softer, without absolute promises.
+  assert.equal(de.faq.items[4].a, 'Ich bekomme einen eigenen Benutzerzugang statt Ihres Passworts. Nach Projektende entfernen Sie meinen Zugang, und ich lösche die Kopien Ihrer Daten, die bei mir liegen.');
 });

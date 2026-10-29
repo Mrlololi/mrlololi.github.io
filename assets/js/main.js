@@ -1,61 +1,41 @@
-// mrlololi: navigation, header, price details, KI-Rechner; loads GSAP and the section modules.
-// Progressive enhancement: the HTML/CSS already shows every final state; the modules only
-// rewind and play them back. Without GSAP (or with reduced motion) nothing moves.
-// Stage 4: motion.js (docking, entrances, hover) and one module per demo section, imported when
-// the section comes within a viewport (story.js, which pins, as soon as GSAP is there).
-import { calcSavings, formatResult, toNumber } from './calc.js';
-import { initRibbon, initMarquee, initBeforeAfter, initSpeed, initFlowNodes } from './demos.js';
+// mrlololi: navigation, header, the hero line; loads GSAP (home pages) and the section modules.
+// Progressive enhancement: the HTML/CSS already shows every end frame; the modules only reset
+// and play them (through loops.js). Without JS, without GSAP or with reduced motion nothing moves.
+// Stage 6: each demo module is imported when its section comes within a viewport.
+import { demo } from './loops.js';
 
 const root = document.documentElement;
-// GSAP is loaded after the first paint (see loadMotion), so these are filled in later.
-let gsap;
-let ScrollTrigger;
-let hasGsap = false;
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
 const locale = root.lang === 'de' ? 'de-AT' : 'en-GB';
-// The calculator's count-up tween; the first keystroke kills it, so it never overwrites the reader's numbers.
-let calcCountUp = null;
-// matchMedia runs a handler only while at least one condition matches, so both
-// widths are listed; otherwise phones without reduced motion would get no handler at all.
-const CONDITIONS = {
-  isDesktop: '(min-width: 800px)',
-  isMobile: '(max-width: 799.98px)',
-  reduceMotion: '(prefers-reduced-motion: reduce)',
-};
+const CONDITIONS = { isDesktop: '(min-width: 800px)' };
 
 initNav();
 initHeader();
-initCalculator();
-initPriceDetails();
-initRibbon();
-initMarquee();
 initFlowNodes();
-initSpeed();
+initHeroLine();
 const home = Boolean(document.querySelector('.hero'));
-// Mascots (home pages): their own module, so the legal pages never load it.
-const mascots = document.querySelector('.mascot') ? import('./mascots.js').then((m) => { m.initMascots(); return m; }).catch(() => null) : null;
-// Resolves to { gsap, ScrollTrigger } once the animation code is there, or null (no library).
+// Mascots: their own module, so pages without mascots never load it.
+if (document.querySelector('.mascot')) import('./mascots.js').then((m) => m.initMascots()).catch(report);
+// Resolves to { gsap, ScrollTrigger, refresh } once the animation code is there, or null.
 const motion = home ? loadMotion() : Promise.resolve(null);
 const ctx = { motion, reduceMotion, locale };
-// The story pins, so it is set up as soon as GSAP is there (a pin added later above the reader would make the page jump).
-initBeforeAfter(motion);
-if (home) motion.then(() => import('./story.js')).then((m) => m.init(ctx)).catch(report);
 lazy('#problems', () => import('./fixdemos.js'));
-lazy('.tariff__group--1', () => import('./prices.js'));
+lazy('[data-video]', () => import('./video.js'));
 lazy('.kidemo', () => import('./kidemo.js'));
-lazy('#finder', () => import('./chat.js'));
-lazy('#process', () => import('./sections.js'));
-lazy('#faq', () => import('./faqbox.js'));
+lazy('#ki-rechner', () => import('./kicalc.js'));
+lazy('.path', () => import('./sections.js'));
+lazy('#faq', () => import('./faq.js'));
 lazy('#contact', () => import('./contact.js'));
+lazy('.nf__scene', () => import('./notfound.js'), true);
 
 function report(e) { console.error(e); }
 
-// Imports a section module when its section is within one viewport of the screen.
-function lazy(sel, load) {
+// Imports a section module when its section is within one viewport of the screen (now: at once).
+function lazy(sel, load, now = false) {
   const el = document.querySelector(sel);
   if (!el) return;
   const go = () => load().then((m) => m.init(ctx)).then(() => motion.then((mo) => mo?.refresh())).catch(report);
-  if (!('IntersectionObserver' in window)) { go(); return; }
+  if (now || !('IntersectionObserver' in window)) { go(); return; }
   const io = new IntersectionObserver((entries) => {
     if (entries.some((e) => e.isIntersecting)) { io.disconnect(); go(); }
   }, { rootMargin: '100% 0px' });
@@ -63,7 +43,7 @@ function lazy(sel, load) {
 }
 
 // The self-hosted GSAP files are fetched only after the page has loaded and painted, so the
-// headline (LCP) never waits for 50 KB of animation code on a slow phone.
+// headline (LCP) never waits for animation code on a slow phone.
 async function loadMotion() {
   await new Promise((resolve) => {
     const idle = () => ('requestIdleCallback' in window ? requestIdleCallback(() => resolve(), { timeout: 1200 }) : setTimeout(resolve, 200));
@@ -76,12 +56,9 @@ async function loadMotion() {
   } catch {
     return null; // no animation library: everything stays in its final state
   }
-  ({ gsap, ScrollTrigger } = window);
-  hasGsap = Boolean(gsap && ScrollTrigger);
-  if (!hasGsap) return null;
+  const { gsap, ScrollTrigger } = window;
+  if (!gsap || !ScrollTrigger) return null;
   gsap.registerPlugin(ScrollTrigger);
-  initCalcCountUp();
-  mascots?.then((m) => m?.startMascotMotion(gsap));
   const { initMotion } = await import('./motion.js');
   return initMotion(gsap, ScrollTrigger, loadScript);
 }
@@ -93,6 +70,27 @@ function loadScript(src) {
     s.onload = resolve;
     s.onerror = reject;
     document.head.append(s);
+  });
+}
+
+/* ---------- Hero line: plays from CSS on load (4.2 s), then again on re-entry via loops.js ---------- */
+function initHeroLine() {
+  const flow = document.querySelector('.hero__flow');
+  if (!flow) return;
+  demo(flow, { duration: 4300, loadMs: Math.max(0, 4300 - performance.now()), frames: 2 });
+}
+
+/* ---------- Hero flow: each node explains its step in one line under the diagram ---------- */
+function initFlowNodes() {
+  const buttons = [...document.querySelectorAll('.hf__btn')];
+  if (!buttons.length) return;
+  const show = (i) => buttons.forEach((b, k) => {
+    b.setAttribute('aria-expanded', String(k === i));
+    document.getElementById(b.getAttribute('aria-controls')).classList.toggle('is-active', k === i);
+  });
+  buttons.forEach((b, i) => {
+    b.addEventListener('click', () => show(i));
+    b.addEventListener('focus', () => show(i));
   });
 }
 
@@ -136,110 +134,4 @@ function initHeader() {
     if (!ticking) { ticking = true; requestAnimationFrame(update); }
   }, { passive: true });
   header.addEventListener('focusin', () => header.classList.remove('is-hidden'));
-}
-
-/* ---------- KI-Rechner: the example numbers count up once in view ---------- */
-function initCalcCountUp() {
-  const form = document.getElementById('ki-rechner');
-  if (!form || reduceMotion.matches) return;
-  const out = (name) => form.querySelector(`[data-out="${name}"]`);
-  const value = (name) => Number(form.elements[name].value) || 0;
-  ScrollTrigger.create({
-    trigger: form, start: 'top 85%', once: true,
-    onEnter: () => {
-      if (form.dataset.touched) return; // the reader already typed: show their numbers
-      const target = calcSavings({ emailsPerWeek: value('emails'), minutesPerReply: value('minutes'), sharePercent: value('share'), hourlyRate: value('rate') });
-      const k = { v: 0 };
-      const render = () => {
-        const f = formatResult({ hoursPerMonth: target.hoursPerMonth * k.v, savedHours: target.savedHours * k.v, savedEur: target.savedEur * k.v }, form.dataset.locale || locale);
-        out('h').textContent = f.h;
-        out('savedH').textContent = f.savedH;
-        out('savedEur').textContent = f.savedEur;
-      };
-      calcCountUp = gsap.fromTo(k, { v: 0 }, { v: 1, duration: 1.2, ease: 'power2.out', onUpdate: render, onComplete: () => { calcCountUp = null; } });
-    },
-  });
-}
-
-/* ---------- Price details: height animation on open and close ---------- */
-function initPriceDetails() {
-  for (const details of document.querySelectorAll('details.price-details')) {
-    const summary = details.querySelector('summary');
-    const body = details.querySelector('.price-details__body');
-    summary.addEventListener('click', (e) => {
-      if (!hasGsap || reduceMotion.matches) return; // native, instant toggle
-      e.preventDefault();
-      const closing = details.classList.contains('is-closing');
-      gsap.killTweensOf(body);
-      if (!details.open || closing) {
-        const from = closing ? body.offsetHeight : 0;
-        details.classList.remove('is-closing');
-        details.open = true;
-        gsap.fromTo(body, { height: from }, { height: 'auto', duration: 0.3, ease: 'power2.out', clearProps: 'height' });
-      } else {
-        details.classList.add('is-closing');
-        gsap.fromTo(body, { height: body.offsetHeight }, {
-          height: 0, duration: 0.25, ease: 'power2.in',
-          onComplete: () => {
-            details.open = false;
-            details.classList.remove('is-closing');
-            gsap.set(body, { clearProps: 'height' });
-          },
-        });
-      }
-    });
-  }
-}
-
-/* ---------- KI-Rechner ---------- */
-function initCalculator() {
-  const form = document.getElementById('ki-rechner');
-  if (!form) return;
-  const fmtLocale = form.dataset.locale || locale;
-  const field = (name) => form.elements[name];
-  const outs = {
-    h: form.querySelector('[data-out="h"]'),
-    savedH: form.querySelector('[data-out="savedH"]'),
-    savedEur: form.querySelector('[data-out="savedEur"]'),
-  };
-  const result = form.querySelector('.calc__result');
-  const live = document.getElementById('calc-live');
-  const read = () => {
-    const v = (name) => toNumber(field(name).value, { min: Number(field(name).min), max: Number(field(name).max) });
-    return { emailsPerWeek: v('emails'), minutesPerReply: v('minutes'), sharePercent: v('share'), hourlyRate: v('rate') };
-  };
-  const render = (values, target = outs) => {
-    const f = formatResult(values, fmtLocale);
-    target.h.textContent = f.h;
-    target.savedH.textContent = f.savedH;
-    target.savedEur.textContent = f.savedEur;
-  };
-  // One announcement with the final numbers, not one per animation frame.
-  const finalSentence = (values) => {
-    const copy = result.cloneNode(true);
-    render(values, {
-      h: copy.querySelector('[data-out="h"]'),
-      savedH: copy.querySelector('[data-out="savedH"]'),
-      savedEur: copy.querySelector('[data-out="savedEur"]'),
-    });
-    return copy.textContent.replace(/\s+/g, ' ').trim();
-  };
-
-  const shown = calcSavings(read());
-  let liveTimer;
-  root.classList.add('calc-ready');
-  form.addEventListener('submit', (e) => e.preventDefault());
-  form.addEventListener('input', () => {
-    form.dataset.touched = '1';
-    if (calcCountUp) { calcCountUp.kill(); calcCountUp = null; }
-    const target = calcSavings(read());
-    if (hasGsap && !reduceMotion.matches) {
-      gsap.to(shown, { ...target, duration: 0.4, ease: 'power2.out', overwrite: true, onUpdate: () => render(shown) });
-    } else {
-      Object.assign(shown, target);
-      render(shown);
-    }
-    clearTimeout(liveTimer);
-    liveTimer = setTimeout(() => { live.textContent = finalSentence(target); }, 400);
-  });
 }

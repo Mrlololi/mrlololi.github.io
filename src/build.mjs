@@ -10,7 +10,7 @@ import { layout } from './templates/layout.mjs';
 import { home } from './templates/home.mjs';
 import { impressum, privacy, notFound } from './templates/legal.mjs';
 import { robots, sitemap, cname, manifest } from './templates/seo.mjs';
-import { kiData } from './templates/ki.mjs';
+import { videoLd } from './templates/video.mjs';
 import { servicePage, serviceLd, serviceTitle } from './templates/service.mjs';
 import { ratgeberIndex, ratgeberArticle, blogPostingLd } from './templates/ratgeber.mjs';
 import { loadArticles } from './ratgeber.mjs';
@@ -30,7 +30,7 @@ export function pages(cfg = config, { articles = loadArticles(), live = {} } = {
     const ctx = { t, other, config: cfg, ratgeber };
     out.push({
       file: fileFor(t.paths.home),
-      html: layout({ ...ctx, page: { key: 'home', path: t.paths.home, altPath: other.paths.home, ...t.meta }, main: home(t, cfg) }),
+      html: layout({ ...ctx, page: { key: 'home', path: t.paths.home, altPath: other.paths.home, ...t.meta, ld: t.s6.video ? [videoLd(t, cfg)] : [] }, main: home(t, cfg) }),
     });
     out.push({
       file: fileFor(t.paths.legal),
@@ -73,7 +73,7 @@ export function pages(cfg = config, { articles = loadArticles(), live = {} } = {
     html: layout({
       t: de, other: en, config: cfg, ratgeber,
       page: { key: '404', path: '/404.html', altPath: en.paths.home, noindex: true, ...de.notFoundMeta },
-      main: notFound(de, en),
+      main: notFound(de, en, { ratgeber }),
     }),
   });
   return out;
@@ -107,9 +107,9 @@ export async function build({ outDir = root, probe = true, quiet = false } = {})
   // Pages that are no longer built (a Ratgeber switched off again) must not stay online.
   const ratgeber = config.ratgeber_live && articles.length > 0;
   if (!ratgeber) await rm(path.join(outDir, 'ratgeber'), { recursive: true, force: true });
-  // Stage 4: the 20 KI-demo examples per language, fetched by assets/js/kidemo.js on first view.
-  await mkdir(path.join(outDir, 'assets/data'), { recursive: true });
-  for (const t of [de, en]) await writeFile(path.join(outDir, `assets/data/ki-${t.lang}.json`), JSON.stringify(kiData(t)), 'utf8');
+  // Stage 6: the 20 KI examples live only on /Webprojekte/ki-kundenservice/; the three on the KI
+  // service page are inlined, so the old JSON files go.
+  await rm(path.join(outDir, 'assets/data'), { recursive: true, force: true });
   await writeFile(path.join(outDir, 'robots.txt'), robots(config, { webprojekteSitemap: live.webprojekteSitemap }), 'utf8');
   await writeFile(path.join(outDir, 'sitemap.xml'), sitemap(config, ratgeber ? articles : []), 'utf8');
   await writeFile(path.join(outDir, 'site.webmanifest'), manifest(), 'utf8');

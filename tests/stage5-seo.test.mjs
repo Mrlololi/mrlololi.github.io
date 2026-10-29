@@ -178,12 +178,13 @@ test('prices on the service pages equal the home page', () => {
     const pk = items(s.t);
     for (const id of s.packages) {
       const price = pk[id].price;
-      assert.ok(home.includes(`<p class="item__price">${price}</p>`), `home shows ${price}`);
+      assert.ok(home.includes(`<p class="item__price">${price}</p>`) || home.includes(`<p class="row__price">${price}</p>`), `home shows ${price}`);
       assert.ok(h.includes(`<span class="svc-price__value">${price}</span>`), `${s.path} shows ${price}`);
     }
     // No other euro amount than the ones on the home page.
     const homeAmounts = new Set(home.replace(/<[^>]+>/g, ' ').match(/€\s?\d+(?:[.,]\d+)*|\d+(?:[.,]\d+)*\s?€/g));
-    const main = h.slice(h.indexOf('<main'), h.indexOf('</main>')).replace(/<[^>]+>/g, ' ');
+    // Stage 6: the calculator's example result (KI page) is a saving, not a price.
+    const main = h.slice(h.indexOf('<main'), h.indexOf('</main>')).replace(/<form class="calc[\s\S]*?<\/form>/, '').replace(/<[^>]+>/g, ' ');
     for (const a of main.match(/€\s?\d+(?:[.,]\d+)*|\d+(?:[.,]\d+)*\s?€/g) || []) assert.ok(homeAmounts.has(a), `${s.path}: ${a} not on the home page`);
   }
 });
@@ -226,9 +227,10 @@ test('service pages: structure (problem, what I do, steps, example, 3 to 5 FAQ, 
   assert.ok(by(de, 'launch').includes(de.refs.case2.text));
   assert.ok(by(en, 'launch').includes(en.refs.case2.text));
   assert.match(by(de, 'spam'), /<svg class="svc-spam"[^>]*role="img"/);
-  assert.ok(by(de, 'ki').includes('href="/#ki-demo"'));
-  assert.ok(by(en, 'ki').includes('href="/en/#ki-demo"'));
-  assert.match(byFile['index.html'], /<section class="kidemo" id="ki-demo"/);
+  // Stage 6: the one KI demo and the calculator live on the KI page, not on the home page.
+  assert.match(by(de, 'ki'), /<section class="kidemo card demo" id="ki-demo"/);
+  assert.match(by(en, 'ki'), /<section class="kidemo card demo" id="ki-demo"/);
+  assert.ok(!byFile['index.html'].includes('id="ki-demo"'));
   // The portfolio demo link appears only when the URL answered 200 at build time.
   assert.ok(!by(de, 'ki').includes(config.ki_portfolio_url));
   const live = pages(config, { live: { kiPortfolio: true } });
@@ -268,11 +270,12 @@ test('service pages: own OG image, canonical, hreflang and x-default (DE)', () =
 test('home: each package card links «Mehr zu …» to its page; problem links stay on the packages', () => {
   for (const t of [de, en]) {
     const h = byFile[fileOf(t.paths.home)];
-    for (const [id, key] of Object.entries(t.services.byPackage)) {
+    // Stage 6b: Technik-Check and Betreuung have no «Mehr …» link; the others in the right case.
+    for (const [id, key] of Object.entries(t.services.byPackage).filter(([id]) => !['check', 'support'].includes(id))) {
       const p = t.services.pages.find((x) => x.key === key);
-      const card = tag(h, new RegExp(`(<li class="item item--${id}"[\\s\\S]*?</li>\\n(?=<li|</ul>))`));
+      const card = tag(h, new RegExp(`(<li class="(?:item item--${id} card card--lift|row card)" id="pkg-${id}"[\\s\\S]*?</li>\\n(?=<li|</ul>))`));
       assert.ok(card, `${t.lang} ${id}`);
-      assert.ok(card.includes(`<a class="item__more" href="${p.path}">${t.services.ui.more} ${p.short}</a>`), `${t.lang} ${id}`);
+      assert.ok(card.includes(`__more" href="${p.path}">${p.moreLabel ?? `${t.services.ui.more} ${p.short}`}</a>`), `${t.lang} ${id}`);
     }
     for (const item of t.problems.items) assert.ok(h.includes(`<a class="pc__link" href="#pkg-${item.pkg}">`));
     assert.equal(unesc(titleOf(h)), t.meta.title, 'home title stays');
@@ -344,10 +347,12 @@ test('sitemap contains exactly the live pages, with lastmod from page_dates', ()
     .sort();
   assert.deepEqual(locs, live);
   assert.equal(locs.length, 16);
-  for (const k of ['launch', 'ki', 'website']) assert.equal(config.page_dates[k], '2026-10-28', k);
+  assert.equal(config.page_dates.website, '2026-10-28');
+  // Stage 6 (29.10.2026): the KI demo and calculator moved to the KI page, the video to the launch page.
+  for (const k of ['launch', 'ki']) assert.equal(config.page_dates[k], '2026-10-29', k);
   // Iva's corrections of 29.10.2026 changed these two pages.
   for (const k of ['spam', 'activecampaign']) assert.equal(config.page_dates[k], '2026-10-29', k);
-  assert.match(xml, new RegExp(`<loc>${SITE}/en/course-launch-tech/</loc>\\s*<lastmod>2026-10-28</lastmod>\\s*<xhtml:link rel="alternate" hreflang="de" href="${SITE}/launch-technik/"/>`));
+  assert.match(xml, new RegExp(`<loc>${SITE}/en/course-launch-tech/</loc>\\s*<lastmod>2026-10-29</lastmod>\\s*<xhtml:link rel="alternate" hreflang="de" href="${SITE}/launch-technik/"/>`));
 });
 
 test('robots.txt names the Webprojekte sitemap only when it answered 200', () => {
@@ -388,6 +393,7 @@ test('service copy: no long dashes, no emoji, no «Partner», «Sie» in German'
     assert.ok(!/[–—]/.test(text), `${s.path}: long dash`);
     assert.ok(!EMOJI.test(text), `${s.path}: emoji`);
     assert.ok(!/\bPartner\b/.test(text), `${s.path}: «Partner»`);
-    if (s.t === de) assert.ok(!/\b(du|dich|dein|deine|dir)\b/.test(text.replace(/<[^>]+>/g, ' ')), `${s.path}: du-Form`);
+    const prose = text.replace(/<section class="kidemo[\s\S]*?<\/section>/, '').replace(/<[^>]+>/g, ' ');
+    if (s.t === de) assert.ok(!/\b(du|dich|dein|deine|dir)\b/.test(prose), `${s.path}: du-Form`);
   }
 });

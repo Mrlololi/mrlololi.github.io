@@ -1,7 +1,11 @@
 import { esc, accent, absUrl, extLink, quoted, keepHyphenated } from './util.mjs';
+import { kiDemo, calculator } from './ki.mjs';
+import { videoFigure, videoLd } from './video.mjs';
 
-// Stage 5 (28.10.2026): one light template for the five service pages (DE and EN). No mascots and
-// no demo scripts here: the pages show prices and must stay fast (Lighthouse mobile >= 95).
+// Stage 5 (28.10.2026): one light template for the five service pages (DE and EN). No mascots here:
+// the pages show prices and must stay fast (Lighthouse mobile >= 95). Stage 6: the KI page carries
+// the one KI demo and the calculator, the German launch page the video under the promise; their
+// scripts load only when they come near (main.js).
 
 export const packagesOf = (t) => Object.fromEntries(t.pricing.groups.flatMap((g) => g.items).map((it) => [it.id, it]));
 
@@ -36,7 +40,9 @@ export function serviceLd(t, config, s) {
       provider: { '@id': absUrl(config, '/#business') },
       areaServed: ['AT', 'DE', 'CH'].map((name) => ({ '@type': 'Country', name })),
       offers: offers.length === 1 ? offers[0] : offers,
+      ...(s.key === 'launch' && t.s6.video ? { subjectOf: { '@id': videoLd(t, config)['@id'] } } : {}),
     },
+    ...(s.key === 'launch' && t.s6.video ? [videoLd(t, config)] : []),
     {
       '@type': 'BreadcrumbList',
       itemListElement: [
@@ -114,13 +120,8 @@ ${quote(t, c1.quote)}
 </article>`;
   }
   if (s.example === 'spam') return `<figure class="svc-figure">${spamSvg(t)}</figure>`;
-  if (s.example === 'ki') {
-    const portfolio = live.kiPortfolio ? `\n<li>${extLink(config.ki_portfolio_url, esc(L.kiPortfolio), t)}</li>` : '';
-    return `<p>${esc(L.kiDemoText)}</p>
-<ul class="svc-links" role="list">
-<li><a class="text-link" href="${t.paths.home}#ki-demo">${esc(L.kiDemo)}</a></li>${portfolio}
-</ul>`;
-  }
+  if (s.example === 'ki') return `${kiDemo(t, config, { live })}
+${calculator(t)}`;
   return '';
 }
 
@@ -163,6 +164,13 @@ ${pkgs.map(priceChip).join('\n')}
 <p><a class="btn btn--primary" href="${esc(mailto(t, config, pkgs[0]))}">${esc(t.pricing.cta)}<span class="sr-only">: ${esc(pkgs[0].name)}</span></a></p>
 </div>
 </section>
+${s.key === 'launch' && t.s6.video ? `<section class="svc-sec svc-video bg-pist edge" aria-labelledby="svc-video">
+<div class="wrap svc-sec__in">
+<h2 id="svc-video">${accent(t.s6.video.h2)}</h2>
+<p class="svc-text">${esc(t.s6.video.text)}</p>
+${videoFigure(t)}
+</div>
+</section>` : ''}
 ${section('problem', 'bg-pink', L.problem, `<p class="svc-text">${s.problem.map(esc).join(' ')}</p>${s.explain ? `
 <aside class="svc-explain" aria-labelledby="svc-explain">
 <h3 id="svc-explain">${esc(s.explain.title)}</h3>

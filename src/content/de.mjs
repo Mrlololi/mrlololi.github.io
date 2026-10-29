@@ -49,23 +49,24 @@ export default {
     example: 'Beispiel',
   },
 
+  // Stage 6: four items, «Projekte» is the compact row of own projects.
   nav: [
     { label: 'Leistungen', href: '#services' },
-    { label: 'Preise', href: '#pricing' },
-    { label: 'Referenzen', href: '#references' },
+    { label: 'Projekte', href: '#projects' },
     { label: 'Über mich', href: '#about' },
     { label: 'Kontakt', href: '#contact' },
   ],
 
   hero: {
-    h1: 'Die Technik hinter Ihrem Kurs-Launch. *Gebaut, getestet, betreut.*',
-    lead: 'Ich verbinde Formulare, ActiveCampaign, Zapier, Checkout und Mitgliederbereich so, dass zum Verkaufsstart nichts bricht und keine Anmeldung verloren geht.',
-    primary: 'Erstgespräch anfragen',
+    eyebrow: 'Für Online-Kursanbieter:innen im DACH-Raum',
+    h1: 'Die Technik hinter Ihrem *Kurs-Launch.*',
+    lead: 'Ich verbinde Formular, E-Mail-Tool, Zahlung und Kursplattform und teste alles vorher, damit beim Verkaufsstart keine Anmeldung verloren geht. Feste Preise ab 190 €.',
+    primary: 'Kostenloses Erstgespräch',
     secondary: 'Preise ansehen',
-    small: 'Aus Graz, remote im ganzen DACH-Raum. Deutsch, Englisch, Russisch und Georgisch.',
-    proof: 'Seit 2023 für Onlineshops, seit 2026 für Online-Kursanbieter:innen in Deutschland, der Schweiz, Österreich und Italien · Gewerbe in Österreich',
+    micro: '20 Minuten · Antwort in 2 Werktagen',
+    trust: 'Aus Graz, remote im DACH-Raum · Marketing-Automation seit 2023 · Gewerbe in Österreich',
     ribbon: 'Anmeldung eingegangen · E-Mail bestätigt · Tag gesetzt · Zahlung erhalten · Zugang frei · Willkommens-Mail angekommen ·',
-    flow: {"label":"Ablauf: Formular, ActiveCampaign, Zahlung, Kurs offen","nodes":["Formular","ActiveCampaign","Zahlung","Kurs offen"],"lines":["Die Anmeldung kommt herein und wird geprüft.","Kontakt, Tag und Willkommens-Mail werden gesetzt.","Zahlung oder Rate wird erkannt, die Rechnung geht raus.","Der Zugang wird freigeschaltet, ohne Handarbeit."],"chip":"Hallo, ich bin Iva"},
+    flow: {"label":"Ablauf: Formular, ActiveCampaign, Zahlung, Kurs offen","nodes":["Formular","ActiveCampaign","Zahlung","Kurs offen"],"lines":["Die Anmeldung kommt herein und wird geprüft.","Kontakt und Tag werden gesetzt, die Willkommens-Mail wird verschickt.","Zahlung oder Rate wird erkannt, die Rechnung geht raus.","Der Zugang wird freigeschaltet, ohne Handarbeit."],"chip":"Hallo, ich bin Iva"},
   },
 
   tools: {
@@ -127,7 +128,7 @@ export default {
 
   problems: {
     h2: "Wo es bei Launches *meistens hakt*",
-    intro: "Drei Fehler sehe ich immer wieder. Jeder kostet Anmeldungen, Umsatz oder Nerven.",
+    intro: "Typische Stellen, an denen Launches haken.",
     slider: {
       label: 'Vorher / Nachher ziehen',
       before: 'Chaos',
@@ -137,7 +138,7 @@ export default {
       nodes: ['Formular', 'ActiveCampaign', 'Zapier', 'Stripe', 'Kurs'],
     },
     items: [
-      { problem: "Anmeldungen verschwinden zwischen Formular und CRM.", fix: "Ich baue Abläufe, die jede Anmeldung prüfen und bei Fehlern automatisch neu senden, auch wenn viele gleichzeitig kommen.", pkg: "check" },
+      { problem: "Anmeldungen verschwinden zwischen Formular und CRM.", fix: "Ich baue Abläufe, die jede Anmeldung prüfen und bei Fehlern automatisch neu senden, auch wenn viele gleichzeitig kommen.", pkg: "launch" },
       { problem: "Launch-Mails landen im Spam.", fix: "SPF, DKIM und DMARC richtig einrichten und die Zustellung testen.", pkg: "quick" },
       { problem: "Die Ratenzahlung ist fehlgeschlagen, der Zugang bleibt trotzdem offen.", fix: "Automatische Erinnerungen, Sperre und Freischaltung, abgestimmt mit Quaderno, Somba oder Stripe.", pkg: "launch" },
     ],
@@ -154,7 +155,7 @@ export default {
             "id": "quick",
             "name": "Quick-Fix",
             "price": "190 € fix",
-            "summary": "Eine konkrete Aufgabe in bis zu 4 Stunden: DNS- und E-Mail-Einträge (SPF, DKIM, DMARC), defekte Links oder Formulare, Termine oder eine Automation."
+            "summary": "Eine konkrete Aufgabe mit bis zu 4 Stunden Aufwand: DNS- und E-Mail-Einträge (SPF, DKIM, DMARC), defekte Links oder Formulare, Termine oder eine Automation."
           },
           {
             "id": "check",
@@ -370,7 +371,7 @@ export default {
 
   refs: {
     study: {"title":"Fallbeispiel: Online-Kursanbieterin","before":"Vorher","after":"Nachher"},
-    h2: '*Referenzen*',
+    h2: 'Arbeit und *Referenzen*',
     case1: {
       domain: 'alexandrafry.ch',
       titleRest: ', Website für eine Executive-Coachin in Bern',
@@ -405,10 +406,10 @@ export default {
   about: {
     h2: 'Über *mich*',
     photoAlt: 'Iva Tsatskrialashvili',
+    // Stage 6: two short paragraphs (shortened from the three before, nothing new).
     paragraphs: [
-      'Ich bin Iva Tsatskrialashvili (er/ihm) und lebe in Graz. Ich habe Informationstechnologie und Mobile Software Development studiert und studiere jetzt berufsbegleitend Marketing & Sales an der FH CAMPUS 02. Deshalb verstehe ich beides: den Funnel und die API dahinter.',
-      'Seit 2023 arbeite ich für Onlineshops, seit 2026 auch für Online-Kursanbieter:innen, in Deutschland, der Schweiz, Italien und Österreich. Ich spreche Deutsch und Englisch auf C1-Niveau, Russisch und Georgisch als Muttersprachen und Spanisch auf B1.',
-      'Mein Gewerbe ist in Österreich angemeldet. Sie bekommen ordentliche Rechnungen und einen festen Ansprechpartner.',
+      'Ich bin Iva Tsatskrialashvili (er/ihm) und lebe in Graz. Ich habe Informationstechnologie studiert und studiere jetzt berufsbegleitend Marketing & Sales an der FH CAMPUS 02. So verstehe ich beides: den Funnel und die API dahinter.',
+      'Seit 2023 arbeite ich für Kund:innen in Deutschland, der Schweiz, Italien und Österreich, zuerst für Onlineshops, seit 2026 auch für eine Online-Kursanbieterin. Mein Gewerbe ist in Österreich angemeldet: ordentliche Rechnungen, ein fester Ansprechpartner.',
     ],
     tools: 'ActiveCampaign, Zapier, Make, Google Apps Script, Leadpages, WordPress, Wix, Shopware, Stripe, Quaderno, Somba, GrooveHQ, Canva, HTML, CSS, JavaScript, Python, SQL',
     path: ['Tbilisi', 'DACH-Vertrieb ab 2020', 'Erasmus+ in 11 Ländern', 'Graz seit 2025'],
@@ -426,8 +427,9 @@ export default {
       { q: 'Arbeiten Sie auch remote?', a: 'Ja. Fast alle Projekte laufen remote im DACH-Raum. In Graz komme ich gern persönlich vorbei.' },
       { q: 'Wie schnell können Sie starten?', a: 'Quick-Fixes meist innerhalb einer Woche. Projekte nach Absprache, weil ich bewusst nur wenige gleichzeitig annehme.' },
       { q: 'Brauche ich bestimmte Tools?', a: 'Nein. Ich arbeite mit dem, was Sie schon haben, und schlage einen Wechsel nur vor, wenn er sich rechnet.' },
-      { q: 'Wie gehen Sie mit Daten um?', a: 'Ich bekomme einen eigenen Benutzer in Ihren Konten, nie Ihr Passwort. Nach Projektende entfernen Sie meinen Zugang, und ich lösche alle Kopien Ihrer Daten.' },
+      { q: 'Wie gehen Sie mit Daten um?', a: 'Ich bekomme einen eigenen Benutzerzugang statt Ihres Passworts. Nach Projektende entfernen Sie meinen Zugang, und ich lösche die Kopien Ihrer Daten, die bei mir liegen.' },
       { q: 'Übernehmen Sie auch den Kundensupport?', a: 'Nein. Ich baue die Technik, die Ihren Support entlastet, zum Beispiel Antwortentwürfe für wiederkehrende Fragen.' },
+      { q: 'Sind Sie am Launch-Tag erreichbar?', a: 'Ja, nach Absprache: Den Launch-Tag und ein Zeitfenster legen wir vorher fest. Vorher testen wir jeden Zahlungsfall im Testmodus.' },
       { q: 'Was, wenn mein Problem in kein Paket passt?', a: 'Schreiben Sie mir kurz, was nicht funktioniert. Sie erfahren den Preis, bevor ich anfange.' },
     ],
   },
@@ -493,7 +495,7 @@ export default {
       typing: 'tippt…',
       ask: 'Anfragen',
       lines: {
-        quick: 'Eine konkrete Aufgabe, in bis zu 4 Stunden erledigt.',
+        quick: 'Eine konkrete Aufgabe, Aufwand bis zu 4 Stunden.',
         check: 'Ein Tag Analyse, danach wissen Sie, wo es hakt.',
         launch: 'Zum Verkaufsstart ist alles startklar.',
         website: 'Ein One-Pager, fertig veröffentlicht.',
@@ -532,6 +534,10 @@ export default {
     contact: {
       builderLabel: 'Kurzes Briefing',
       sentence: 'Ich verkaufe {what} über {via}. Es hakt bei {issue}. Start: {start}.',
+      // Stage 6b: «noch offen» as platform gets its own sentence; after «Hallo Iva,» the mail goes on in lower case.
+      sentenceOpen: 'Ich verkaufe {what}. Die Plattform ist noch offen. Es hakt bei {issue}. Start: {start}.',
+      viaOpen: 'noch offen',
+      lower: true,
       fields: {
         what: ['Was', ['einen Onlinekurs', 'ein Coaching-Programm', 'eine Mitgliedschaft', 'einen Workshop', 'digitale Produkte']],
         via: ['Über', ['Leadpages', 'WordPress', 'Wix', 'Somba', 'Skool', 'eine eigene Website', 'noch offen']],
@@ -565,6 +571,125 @@ export default {
       quick: { title: 'Checkout', broken: 'Link defekt', fixed: 'Alles läuft', pay: 'Bezahlen' },
       check: ['ActiveCampaign', 'Zapier/Make', 'Zahlung', 'Landingpages', 'Double-Opt-In'],
       recommended: 'Empfohlener Start',
+    },
+  },
+
+  // Stage 6 (29.10.2026, «Klarer und kürzer»): one message per block. Copy for the new home blocks,
+  // the video, the KI demo on its service page and the 404. Shortened from the texts above, nothing new.
+  s6: {
+    replay: 'Nochmal ansehen',
+    // Stage 6b (29.10.2026): corrections after the review.
+    b: {
+      before: { signup: '45/47', spam: 'Spam', rate: 'Rate 2 fehlgeschlagen' },
+      cta: 'Kostenloses Erstgespräch',
+      ctaLine: 'Fragen zu Ihrem Ablauf? 20 Minuten, kostenlos.',
+      chapterLabel: 'Video ab {time} abspielen: {name}',
+      // One sentence per scene: what the picture shows (the video has no sound, WCAG 1.2.1).
+      scenes: [
+        'Bild: Ein Anmeldeformular für den Herbst-Kurs, Anna trägt Name und E-Mail ein und klickt auf «Jetzt anmelden».',
+        'Bild: Viele Punkte fliegen vom Formular zu ActiveCampaign, an einer Sperre bleiben einige hängen, Logik schaut besorgt.',
+        'Bild: Die Punkte stellen sich in eine Warteschlange, der Zähler steigt bis «300 von 300», Lösung hält den Schraubenschlüssel.',
+        'Bild: SPF, DKIM und DMARC bekommen nacheinander einen Haken, die Mail wandert vom Spam in den Posteingang.',
+        'Bild: «Rate 2 fehlgeschlagen», dann Erinnerung, Sperre und Freischaltung, das Schloss am Kurs geht wieder auf.',
+        'Bild: Die Tür zum Kurs leuchtet, «Kurs offen», daneben ein Handy, Live freut sich.',
+        'Bild: Das Logo mrlololi mit «Logik, Lösung, Live.» und den drei Figuren.',
+      ],
+      notDo: 'Was ich nicht mache: Werbetexte, Werbeanzeigen und laufenden Kundensupport. Dafür empfehle ich Ihnen gern Kolleg:innen.',
+      ask: 'Anfragen',
+      example: 'Beispiel ansehen',
+      refs: {
+        tools: ['ActiveCampaign', 'Zapier', 'Leadpages', 'Quaderno', 'Somba', 'Zoom'],
+        video: 'Ablauf im Video ansehen',
+        honest: 'Laufende Zusammenarbeit seit April 2026, Name nicht genannt.',
+        earlierLine: 'Daher kenne ich Support-Teams von innen, die Grundlage für die KI-Antwortentwürfe.',
+      },
+      projects: { also: 'Außerdem:', and: 'und' },
+      copyMail: 'Adresse kopieren',
+      repaired: 'Repariert. Hier geht es weiter:',
+    },
+    fixDemo: { paid: 'Rate 2 bezahlt', inboxOk: 'angekommen' },
+    video: {
+      h2: 'Der Weg einer *Anmeldung*',
+      text: 'Was zwischen Anmeldung und Kurszugang passiert, in 50 Sekunden und ohne Ton.',
+      play: '50 Sekunden ansehen',
+      label: 'Video: Der Weg einer Anmeldung, 50 Sekunden, ohne Ton, Text im Bild',
+      chaptersLabel: 'Kapitel des Videos',
+      chapters: [['Anmeldung', 0.1], ['Warteschlange', 4.1], ['Mail kommt an', 18.1], ['Rate', 26.1], ['Zugang', 34.1]],
+      transcript: 'Text des Videos',
+      // The seven lines of a.srt (video-konveyer), without timecodes.
+      lines: [
+        'Eine Anmeldung. Was jetzt passiert, entscheidet über Ihren Launch.',
+        'Beim Launch kommen hunderte gleichzeitig. Ein Teil geht verloren.',
+        'Warteschlange mit Wiederholung: 300 von 300.',
+        'SPF, DKIM, DMARC: die Mail kommt an.',
+        'Rate fehlgeschlagen? Erinnerung, Sperre, Freischaltung. Automatisch.',
+        'Anna ist drin. Ohne Handarbeit.',
+        'Gebaut, getestet, betreut. mrlololi.com',
+      ],
+      name: 'Der Weg einer Anmeldung',
+      description: 'Was zwischen Anmeldung und Kurszugang passiert: Warteschlange mit Wiederholung, SPF, DKIM und DMARC, Erinnerung bei fehlgeschlagener Rate und Zugang ohne Handarbeit. 50 Sekunden, ohne Ton.',
+    },
+    pricing: {
+      intro: 'Feste Preise, klarer Umfang. Ich arbeite mit wenigen Kund:innen gleichzeitig.',
+      chooser: 'Welches Paket passt?',
+      cards: {
+        quick: { line: 'Eine konkrete Aufgabe, Aufwand bis zu 4 Stunden.', bullets: ['E-Mail-Zustellung (SPF, DKIM, DMARC)', 'Defekte Links oder Formulare', 'Termine oder eine Automation'] },
+        check: { line: 'Ein Analysetag mit Lesezugriff auf die Tools oben, danach wissen Sie, wo es hakt.', bullets: ['Liste mit Prioritäten, Aufwand und Preisen', 'Gespräch von 45 Minuten', 'Bei einem Auftrag innerhalb von 30 Tagen voll angerechnet'] },
+        launch: { line: 'Zum Verkaufsstart ist alles startklar. Festpreis nach dem Briefing.', bullets: ['Landingpages und Checkout', 'ActiveCampaign-Abläufe von der Anmeldung bis zum Zahlungsausfall', 'Formulare mit Double-Opt-In und Tags', 'Kurszugang in Somba, Skool oder Circle'] },
+      },
+      promise: '30-Tage-Zusage: Läuft ein von mir gebauter Ablauf in den ersten 30 Tagen nach Übergabe nicht wie vereinbart, behebe ich das ohne Berechnung. Zusätzlich zur gesetzlichen Gewährleistung.',
+      more: 'Weitere Leistungen',
+      rows: {
+        website: 'Ein One-Pager, fertig veröffentlicht.',
+        ki: 'Antwortentwürfe, die Ihr Team nur noch prüft. Pflege optional 90 € pro Monat.',
+        support: 'Pflege und alles außerhalb der Pakete, ab 5 Stunden im Monat.',
+      },
+    },
+    cta: { text: 'Nicht sicher, was passt? 20 Minuten, kostenlos. Ich sage ehrlich, ob ich helfen kann.', button: 'Kostenloses Erstgespräch' },
+    refs: {
+      labels: { course: 'Online-Kurse', site: 'Website', shop: 'E-Commerce', earlier: 'Frühere Tätigkeit' },
+      earlier: 'Kundensupport auf Deutsch bei CMX Solutions',
+      note: 'Zitate aus schriftlichen Referenzen, Original auf Anfrage.',
+    },
+    projects: {
+      h2: 'Eigene *Projekte*',
+      line: 'Selbst gebaut, keine Kundenarbeit.',
+      shows: 'Was es zeigt:',
+      all: 'Alle Webprojekte',
+      // Shortened from the «Was es zeigt» lines on mrlololi.com/Webprojekte/.
+      items: [
+        { key: 'ki', name: 'KI im Kundenservice', path: 'ki-kundenservice/', shows: 'KI mit klaren Regeln: Ein Mensch gibt frei, nichts geht automatisch raus.' },
+        { key: 'langstarter', name: 'Language Starter', path: 'language-starter/?ui=de', shows: '45 Sätze in 42 Sprachen, Sprachausgabe im Browser, ein Druckbild für ein A4-Blatt.' },
+      ],
+      // Stage 6b: the two off-topic ones as one text line.
+      more: [
+        { name: 'GeoAPP', path: 'geoapp/?lang=de' },
+        { name: 'KittyCats', path: 'kittycats/' },
+      ],
+    },
+    contact: { fallback: 'Öffnet sich nichts? Schreiben Sie an {email}', copy: 'Text kopieren', copied: 'Text kopiert', manual: 'Ihr Text zum Kopieren' },
+    ki: {
+      top: 'Links die Kundenmail, rechts der Entwurf. Ihr Team prüft und gibt frei.',
+      steps: ['Lesen', 'Erkennen', 'Entwerfen'],
+      stepsLabel: 'Schritte der Demo',
+      mail: 'Kundenmail',
+      draft: 'Entwurf',
+      other: 'Anderes Beispiel',
+      tone: 'Tonfall',
+      approve: 'Freigeben',
+      approved: 'Freigegeben',
+      background: 'Was im Hintergrund passiert',
+      all: 'Alle 20 Beispiele',
+      calc: { hand: 'Von Hand', draft: 'Mit Entwurf', unit: 'h pro Monat', saving: 'Ersparnis: {h} h / {eur} € pro Monat' },
+    },
+    notFound: {
+      h1: 'Hier ist die Leitung unterbrochen.',
+      lead: 'Diese Seite gibt es nicht (mehr). Kein Problem, hier geht es weiter:',
+      home: 'Startseite',
+      projects: 'Projekte',
+      contact: 'Kontakt',
+      label: 'Weiter zu',
+      nodes: ['Ihre Seite', 'Ziel'],
     },
   },
 
@@ -602,9 +727,10 @@ export default {
         key: 'launch',
         path: '/launch-technik/',
         short: 'Launch-Technik',
+        moreLabel: 'Mehr zur Launch-Technik',
         h1: 'Launch-Technik für Online-Kurse',
         description: 'Launch-Technik für Online-Kurse: Landingpages, Checkout, ActiveCampaign, Double-Opt-In und Kurszugang, startklar zum Verkaufsstart. Ab 1.190 €.',
-        promise: 'Ich verbinde Formulare, ActiveCampaign, Zapier, Checkout und Mitgliederbereich so, dass zum Verkaufsstart nichts bricht und keine Anmeldung verloren geht.',
+        promise: 'Ich verbinde Formulare, ActiveCampaign, Zapier, Checkout und Mitgliederbereich und teste alles, damit zum Verkaufsstart keine Anmeldung verloren geht.',
         packages: ['launch'],
         problem: ['Anmeldungen verschwinden zwischen Formular und CRM.', 'Die Ratenzahlung ist fehlgeschlagen, der Zugang bleibt trotzdem offen.', 'Jeder dieser Fehler kostet Anmeldungen, Umsatz oder Nerven.'],
         steps: [
@@ -619,7 +745,7 @@ export default {
           ['Brauche ich bestimmte Tools?', 'Nein. Ich arbeite mit dem, was Sie schon haben, und schlage einen Wechsel nur vor, wenn er sich rechnet.'],
           ['Wie schnell können Sie starten?', 'Projekte nach Absprache, weil ich bewusst nur wenige gleichzeitig annehme.'],
           ['Was, wenn ein Ablauf nach dem Start nicht läuft?', 'Zusätzlich zur gesetzlichen Gewährleistung: Läuft ein von mir gebauter Ablauf in den ersten 30 Tagen nicht wie vereinbart, behebe ich das ohne Berechnung. Das gilt für meine Arbeit, nicht für Ausfälle der Tools selbst.'],
-          ['Wie gehen Sie mit Daten um?', 'Ich bekomme einen eigenen Benutzer in Ihren Konten, nie Ihr Passwort. Nach Projektende entfernen Sie meinen Zugang, und ich lösche alle Kopien Ihrer Daten.'],
+          ['Wie gehen Sie mit Daten um?', 'Ich bekomme einen eigenen Benutzerzugang statt Ihres Passworts. Nach Projektende entfernen Sie meinen Zugang, und ich lösche die Kopien Ihrer Daten, die bei mir liegen.'],
         ],
         related: ['activecampaign', 'spam'],
       },
@@ -628,7 +754,7 @@ export default {
         path: '/e-mails-landen-im-spam/',
         short: 'E-Mails im Spam',
         h1: 'E-Mails landen im Spam? SPF, DKIM und DMARC einrichten',
-        description: 'Launch-Mails landen im Spam? Ich richte SPF, DKIM und DMARC richtig ein und teste die Zustellung. Quick-Fix in bis zu 4 Stunden, 190 € fix.',
+        description: 'Launch-Mails landen im Spam? Ich richte SPF, DKIM und DMARC richtig ein und teste die Zustellung. Quick-Fix mit bis zu 4 Stunden Aufwand, 190 € fix.',
         promise: 'Ich richte SPF, DKIM und DMARC richtig ein und teste die Zustellung.',
         packages: ['quick'],
         problem: ['Launch-Mails landen im Spam.', 'Diesen Fehler sehe ich bei Launches immer wieder, und er kostet Anmeldungen, Umsatz oder Nerven.'],
@@ -646,7 +772,7 @@ export default {
         faq: [
           ['Wie schnell können Sie starten?', 'Quick-Fixes meist innerhalb einer Woche.'],
           ['Was, wenn 4 Stunden nicht reichen?', 'Alles außerhalb der Pakete: 45 € pro Stunde. Sie erfahren den Preis, bevor ich anfange.'],
-          ['Bekommen Sie mein Passwort?', 'Nein. Ich bekomme einen eigenen Benutzer in Ihren Konten, nie Ihr Passwort. Nach Projektende entfernen Sie meinen Zugang, und ich lösche alle Kopien Ihrer Daten.'],
+          ['Bekommen Sie mein Passwort?', 'Nein. Ich bekomme einen eigenen Benutzerzugang statt Ihres Passworts. Nach Projektende entfernen Sie meinen Zugang, und ich lösche die Kopien Ihrer Daten, die bei mir liegen.'],
           ['Muss ich mich mit Technik auskennen?', 'Nein. Sie sagen mir, was passieren soll, ich kümmere mich um den Rest und erkläre alles in einfachen Worten.'],
         ],
         related: ['activecampaign', 'launch'],
@@ -673,7 +799,7 @@ export default {
           ['Wie wird die Betreuung abgerechnet?', 'Mit 45 € pro Stunde, ab 5 Stunden im Monat. Abgerechnet wird am Monatsende nach Stunden.'],
           ['Arbeiten Sie auch remote?', 'Ja. Fast alle Projekte laufen remote im DACH-Raum. In Graz komme ich gern persönlich vorbei.'],
           ['Brauche ich bestimmte Tools?', 'Nein. Ich arbeite mit dem, was Sie schon haben, und schlage einen Wechsel nur vor, wenn er sich rechnet.'],
-          ['Wie gehen Sie mit Daten um?', 'Ich bekomme einen eigenen Benutzer in Ihren Konten, nie Ihr Passwort. Nach Projektende entfernen Sie meinen Zugang, und ich lösche alle Kopien Ihrer Daten.'],
+          ['Wie gehen Sie mit Daten um?', 'Ich bekomme einen eigenen Benutzerzugang statt Ihres Passworts. Nach Projektende entfernen Sie meinen Zugang, und ich lösche die Kopien Ihrer Daten, die bei mir liegen.'],
         ],
         related: ['launch', 'spam'],
       },
@@ -681,6 +807,7 @@ export default {
         key: 'ki',
         path: '/ki-antwortentwuerfe/',
         short: 'KI-Antwortentwürfe',
+        moreLabel: 'Mehr zu KI-Antwortentwürfen',
         h1: 'KI-Antwortentwürfe für Ihren Kundenservice',
         description: 'KI-Antwortentwürfe für Ihren Kundenservice: Wissensbasis aus Ihren FAQ, Entwürfe in GrooveHQ, Gmail oder Help Scout, Ihr Team gibt frei. Ab 590 €.',
         promise: 'Antwortentwürfe für wiederkehrende Fragen, die Ihr Team nur noch prüft und selbst versendet.',
@@ -707,6 +834,7 @@ export default {
         key: 'website',
         path: '/website-one-pager/',
         short: 'Website als One-Pager',
+        moreLabel: 'Mehr zur Website als One-Pager',
         h1: 'Website als One-Pager mit Leadpages oder Wix',
         description: 'Website als One-Pager mit Leadpages, Wix oder eigenem HTML: responsiv, mit Terminbuchung, Impressum, Datenschutz und Domain veröffentlicht. Ab 990 €.',
         promise: 'Ein One-Pager mit Leadpages, Wix oder eigenem HTML, fertig veröffentlicht.',

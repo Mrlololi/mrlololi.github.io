@@ -1,0 +1,125 @@
+/* mrlololi design tokens and shared components (Stage 6, 29.10.2026).
+   One file for mrlololi.com and, from Stage 7, Webprojekte: colours, type, spacing, radii, the
+   buttons, labels, cards and the demo replay button. The site inlines it before main.css.
+   Rules: every control at least 44 x 44 px (--target); hover only on real pointers, never scale or
+   3D on anything with text, at most 2 px up (--lift); text never fades to step back. */
+
+/* ---------- Tokens ---------- */
+:root {
+  /* Stage 3, colour variant B «Сочная пастель»: every section has its own colour.
+     Switch variants by changing these tokens only (docs/superpowers/specs/2026-10-21-stage3-colour.md). */
+  --sec-hero: linear-gradient(135deg, #F4C9D3, #DCD3F0);
+  --sec-pink: #F4C9D3;
+  --sec-blue: #BFD8EE;
+  --sec-pist: #CFE3C2;
+  --sec-lav: #DCD3F0;
+  --sec-peach: #F7DCC8;
+  --sec-ink: #2B2A33;
+  --on-ink: #F3EEF0;
+  --paper: rgb(255 255 255 / 0.4);
+  --sheet: rgb(255 255 255 / 0.55);
+  --ink: #2B2A33;
+  --ink-soft: #4A4753;
+  --line: rgb(43 42 51 / 0.08);
+  --wire: #E3DBE2;
+  --field: #8A8592;
+
+  --pink: #F4C9D3; --pink-tint: #FDF0F3; --pink-ink: #9C3F58;
+  --blue: #BFD8EE; --blue-tint: #EEF5FB; --blue-ink: #2F6A9E;
+  --pist: #CFE3C2; --pist-tint: #F2F8EE; --pist-ink: #3F6B31;
+  --lav: #DCD3F0; --lav-tint: #F4F1FB; --lav-ink: #5A4A9C;
+  --done: #4E8A3E;
+
+  --font-display: "Bricolage Grotesque", "Bricolage Fallback", Arial, sans-serif;
+  --font-body: "Atkinson Hyperlegible Next", "Atkinson Fallback", Arial, sans-serif;
+  --font-accent: "EB Garamond", "EB Garamond Fallback", Georgia, "Times New Roman", serif;
+
+  /* fluid type, 360 px -> 1440 px */
+  --step--1: clamp(0.875rem, 0.8542rem + 0.0926vw, 0.9375rem);
+  --step-0: clamp(1.0625rem, 1.0417rem + 0.0926vw, 1.125rem);
+  --step-1: clamp(1.25rem, 1.2083rem + 0.1852vw, 1.375rem);
+  --step-2: clamp(1.5rem, 1.375rem + 0.5556vw, 1.875rem);
+  --step-3: clamp(2rem, 1.6667rem + 1.4815vw, 3rem);
+  --step-4: clamp(2.5rem, 1.75rem + 3.3333vw, 4.5rem);
+
+  --space-1: 0.25rem; --space-2: 0.5rem; --space-3: 0.75rem; --space-4: 1rem;
+  --space-5: 1.5rem; --space-6: 2rem; --space-7: 3rem; --space-8: 4rem;
+  --space-9: 6rem; --space-10: 8rem;
+
+  --max: 72rem;
+  --gutter: clamp(1rem, 4vw, 3rem);
+  --measure: 38rem;
+  --section: clamp(4rem, 8vw, 7rem);
+
+  --radius-card: 20px;
+  --radius-big: 28px;
+  --radius-field: 12px;
+  --shadow-soft: 0 1px 2px rgb(43 42 51 / 0.06);
+  --ease-soft: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --header-h: 4rem;
+  /* Stage 6: controls and cards */
+  --target: 2.75rem;
+  --radius-pill: 999px;
+  --lift: -2px;
+  --shadow-hover: 0 10px 24px rgb(43 42 51 / 0.08);
+  --surface: var(--sheet);
+  --surface-line: 1px solid var(--line);
+}
+
+/* ---------- Buttons: three styles only (Stage 6b) ----------
+   1. Primary, dark:      .btn.btn--primary   the one main action per block (Erstgespräch, E-Mail öffnen, Anfragen in the cards)
+   2. Secondary, outline: .btn.btn--secondary every other action (Text kopieren, Nochmal ansehen, Anderes Beispiel, Anfragen in rows)
+   3. Chip:               .chip               a choice or a jump inside a demo (chapters, steps, tone); pressed/current = dark
+   .btn--sm makes 1 and 2 smaller (still 44 px tall). .btn--ghost is kept as an alias of the secondary style. */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+  min-height: 3rem; padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-pill); border: 1px solid transparent;
+  font-family: var(--font-body); font-weight: 700; font-size: var(--step-0); line-height: 1.2;
+  text-decoration: none; cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.btn--primary { background: var(--ink); color: #fff; }
+.btn--primary:hover { color: #fff; box-shadow: 0 10px 24px rgb(43 42 51 / 0.2); }
+.btn--secondary, .btn--ghost { background: #fff; color: var(--ink); border-color: var(--ink); }
+.btn--secondary:hover, .btn--ghost:hover { color: var(--ink); background: var(--lav-tint); }
+.chip { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; min-height: var(--target); padding: 0 var(--space-4); border: 1px solid var(--field); border-radius: var(--radius-pill); background: #fff; color: var(--ink); font: inherit; font-size: var(--step--1); font-weight: 700; line-height: 1.2; cursor: pointer; }
+.chip[aria-pressed="true"], .chip[aria-current] { background: var(--ink); border-color: var(--ink); color: #fff; }
+@media (hover: hover) { .chip:not([aria-pressed="true"]):not([aria-current]):hover { border-color: var(--ink); } }
+.text-link { font-weight: 700; display: inline-flex; align-items: center; min-height: 2.75rem; }
+.btn--sm { min-height: 2.75rem; padding: 0 var(--space-4); font-size: var(--step--1); }
+
+/* ---------- Labels: one small tag style in five pastels ---------- */
+.label {
+  display: inline-block; justify-self: start; padding: 0.1rem 0.5rem; border-radius: 6px; border: 0;
+  background: rgb(255 255 255 / 0.7); color: var(--ink); font-size: 0.8125rem; font-weight: 700; line-height: 1.6; white-space: nowrap; cursor: default;
+}
+.label--pink { background: #FBE7EC; color: var(--pink-ink); }
+.label--pist { background: #E6F1DF; color: var(--pist-ink); }
+.label--blue { background: #E3EEF8; color: #285B88; }
+.label--lav { background: #EEEAF8; color: var(--lav-ink); }
+.label--peach { background: #FBEDE3; color: #7A4E2D; }
+
+/* ---------- Cards: one surface for every card (.card); a card that is a link (a.card) or holds one
+   for the whole card (.card--lift) lifts 2 px on real pointers ---------- */
+.card, .instrument {
+  background: var(--surface);
+  border: var(--surface-line);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-soft);
+}
+/* Cards with text: no scale, no 3D; hover is a shadow, a border colour or 2 px up, real pointers only. */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .btn--primary:hover { transform: translateY(var(--lift)); }
+  .card { transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; }
+  a.card:hover, .card--lift:hover { transform: translateY(var(--lift)); box-shadow: var(--shadow-hover); }
+}
+
+/* ---------- Demo replay button («Nochmal ansehen»): one style for every demo ---------- */
+/* Shared replay button: icon plus text, at least 44 x 44 px, bottom right of its demo. Its space is
+   kept while it waits (no layout shift when it appears); without JS there is nothing to replay. */
+.replay { gap: 0.4rem; padding-inline: var(--space-3) var(--space-4); }
+.replay__icon { width: 1.1rem; height: 1.1rem; flex: none; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.demo > .replay, .kidemo__controls .replay { display: flex; width: fit-content; margin: var(--space-3) 0 0 auto; }
+html:not(.js) .replay { display: none !important; }
+.js .replay[hidden] { visibility: hidden; }

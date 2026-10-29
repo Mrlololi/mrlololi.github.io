@@ -13,9 +13,13 @@ export function mailtoHref(email, subject, body) {
 }
 
 // The contact brief: one sentence from the four choices, framed as a short e-mail.
+// Stage 6b: an open platform gets its own sentence (c.sentenceOpen when the choice is c.viaOpen),
+// and in German the text after «Hallo Iva,» goes on in lower case (c.lower).
 export function briefMail(c, choices) {
-  const sentence = c.sentence.replace(/\{(\w+)\}/g, (m, k) => choices[k] ?? m);
-  return { subject: c.subject, body: `${c.greeting}\n\n${sentence[0].toUpperCase()}${sentence.slice(1)}\n\n${c.closing}` };
+  const tpl = c.sentenceOpen && choices.via === c.viaOpen ? c.sentenceOpen : c.sentence;
+  const sentence = tpl.replace(/\{(\w+)\}/g, (m, k) => choices[k] ?? m);
+  const first = c.lower ? sentence[0].toLowerCase() : sentence[0].toUpperCase();
+  return { subject: c.subject, body: `${c.greeting}\n\n${first}${sentence.slice(1)}\n\n${c.closing}` };
 }
 
 export const SUPPORT_RATE = 45;

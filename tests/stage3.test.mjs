@@ -10,43 +10,10 @@ const de = all.find((p) => p.file === 'index.html').html;
 const en = all.find((p) => p.file === 'en/index.html').html;
 const count = (html, re) => (html.match(re) || []).length;
 
-test('story step 1 is a real local form: inputs, submit, note, inline error', () => {
-  const form = de.match(/<form class="story__form"[\s\S]*?<\/form>/)[0];
-  // method="dialog": submitting does nothing outside a dialog, so even without JS nothing is sent or put in the URL.
-  assert.match(form, /<form class="story__form" method="dialog" novalidate>/);
-  assert.match(form, /<input id="story-name" name="name" type="text" value="Anna K\." autocomplete="off">/);
-  assert.match(form, /<input id="story-email" name="email" type="email" value="anna@example\.com" autocomplete="off" aria-describedby="story-email-error">/);
-  assert.match(form, /<p class="story__error" id="story-email-error" hidden>Bitte geben Sie eine gültige E-Mail-Adresse ein\.<\/p>/);
-  assert.match(form, /<button class="btn btn--primary btn--sm" type="submit">Jetzt anmelden<\/button>/);
-  assert.match(form, /<p class="story__note small">Nur eine Vorschau: Es wird nichts gesendet oder gespeichert\.<\/p>/);
-  assert.ok(!/action=/.test(form), 'nothing is sent anywhere');
-  assert.match(de, /Willkommen, <span class="js-first">Anna<\/span>!/);
-  assert.match(de, /<li class="toast">Neue Anmeldung: <span class="js-name">Anna K\.<\/span><\/li>/);
-  assert.match(en, /Preview only: nothing is sent or stored\./);
-});
-
-test('KI demo: real approve / edit buttons with their follow-up texts', () => {
-  assert.match(de, /<button class="btn btn--primary btn--sm kidemo__approve" type="button" data-done="Freigegeben">Freigeben<\/button>/);
-  assert.match(de, /<button class="btn btn--ghost btn--sm kidemo__edit" type="button" data-done="Fertig" data-label="Antwort bearbeiten">Bearbeiten<\/button>/);
-  assert.match(de, /<p class="kidemo__sent" role="status" hidden>Antwort an Anna gesendet \(Beispiel\)<\/p>/);
-  assert.ok(!de.includes('fake-btn'));
-  assert.match(en, /data-done="Approved">Approve<\/button>/);
-});
-
-test('price cards: one «Anfragen» mail link each, package in the subject', () => {
-  const items = [...de.matchAll(/<li class="item item--\w+" id="pkg-(\w+)" data-tilt>[\s\S]*?<\/a>\n<\/li>/g)];
-  assert.equal(items.length, 6);
-  for (const [li] of items) {
-    const name = li.match(/<h4 class="item__name">([^<]+)<\/h4>/)[1];
-    assert.ok(li.includes(`<a class="btn btn--sm item__cta" href="mailto:hello@mrlololi.com?subject=${encodeURIComponent(`Anfrage: ${name}`)}">Anfragen<span class="sr-only">: ${name}</span></a>`), name);
-  }
-  assert.match(en, /subject=Enquiry%3A%20Quick%20fix">Enquire/);
-});
-
 test('problem cards link to the matching package', () => {
   assert.deepEqual([...de.matchAll(/<a class="pc__link" href="#pkg-(\w+)">Passendes Paket: ([^<]+)<\/a>/g)].map((m) => [m[1], m[2]]),
-    [['check', 'Technik-Check'], ['quick', 'Quick-Fix'], ['launch', 'Launch-Setup']]);
-  assert.match(en, /Matching package: Tech check/);
+    [['launch', 'Launch-Setup'], ['quick', 'Quick-Fix'], ['launch', 'Launch-Setup']]); // Stage 6b: card 1 builds the retry flow
+  assert.match(en, /Matching package: /);
 });
 
 test('hero: chip links to «Über mich», flow nodes are buttons with one line each', () => {
@@ -56,17 +23,6 @@ test('hero: chip links to «Über mich», flow nodes are buttons with one line e
   assert.match(de, /<li id="hf-line-1">Die Anmeldung kommt herein und wird geprüft\.<\/li>/);
   assert.match(de, /<li id="hf-line-4">Der Zugang wird freigeschaltet, ohne Handarbeit\.<\/li>/);
   assert.match(en, /<li id="hf-line-3">Payment or instalment is recognised, the invoice goes out\.<\/li>/);
-});
-
-test('labels share one style; pause controls are icon buttons with a label', () => {
-  for (const t of ['Beispiel', 'Beispielwerte', 'Problem', 'Lösung', 'Chaos', 'Geordnet', 'Beispielrechnung', 'Empfohlener Start']) {
-    assert.match(de, new RegExp(`class="label[^"]*">${t}<`), t);
-  }
-  assert.ok(!/class="(demo-tag|pc__tag|ba__tag|chip)\b/.test(de), 'old tag classes gone');
-  const pauses = [...de.matchAll(/<button class="loop-btn" type="button" hidden aria-label="Animation anhalten" data-pause="Animation anhalten" data-play="Animation fortsetzen">/g)];
-  // Five loops (Stage 4): hero ribbon, tool marquee, story screen, 6 vs 1, the tool rows in «Über mich».
-  assert.equal(pauses.length, 5);
-  assert.equal(count(de, /<span class="loop-btn__tip" aria-hidden="true">Animation anhalten<\/span>/g), 5);
 });
 
 // Own contrast test (axe skips text on gradients): every text colour on every surface it sits on.

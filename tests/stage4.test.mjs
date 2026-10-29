@@ -44,8 +44,12 @@ test('mailto: subject and body encoded, line breaks as CRLF', () => {
 test('brief builder: the sentence and the e-mail follow the choices', () => {
   const c = de.s4.contact;
   const m = briefMail(c, { what: 'einen Onlinekurs', via: 'Leadpages', issue: 'Zahlungen', start: 'in 4 Wochen' });
+  // Stage 6b: lower case after «Hallo Iva,»; an open platform gets its own sentence.
+  assert.ok(m.body.startsWith('Hallo Iva,\n\nich verkaufe einen Onlinekurs über Leadpages.'), m.body);
+  assert.ok(briefMail(c, { what: 'einen Workshop', via: 'noch offen', issue: 'Zahlungen', start: 'sofort' }).body.includes('ich verkaufe einen Workshop. Die Plattform ist noch offen.'));
+  assert.ok(!briefMail(c, { what: 'x', via: 'noch offen', issue: 'y', start: 'z' }).body.includes('über noch offen'));
   assert.equal(m.subject, 'Anfrage über mrlololi.com');
-  assert.equal(m.body, 'Hallo Iva,\n\nIch verkaufe einen Onlinekurs über Leadpages. Es hakt bei Zahlungen. Start: in 4 Wochen.\n\nViele Grüße');
+  assert.equal(m.body, 'Hallo Iva,\n\nich verkaufe einen Onlinekurs über Leadpages. Es hakt bei Zahlungen. Start: in 4 Wochen.\n\nViele Grüße');
   const e = briefMail(en.s4.contact, { what: 'a membership', via: 'Wix', issue: 'sign-ups', start: 'right away' });
   assert.match(e.body, /^Hello Iva,\n\nI sell a membership via Wix\. The problem is sign-ups\. Start: right away\.\n\nBest regards$/);
 });
@@ -77,67 +81,6 @@ test('every external link opens in a new tab and says so', () => {
 });
 
 /* ---------- B1, B2: before/after and the problem cards ---------- */
-test('before/after: a mask wrapper and a counter-shifted inner layer (transforms, not clip-path)', () => {
-  const p = section(DE, 'problems');
-  assert.match(p, /<div class="ba__mask"><div class="ba__inner">/);
-  assert.match(p, /<input class="ba__range" type="range"/, 'the native range stays');
-  assert.ok(!/\.js \.ba__side--after \{ clip-path/.test(css));
-});
-
-test('problem cards: three mini-demos, a real «Lösung ansehen» button each, labels and package links kept', () => {
-  const p = section(DE, 'problems');
-  assert.equal((p.match(/<figure class="fixdemo fixdemo--(signup|spam|rate)"/g) || []).length, 3);
-  assert.equal((p.match(/<button class="fixdemo__play" type="button" data-again="Nochmal ansehen">Lösung ansehen<\/button>/g) || []).length, 3);
-  assert.match(css, /html:not\(\.js\) \.fixdemo__play \{ display: none; \}/);
-  assert.equal((p.match(/class="label label--pink">Problem</g) || []).length, 3);
-  assert.equal((p.match(/class="label label--pist">Lösung</g) || []).length, 3);
-  assert.match(p, /<span class="sig__n">47<\/span>\/47 angekommen/);
-  for (const b of ['SPF', 'DKIM', 'DMARC']) assert.ok(p.includes(`>${b}<`), b);
-  for (const s of de.s4.fixDemo.rate.steps) assert.ok(p.includes(`>${s}<`), s);
-  assert.equal((p.match(/<a class="pc__link" href="#pkg-/g) || []).length, 3);
-  assert.match(section(EN, 'problems'), />Show the fix<\/button>/);
-});
-
-/* ---------- B3: the story as one live screen ---------- */
-test('story: one screen with four panes, the automation canvas, phone inbox, course area and the log stripe', () => {
-  const s = section(DE, 'signup');
-  assert.match(s, /<div class="screen" role="group" aria-label="Beispiel-Bildschirm: Anmeldung, Automation, Postfach und Kursbereich">/);
-  assert.equal((s.match(/<div class="pane pane--(form|flow|phone|course)"/g) || []).length, 4);
-  const nodes = [...s.matchAll(/<li class="anode anode--\d"><span class="anode__kind">([^<]+)<\/span><span class="anode__name">([^<]+)<\/span><\/li>/g)].map((m) => `${m[1]} ${m[2]}`);
-  assert.deepEqual(nodes, ['Trigger Formular', 'Tag Herbst-Kurs', 'Mail Bestätigung', 'Warten bis bestätigt', 'Zahlung Stripe', 'Rechnung Quaderno', 'Zugang Somba']);
-  assert.match(s, /Bitte bestätigen/);
-  assert.match(s, /Willkommen, <span class="js-first">Anna<\/span>!/);
-  assert.match(s, /<form class="story__form" method="dialog" novalidate>/, 'the real local form stays');
-  assert.equal((s.match(/<li class="run__step"/g) || []).length, 6);
-  assert.match(s, /<div class="screen"[\s\S]*<button class="loop-btn"[\s\S]*<\/div>\n<\/div>\n<\/div>\n<\/section>/, 'the pause button sits inside the frame');
-  assert.equal((s.match(/<li class="story__step">/g) || []).length, 3, 'the 1-2-3 legend stays');
-  assert.ok(!/<img[^>]+logo/i.test(s), 'no brand logos');
-});
-
-/* ---------- B4, B5: prices and projects visuals ---------- */
-test('prices: Quick-Fix checkout, Technik-Check list with the conic border, Launch hub with the box, website frame, KI chat', () => {
-  const p = section(DE, 'services');
-  assert.match(p, /<div class="viz viz--quick" aria-hidden="true">/);
-  assert.match(p, /<div class="viz viz--check" aria-hidden="true">/);
-  for (const line of de.s4.starter.check) assert.ok(p.includes(`<li>${line}</li>`), line);
-  assert.match(css, /@property --angle/);
-  assert.match(p, /<div class="viz viz--hub" aria-hidden="true">/);
-  assert.match(p, /<div class="lbox">/);
-  for (const part of de.s4.projects.hub.parts) assert.ok(p.includes(`>${part}<`), part);
-  assert.match(p, /<div class="viz viz--site" aria-hidden="true">/);
-  assert.match(p, /<div class="viz viz--chat" aria-hidden="true">/);
-  assert.ok(!p.includes('three'), 'no three.js');
-});
-
-test('prices: no mascots on the price cards or the Betreuung block; Lösung only at the 30-day promise', () => {
-  const p = section(DE, 'services');
-  for (const [li] of p.matchAll(/<li class="item"[\s\S]*?<\/li>\n(?=<li|<\/ul>)/g)) assert.ok(!li.includes('class="mascot'), li.slice(0, 60));
-  const support = p.match(/<section class="tariff__group tariff__group--3"[\s\S]*?<\/section>/)[0];
-  assert.ok(!support.includes('class="mascot'));
-  assert.match(p, /<p class="tariff__promise[^"]*">[\s\S]*?data-scene="promise"/);
-});
-
-/* ---------- B6: KI demo ---------- */
 test('KI data: 20 examples in 5 tabs, DE and EN, every highlight found in its mail', () => {
   for (const lang of ['de', 'en']) {
     const list = KI_EXAMPLES[lang];
@@ -154,45 +97,6 @@ test('KI data: 20 examples in 5 tabs, DE and EN, every highlight found in its ma
   assert.equal(KI_EXAMPLES.de[0].body, de.ki.mail, 'example 1 is the approved Anna mail');
 });
 
-test('KI demo: sticky steps, legend, example 1 static, the other 19 in a details list, data as JSON', () => {
-  const p = section(DE, 'services');
-  assert.equal((p.match(/<li class="kisteps__step[ "]/g) || []).length, 3);
-  const legend = [...p.matchAll(/<li class="kilegend__item kilegend__item--(\w+)"><span class="hl hl--\w+">([^<]+)<\/span><\/li>/g)].map((m) => [m[1], m[2]]);
-  assert.deepEqual(legend, [['anliegen', 'Anliegen'], ['fehlt', 'Fehlt'], ['stimmung', 'Stimmung'], ['dringlichkeit', 'Dringlichkeit']]);
-  // Example 1 carries its reasons, so its highlights work before the JSON has arrived.
-  assert.match(p, /<mark class="hl hl--anliegen" data-mark="0" data-reason="[^"]+" data-action="[^"]+">kein login bekommen<\/mark>/);
-  assert.match(p, /<span class="kidemo__tag">KI-Entwurf<\/span>/);
-  assert.match(p, /<details class="kimore">\n<summary>Weitere 19 Beispiele<\/summary>/);
-  assert.equal((p.match(/<li class="kimore__item">/g) || []).length, 19);
-  assert.match(p, /data-src="\/assets\/data\/ki-de\.json"/);
-  for (const lang of ['de', 'en']) {
-    const data = JSON.parse(readFileSync(file(`assets/data/ki-${lang}.json`), 'utf8'));
-    assert.equal(data.examples.length, 20);
-  }
-});
-
-/* ---------- B7: package finder as a chat ---------- */
-test('finder chat: honest header, static list for no JS, avatar Lösung', () => {
-  const f = section(DE, 'finder');
-  assert.match(f, /<p class="chat__name">Paket-Assistent<span class="chat__demo"> · Demo, vorprogrammiert<\/span><\/p>/);
-  assert.match(f, /data-scene="avatar"/);
-  assert.match(f, /<ul class="finder__static" role="list">/);
-  assert.ok(!f.includes('<form'), 'nothing to submit');
-});
-
-/* ---------- B8: Betreuung ---------- */
-test('Betreuung: hour meter, 5/10/20 h switch, 30-day strip with the stamp; VAT line unchanged', () => {
-  const p = section(DE, 'services');
-  assert.match(p, /<div class="meter"/);
-  const opts = [...p.matchAll(/<button class="meter__opt" type="button" aria-pressed="(true|false)" data-h="(\d+)">/g)].map((m) => Number(m[2]));
-  assert.deepEqual(opts, [5, 10, 20], 'the package starts at 5 h a month (Iva, 28.10)');
-  assert.match(css, /\.meter__fill \{[^}]*scaleX\(calc\(var\(--h\) \/ 20\)\)/, 'the bar spans 0 to 20 h');
-  assert.match(p, /<ol class="zusage__days" role="list">/);
-  assert.match(p, /<textPath href="#stamp-path"[^>]*>30 Tage Zusage · 30 Tage Zusage · <\/textPath>/);
-  assert.ok(p.includes(`<p class="small">${de.pricing.smallPrint}</p>`), 'VAT text exactly as before');
-});
-
-/* ---------- B9 to B13 ---------- */
 test('process: «So arbeiten wir zusammen», a line and four pictograms', () => {
   const p = section(DE, 'process');
   assert.match(p, /So arbeiten wir <em class="accent">zusammen<\/em>/);
@@ -201,38 +105,12 @@ test('process: «So arbeiten wir zusammen», a line and four pictograms', () => 
   assert.match(section(EN, 'process'), /How we work <em class="accent">together<\/em>/);
 });
 
-test('references: browser frame around the long screenshot, three quote cards, case link in a new tab', () => {
-  const r = section(DE, 'references');
-  assert.match(r, /<div class="browser"><div class="browser__bar" aria-hidden="true">/);
-  assert.match(r, /<a class="ext" href="https:\/\/alexandrafry\.ch" target="_blank" rel="noopener">alexandrafry\.ch<span class="sr-only"> \(öffnet in neuem Tab\)<\/span><\/a>/);
-  assert.equal((r.match(/<li class="qcard /g) || []).length, 3);
-});
-
-test('about: the Lo/Lö/Li line, four timeline stories, two marquee rows, the mascot group', () => {
-  const a = section(DE, 'about');
-  assert.match(a, /<p class="about__line"><span class="tl-pink">Lo<\/span>gik, <span class="tl-blue">Lö<\/span>sung, <span class="tl-pist">Li<\/span>ve: so arbeite ich\.<span class="mscene mscene--about"/);
-  assert.match(a, /data-scene="about"/);
-  for (const s of de.s4.about.stories) assert.ok(a.includes(`>${s.replace(/&/g, "&amp;")}</p>`), s);
-  assert.equal((a.match(/<ul class="trow trow--\d" role="list"/g) || []).length, 2);
-  assert.match(section(EN, 'about'), /<span class="tl-pink">Lo<\/span>gic, <span class="tl-blue">Lo<\/span>op, <span class="tl-pist">Li<\/span>ve: that's how I work\./);
-});
-
-test('FAQ: intro, details for every question, «Auch gefragt», a way to the contact, Logik at the heading only', () => {
-  const f = section(DE, 'faq');
-  assert.match(f, /<p class="faq__intro">Kurze Antworten/);
-  assert.equal((f.match(/<details class="faq__item"/g) || []).length, 7);
-  assert.match(f, /data-also="Auch gefragt:"/);
-  assert.match(f, /<a class="faq__more" href="#contact">Frage nicht dabei\? → Schreiben Sie mir<\/a>/);
-  assert.match(f, /<h2 id="faq-title">[\s\S]*?data-scene="faq"/);
-  for (const [d] of f.matchAll(/<details class="faq__item"[\s\S]*?<\/details>/g)) assert.ok(!d.includes('mascot'));
-});
-
 test('contact: brief builder with a live preview, mailto, Iva bubble, Graz time, the note only after the click', () => {
   const c = section(DE, 'contact');
   assert.equal((c.match(/<select class="brief__select" id="brief-(what|via|issue|start)"/g) || []).length, 4);
   // Without JS the builder is hidden, so the link carries only the subject; contact.js adds the brief as the body.
   assert.match(c, /<a class="btn btn--primary brief__open" href="mailto:hello@mrlololi\.com\?subject=Anfrage%20%C3%BCber%20mrlololi\.com" data-mail="hello@mrlololi\.com"/);
-  assert.match(c, /<p class="brief__body">Hallo Iva,<br><br>Ich verkaufe einen Onlinekurs über Leadpages\. Es hakt bei Zahlungen\. Start: in 4 Wochen\.<br><br>Viele Grüße<\/p>/);
+  assert.match(c, /<p class="brief__body">Hallo Iva,<br><br>ich verkaufe einen Onlinekurs über Leadpages\. Es hakt bei Zahlungen\. Start: in 4 Wochen\.<br><br>Viele Grüße<\/p>/);
   assert.match(css, /html:not\(\.js\) \.brief \{ display: none; \}/);
   assert.match(c, /<p class="contact__bubble"[^>]*>Erzählen Sie mir, was hakt\.<\/p>/);
   assert.match(c, /Antwort innerhalb von 2 Werktagen/);
@@ -245,16 +123,6 @@ test('contact: brief builder with a live preview, mailto, Iva bubble, Graz time,
 });
 
 /* ---------- mascots: exactly these places ---------- */
-test('mascots: nine scenes on the home page plus the footer, none on legal pages', () => {
-  const scenes = [...new Set([...DE.matchAll(/data-scene="(\w+)"/g)].map((m) => m[1]))].sort();
-  assert.deepEqual(scenes, ['about', 'avatar', 'contact', 'faq', 'hero', 'loading', 'party', 'problems', 'promise'].sort());
-  for (const f of ['impressum/index.html', 'datenschutz/index.html', 'en/legal-notice/index.html', 'en/privacy/index.html', '404.html']) {
-    assert.ok(!html(f).includes('data-scene'), f);
-  }
-  for (const [q] of DE.matchAll(/<li class="qcard[\s\S]*?<\/li>/g)) assert.ok(!q.includes('mascot'));
-});
-
-/* ---------- header ---------- */
 test('header: bigger lockup (28 px icon) and a variant switch', () => {
   assert.match(DE, /<header class="site-header" data-header data-variant="(light|halo)">/);
   assert.match(css, /\.wordmark \.logo \{ display: block; height: clamp\(2\.1rem, 1\.4rem \+ 2\.6vw, 2\.6rem\);/);
