@@ -20,14 +20,15 @@ function setup(fig) {
     play.hidden = true;
     return v;
   };
+  // With preload="none" nothing loads (no metadata either) until play(): play first, then jump.
+  // Setting currentTime before the metadata only sets the start position, so jump once more after.
   const start = (at) => {
     const v = ready();
-    const go = () => {
-      if (at != null) v.currentTime = at;
-      v.play().catch(() => {});
-    };
-    if (v.readyState >= 1 || at == null) go();
-    else v.addEventListener('loadedmetadata', go, { once: true });
+    if (at != null) {
+      v.currentTime = at;
+      if (v.readyState < 1) v.addEventListener('loadedmetadata', () => { v.currentTime = at; }, { once: true });
+    }
+    v.play().catch(() => {});
     v.focus({ preventScroll: true });
   };
   play.hidden = false;
