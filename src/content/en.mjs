@@ -744,6 +744,7 @@ export default {
     h1: 'Legal notice (Impressum)',
     address: ['Iva Tsatskrialashvili', 'Herbersteinstraße 4/4181', '8020 Graz, Austria'],
     emailLabel: 'Email',
+    phoneLabel: 'Phone',
     facts: [
       ['Business', 'advertising agency (non-regulated trade, freies Gewerbe)'],
       ['GISA number (Austrian trade register)', '40197975'],
@@ -756,7 +757,8 @@ export default {
     disclosureTitle: 'Disclosure under § 25 Austrian Media Act',
     disclosure: [
       ['Media owner', 'Iva Tsatskrialashvili, Herbersteinstraße 4/4181, 8020 Graz, Austria'],
-      ['Basic editorial line', 'Information about the services of Iva Tsatskrialashvili in marketing automation, websites and launch tech.'],
+      ['Business', 'advertising agency (email marketing, online course tech, marketing automation)'],
+      ['Basic editorial line', 'Information about the services of mrlololi and articles on email marketing, online course tech and marketing automation.'],
     ],
     linksTitle: 'Liability for links',
     links: 'The operators of linked external websites are solely responsible for their content.',

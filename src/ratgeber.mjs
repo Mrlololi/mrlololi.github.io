@@ -39,7 +39,8 @@ function body(md) {
   return { html, toc };
 }
 
-// Front matter keys: title, description, slug, datePublished, dateModified (YYYY-MM-DD), package (service page key).
+// Front matter keys: title, description, slug, datePublished, dateModified (YYYY-MM-DD), package (service page key),
+// tax and affiliate (true adds the tax note box / the advertising line; Legal 29.10.2026).
 export function parseArticle(src) {
   const m = src.replace(/\r\n/g, '\n').match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
   if (!m) throw new Error('Ratgeber article without front matter');
@@ -52,6 +53,8 @@ export function parseArticle(src) {
   return {
     ...meta,
     dateModified: meta.dateModified || meta.datePublished,
+    tax: meta.tax === 'true',
+    affiliate: meta.affiliate === 'true',
     minutes: Math.max(1, Math.ceil(words / 200)),
     ...body(m[2]),
   };

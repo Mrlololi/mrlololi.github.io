@@ -89,7 +89,7 @@ export async function links(browser, base) {
     await page.goto(base + p, { waitUntil: 'load' });
     const hrefs = await page.$$eval('a[href]', (as) => as.map((a) => a.getAttribute('href')));
     for (const h of hrefs) {
-      if (h.startsWith('mailto:')) continue;
+      if (/^(mailto|tel):/.test(h)) continue; // tel: only in the Impressum (Legal 29.10.2026)
       if (/^https?:/.test(h)) external.add(h); // absolute links (portfolio included) are checked live
       else internal.set(new URL(h, base + p).href, p);
     }

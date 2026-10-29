@@ -31,7 +31,7 @@ test('datenschutz: first person only, no «wir» in the new section', () => {
   assert.match(sec, /Ich selbst übermittle dabei keine Daten\./);
 });
 
-// The home pages changed with Stage 4 (28.10), the privacy pages with this section; the legal notice stays 21.10.
+// The home pages changed with Stage 4 (28.10), the privacy pages with this section; the legal notice moved to 29.10 (Legal 29.10.2026).
 test('privacy date and sitemap lastmod: 28.10.2026 for the home and privacy pages', () => {
   assert.equal(config.page_dates.privacy, '2026-10-28');
   assert.match(html('datenschutz/index.html'), /Stand: 28\.10\.2026/);
@@ -41,5 +41,5 @@ test('privacy date and sitemap lastmod: 28.10.2026 for the home and privacy page
   assert.equal(config.page_dates.home, '2026-10-28');
   for (const loc of ['', 'en/', 'datenschutz/', 'en/privacy/']) assert.match(xml, new RegExp(`<loc>https://mrlololi\\.com/${loc}</loc>\\s*<lastmod>2026-10-28</lastmod>`), loc || '/');
   assert.equal((xml.match(/<lastmod>2026-10-28<\/lastmod>/g) || []).length, 10, 'plus six Stage 5 service pages (spam and ActiveCampaign: 29.10)');
-  assert.equal((xml.match(/<lastmod>2026-10-21<\/lastmod>/g) || []).length, 2, 'Impressum and legal notice');
+  assert.equal((xml.match(/<lastmod>2026-10-21<\/lastmod>/g) || []).length, 0, 'Impressum and legal notice moved to 29.10 (Legal 29.10.2026)');
 });

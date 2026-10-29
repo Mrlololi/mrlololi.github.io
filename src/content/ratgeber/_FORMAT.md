@@ -26,3 +26,8 @@ Text mit **fett**, *kursiv*, `Code` und [Link](/launch-technik/).
 ```
 
 `package` ist der Schlüssel der passenden Leistungsseite: `launch`, `spam`, `activecampaign`, `ki` oder `website`. Daraus entsteht der CTA-Kasten am Ende.
+
+Optional (beide nur mit dem Wert `true`):
+
+- `tax: true` fügt am Ende den Kasten «Dieser Beitrag dient der allgemeinen Information und ersetzt keine Steuer- oder Rechtsberatung. Stand: {Monat Jahr}.» ein. Monat und Jahr kommen aus `dateModified`.
+- `affiliate: true` zeigt «Enthält Werbung / Affiliate-Links» direkt unter dem Titel.

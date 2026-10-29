@@ -56,9 +56,9 @@ test('dates come from the content, not from the build day', () => {
   }
   assert.match(html('datenschutz/index.html'), /Stand: 28\.10\.2026/); // Language Starter section, 28.10.2026
   assert.equal(sitemap(config, new Date('2027-03-01')), sitemap(config, new Date('2026-01-01')));
-  assert.equal((sitemap(config).match(/<lastmod>2026-10-21<\/lastmod>/g) || []).length, 2, 'Impressum and legal notice');
+  assert.equal((sitemap(config).match(/<lastmod>2026-10-21<\/lastmod>/g) || []).length, 0, 'Impressum and legal notice moved to 29.10 (Legal 29.10.2026)');
   assert.equal((sitemap(config).match(/<lastmod>2026-10-28<\/lastmod>/g) || []).length, 10, 'home (Stage 4), privacy and six service pages (Stage 5)');
-  assert.equal((sitemap(config).match(/<lastmod>2026-10-29<\/lastmod>/g) || []).length, 4, 'spam and ActiveCampaign pages (Iva 29.10.2026)');
+  assert.equal((sitemap(config).match(/<lastmod>2026-10-29<\/lastmod>/g) || []).length, 6, 'spam and ActiveCampaign pages (Iva 29.10.2026), Impressum and legal notice (Legal 29.10.2026)');
 });
 
 test('external links open in a new tab and say so', () => {

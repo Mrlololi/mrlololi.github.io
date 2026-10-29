@@ -2,6 +2,11 @@ import { esc, fill, formatDate } from './util.mjs';
 
 const mail = (config) => `<a href="mailto:${esc(config.contact_email)}">${esc(config.contact_email)}</a>`;
 
+// Legal 29.10.2026: the phone is the second contact under § 5 ECG and appears only in the Impressum.
+const phone = (L, config) => config.phone
+  ? `<br>\n${esc(L.phoneLabel)}: <a href="tel:${config.phone.replace(/[^+\d]/g, '')}">${esc(config.phone)}</a>`
+  : '';
+
 function facts(rows, config) {
   return rows
     .filter(([, value]) => value !== '{uid}' || config.uid)
@@ -15,7 +20,7 @@ export function impressum(t, config) {
 <h1>${esc(L.h1)}</h1>
 <section>
 <address>${L.address.map(esc).join('<br>')}<br>
-${esc(L.emailLabel)}: ${mail(config)}</address>
+${esc(L.emailLabel)}: ${mail(config)}${phone(L, config)}</address>
 </section>
 <section>
 <dl>

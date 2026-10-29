@@ -46,16 +46,20 @@ export function ratgeberArticle(t, config, a, articles) {
 <ol>${a.toc.map((h) => `<li><a href="#${h.id}">${esc(h.text)}</a></li>`).join('')}</ol>
 </nav>`
     : '';
+  // Legal 29.10.2026: advertising line under the title, tax note box (Stand = month of dateModified) at the end.
+  const ad = a.affiliate ? `<p class="ratgeber__ad small">${esc(R.affiliate)}</p>\n` : '';
+  const month = new Intl.DateTimeFormat('de-AT', { month: 'long', year: 'numeric', timeZone: 'Europe/Vienna' }).format(day(a.dateModified));
+  const tax = a.tax ? `<p class="ratgeber-note">${esc(fill(R.taxNote, { date: month }))}</p>\n` : '';
   return `<article class="doc ratgeber">
 <header class="ratgeber__head">
 <h1>${esc(a.title)}</h1>
-<p class="ratgeber__meta small">${time(t, a.datePublished)}${modified} · ${esc(R.by)} <a href="${t.paths.home}#about">Iva Tsatskrialashvili</a> · ${minutes(t, a)}</p>
+${ad}<p class="ratgeber__meta small">${time(t, a.datePublished)}${modified} · ${esc(R.by)} <a href="${t.paths.home}#about">Iva Tsatskrialashvili</a> · ${minutes(t, a)}</p>
 </header>
 ${toc}
 <div class="ratgeber__body">
 ${a.html}
 </div>
-${cta(t, config, a.package)}
+${tax}${cta(t, config, a.package)}
 <nav class="ratgeber-more" aria-labelledby="ratgeber-more-title">
 <h2 id="ratgeber-more-title">${esc(R.more)}</h2>
 <ul role="list">

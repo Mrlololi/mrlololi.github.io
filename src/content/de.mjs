@@ -746,6 +746,9 @@ export default {
     cta: 'Passendes Paket',
     more: 'Weiterlesen',
     all: 'Alle Artikel',
+    // Legal 29.10.2026: front matter «tax: true» and «affiliate: true».
+    taxNote: 'Dieser Beitrag dient der allgemeinen Information und ersetzt keine Steuer- oder Rechtsberatung. Stand: {date}.',
+    affiliate: 'Enthält Werbung / Affiliate-Links',
   },
 
   footer: {
@@ -761,10 +764,12 @@ export default {
   },
 
   // Impressum (CONTENT.md section 3). Full address incl. flat number, confirmed by Iva (15.10.2026).
+  // Legal 29.10.2026: UID, phone (second contact, § 5 ECG, only here) and the § 25 MedienG lines.
   legalPage: {
     h1: 'Impressum',
     address: ['Iva Tsatskrialashvili', 'Herbersteinstraße 4/4181', '8020 Graz, Österreich'],
     emailLabel: 'E-Mail',
+    phoneLabel: 'Telefon',
     facts: [
       ['Unternehmensgegenstand', 'Werbeagentur (freies Gewerbe)'],
       ['GISA-Zahl', '40197975'],
@@ -777,7 +782,8 @@ export default {
     disclosureTitle: 'Offenlegung gemäß § 25 Mediengesetz',
     disclosure: [
       ['Medieninhaber', 'Iva Tsatskrialashvili, Herbersteinstraße 4/4181, 8020 Graz, Österreich'],
-      ['Grundlegende Richtung', 'Information über die Dienstleistungen von Iva Tsatskrialashvili im Bereich Marketing-Automation, Websites und Launch-Technik.'],
+      ['Unternehmensgegenstand', 'Werbeagentur (E-Mail-Marketing, Online-Kurs-Technik, Marketing-Automatisierung)'],
+      ['Grundlegende Richtung', 'Information über die Dienstleistungen von mrlololi sowie fachliche Beiträge zu E-Mail-Marketing, Online-Kurs-Technik und Marketing-Automatisierung.'],
     ],
     linksTitle: 'Haftung für Links',
     links: 'Für Inhalte verlinkter externer Seiten sind ausschließlich deren Betreiber verantwortlich.',
