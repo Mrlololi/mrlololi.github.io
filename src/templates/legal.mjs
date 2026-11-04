@@ -1,6 +1,7 @@
 import { esc, fill, formatDate } from './util.mjs';
 import { mascotSvg } from '../../assets/js/mascot-art.js';
 import { loopButton } from './hero.mjs';
+import { mascotScene } from './mascots.mjs';
 
 const mail = (config) => `<a href="mailto:${esc(config.contact_email)}">${esc(config.contact_email)}</a>`;
 
@@ -101,15 +102,35 @@ ${links.map(([href, label]) => `<li><a class="nf__card card" href="${href}">${es
 </ul>`;
 }
 
+// Stage 6f (4.11.2026): /danke/ and /en/thanks/, where the form lands without JavaScript (Make answers
+// 302 for nojs=1). Calm: Live in joy, the text of the success panel, the way back. noindex, not in the sitemap.
+export function thanksPage(t) {
+  const p = t.thanksPage;
+  return `<article class="thanks-page">
+<div class="thanks-page__in">
+${mascotScene('thanks-page', [[2, 'joy']])}
+<h1>${esc(p.h1)}</h1>
+<p class="lead">${esc(p.text)}</p>
+<p><a class="btn btn--primary" href="${t.paths.home}">${esc(p.back)}</a></p>
+</div>
+</article>`;
+}
+
 export function notFound(t, alt, { ratgeber = false } = {}) {
-  return `<article class="nf">
-<div class="nf__in">
-${nfScene(t)}
-<p class="nf__caption">${esc(t.s6.b.repaired)}</p>
-<p class="nf__ctl">${loopButton(t, 'notFound')}</p>
+  // Stage 6f: the text and the links first, the picture next to them; under /en/ the English part first.
+  return `<script>if (location.pathname.startsWith('/en/')) document.documentElement.classList.add('nf-en');</script>
+<article class="nf">
+<div class="nf__in nf__main">
+<div class="nf__text">
 <h1>${esc(t.s6.notFound.h1)}</h1>
 <p class="lead">${esc(t.s6.notFound.lead)}</p>
 ${nfLinks(t, ratgeber)}
+</div>
+<div class="nf__pic">
+${nfScene(t)}
+<p class="nf__caption">${esc(t.s6.b.repaired)}</p>
+<p class="nf__ctl">${loopButton(t, 'notFound')}</p>
+</div>
 </div>
 <section class="nf__in nf__alt" lang="${alt.lang}" aria-labelledby="nf-alt">
 <h2 id="nf-alt">${esc(alt.s6.notFound.h1)}</h2>

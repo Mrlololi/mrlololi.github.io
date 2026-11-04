@@ -7,18 +7,46 @@
 // consent as JSON to the Make scenario (form data-endpoint), with keepalive and a 10 s timeout. On
 // success the form gives way to a panel with Live; on failure the form stays filled and the mailto
 // actions appear. No cookies, no other request.
+// Stage 6f (4.11.2026): the same form closes the service pages. window.__cfReady tells the inline
+// onsubmit guard that JS handles the form (before that a click does nothing; without JS the form posts
+// natively with nojs=1, which this file removes). ?paket=<id> preselects «Mir geht es um» and brings
+// the form into view with the focus on the name. «Wann passt es Ihnen?» goes as termin; the package
+// goes as the first line of text. On an invalid submit an error summary links to the fields.
 import { briefMail, mailtoHref } from './pure.js';
 
 const TIMEOUT = 10000;
 
 export function init() {
-  const section = document.getElementById('contact');
+  const f = document.querySelector('.contact__form');
+  const section = f?.closest('section');
   if (!section) return;
+  f.querySelector('input[name="nojs"]')?.remove();
+  f.noValidate = true;
   builder(section);
   form(section);
+  preselect(section);
   thanks(section);
   bubble(section);
   clock(section);
+  window.__cfReady = true;
+}
+
+// /?paket=check#contact: the package is chosen, the form comes into view, the focus on the name.
+function preselect(section) {
+  const id = new URLSearchParams(location.search).get('paket');
+  const sel = section.querySelector('#cf-paket');
+  if (!id || !sel || ![...sel.options].some((o) => o.value === id)) return;
+  sel.value = id;
+  sel.dispatchEvent(new Event('change'));
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  section.querySelector('.contact__fields').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+  section.querySelector('#cf-name').focus({ preventScroll: true });
+}
+
+// The package line that opens the text (empty when «Weiß ich noch nicht»).
+function paketLine(f) {
+  const sel = f.querySelector('#cf-paket');
+  return sel && sel.value ? `${f.dataset.paketLabel}: ${sel.options[sel.selectedIndex].text}` : '';
 }
 
 // «Erzählen Sie mir, was hakt.» types itself each time the card comes into view (Stage 6d: back).
@@ -39,9 +67,6 @@ function bubble(section) {
   }, { threshold: 0.8 }).observe(p);
 }
 
-// The four choices with the payload's field names.
-const PAYLOAD_KEYS = { what: 'was', via: 'plattform', issue: 'problem', start: 'start' };
-
 function builder(section) {
   const brief = section.querySelector('.brief');
   const open = section.querySelector('.brief__open');
@@ -50,6 +75,8 @@ function builder(section) {
   const body = brief.querySelector('.brief__body');
   const name = section.querySelector('#cf-name');
   const text = section.querySelector('#cf-text');
+  const termin = section.querySelector('#cf-termin');
+  const f = section.querySelector('.contact__form');
   // The sentence and the e-mail frame in the page's language (data attributes from the build).
   const c = {
     sentence: brief.dataset.sentence,
@@ -61,22 +88,27 @@ function builder(section) {
     lower: 'lower' in brief.dataset,
   };
   const update = () => {
-    const choices = Object.fromEntries(selects.map((s) => [s.name, s.value]));
+    // The selects carry the payload names (was, plattform, problem, start); data-key is the sentence slot.
+    const choices = Object.fromEntries(selects.map((s) => [s.dataset.key, s.value]));
     const m = briefMail(c, choices);
-    // The optional text goes before the closing, the name under it (preview and mailto alike).
+    // Package, preferred time and the optional text go before the closing, the name under it
+    // (preview and mailto alike).
     let mailBody = m.body;
-    const extra = text?.value.trim();
+    const when = termin?.value.trim();
+    const extra = [paketLine(f), when ? `${f.dataset.terminLabel}: ${when}` : '', text?.value.trim()].filter(Boolean).join('\n\n');
     if (extra) mailBody = mailBody.replace(`\n\n${c.closing}`, `\n\n${extra}\n\n${c.closing}`);
     const who = name?.value.trim();
     if (who) mailBody += `\n${who}`;
-    body.textContent = '';
-    mailBody.split('\n').forEach((line, i) => { if (i) body.append(document.createElement('br')); body.append(line); });
+    if (body) {
+      body.textContent = '';
+      mailBody.split('\n').forEach((line, i) => { if (i) body.append(document.createElement('br')); body.append(line); });
+    }
     open.href = mailtoHref(open.dataset.mail, m.subject, mailBody);
     brief.dataset.copy = `${m.subject}\n\n${mailBody}`;
   };
   selects.forEach((s) => s.addEventListener('change', update));
-  name?.addEventListener('input', update);
-  text?.addEventListener('input', update);
+  for (const el of [name, text, termin]) el?.addEventListener('input', update);
+  section.querySelector('#cf-paket')?.addEventListener('change', update);
   update();
   copier(section, brief);
 }
@@ -90,6 +122,7 @@ function form(section) {
   const failed = f.querySelector('.contact__failed');
   const label = send.textContent;
   const fields = { name: f.elements.name, email: f.elements.email, consent: f.elements.consent };
+  const summary = f.querySelector('.contact__errsum');
 
   // elapsed_ms counts from the moment the form first came into view.
   let seen = 0;
@@ -117,10 +150,32 @@ function form(section) {
     err.hidden = !msg;
     return !msg;
   };
+  // The error summary at the top: one link per field, the focus on the summary.
+  const showSummary = (bad) => {
+    if (!summary) { fields[bad[0]].focus(); return; }
+    const n = bad.length;
+    summary.querySelector('.contact__errsum-title').textContent = n === 1 ? f.dataset.summaryOne : f.dataset.summaryMany.replace('{n}', n);
+    const list = summary.querySelector('ul');
+    list.textContent = '';
+    for (const key of bad) {
+      const a = document.createElement('a');
+      a.href = `#cf-${key}`;
+      a.textContent = f.querySelector(`#cf-${key}-err`).textContent;
+      a.addEventListener('click', (e) => { e.preventDefault(); fields[key].focus(); });
+      const li = document.createElement('li');
+      li.append(a);
+      list.append(li);
+    }
+    summary.hidden = false;
+    summary.focus();
+  };
   // Messages appear after the first attempt (or when leaving a field) and clear as soon as it is right.
   let tried = false;
   for (const [key, el] of Object.entries(fields)) {
-    el.addEventListener(key === 'consent' ? 'change' : 'input', () => { if (tried || el.hasAttribute('aria-invalid')) show(key); });
+    el.addEventListener(key === 'consent' ? 'change' : 'input', () => {
+      if (tried || el.hasAttribute('aria-invalid')) show(key);
+      if (summary && !summary.hidden && Object.keys(fields).every((k) => !message(k))) summary.hidden = true;
+    });
     if (key !== 'consent') el.addEventListener('blur', () => { if (el.value.trim()) show(key); });
   }
 
@@ -129,12 +184,14 @@ function form(section) {
     if (send.disabled) return;
     tried = true;
     const bad = Object.keys(fields).filter((key) => !show(key));
-    if (bad.length) { fields[bad[0]].focus(); return; }
+    if (bad.length) { showSummary(bad); return; }
+    if (summary) summary.hidden = true;
     const payload = {
       name: fields.name.value.trim(),
       email: fields.email.value.trim(),
-      ...Object.fromEntries([...f.querySelectorAll('.brief__select')].map((s) => [PAYLOAD_KEYS[s.name], s.value])),
-      text: f.elements.text.value.trim(),
+      ...Object.fromEntries([...f.querySelectorAll('.brief__select')].map((s) => [s.name, s.value])),
+      text: [paketLine(f), f.elements.text.value.trim()].filter(Boolean).join('\n\n'),
+      termin: f.elements.termin.value.trim(),
       consent: fields.consent.checked,
       website: f.elements.website.value,
       elapsed_ms: Math.round(performance.now() - (seen || performance.now())),

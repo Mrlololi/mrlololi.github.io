@@ -5,7 +5,7 @@
 // («hero:motion»). The footer three wave when the footer comes into view. Reduced motion: nothing
 // moves, a click only shows the happy face for a moment.
 import { parts } from './mascot-art.js';
-import { reduceMotion } from './loops.js';
+import { reduceMotion, motion } from './loops.js';
 
 // Swaps eyes, mouth, arms and accessory for another emotion (the body stays).
 export function setPose(svg, emo) {
@@ -47,7 +47,7 @@ export function initMascots() {
     document.querySelector(`.hf__btn--${b.dataset.node}`)?.addEventListener('click', () => jump(svg, 18));
   }
   const flow = document.querySelector('.hero__flow');
-  if (flow && spots.length && !reduceMotion.matches) {
+  if (flow && spots.length && !reduceMotion.matches && !motion.paused) {
     let timers = [];
     const hops = (since = 0) => {
       timers.forEach(clearTimeout);
@@ -63,7 +63,7 @@ export function initMascots() {
 // Footer: each time it comes into view all three wave three times (about 2 s), then rest.
 function footer() {
   const box = document.querySelector('.footer-mascots');
-  if (!box || reduceMotion.matches || !('IntersectionObserver' in window)) return;
+  if (!box || reduceMotion.matches || motion.paused || !('IntersectionObserver' in window)) return;
   const arms = [...box.querySelectorAll('.m-wave')];
   for (const arm of arms) {
     arm.style.transformBox = 'view-box';
@@ -145,7 +145,7 @@ function heroMotion(gsap, svgs) {
 
 // After GSAP has loaded (main.js).
 export function startMascotMotion(gsap) {
-  if (reduceMotion.matches || !gsap) return;
+  if (reduceMotion.matches || motion.paused || !gsap) return;
   const hero = [...document.querySelectorAll('.mascot-spot .mascot')];
   if (hero.length) heroMotion(gsap, hero);
 }

@@ -1,6 +1,7 @@
 import { esc, accent, absUrl, extLink, quoted, keepHyphenated } from './util.mjs';
 import { kiDemo, calculator } from './ki.mjs';
 import { videoFigure, videoLd } from './video.mjs';
+import { contactForm } from './sections.mjs';
 
 // Stage 5 (28.10.2026): one light template for the five service pages (DE and EN). No mascots here:
 // the pages show prices and must stay fast (Lighthouse mobile >= 95). Stage 6: the KI page carries
@@ -12,7 +13,8 @@ export const packagesOf = (t) => Object.fromEntries(t.pricing.groups.flatMap((g)
 // «Focus phrase | mrlololi», or the focus phrase alone when the suffix would pass 60 characters.
 export const serviceTitle = (s) => (`${s.h1} | mrlololi`.length <= 60 ? `${s.h1} | mrlololi` : s.h1);
 
-const mailto = (t, config, it) => `mailto:${config.contact_email}?subject=${encodeURIComponent(t.pricing.subjectPrefix + it.name)}`;
+// Stage 6f: «Anfragen» leads to the form with the package preselected (assets/js/contact.js reads ?paket=).
+const ask = (t, it) => `${t.paths.home}?paket=${it.id}#contact`;
 const amount = (price) => Number(price.replace(/[^\d]/g, ''));
 
 // «ab 1.190 €» becomes a minPrice, «45 € pro Stunde» a price per hour, «190 € fix» a plain price.
@@ -142,7 +144,7 @@ export function servicePage(t, config, s, { live = {} } = {}) {
 <h3 class="svc-pkg__name">${esc(it.name)}</h3>
 <p class="svc-pkg__price">${esc(it.price)}</p>
 ${it.extra ? `<p class="item__extra"><strong>${esc(it.extra.label)}</strong>, ${esc(it.extra.text)}</p>` : ''}
-<a class="btn btn--sm btn--primary" href="${esc(mailto(t, config, it))}">${esc(t.pricing.cta)}<span class="sr-only">: ${esc(it.name)}</span></a>
+<a class="btn btn--sm btn--primary" href="${esc(ask(t, it))}">${esc(t.pricing.cta)}<span class="sr-only">: ${esc(it.name)}</span></a>
 </li>`).join('\n');
   const steps = s.steps.map(([title, line], i) => `<li class="svc-step"><span class="svc-step__n" aria-hidden="true">${i + 1}</span><h3>${esc(title)}</h3><p>${esc(line)}</p></li>`).join('\n');
   const faq = s.faq.map(([q, a]) => `<details class="faq__item svc-faq__item">
@@ -161,7 +163,7 @@ ${crumbs(t, s)}
 <div class="svc-prices">
 ${pkgs.map(priceChip).join('\n')}
 </div>
-<p><a class="btn btn--primary" href="${esc(mailto(t, config, pkgs[0]))}">${esc(t.pricing.cta)}<span class="sr-only">: ${esc(pkgs[0].name)}</span></a></p>
+<p><a class="btn btn--primary" href="#svc-form">${esc(t.pricing.cta)}<span class="sr-only">: ${esc(pkgs[0].name)}</span></a></p>
 </div>
 </section>
 ${s.key === 'launch' && t.s6.video ? `<section class="svc-sec svc-video bg-pist edge" aria-labelledby="svc-video">
@@ -197,7 +199,9 @@ ${related}
 <div class="svc-contact">
 <h2 class="svc-contact__title">${accent(t.contact.h2)}</h2>
 <p class="lead">${esc(t.contact.text)} ${esc(t.contact.free)}</p>
-<p class="svc-contact__actions"><a class="btn btn--primary" href="${esc(subjectOnly)}">${esc(t.contact.mail)}</a></p>
+<div class="svc-form" id="svc-form">
+${contactForm(t, config, { page: s.path, paket: pkgs[0].id, compact: true })}
+</div>
 <ul class="svc-links" role="list">
 <li><a class="text-link" href="${esc(subjectOnly)}">${esc(config.contact_email)}</a></li>
 <li>${extLink(config.linkedin, esc(t.contact.linkedin), t)}</li>

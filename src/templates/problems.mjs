@@ -90,7 +90,6 @@ ${loopButton(t, 'card', 'loopctl--card')}
 <div class="wrap">
 <div class="section__head">
 <h2 id="problems-title" data-enter="lines">${accent(t.problems.h2)}</h2>
-<p class="lead">${esc(t.problems.intro)}</p>
 </div>
 ${beforeAfter(t)}
 <ul class="pcs" role="list" data-demo="problems" data-enter="stagger">

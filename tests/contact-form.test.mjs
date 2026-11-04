@@ -15,13 +15,14 @@ const css = readFileSync(new URL('../assets/css/main.css', import.meta.url), 'ut
 
 test('form: the brief builder stays, then name, e-mail, optional text, consent, «Anfrage senden» (DE)', () => {
   const c = contact('index.html');
-  assert.match(c, /<form class="contact__form" id="contact-form" method="post" novalidate data-endpoint="https:\/\/hook\.eu1\.make\.com\/49mmc0uciouni5rlvys2vb6drzdhhlph" data-lang="de"/);
+  // Stage 6f: native post to the hook without JS; the inline guard holds clicks until contact.js is there.
+  assert.match(c, /<form class="contact__form" id="contact-form" action="https:\/\/hook\.eu1\.make\.com\/49mmc0uciouni5rlvys2vb6drzdhhlph" method="post" onsubmit="return window\.__cfReady===true" data-endpoint="https:\/\/hook\.eu1\.make\.com\/49mmc0uciouni5rlvys2vb6drzdhhlph" data-lang="de"/);
   assert.equal((c.match(/<select class="brief__select"/g) || []).length, 4);
   assert.match(c, /<label for="cf-name">Ihr Name<\/label><input id="cf-name" name="name" type="text" autocomplete="name"[^>]* required aria-describedby="cf-name-err">/);
   assert.match(c, /<label for="cf-email">Ihre E-Mail-Adresse<\/label><input id="cf-email" name="email" type="email" autocomplete="email"[^>]* required aria-describedby="cf-email-err">/);
   assert.match(c, /<label for="cf-text">Möchten Sie noch etwas ergänzen\? \(optional\)<\/label><textarea id="cf-text" name="text"/);
-  assert.match(c, /<input id="cf-consent" name="consent" type="checkbox" required aria-describedby="cf-consent-err"><label for="cf-consent">Ich bin einverstanden, dass meine Angaben zur Beantwortung meiner Anfrage verarbeitet werden\. Mehr in der <a href="\/datenschutz\/#form">Datenschutzerklärung<\/a>\.<\/label>/);
-  assert.match(c, /<button class="btn btn--primary contact__send" type="submit">Anfrage senden<\/button>\n<p class="contact__showcase small">Diese Anfrage läuft über eine Automation, wie ich sie für Sie baue\.<\/p>/);
+  assert.match(c, /<input id="cf-consent" name="consent" type="checkbox" value="true" required aria-describedby="cf-consent-err"><label for="cf-consent">Ich bin einverstanden, dass meine Angaben zur Beantwortung meiner Anfrage verarbeitet werden\. Mehr in der <a href="\/datenschutz\/#form">Datenschutzerklärung<\/a>\.<\/label>/);
+  assert.match(c, /<button class="btn btn--primary contact__send" type="submit">Anfrage senden<\/button>\n<p class="contact__next">In meiner Antwort bekommen Sie zwei, drei Terminvorschläge, per Zoom oder Telefon\.<\/p>\n<p class="contact__showcase small">Diese Anfrage läuft über eine Automation, wie ich sie für Sie baue\.<\/p>/);
   assert.match(c, /Ihre Angaben gehen nur an mich, über eine Automation in der EU\. Keine Cookies, kein Tracking\./);
   assert.ok(!/gesendet oder gespeichert/.test(c), 'the old note is gone (the run-log demo keeps its own «Nur eine Vorschau»)');
   assert.match(c, /data-sending="Wird gesendet…"/);
@@ -47,17 +48,18 @@ test('success and error: the panel with Live (joy), the error line with the addr
   assert.match(c, /data-scene="contact-done"[\s\S]*data-base="joy"/);
   assert.match(c, /<p class="contact__failed" role="alert" tabindex="-1" hidden>Das hat leider nicht geklappt\. Schreiben Sie mir direkt an <a href="mailto:hello@mrlololi\.com[^"]*">hello@mrlololi\.com<\/a><\/p>/);
   assert.match(css, /\.js \.contact__alt:not\(\.is-open\) \{ display: none; \}/);
-  assert.match(css, /html:not\(\.js\) \.contact__fields, html:not\(\.js\) \.contact__submit \{ display: none; \}/);
+  assert.ok(!/html:not\(\.js\) \.contact__fields/.test(css), 'Stage 6f: the form works without JS');
 });
 
 test('contact.js: one POST as JSON with keepalive, 10 s timeout, exactly the agreed fields, no cookies', () => {
   assert.match(js, /const TIMEOUT = 10000;/);
   assert.match(js, /method: 'POST', headers: \{ 'Content-Type': 'application\/json' \}, body: JSON\.stringify\(payload\), credentials: 'omit', keepalive: true/);
-  assert.match(js, /const PAYLOAD_KEYS = \{ what: 'was', via: 'plattform', issue: 'problem', start: 'start' \};/);
+  // Stage 6f: the selects carry the payload names themselves (the native post matches the JSON).
+  for (const [k, n] of [['what', 'was'], ['via', 'plattform'], ['issue', 'problem'], ['start', 'start']]) assert.ok(byFile['index.html'].includes(`name="${n}" data-key="${k}"`), n);
   const block = js.slice(js.indexOf('const payload = {'), js.indexOf('};', js.indexOf('const payload = {')));
   const keys = [...block.matchAll(/^\s{6}(\w+):/gm)].map((m) => m[1]);
-  assert.deepEqual(keys, ['name', 'email', 'text', 'consent', 'website', 'elapsed_ms', 'lang', 'page']);
-  assert.ok(!/document\.cookie|localStorage/.test(js));
+  assert.deepEqual(keys, ['name', 'email', 'text', 'termin', 'consent', 'website', 'elapsed_ms', 'lang', 'page']);
+  assert.ok(!/document\.cookie|localStorage|sessionStorage/.test(js));
 });
 
 test('Datenschutz: section «Kontaktformular» / «Contact form» before «Terminbuchung», linked from the form', () => {
@@ -81,12 +83,6 @@ test('prices: two chains with their pause buttons beside them; the 30-day box ce
   assert.match(css, /\.promise-row \.promise \{ width: 100%; max-width: 51\.25rem;/);
   const p = readFileSync(new URL('../assets/js/prices.js', import.meta.url), 'utf8');
   assert.match(p, /\['\.viz--site', 0, 1500\], \['\.viz--chat', 2500, 1900, typer\]/);
-  assert.match(p, /ambient: true/);
+  assert.ok(!/ambient: true/.test(p), 'Stage 6f: one conductor, no exception');
 });
 
-test('run-log: «Schließen» while open, slow-motion note, «Nochmal von vorn»', () => {
-  const h = byFile['index.html'];
-  assert.match(h, /data-close="Schließen">Ablauf selbst ausprobieren<\/button>/);
-  assert.match(h, /<p class="runlog__slow">Zeitlupe, in Wirklichkeit 2,3 Sekunden<\/p><button class="btn btn--secondary btn--sm runlog__replay" type="button">Nochmal von vorn<\/button>/);
-  assert.match(byFile['en/index.html'], /<p class="runlog__slow">Slow motion, in reality 2\.3 seconds<\/p><button class="btn btn--secondary btn--sm runlog__replay" type="button">Start over<\/button>/);
-});

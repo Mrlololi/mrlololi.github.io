@@ -111,9 +111,12 @@ test('contact: brief builder with a live preview, mailto, Iva bubble, Graz time,
   // Without JS the builder is hidden, so the link carries only the subject; contact.js adds the brief as the body.
   assert.match(c, /<a class="btn btn--primary brief__open" href="mailto:hello@mrlololi\.com\?subject=Anfrage%20%C3%BCber%20mrlololi\.com" data-mail="hello@mrlololi\.com"/);
   assert.match(c, /<p class="brief__body">Hallo Iva,<br><br>ich verkaufe einen Onlinekurs über Leadpages\. Es hakt bei Zahlungen\. Start: in 4 Wochen\.<br><br>Viele Grüße<\/p>/);
-  assert.match(css, /html:not\(\.js\) \.brief \{ display: none; \}/);
+  // Stage 6f: without JS the form posts natively; only the live preview needs JS.
+  assert.match(css, /html:not\(\.js\) \.brief__preview \{ display: none; \}/);
   assert.match(c, /<p class="contact__bubble"[^>]*>Erzählen Sie mir, was hakt\.<\/p>/);
-  assert.match(c, /Antwort innerhalb von 2 Werktagen/);
+  // Stage 6f: «2 Werktage» once in the contact block (the lead), not again on the card.
+  assert.ok(!/Antwort innerhalb von 2 Werktagen/.test(c));
+  assert.equal((c.replace(/<template[\s\S]*?<\/template>/, '').replace(/data-text="[^"]*"/g, '').match(/zwei Werktagen|2 Werktagen/g) || []).length, 1);
   assert.match(c, /<time class="contact__time"/);
   assert.match(c, /<div class="contact__thanks" role="status"><\/div>/, 'empty until the click');
   assert.match(c, /<template id="contact-thanks">[\s\S]*data-scene="contact"[\s\S]*Danke! Sobald Ihre Mail da ist, melde ich mich innerhalb von zwei Werktagen\.[\s\S]*<\/template>/);

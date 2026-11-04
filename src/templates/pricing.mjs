@@ -22,24 +22,21 @@ const VIZ = {
 </div>`;
   },
   check: (t) => `<div class="viz viz--check" aria-hidden="true"><ul class="scan" role="list">${t.s4.starter.check.map((l, i) => `<li style="--i:${i}">${esc(l)}</li>`).join('')}</ul><span class="scan__lens"></span></div>`,
-  launch: (t) => {
-    const h = t.s4.projects.hub;
-    return `<div class="viz viz--hub" aria-hidden="true">
-<span class="hub__centre">${esc(h.centre)}</span>
-${h.parts.map((p, i) => `<span class="hub__sat hub__sat--${i + 1}">${esc(p)}</span>`).join('')}
-</div>`;
-  },
+  // Stage 6f: four nodes on a line that light one after another (the hub with its tools was the
+  // emptiest picture).
+  launch: (t) => `<div class="viz viz--flow" aria-hidden="true"><ol class="flow4" role="list">${t.s6.pricing.flow.map((n, i) => `<li class="flow4__n flow4__n--${i + 1}"><span class="flow4__dot"></span><span class="flow4__name">${esc(n)}</span></li>`).join('')}</ol></div>`,
   website: (t) => {
     const w = t.s4.projects.site;
     return `<div class="viz viz--site" aria-hidden="true"><div class="mini-browser"><p class="mini-browser__bar"><i></i><i></i><i></i><span>${esc(w.url)}</span></p><div class="mini-browser__page">${w.blocks.map((b, i) => `<span class="blk blk--${i + 1}">${esc(b)}</span>`).join('')}</div></div></div>`;
   },
   ki: (t) => {
     const c = t.s4.projects.chat;
-    return `<div class="viz viz--chat" aria-hidden="true"><p class="tchat__q">${esc(c.q)}</p><p class="tchat__a"><span class="tchat__tag">${esc(c.tag)}</span><span class="tchat__text">${esc(c.a)}</span></p></div>`;
+    return `<div class="viz viz--chat" aria-hidden="true"><p class="tchat__q">${esc(c.q)}</p><p class="tchat__a"><span class="tchat__tag">${esc(c.tag)}</span><span class="tchat__text"><span class="tchat__full">${esc(c.a)}</span><span class="tchat__typed">${esc(c.a)}</span></span></p></div>`;
   },
 };
 
-const mailto = (t, email, it) => `mailto:${email}?subject=${encodeURIComponent(t.pricing.subjectPrefix + it.name)}`;
+// Stage 6f: «Anfragen» opens the form with the package preselected (contact.js reads ?paket=).
+const ask = (t, email, it) => `${t.paths.home}?paket=${it.id}#contact`;
 const pageFor = (t, id) => t.services.pages.find((p) => p.key === t.services.byPackage[id]);
 // Stage 6b: Technik-Check and Betreuung get no «Mehr …» link (the card says enough, and their
 // page is about ActiveCampaign); the others in the right case («Mehr zu KI-Antwortentwürfen»).
@@ -60,7 +57,7 @@ ${VIZ[it.id](t)}
 <ul class="item__bullets" role="list">${c.bullets.map((b) => `<li>${check}<span>${esc(b)}</span></li>`).join('')}</ul>
 <div class="item__actions">
 ${moreLink(t, it.id, 'item__more')}
-<a class="btn btn--sm btn--primary item__cta" href="${mailto(t, email, it)}">${esc(t.pricing.cta)}<span class="sr-only">: ${esc(it.name)}</span></a>
+<a class="btn btn--sm btn--primary item__cta" href="${ask(t, email, it)}">${esc(t.pricing.cta)}<span class="sr-only">: ${esc(it.name)}</span></a>
 </div>
 </li>`;
 }
@@ -74,7 +71,7 @@ ${VIZ[it.id] ? VIZ[it.id](t) : ''}
 <div class="row__text"><h4 class="row__name">${esc(it.name)}</h4><p class="row__line">${esc(t.s6.pricing.rows[it.id])}</p></div>
 <p class="row__price">${esc(it.price)}</p>
 <p class="row__links">${moreLink(t, it.id, 'row__more')}${example}</p>
-<a class="btn btn--secondary btn--sm row__ask" href="${mailto(t, email, it)}">${esc(t.pricing.cta)}<span class="sr-only">: ${esc(it.name)}</span></a>
+<a class="btn btn--secondary btn--sm row__ask" href="${ask(t, email, it)}">${esc(t.pricing.cta)}<span class="sr-only">: ${esc(it.name)}</span></a>
 </li>`;
 }
 
@@ -86,7 +83,8 @@ export function pricing(t, config) {
 <div class="wrap">
 <div class="section__head">
 <h2 id="services-title" data-enter="lines">${accent(t.pricing.h2)}</h2>
-<p class="lead">${esc(p.intro)}</p>
+<p class="lead">${esc(p.intro)}</p>${p.audience ? `
+<p class="services__audience">${esc(p.audience)}</p>` : ''}
 </div>
 <div class="tariff" id="pricing">
 <nav class="chooser card" aria-labelledby="chooser-title">

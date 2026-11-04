@@ -4,9 +4,13 @@ import { heroMascots } from './mascots.mjs';
 // Stage 6c: one pause button for every looping demo (WCAG 2.2.2), a secondary button with icon and
 // text, at least 44 px: «Pause» / «Abspielen», under reduced motion «Nächster Schritt». Its name for
 // screen readers says which demo. Hidden without JS; assets/js/loops.js wires it.
+// Stage 6f (4.11.2026): a small round icon button (44 px, its text for screen readers) for the
+// pictures; the KI demo keeps its visible text. Its place is kept from the start (data-wait:
+// invisible, not removed), so nothing shifts when it appears.
 export const loopButton = (t, name, cls = '') => {
   const c = t.s6.c;
-  return `<button class="loopctl btn btn--secondary btn--sm${cls ? ` ${cls}` : ''}" type="button" hidden data-pause-label="${esc(c.pause)}" data-play-label="${esc(c.play)}" data-step-label="${esc(c.step)}"><svg class="loopctl__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path class="loopctl__pause" d="M9 6v12M15 6v12"/><path class="loopctl__play" d="M8 5.5v13l10.5-6.5z"/><path class="loopctl__step" d="M5 12h12M13 7l5 5-5 5"/></svg><span class="loopctl__text">${esc(c.pause)}</span><span class="sr-only">: ${esc(c.names[name])}</span></button>`;
+  const icon = name === 'ki' ? '' : ' loopctl--icon';
+  return `<button class="loopctl btn btn--secondary btn--sm${icon}${cls ? ` ${cls}` : ''}" type="button" data-wait data-pause-label="${esc(c.pause)}" data-play-label="${esc(c.play)}" data-step-label="${esc(c.step)}"><svg class="loopctl__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path class="loopctl__pause" d="M9 6v12M15 6v12"/><path class="loopctl__play" d="M8 5.5v13l10.5-6.5z"/><path class="loopctl__step" d="M5 12h12M13 7l5 5-5 5"/></svg><span class="loopctl__text">${esc(c.pause)}</span><span class="sr-only">: ${esc(c.names[name])}</span></button>`;
 };
 
 // Hero diagram: four nodes on a zigzag, three wires. The HTML/CSS shows every node lit (the end

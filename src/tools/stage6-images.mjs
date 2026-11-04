@@ -30,17 +30,21 @@ if (all || args.includes('--posters')) {
   }
 }
 
-// --projects takes new screenshots; --crop-only re-crops the kept ones.
+// --projects takes new screenshots; --crop-only re-crops the kept ones; --only=geoapp,kittycats limits
+// both to those keys (Stage 6f: GeoAPP and KittyCats got their cards).
 if (all || args.includes('--projects') || args.includes('--crop-only')) {
   const { chromium } = await import('../qa/browsers.mjs');
   const ONLY = args.includes('--crop-only');
   const PROJECTS = [
     ['ki', 'https://mrlololi.com/Webprojekte/ki-kundenservice/'],
     ['langstarter', 'https://mrlololi.com/Webprojekte/language-starter/?ui=de'],
+    ['geoapp', 'https://mrlololi.com/Webprojekte/geoapp/?lang=de'],
+    ['kittycats', 'https://mrlololi.com/Webprojekte/kittycats/'],
   ];
+  const only = args.find((a) => a.startsWith('--only='))?.slice(7).split(',');
   const browser = await chromium.launch();
   const out = path.join(root, 'assets/img');
-  for (const [key, url] of PROJECTS) {
+  for (const [key, url] of PROJECTS.filter(([k]) => !only || only.includes(k))) {
     const src = path.join(root, 'src/images', `project-${key}.png`);
     if (!ONLY) {
       const page = await browser.newPage({ viewport: { width: 1200, height: 900 }, deviceScaleFactor: 1, reducedMotion: 'reduce', colorScheme: 'light' });
@@ -51,7 +55,7 @@ if (all || args.includes('--projects') || args.includes('--crop-only')) {
     }
     for (const [w, h] of [[400, 300], [800, 600]]) {
       // Stage 6b: a closer crop of the top middle (headline and first block), readable on phones.
-      const base = () => sharp(src).extract({ left: 200, top: 30, width: 800, height: 600 }).resize(w, h);
+      const base = () => sharp(src).extract({ left: key === 'kittycats' ? 0 : 200, top: 30, width: 800, height: 600 }).resize(w, h); // KittyCats: its title sits left
       for (const [ext, pipe] of [['avif', base().avif({ quality: 55, effort: 6 })], ['webp', base().webp({ quality: 78 })], ['jpg', base().jpeg({ quality: 80, mozjpeg: true })]]) {
         const f = path.join(out, `project-${key}-${w}.${ext}`);
         await pipe.toFile(f);

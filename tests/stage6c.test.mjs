@@ -16,8 +16,10 @@ const js = (f) => readFileSync(new URL(`../assets/js/${f}`, import.meta.url), 'u
 
 test('every looping demo has its pause button (44 px secondary button, named for screen readers)', () => {
   for (const sel of ['data-demo="hero"', 'data-demo="tools"', 'data-demo="prices"', 'data-demo="process"', 'data-demo="about"']) assert.ok(deHome.includes(sel), sel);
-  const buttons = deHome.match(/<button class="loopctl btn btn--secondary btn--sm[^"]*" type="button" hidden data-pause-label="Pause" data-play-label="Abspielen" data-step-label="Nächster Schritt">/g) || [];
+  // Stage 6f: small round icon buttons, their place kept from the start (data-wait).
+  const buttons = deHome.match(/<button class="loopctl btn btn--secondary btn--sm loopctl--icon[^"]*" type="button" data-wait data-pause-label="Pause" data-play-label="Abspielen" data-step-label="Nächster Schritt">/g) || [];
   assert.ok(buttons.length >= 9, String(buttons.length));
+  assert.ok(!/class="loopctl[^"]*" type="button" hidden/.test(deHome), 'no hidden pause button that would shift the layout');
   assert.match(deHome, /<span class="loopctl__text">Pause<\/span><span class="sr-only">: Ablauf oben<\/span>/);
   assert.ok(!/class="replay\b/.test(deHome), 'no «Nochmal ansehen» button while it loops');
   assert.match(byFile['ki-antwortentwuerfe/index.html'], /class="loopctl btn/);
@@ -29,7 +31,11 @@ test('loops.js: loop while visible, pause kept for the visit, no cap on plays', 
   assert.match(l, /sessionStorage/);
   assert.ok(!/MAX_AUTO/.test(l), 'no cap of two plays');
   assert.match(l, /function cycle\(d\)/);
-  assert.match(l, /ambient/);
+  // Stage 6f: nearest the centre, at least 2.5 s rest, a soft fade, the global pause in localStorage.
+  assert.match(l, /const MIN_REST = 2500;/);
+  assert.match(l, /is-fading/);
+  assert.match(l, /localStorage\.getItem\('motion-paused'\)/);
+  assert.match(l, /distance\(a\) - distance\(b\)/);
 });
 
 test('tool row: marquee again with its copy hidden from screen readers; the label inside the band', () => {
@@ -50,40 +56,58 @@ test('slider «Chaos / Geordnet» is back as the opener of the problem cards, co
   assert.match(p, /<figure class="ba">[\s\S]*viewBox="0 0 440 180"[\s\S]*<input class="ba__range" type="range"/);
 });
 
-test('run-log demo behind «Ablauf selbst ausprobieren»: a template, nothing loaded before the click', () => {
-  for (const h of [deHome, byFile['en/index.html']]) {
-    assert.match(h, /<button class="btn btn--secondary runlog__open" type="button" aria-expanded="false" aria-controls="runlog" data-close="(Schließen|Close)">/);
-    assert.match(h, /<template id="runlog-tpl"><div class="runlog demo" data-demo="runlog">/);
-    assert.ok(!/runlog\.(css|js)/.test(h.replace(/<template[\s\S]*?<\/template>/g, '')), 'not linked in the page');
+test('run-log: the second tab of the video frame, a purchase in six steps, runlog.js only on the tab (Stage 6f)', () => {
+  for (const [h, tabs] of [[deHome, ['Video', 'Schritt für Schritt']], [byFile['en/index.html'], ['Overview', 'Step by step']]]) {
+    assert.match(h, /<div class="vtabs__list" role="tablist" aria-label="[^"]+">/);
+    assert.ok(h.includes(`aria-selected="true">${tabs[0]}</button>`) && h.includes(`aria-selected="false" tabindex="-1" aria-describedby="vtab-2-desc">${tabs[1]}</button>`));
+    assert.equal((h.match(/<li class="rl__step/g) || []).length, 6);
+    assert.ok(!/runlog__open|runlog-tpl/.test(h), 'the separate block and its button are gone');
+    assert.ok(!/runlog\.(css|js)/.test(h), 'runlog.js is not linked in the page');
   }
-  const tpl = deHome.match(/<template id="runlog-tpl">[\s\S]*?<\/template>/)[0];
-  assert.equal((tpl.match(/<button class="chip runlog__step" type="button" data-step="\d"/g) || []).length, 3);
-  assert.ok(!/toast|mascot|confetti/.test(tpl), 'no toasts, no small mascots');
-  assert.match(tpl, /runlog__replay/);
-  assert.match(tpl, /class="loopctl btn/);
-  assert.match(js('main.js'), /\/assets\/css\/runlog\.css/);
+  for (const x of ['Bestellformular', 'Zahlung (Stripe)', 'Rechnung (Quaderno)', 'Markierung', 'Zugang: Mitgliederbereich', 'Willkommens-Mail']) assert.ok(deHome.includes(`<span class="rl__title">${x}</span>`), x);
+  assert.match(deHome, /<input id="rl-name" name="first" type="text" value="Anna"/);
+  assert.match(deHome, /Nur eine Demo, es wird nichts gesendet\./);
+  assert.ok(!/type="email"[^>]*id="rl-|id="rl-[^"]*"[^>]*type="email"/.test(deHome), 'never an e-mail field');
+  assert.match(deHome, /Zeitlupe\. In Wirklichkeit dauert das nach der Zahlung nur Sekunden\./);
+  assert.ok(!/2,3 Sekunden|2\.3 seconds/.test(deHome + byFile['en/index.html']), 'no seconds claim');
+  const r = js('runlog.js');
+  assert.match(r, /const STEP = 1000;/);
+  assert.match(r, /const HOLD = 4000;/);
+  assert.match(r, /const ROUNDS = 3;/);
+  assert.match(r, /const AUTO = 4000;/);
+  assert.match(js('main.js'), /import\('\.\/runlog\.js'\)/);
+});
+
+test('old run-log behind «Ablauf selbst ausprobieren» (Stage 6e): kept in src/_alt only', () => {
+  assert.ok(readFileSync(new URL('../src/_alt/stage6e/runlog.js', import.meta.url), 'utf8').includes('export function open'));
 });
 
 test('«Über mich» row: what clients can rely on; the access item in the FAQ wording (Iva 29.10.2026)', () => {
   assert.match(deHome, /<div class="aboutrow demo" data-demo="about"/);
-  for (const x of de.s6.e.aboutRow) assert.ok(deHome.includes(`<li>${x}</li>`), x);
+  // Stage 6f: five static chips, no marquee copy.
+  for (const x of de.s6.e.aboutRow) assert.ok(deHome.includes(`<li class="trust">${x}</li>`), x);
+  assert.ok(!/aboutrow[\s\S]{0,400}marquee/.test(deHome.slice(deHome.indexOf('class="aboutrow'), deHome.indexOf('class="aboutrow') + 900)));
   assert.ok(de.s6.e.aboutRow.includes('Eigener Zugang statt Ihres Passworts'));
   assert.ok(en.s6.e.aboutRow.includes('Own access instead of your password'));
   assert.ok(!/nie Ihr Passwort/.test(deHome) && !/never your password/.test(byFile['en/index.html']));
-  assert.equal(en.s6.e.aboutRow.length, 8);
-  assert.equal(de.s6.e.aboutRow.length, 8);
+  assert.equal(en.s6.e.aboutRow.length, 5);
+  assert.equal(de.s6.e.aboutRow.length, 5);
 });
 
 test('FAQ chat: question list and chat panel, F1 photo, «Auch gefragt» for all eight questions', () => {
-  assert.equal(de.s4.faq.related.length, 8);
-  assert.ok(de.s4.faq.related.flat().every((i) => i >= 0 && i < 8));
+  assert.equal(de.s4.faq.related.length, 10);
+  assert.ok(de.s4.faq.related.flat().every((i) => i >= 0 && i < 10));
   assert.match(deHome, /data-photo="\/assets\/img\/avatar-88\.webp"/);
   assert.match(js('faq.js'), /bubble--typing/);
 });
 
 test('references: the long screenshot scrolls in its frame; the stack opens from the first moment', () => {
   assert.match(deHome, /<div class="browser__view">\n<picture class="case__shot">[\s\S]*case-alexandrafry-long-640/);
-  assert.match(js('sections.js'), /start: 'top bottom', end: 'center 60%'/);
+  // Stage 6f: timed, not scrubbed: the screenshot pans through the conductor, the quotes fan out once.
+  assert.match(js('sections.js'), /function browserPan\(\)/);
+  assert.match(js('sections.js'), /classList\.replace\('is-stacked', 'is-fanned'\)/);
+  const code = js('sections.js').replace(/\/\/.*$/gm, '').replace(/function aboutPhoto[\s\S]*?\n}\n/, '');
+  assert.ok(!/scrub/.test(code), 'no scroll-scrubbed motion on what people read (the photo reveal stays)');
 });
 
 test('reveals: once, as soon as any part is on screen, never reversed', () => {

@@ -5,20 +5,33 @@
 // scrolls inside the browser frame, the quote stack fans out (it now starts as soon as it enters
 // and is fully spread when its centre reaches 60 % of the window), the photo reveal and its blob,
 // the timeline line. Without GSAP or with reduced motion all stay final; the stories still open.
-import { demo } from './loops.js';
+// Stage 6f (4.11.2026): no scroll-scrubbed motion on what people read. Timed instead, started by
+// IntersectionObserver: the timeline draws in 2 s once 30 % is visible (phones too; before, the GSAP
+// media query had no phone branch); the quotes fan out once (0.6 s, CSS); the alexandrafry.ch
+// screenshot pans slowly through the conductor (1.5 s top, 12 s pan, 2 s hold, back), holding on
+// hover and focus; the «Über mich» chips get a soft highlight one by one. The photo keeps its reveal.
+import { demo, reduceMotion, motion } from './loops.js';
 
-export async function init({ motion, reduceMotion }) {
+export async function init({ motion: gsapReady }) {
   timelineStories();
   processSteps();
-  const m = await motion;
+  pathLine();
+  quoteFan();
+  browserPan();
+  aboutChips();
+  const m = await gsapReady;
   if (!m || reduceMotion.matches) return;
-  const { gsap } = m;
-  gsap.matchMedia().add({ wide: '(min-width: 768px)', reduce: '(prefers-reduced-motion: reduce)' }, (c) => {
-    if (c.conditions.reduce) return;
-    pathLine(gsap);
-    browserFrame(gsap);
-    if (c.conditions.wide) { quoteFan(gsap); aboutPhoto(gsap); }
+  m.gsap.matchMedia().add({ wide: '(min-width: 768px)', reduce: '(prefers-reduced-motion: reduce)' }, (c) => {
+    if (!c.conditions.reduce && c.conditions.wide) aboutPhoto(m.gsap);
   });
+}
+
+const calm = () => reduceMotion.matches || motion.paused;
+// Once el is at least share visible, run fn (at once without IntersectionObserver).
+function once(el, share, fn) {
+  if (!('IntersectionObserver' in window)) { fn(); return; }
+  const io = new IntersectionObserver((entries) => { if (entries.some((e) => e.intersectionRatio >= share)) { io.disconnect(); fn(); } }, { threshold: [share] });
+  io.observe(el);
 }
 
 /* ---------- So arbeiten wir zusammen: line, numbers, pictograms (a looping demo) ---------- */
@@ -28,42 +41,99 @@ function processSteps() {
   demo(wrap, { button: wrap.querySelector(':scope > .loopctl'), duration: 3200, rest: 2500 });
 }
 
-/* ---------- Über mich: the timeline line draws; each dot comes on as it passes ---------- */
-function pathLine(gsap) {
+/* ---------- Über mich: the timeline line draws in 2 s; each dot comes on as it passes ---------- */
+function pathLine() {
   const path = document.querySelector('.path');
-  if (!path) return;
+  if (!path || calm()) return;
   const stops = [...path.querySelectorAll('.path__stop')];
-  const k = { p: 0 };
   path.classList.add('is-drawing');
-  gsap.fromTo(k, { p: 0 }, {
-    p: 1, ease: 'none',
-    onUpdate: () => {
-      path.style.setProperty('--draw', k.p.toFixed(3));
-      stops.forEach((s, i) => s.classList.toggle('is-on', k.p >= i / (stops.length - 1) - 0.02));
-    },
-    scrollTrigger: { trigger: path, start: 'top 85%', end: 'bottom 55%', scrub: 0.8 },
+  path.style.setProperty('--draw', '0');
+  once(path, 0.3, () => {
+    const t0 = performance.now();
+    const step = (now) => {
+      const p = Math.min(1, (now - t0) / 2000);
+      const k = 1 - (1 - p) ** 2;
+      path.style.setProperty('--draw', k.toFixed(3));
+      stops.forEach((s, i) => s.classList.toggle('is-on', k >= i / (stops.length - 1) - 0.02));
+      if (p < 1) requestAnimationFrame(step); else path.classList.remove('is-drawing');
+    };
+    requestAnimationFrame(step);
   });
 }
 
-/* ---------- Referenzen: the long screenshot scrolls inside the browser frame ---------- */
-function browserFrame(gsap) {
+/* ---------- Referenzen: the long screenshot pans slowly inside the browser frame ---------- */
+// 1.5 s at the top, 12 s down, 2 s at the bottom; then the round's rest and back to the top. It holds
+// while the pointer or the focus is on the frame. Reduced motion: the frame scrolls by hand (CSS).
+function browserPan() {
   const frame = document.querySelector('.ref--site .browser');
-  if (!frame) return;
-  gsap.fromTo(frame.querySelector('.case__shot'), { yPercent: 0 }, { yPercent: -35, ease: 'none', scrollTrigger: { trigger: frame, start: 'top bottom', end: 'bottom top', scrub: 0.8 } });
+  const view = frame?.querySelector('.browser__view');
+  const shot = frame?.querySelector('.case__shot');
+  if (!view || !shot || !shot.animate) return;
+  // Reduced motion or motion paused: a labelled box that scrolls by hand (keyboard too).
+  if (calm()) {
+    view.tabIndex = 0;
+    view.setAttribute('role', 'region');
+    view.setAttribute('aria-label', shot.querySelector('img')?.alt || frame.closest('.ref')?.querySelector('h3')?.textContent || '');
+    return;
+  }
+  let anim = null;
+  let inside = false;
+  const pan = () => -Math.max(0, shot.getBoundingClientRect().height - view.clientHeight);
+  const hold = (on) => { inside = on; if (anim) { if (on) anim.pause(); else if (frame.dataset.play === 'run') anim.play(); } };
+  frame.addEventListener('pointerenter', () => hold(true));
+  frame.addEventListener('pointerleave', () => hold(false));
+  frame.addEventListener('focusin', () => hold(true));
+  frame.addEventListener('focusout', () => hold(false));
+  const T = 15500;
+  demo(frame, {
+    key: 'refshot',
+    duration: T,
+    rest: 2500,
+    reset: () => { anim?.cancel(); anim = null; },
+    finish: () => { anim?.finish(); },
+    play: () => {
+      const y = pan();
+      anim = shot.animate([
+        { transform: 'translateY(0)' },
+        { transform: 'translateY(0)', offset: 1.5 / 15.5 },
+        { transform: `translateY(${y}px)`, offset: 13.5 / 15.5 },
+        { transform: `translateY(${y}px)` },
+      ], { duration: T, fill: 'forwards', easing: 'linear' });
+      if (inside) anim.pause();
+      return T;
+    },
+    held: () => inside,
+  });
 }
 
-// The three quote cards come in stacked and straight, then fan out to their tilts. Stage 6d (Iva:
-// «they open too late»): from the moment the stack enters the window until its centre is at 60 %.
-function quoteFan(gsap) {
-  const cards = [...document.querySelectorAll('.qcard')];
-  if (!cards.length) return;
-  const tilts = [-2.5, 2, -1.5];
-  cards.forEach((card, i) => {
-    const toMiddle = () => cards[1].offsetLeft - card.offsetLeft;
-    gsap.fromTo(card, { x: toMiddle, rotation: 0, y: i * 8 }, {
-      x: 0, rotation: tilts[i], y: 0, ease: 'none',
-      scrollTrigger: { trigger: '.qcards', start: 'top bottom', end: 'center 60%', scrub: 0.6, invalidateOnRefresh: true },
-    });
+/* ---------- Referenzen: the quote cards fan out once, when 30 % of them is visible ---------- */
+function quoteFan() {
+  const box = document.querySelector('.qcards');
+  if (!box || calm()) return;
+  box.classList.add('is-stacked');
+  once(box, 0.3, () => requestAnimationFrame(() => box.classList.replace('is-stacked', 'is-fanned')));
+}
+
+/* ---------- Über mich: a soft highlight moves from chip to chip (1 s each, then a rest) ---------- */
+function aboutChips() {
+  const row = document.querySelector('.aboutrow[data-demo="about"]');
+  const chips = row ? [...row.querySelectorAll('.trust')] : [];
+  if (!chips.length) return;
+  let timers = [];
+  const clear = () => { timers.forEach(clearTimeout); timers = []; chips.forEach((c) => c.classList.remove('is-lit')); };
+  demo(row, {
+    button: row.querySelector(':scope > .loopctl'),
+    frames: 1,
+    rest: 3000,
+    reset: clear,
+    finish: clear,
+    play: () => {
+      chips.forEach((c, i) => {
+        timers.push(setTimeout(() => { chips.forEach((o) => o.classList.toggle('is-lit', o === c)); }, i * 1000));
+      });
+      timers.push(setTimeout(() => chips.forEach((c) => c.classList.remove('is-lit')), chips.length * 1000));
+      return chips.length * 1000;
+    },
   });
 }
 

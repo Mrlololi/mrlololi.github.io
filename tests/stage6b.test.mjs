@@ -58,11 +58,15 @@ test('video: flat posters from the film, a quiet CTA line under the block', () =
   const tools = readFileSync(root('src/tools/stage6-images.mjs'), 'utf8');
   assert.match(tools, /video-poster-16x9\.png/);
   assert.ok(!/a_cover\.png/.test(tools), 'no 3D cover poster');
-  assert.match(byFile['index.html'], /<p class="vid__cta"><span>Fragen zu Ihrem Ablauf\? 20 Minuten, kostenlos\.<\/span> <a class="btn btn--secondary btn--sm" href="#contact">Kostenloses Erstgespräch<\/a><\/p>/);
+  assert.match(byFile['index.html'], /<p class="vid__cta"><span>Fragen zu Ihrem Ablauf\? 20 Minuten, kostenlos\.<\/span> <a class="btn btn--secondary btn--sm" href="#contact">Erstgespräch anfragen<\/a><\/p>/);
 });
 
-test('404: «Repariert. Hier geht es weiter:» under the scene', () => {
-  assert.match(byFile['404.html'], /<\/div>\n<p class="nf__caption">Repariert\. Hier geht es weiter:<\/p>\n<p class="nf__ctl"><button class="loopctl[^"]*"[\s\S]*?<\/p>\n<h1>Hier ist die Leitung unterbrochen\.<\/h1>/);
+test('404: the text and links first, then the picture with «Repariert. Hier geht es weiter:» (Stage 6f)', () => {
+  const h = byFile['404.html'];
+  assert.match(h, /<div class="nf__text">\n<h1>Hier ist die Leitung unterbrochen\.<\/h1>/);
+  assert.ok(h.indexOf('<h1>') < h.indexOf('class="nf__scene'), 'text before the picture');
+  assert.match(h, /<\/div>\n<p class="nf__caption">Repariert\. Hier geht es weiter:<\/p>\n<p class="nf__ctl"><button class="loopctl[^"]*"/);
+  assert.match(h, /location\.pathname\.startsWith\('\/en\/'\)/, 'English first under /en/');
 });
 
 test('contact mail in EN: «not decided yet» as its own sentence', async () => {

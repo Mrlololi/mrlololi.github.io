@@ -16,6 +16,7 @@ function setup(fig) {
       v.src = v.dataset.src;
     }
     fig.classList.add('is-playing');
+    v.removeAttribute('tabindex'); // Stage 6f: focusable once it is visible
     poster.hidden = true;
     play.hidden = true;
     return v;

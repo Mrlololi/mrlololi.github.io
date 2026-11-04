@@ -1,5 +1,4 @@
 import { esc, quoted, accent, extLink } from './util.mjs';
-import { ctaStrip } from './pricing.mjs';
 
 function quote(t, q) {
   const langAttr = q.lang !== t.lang ? ` lang="${q.lang}"` : '';
@@ -57,6 +56,15 @@ ${shot}
 <h3>${esc(r.case3.title)}</h3>
 <p>${esc(r.case3.text)}</p></li>`,
   ];
+  // Stage 6f: the quotes by relevance; on EN the English one first. A course client's quote takes the
+  // first place once a real text exists (r.courseQuote, none yet). They fan out once (sections.js).
+  const qcards = [
+    r.courseQuote ? `<li class="qcard qcard--lav">${quote(t, r.courseQuote)}</li>` : '',
+    `<li class="qcard qcard--pink">${quote(t, r.case1.quote)}</li>`,
+    `<li class="qcard qcard--blue">${quote(t, r.case3.quote)}</li>`,
+    `<li class="qcard qcard--pist"><span class="label label--peach">${esc(L.earlier)}</span>${quote(t, r.quote4)}<p class="ref__line">${esc(B.earlierLine)}</p></li>`,
+  ].filter(Boolean);
+  if (t.lang === 'en') qcards.unshift(qcards.splice(qcards.length - 1, 1)[0]);
   return `<section class="section refs bg-pist edge" id="references" aria-labelledby="refs-title">
 <div class="wrap">
 <div class="section__head">
@@ -66,13 +74,10 @@ ${shot}
 <ul class="refs__list" role="list" data-enter="stagger">
 ${cards.join('\n')}
 </ul>
-<ul class="qcards" role="list" tabindex="0" aria-label="${esc(t.s4.refs.quotes)}">
-<li class="qcard qcard--pink">${quote(t, r.case1.quote)}</li>
-<li class="qcard qcard--blue">${quote(t, r.case3.quote)}</li>
-<li class="qcard qcard--pist"><span class="label label--peach">${esc(L.earlier)}</span>${quote(t, r.quote4)}<p class="ref__line">${esc(B.earlierLine)}</p></li>
+<ul class="qcards" role="list" aria-label="${esc(t.s4.refs.quotes)}">
+${qcards.join('\n')}
 </ul>
 ${config.case_study ? study(t, config.case_study) : ''}
-${ctaStrip(t)}
 </div>
 </section>`;
 }
@@ -82,7 +87,6 @@ ${ctaStrip(t)}
 // links open in a new tab and say so (as everywhere since the Fixes of 21.10.2026).
 export function projects(t, config) {
   const p = t.s6.projects;
-  const also = p.more.map((it) => extLink(`${config.projects_url}${it.path}`, esc(it.name), t)).join(` ${esc(t.s6.b.projects.and)} `);
   const cards = p.items.map((it) => `<li class="proj">
 <a class="proj__link card" href="${config.projects_url}${it.path}" target="_blank" rel="noopener">
 <picture><source type="image/avif" srcset="/assets/img/project-${it.key}-400.avif 400w, /assets/img/project-${it.key}-800.avif 800w" sizes="(min-width: 960px) 16rem, (min-width: 560px) 45vw, 90vw"><source type="image/webp" srcset="/assets/img/project-${it.key}-400.webp 400w, /assets/img/project-${it.key}-800.webp 800w" sizes="(min-width: 960px) 16rem, (min-width: 560px) 45vw, 90vw"><img src="/assets/img/project-${it.key}-400.jpg" srcset="/assets/img/project-${it.key}-400.jpg 400w, /assets/img/project-${it.key}-800.jpg 800w" sizes="(min-width: 960px) 16rem, (min-width: 560px) 45vw, 90vw" width="400" height="300" loading="lazy" decoding="async" alt=""></picture>
@@ -100,7 +104,6 @@ export function projects(t, config) {
 <ul class="projs" role="list">
 ${cards}
 </ul>
-<p class="projects__also">${esc(t.s6.b.projects.also)} ${also}</p>
 </div>
 </section>`;
 }

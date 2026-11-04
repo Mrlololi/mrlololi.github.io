@@ -1,5 +1,5 @@
 import { esc, accent, absUrl, fill } from './util.mjs';
-import { runlog } from './runlog.mjs';
+import { viewTabs } from './runlog.mjs';
 
 // Stage 6: the video «Der Weg einer Anmeldung» (50 s, German, no sound, text in the picture).
 // Phones get the 9:16 file, wider screens the 16:9 one: <source media> is ignored for <video>, so
@@ -18,7 +18,7 @@ const playIcon = '<svg class="vid__icon" viewBox="0 0 48 48" aria-hidden="true" 
 
 function videoEl(kind, label) {
   const f = FILES[kind];
-  return `<video class="vid__v vid__v--${kind}" controls playsinline muted preload="none" width="${f.vw}" height="${f.vh}" data-src="${f.video}" data-poster="${f.poster}.jpg" aria-label="${esc(label)}"></video>`;
+  return `<video class="vid__v vid__v--${kind}" controls playsinline muted preload="none" tabindex="-1" width="${f.vw}" height="${f.vh}" data-src="${f.video}" data-poster="${f.poster}.jpg" aria-label="${esc(label)}"></video>`;
 }
 
 // The figure itself (home block 3 and /launch-technik/ under the promise). id: the heading it belongs to.
@@ -58,8 +58,7 @@ export function videoBlock(t) {
 <h2 id="video-title" data-enter="lines">${accent(v.h2)}</h2>
 <p class="lead">${esc(v.text)}</p>
 </div>
-${videoFigure(t)}
-${runlog(t)}
+${viewTabs(t, videoFigure(t))}
 <p class="vid__cta"><span>${esc(t.s6.b.ctaLine)}</span> <a class="btn btn--secondary btn--sm" href="#contact">${esc(t.s6.b.cta)}</a></p>
 </div>
 </section>`;
@@ -75,10 +74,9 @@ export function stepStrip(t) {
 <h2 id="path-title" data-enter="lines">${accent(s.h2)}</h2>
 <p class="lead">${esc(s.text)}</p>
 </div>
-<ol class="strip" role="list">
+${viewTabs(t, `<ol class="strip" role="list">
 ${f.nodes.map((n, i) => `<li class="strip__step card strip__step--${i + 1}"><span class="strip__node">${esc(n)}</span><p>${esc(f.lines[i])}</p></li>`).join('\n')}
-</ol>
-${runlog(t)}
+</ol>`)}
 <p class="vid__cta"><span>${esc(t.s6.b.ctaLine)}</span> <a class="btn btn--secondary btn--sm" href="#contact">${esc(t.s6.b.cta)}</a></p>
 </div>
 </section>`;

@@ -23,7 +23,7 @@ for (const [name, t] of [['de', de], ['en', en]]) {
     assert.equal(t.pricing.groups.length, 3);
     assert.deepEqual(t.pricing.groups.map((g) => g.items.length), [2, 3, 1]);
     assert.equal(t.process.steps.length, 4);
-    assert.equal(t.faq.items.length, 8); // Stage 6b: «Sind Sie am Launch-Tag erreichbar?»
+    assert.equal(t.faq.items.length, 10); // Stage 6f: «anderes Tool», «Setup aufräumen»
     assert.equal(t.about.path.length, 4);
     assert.equal(t.hero.flow.nodes.length, 4);
     assert.equal(t.about.paragraphs.length, 2); // Stage 6: two short paragraphs
@@ -40,7 +40,7 @@ for (const [name, t] of [['de', de], ['en', en]]) {
 
   test(`${name}: run log in plain words, ActiveCampaign the only tool`, () => {
     const log = t.run.steps.map((s) => s.text).join(' ');
-    assert.ok(!/SPF|DKIM|DMARC|Leadpages|Stripe|Quaderno|Zapier|Somba/.test(log), log);
+    assert.ok(!/SPF|DKIM|DMARC|Leadpages|Stripe|Quaderno|Zapier/.test(log), log);
     assert.ok(log.includes('ActiveCampaign'));
   });
 

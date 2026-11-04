@@ -8,7 +8,7 @@ import de from './content/de.mjs';
 import en from './content/en.mjs';
 import { layout } from './templates/layout.mjs';
 import { home } from './templates/home.mjs';
-import { impressum, privacy, notFound } from './templates/legal.mjs';
+import { impressum, privacy, notFound, thanksPage } from './templates/legal.mjs';
 import { robots, sitemap, cname, manifest } from './templates/seo.mjs';
 import { videoLd } from './templates/video.mjs';
 import { servicePage, serviceLd, serviceTitle } from './templates/service.mjs';
@@ -39,6 +39,11 @@ export function pages(cfg = config, { articles = loadArticles(), live = {} } = {
     out.push({
       file: fileFor(t.paths.privacy),
       html: layout({ ...ctx, page: { key: 'privacy', path: t.paths.privacy, altPath: other.paths.privacy, ...t.privacyMeta }, main: privacy(t, cfg, { date: new Date(`${cfg.page_dates.privacy}T12:00:00Z`) }) }),
+    });
+    // Stage 6f: the thank-you page for the form without JavaScript (noindex, not in the sitemap).
+    out.push({
+      file: fileFor(t.thanksPage.path),
+      html: layout({ ...ctx, page: { key: 'thanks', path: t.thanksPage.path, altPath: other.thanksPage.path, noindex: true, title: t.thanksPage.title, description: t.thanksPage.description }, main: thanksPage(t) }),
     });
     // Stage 5: the five service pages.
     for (const s of t.services.pages) {

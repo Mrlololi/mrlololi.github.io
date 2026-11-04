@@ -1,4 +1,4 @@
-import { esc, accent, extLink, fill } from './util.mjs';
+import { esc, accent, extLink, fill, absUrl } from './util.mjs';
 import { mascotScene } from './mascots.mjs';
 import { loopButton } from './hero.mjs';
 import { ctaStrip } from './pricing.mjs';
@@ -74,7 +74,7 @@ export function about(t) {
 ${t.about.paragraphs.map((p) => `<p data-enter="lines">${esc(p)}</p>`).join('\n')}
 <div class="aboutrow demo" data-demo="about" role="group" aria-labelledby="aboutrow-label">
 <p class="aboutrow__label" id="aboutrow-label">${esc(t.s6.e.aboutLabel)}</p>
-<div class="marquee"><div class="marquee__track"><ul class="tools__list" role="list">${t.s6.e.aboutRow.map((x) => `<li>${esc(x)}</li>`).join('')}</ul><ul class="tools__list tools__copy" role="list" aria-hidden="true">${t.s6.e.aboutRow.map((x) => `<li>${esc(x)}</li>`).join('')}</ul></div></div>
+<ul class="aboutrow__chips" role="list">${t.s6.e.aboutRow.map((x) => `<li class="trust">${esc(x)}</li>`).join('')}</ul>
 ${loopButton(t, 'about')}
 </div>
 <ol class="path" role="list" aria-label="${esc(t.about.pathLabel)}">
@@ -116,12 +116,18 @@ ${items}
 }
 
 // Kontakt (Stage 4). Left: a fill-in brief («Ich verkaufe [..] über [..]. Es hakt bei [..]. Start: [..].»)
-// with a live preview of the e-mail. Kontaktformular 30.10.2026: name, e-mail, optional text and consent
+// with a live preview of what arrives. Kontaktformular 30.10.2026: name, e-mail, optional text and consent
 // below it; «Anfrage senden» posts JSON to a Make scenario (config.contact_hook, assets/js/contact.js).
-// «E-Mail öffnen» and «Text kopieren» show only when sending fails (and without JS, where the form
-// fields stay hidden). Right: Iva's photo with a speech bubble, reply time, Graz time, LinkedIn and
-// Malt. After a mailto click a thank-you note with Live waving appears (assets/js/contact.js).
-export function contact(t, config) {
+// «E-Mail öffnen» and «Text kopieren» show only when sending fails. Right: Iva's photo with a speech
+// bubble, Graz time, LinkedIn and Malt, and «Was nach dem Klick passiert».
+// Stage 6f (4.11.2026): «Mir geht es um» (package, preselected by ?paket=), «Wann passt es Ihnen?»,
+// the next step under the button, an error summary. Without JS the form posts natively to the hook
+// (nojs=1, Make answers 302 to /danke/); with JS a click before contact.js has loaded does nothing.
+// The same form, without the preview, closes every service page (compact).
+// The four choices carry the payload's field names, so the native (no JS) post matches the JSON one.
+const PAYLOAD = { what: 'was', via: 'plattform', issue: 'problem', start: 'start' };
+
+export function contactForm(t, config, { page, paket = '', compact = false } = {}) {
   const c = t.s4.contact;
   const email = config.contact_email;
   const subjectOnly = `mailto:${email}?subject=${t.contact.subject}`;
@@ -129,39 +135,43 @@ export function contact(t, config) {
   const mail = briefMail(c, first);
   const select = (key) => {
     const [label, opts] = c.fields[key];
-    return `<label class="sr-only" for="brief-${key}">${esc(label)}</label><select class="brief__select" id="brief-${key}" name="${key}">${opts.map((o) => `<option>${esc(o)}</option>`).join('')}</select>`;
+    return `<label class="sr-only" for="brief-${key}">${esc(label)}</label><select class="brief__select" id="brief-${key}" name="${PAYLOAD[key]}" data-key="${key}">${opts.map((o) => `<option>${esc(o)}</option>`).join('')}</select>`;
   };
   const sentence = fill(esc(c.sentence), Object.fromEntries(Object.keys(c.fields).map((k) => [k, select(k)])));
   const booking = config.booking_url ? `<a class="btn btn--ghost" href="${esc(config.booking_url)}" rel="noopener">${esc(t.contact.booking)}</a>` : '';
   const f = c.form;
   const errs = Object.entries(f.errors).map(([k, v]) => ` data-err-${k.toLowerCase()}="${esc(v)}"`).join('');
   const field = (key, type, attrs) => `<div class="field"><label for="cf-${key}">${esc(f[key])}</label><input id="cf-${key}" name="${key}" type="${type}" ${attrs} aria-describedby="cf-${key}-err"><p class="field__err" id="cf-${key}-err" hidden></p></div>`;
-  const thanks = `<div class="thanks">${mascotScene('contact', [[2, 'wave']])}<div class="thanks__text"><p>${esc(c.thanks)}</p></div></div>`;
-  return `<section class="section contact bg-pink edge" id="contact" aria-labelledby="contact-title">
-<div class="wrap contact__grid">
-<div class="contact__main">
-<h2 class="contact__title" id="contact-title">${accent(t.contact.h2)}</h2>
-<p class="lead">${esc(t.contact.text)}</p>
-<p class="contact__free">${esc(t.contact.free)}</p>
-<form class="contact__form" id="contact-form" method="post" novalidate data-endpoint="${esc(config.contact_hook)}" data-lang="${t.lang}" data-sending="${esc(f.sending)}"${errs}>
+  const items = t.pricing.groups.flatMap((g) => g.items);
+  const pkgOptions = [`<option value="">${esc(f.paketOpen)}</option>`, ...items.map((it) => `<option value="${it.id}"${it.id === paket ? ' selected' : ''}>${esc(it.name)}</option>`)].join('');
+  const preview = compact ? '' : `<div class="brief__preview">
+<p class="brief__preview-title">${esc(c.preview)}</p>
+<p class="brief__body">${esc(mail.body).replace(/\n/g, '<br>')}</p>
+</div>`;
+  // The service pages stay without mascots (Stage 5): the compact form's panels have none.
+  const thanks = `<div class="thanks">${compact ? '' : mascotScene('contact', [[2, 'wave']])}<div class="thanks__text"><p>${esc(c.thanks)}</p></div></div>`;
+  return `<form class="contact__form${compact ? ' contact__form--compact' : ''}" id="contact-form" action="${esc(config.contact_hook)}" method="post" onsubmit="return window.__cfReady===true" data-endpoint="${esc(config.contact_hook)}" data-lang="${t.lang}" data-sending="${esc(f.sending)}" data-summary-one="${esc(f.summaryOne)}" data-summary-many="${esc(f.summaryMany)}" data-paket-label="${esc(f.paket)}" data-termin-label="${esc(f.terminLine)}"${errs}>
+<input type="hidden" name="nojs" value="1">
+<input type="hidden" name="lang" value="${t.lang}">
+<input type="hidden" name="page" value="${esc(absUrl(config, page))}">
+<div class="contact__errsum" role="alert" tabindex="-1" hidden><p class="contact__errsum-title"></p><ul role="list"></ul></div>
 <div class="brief" role="group" aria-labelledby="brief-label" data-sentence="${esc(c.sentence)}" data-sentence-open="${esc(c.sentenceOpen)}" data-via-open="${esc(c.viaOpen)}"${c.lower ? ' data-lower' : ''} data-greeting="${esc(c.greeting)}" data-closing="${esc(c.closing)}">
 <p class="brief__label" id="brief-label">${esc(c.builderLabel)}</p>
 <p class="brief__sentence">${sentence}</p>
-<div class="brief__preview">
-<p class="brief__preview-title">${esc(c.preview)}</p>
-<p class="brief__meta"><span>${esc(c.to)}:</span> ${esc(email)}<br><span>${esc(c.subjectLabel)}:</span> ${esc(mail.subject)}</p>
-<p class="brief__body">${esc(mail.body).replace(/\n/g, '<br>')}</p>
-</div>
+${preview}
 </div>
 <div class="contact__fields">
+<div class="field field--wide"><label for="cf-paket">${esc(f.paket)}</label><select class="field__select" id="cf-paket" name="paket">${pkgOptions}</select></div>
 ${field('name', 'text', 'autocomplete="name" maxlength="120" required')}
 ${field('email', 'email', 'autocomplete="email" maxlength="160" spellcheck="false" required')}
+<div class="field field--wide"><label for="cf-termin">${esc(f.termin)}</label><input id="cf-termin" name="termin" type="text" maxlength="160" autocomplete="off" placeholder="${esc(f.terminPlaceholder)}"></div>
 <div class="field field--wide"><label for="cf-text">${esc(f.text)}</label><textarea id="cf-text" name="text" rows="4" maxlength="3000"></textarea></div>
-<div class="field field--check"><input id="cf-consent" name="consent" type="checkbox" required aria-describedby="cf-consent-err"><label for="cf-consent">${fill(esc(f.consent), { link: `<a href="${t.paths.privacy}#form">${esc(f.consentLink)}</a>` })}</label><p class="field__err" id="cf-consent-err" hidden></p></div>
+<div class="field field--check"><input id="cf-consent" name="consent" type="checkbox" value="true" required aria-describedby="cf-consent-err"><label for="cf-consent">${fill(esc(f.consent), { link: `<a href="${t.paths.privacy}#form">${esc(f.consentLink)}</a>` })}</label><p class="field__err" id="cf-consent-err" hidden></p></div>
 <div class="hp" aria-hidden="true"><label for="cf-website">${esc(f.honeypot)}</label><input id="cf-website" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true"></div>
 </div>
 <div class="contact__submit">
 <button class="btn btn--primary contact__send" type="submit">${esc(f.submit)}</button>
+<p class="contact__next">${esc(f.next)}</p>
 <p class="contact__showcase small">${esc(f.showcase)}</p>
 <p class="brief__note small">${esc(c.note)}</p>
 </div>
@@ -179,21 +189,37 @@ ${booking}
 </div>
 </div>
 </form>
-<div class="contact__done" role="status" tabindex="-1" hidden data-text="${esc(f.done)}">${mascotScene('contact-done', [[2, 'joy']])}<p class="contact__done-text"></p></div>
+<div class="contact__done" role="status" tabindex="-1" hidden data-text="${esc(f.done)}">${compact ? '' : mascotScene('contact-done', [[2, 'joy']])}<p class="contact__done-text"></p></div>
 <div class="contact__thanks" role="status"></div>
-<template id="contact-thanks">${thanks}</template>
+<template id="contact-thanks">${thanks}</template>`;
+}
+
+export function contact(t, config) {
+  const c = t.s4.contact;
+  const email = config.contact_email;
+  const subjectOnly = `mailto:${email}?subject=${t.contact.subject}`;
+  return `<section class="section contact bg-pink edge" id="contact" aria-labelledby="contact-title">
+<div class="wrap contact__grid">
+<div class="contact__main">
+<h2 class="contact__title" id="contact-title">${accent(t.contact.h2)}</h2>
+<p class="lead">${esc(t.contact.text)}</p>
+<p class="contact__free">${esc(t.contact.free)}</p>
+${contactForm(t, config, { page: t.paths.home })}
 </div>
 <div class="contact__side">
 <div class="contact__card">
 <div class="contact__who"><picture><source type="image/avif" srcset="/assets/img/avatar-44.avif 1x, /assets/img/avatar-88.avif 2x"><source type="image/webp" srcset="/assets/img/avatar-44.webp 1x, /assets/img/avatar-88.webp 2x"><img src="/assets/img/avatar-44.jpg" srcset="/assets/img/avatar-88.jpg 2x" width="64" height="64" loading="lazy" decoding="async" alt="${esc(c.photoAlt)}"></picture>
 <p class="contact__bubble" data-text="${esc(c.bubble)}">${esc(c.bubble)}</p></div>
-<p class="contact__reply">${esc(c.reply)}</p>
 <p class="contact__time-row"><time class="contact__time" hidden data-label="${esc(c.time)}" data-locale="${t.locale}"></time></p>
 <ul class="contact__links" role="list">
 <li><a href="${esc(subjectOnly)}">${esc(email)}</a></li>
 <li>${extLink(config.linkedin, esc(t.contact.linkedin), t)}</li>
 <li>${extLink(config.malt, esc(t.contact.malt), t)}</li>
 </ul>
+</div>
+<div class="contact__after card">
+<h3 class="contact__after-title">${esc(c.after.title)}</h3>
+<ol class="contact__steps" role="list">${c.after.steps.map((s, i) => `<li><span class="contact__step-n" aria-hidden="true">${i + 1}</span><span>${esc(s)}</span></li>`).join('')}</ol>
 </div>
 </div>
 </div>

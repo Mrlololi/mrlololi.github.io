@@ -28,7 +28,7 @@ test('headings carry exactly one accent each', () => {
       assert.equal(count(h, /<em class="accent">/g), 1, id);
     }
   }
-  assert.match(de, /Wo es bei Launches <em class="accent">meistens hakt<\/em>/);
+  assert.match(de, /Wo es bei Launches <em class="accent">oft hakt<\/em>/);
   assert.match(de, /Erzählen Sie mir, <em class="accent">was hakt\.<\/em>/);
   assert.match(en, /Services and <em class="accent">pricing<\/em>/);
   for (const html of [de, en]) assert.ok(!/\*[^*\s<][^*<]*\*/.test(body(html)), 'no raw asterisks left');
@@ -44,8 +44,9 @@ test('EB Garamond italic is self-hosted; only the 500 (h1 accent) is preloaded',
 });
 
 test('hero: proof line under the buttons', () => {
-  assert.match(de, /<p class="hero__proof">Aus Graz, remote im DACH-Raum · Marketing-Automation seit 2023 · Gewerbe in Österreich<\/p>/);
-  assert.match(en, /<p class="hero__proof">Based in Graz, working remotely · marketing automation since 2023 · business registered in Austria<\/p>/);
+  // Stage 6f: «Online-Marketing seit 2023».
+  assert.match(de, /<p class="hero__proof">Aus Graz, remote im DACH-Raum · Online-Marketing seit 2023 · Gewerbe in Österreich<\/p>/);
+  assert.match(en, /<p class="hero__proof">From Graz, working remotely · Online marketing since 2023 · Registered business in Austria<\/p>/);
 });
 
 test('case study stays hidden until Iva sends real numbers (config.case_study)', () => {
@@ -63,7 +64,7 @@ test('final touches (21.10.2026): hello@ address everywhere, path line «DACH-Ve
   assert.match(imp, /hello@mrlololi\.com/);
   assert.match(dsg, /hello@mrlololi\.com/);
   assert.match(de, /<li class="path__stop"><span class="path__label">DACH-Vertrieb ab 2020<\/span>/);
-  assert.match(en, /<li class="path__stop"><span class="path__label">DACH sales since 2020<\/span>/);
+  assert.match(en, /<li class="path__stop"><span class="path__label">Sales for German-speaking markets since 2020<\/span>/); // Stage 6f: no «DACH» in EN
   for (const f of ['about-340', 'about-680', 'avatar-44', 'avatar-88']) {
     for (const ext of ['avif', 'webp', 'jpg']) assert.ok(existsSync(new URL(`../assets/img/${f}.${ext}`, import.meta.url)), `${f}.${ext}`);
   }

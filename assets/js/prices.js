@@ -1,18 +1,17 @@
 // Stage 6d, prices: the package pictures move again while they are on screen (loops.js). The HTML
 // shows every picture solved; each picture's CSS reads its own data-play (start, run, end).
-// 30.10.2026 (Iva: no picture rests longer than about 3 s while in view): two chains, each with its
-// pause button right next to it.
-// - The three package cards and the 30-day strip: checkout fixed, lens ticks the list, the four
-//   tools come out of the launch, Tag 1, 14, 30. Each starts while the one before is still finishing
-//   (a wave from left to right), so every picture moves again after about 3 s.
-// - «Weitere Leistungen» on its own: blocks drop into the One-Pager, 1 s, the KI draft types itself,
-//   1 s, again; it runs whenever that list is visible (outside the one-focus rule).
+// 30.10.2026: two chains, each with its pause button right next to it.
+// - The three package cards and the 30-day strip: checkout fixed, lens ticks the list, the launch
+//   flow lights Formular, Zahlung, Zugang, E-Mails (Stage 6f), Tag 1, 14, 30; each starts while the
+//   one before is still finishing (a wave from left to right).
+// - «Weitere Leistungen» on its own: blocks drop into the One-Pager, 1 s, the KI draft types itself.
+// Stage 6f: like every demo they rest at least 2.5 s and play only when nearest the centre (loops.js).
 import { demo } from './loops.js';
 
 export function init() {
   const cards = document.querySelector('.pkgs-wrap[data-demo="prices"]');
   if (cards) {
-    chain(cards, [['.viz--quick', 0, 1800], ['.viz--check', 1000, 2300], ['.viz--hub', 2100, 1700], ['.days', 2600, 1800]], {
+    chain(cards, [['.viz--quick', 0, 1800], ['.viz--check', 1000, 2300], ['.viz--flow', 2100, 1700], ['.days', 2600, 1800]], {
       button: cards.querySelector('.tariff__ctl .loopctl'),
       rest: 600,
     });
@@ -22,7 +21,6 @@ export function init() {
     chain(more, [['.viz--site', 0, 1500], ['.viz--chat', 2500, 1900, typer]], {
       button: more.querySelector('.more__head .loopctl'),
       rest: 1000,
-      ambient: true,
     });
   }
 }
@@ -50,10 +48,12 @@ function chain(root, list, opts) {
   });
 }
 
-// The KI draft types itself (about 1.6 s).
+// The KI draft types itself word by word (about 1.6 s) over the invisible full text, which keeps
+// the card's height the same in every round (Stage 6f: no height jump, nothing cut off).
 function typer(viz) {
-  const out = viz.querySelector('.tchat__text');
+  const out = viz.querySelector('.tchat__typed');
   const full = out.textContent;
+  const words = full.split(' ');
   let timer = 0;
   return {
     reset: () => { clearInterval(timer); out.textContent = ''; },
@@ -62,7 +62,7 @@ function typer(viz) {
     play: () => {
       let n = 0;
       out.textContent = '';
-      timer = setInterval(() => { n += 2; out.textContent = full.slice(0, n); if (n >= full.length) clearInterval(timer); }, 1500 / (full.length / 2));
+      timer = setInterval(() => { n += 1; out.textContent = words.slice(0, n).join(' '); if (n >= words.length) clearInterval(timer); }, 1500 / words.length);
     },
   };
 }

@@ -83,7 +83,8 @@ test('header lockup (outlined SVG) on every page, footer dark lockup only on the
     assert.match(h, /class="brand-lockup__word"><use href="#mrl-word" fill="#FFFFFF"\/>/);
     assert.match(h, /<span class="footer-mascots" aria-hidden="true">(<svg [^>]*class="mascot mascot--on-dark"[^>]*data-emo="wave"|<svg viewBox="-8 -8 120 124" data-mascot="0" data-emo="wave")/);
   }
-  for (const { file: f, html: h } of others.filter((p) => p.file !== '404.html')) {
+  // Stage 6f: the thank-you pages show Live, like the success panel.
+  for (const { file: f, html: h } of others.filter((p) => !['404.html', 'danke/index.html', 'en/thanks/index.html'].includes(p.file))) {
     assert.ok(!h.includes('<div class="site-footer__brand">') && !/<(svg|span|button)[^>]*class="mascot/.test(h), `${f}: no footer lockup, no mascots`);
   }
 });

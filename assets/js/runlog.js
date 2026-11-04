@@ -1,102 +1,110 @@
-// Stage 6e, «Ablauf selbst ausprobieren»: the run-log demo opens in place under the video. Its CSS
-// and this file load only on the first click (main.js); the markup comes from a <template>. While
-// open and visible it loops (loops.js, with its pause button): step 1 the form sends, step 2 the
-// automation runs and the inbox gets its mails, step 3 the course opens; the log ticks along. One
-// pane is in focus at a time; the step buttons jump to their step. The form is real and local:
-// it checks the e-mail and plays the run with the typed name (nothing is sent anywhere).
-import { demo } from './loops.js';
-import { firstName } from './pure.js';
+// Stage 6f (4.11.2026), the run-log in the video frame's second tab: one purchase in six steps.
+// - Forward only: about 1 s per step, one step lights at a time with its log line; nothing goes back
+//   by itself and nothing lights all at once. After the last step 4 s on the end frame, then a soft
+//   reset and again; after 3 rounds it stops on the end frame («Nochmal abspielen»).
+// - Start: «Anna» is prefilled; «Anmelden» runs the story with the typed name. Without an action it
+//   starts by itself after 4 s; focus or typing in the field cancels that.
+// - It holds while the pointer or the focus is inside, off-screen, in a hidden tab, while the visitor
+//   paused it, and with the global «Bewegung pausieren». A round the visitor started (Anmelden,
+//   Nochmal abspielen) plays even with the pointer inside; the automatic rounds after it wait. Zurück / Weiter step by hand.
+// - Reduced motion (or motion paused): the end frame, every button works, nothing plays by itself.
+// - The result is announced (polite) only after a visitor's action. Nothing is sent anywhere.
+import { reduceMotion, motion } from './loops.js';
 
-// 30.10.2026: 1 s on the start frame after opening, then about 6.5 s per run and 3 s on the end frame.
-const SPEED = 2500; // ms per second of the log's clock (0,2 s ... 2,3 s): slow motion, noted under the screen
-const FIRST = 1000;
-const LAST = 2.6; // the course pane comes back into focus last
-const NODE_AT = [0.2, 0.4, 0.5, 0.6, 1.2, 1.4, 1.9];
+const STEP = 1000;
+const HOLD = 4000;
+const ROUNDS = 3;
+const AUTO = 4000;
 
-export function open(slot, tpl, { locale }) {
-  slot.append(tpl.content.cloneNode(true));
-  const root = slot.querySelector('.runlog');
-  const screen = root.querySelector('.screen');
-  const panes = [...screen.querySelectorAll('.pane')];
-  const stepButtons = [...root.querySelectorAll('.runlog__step')];
-  const nodes = [...screen.querySelectorAll('.anode')];
-  const mails = [...screen.querySelectorAll('.pmail')];
-  const log = [...screen.querySelectorAll('.run__step')].map((li) => ({ li, time: li.querySelector('.run__time'), s: Number(li.dataset.seconds) }));
-  const summary = screen.querySelector('.run__summary');
-  const status = root.querySelector('.runlog__status');
-  const fmt = new Intl.NumberFormat(locale, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
-  let timers = [];
-  const at = (sec, fn) => timers.push(setTimeout(fn, sec * SPEED));
-  const clear = () => { timers.forEach(clearTimeout); timers = []; };
+export function open(root) {
+  const steps = [...root.querySelectorAll('.rl__step')];
+  const logs = [...root.querySelectorAll('.rl__log')];
+  const total = steps.length;
+  const form = root.querySelector('.rl__start');
+  const input = form.querySelector('input');
+  const count = root.querySelector('.rl__count');
+  const status = root.querySelector('.rl__status');
+  const summary = root.querySelector('.rl__summary').textContent;
+  const pause = root.querySelector('.rl__pause');
+  let step = total - 1;
+  let round = 0;
+  let timer = 0;
+  let auto = 0;
+  let playing = false;
+  let userPaused = false;
+  let inside = false;
+  let visible = true;
+  let active = false;
+  let announce = false;
+  let userRun = false;
+  const calm = () => reduceMotion.matches || motion.paused;
 
-  // The pane in focus (0 form, 1 automation, 2 inbox, 3 course) and the step it belongs to.
-  const focus = (i) => {
-    panes.forEach((p, k) => p.classList.toggle('is-current', k === i));
-    const step = Number(panes[i].dataset.step);
-    root.dataset.step = String(step);
-    stepButtons.forEach((b, k) => (k === step ? b.setAttribute('aria-current', 'step') : b.removeAttribute('aria-current')));
+  // The frame for a step: earlier steps done, this one current, later ones waiting (-1: none yet).
+  const show = (s) => {
+    step = s;
+    root.dataset.step = String(s);
+    steps.forEach((el, i) => { el.classList.toggle('is-done', i < s); el.classList.toggle('is-current', i === s); });
+    logs.forEach((el, i) => el.classList.toggle('is-on', i <= s));
+    root.classList.toggle('is-end', s === total - 1);
+    count.textContent = root.dataset.stepOf.replace('{n}', String(Math.max(1, s + 1))).replace('{total}', String(total));
+    if (s === total - 1 && announce) { status.textContent = summary; announce = false; }
   };
-  // A frame: everything up to a step is done (0, 1 or 2), the rest still waits.
-  const frame = (step) => {
-    clear();
-    const upto = [0.25, 1.4, 2.3][step];
-    nodes.forEach((n, i) => n.classList.toggle('is-on', NODE_AT[i] <= upto));
-    mails[0].classList.toggle('is-on', step >= 1);
-    mails[1].classList.toggle('is-on', step >= 2);
-    log.forEach((x) => { x.li.classList.toggle('is-on', x.s <= upto); x.time.textContent = `${fmt.format(x.s)} s`; });
-    screen.classList.toggle('is-done', step === 2);
-    focus([0, 1, 3][step]);
+  const held = () => (inside && !userRun) || !visible || !active || userPaused || calm();
+  const clear = () => { clearTimeout(timer); timer = 0; };
+  // One beat: wait while held, then do fn.
+  const later = (ms, fn) => { clear(); timer = setTimeout(function go() { if (held()) { timer = setTimeout(go, 250); return; } fn(); }, ms); };
+  const tick = () => {
+    if (step < total - 1) { show(step + 1); later(step < total - 1 ? STEP : HOLD, tick); return; }
+    round += 1;
+    userRun = false;
+    if (round >= ROUNDS) { playing = false; paint(); return; }
+    root.classList.add('is-resetting');
+    later(400, () => { root.classList.remove('is-resetting'); show(-1); later(STEP, tick); });
   };
-  const reset = () => {
-    clear();
-    nodes.forEach((n) => n.classList.remove('is-on'));
-    mails.forEach((m) => m.classList.remove('is-on'));
-    log.forEach((x) => { x.li.classList.remove('is-on'); x.time.textContent = `${fmt.format(0)} s`; });
-    screen.classList.remove('is-done');
-    focus(0);
+  const play = () => { playing = true; round = 0; userPaused = false; show(-1); later(STEP, tick); paint(); };
+  const stop = () => { clear(); playing = false; paint(); };
+  const paint = () => {
+    pause.hidden = calm() || !playing;
+    pause.setAttribute('aria-pressed', String(userPaused));
+    pause.firstChild.textContent = userPaused ? pause.dataset.playLabel : pause.dataset.pauseLabel;
   };
-  const finish = () => { frame(2); status.textContent = summary.textContent; };
-  const play = () => {
-    at(0.25, () => focus(1));
-    NODE_AT.forEach((s, i) => at(s, () => nodes[i].classList.add('is-on')));
-    log.forEach((x) => at(x.s, () => { x.li.classList.add('is-on'); x.time.textContent = `${fmt.format(x.s)} s`; }));
-    at(0.45, () => { focus(2); mails[0].classList.add('is-on'); });
-    at(0.9, () => focus(1));
-    at(1.9, () => { focus(3); screen.classList.add('is-done'); });
-    at(2.3, () => { focus(2); mails[1].classList.add('is-on'); });
-    at(LAST, () => focus(3));
-    return LAST * SPEED;
-  };
-  // The first round waits a second, so the opened demo is seen at rest before it moves.
-  reset();
-  root.dataset.play = 'start';
-  let d = null;
-  const ready = new Promise((resolve) => setTimeout(() => {
-    d = demo(root, { reset, play, finish, rest: 3000, frames: 3, frame, button: root.querySelector('.runlog__ctl .loopctl') });
-    resolve(d);
-  }, matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : FIRST));
+  const names = (n) => root.querySelectorAll('.rl__name').forEach((el) => { el.textContent = n; });
 
-  stepButtons.forEach((b, i) => b.addEventListener('click', () => { d?.skip(); frame(i); }));
-  root.querySelector('.runlog__replay').addEventListener('click', () => d?.replay());
-  wireForm(root, () => d?.replay());
-  return ready;
-}
-
-// Step 1 is a real local form: it checks the e-mail, takes the typed name and plays the run.
-function wireForm(root, play) {
-  const form = root.querySelector('.story__form');
-  if (!form) return;
-  const { name, email } = form.elements;
-  const error = root.querySelector('.story__error');
-  const valid = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
-  email.addEventListener('input', () => { if (!error.hidden && valid(email.value)) { error.hidden = true; email.removeAttribute('aria-invalid'); } });
   form.addEventListener('submit', (e) => {
     e.preventDefault();
-    if (!valid(email.value)) { error.hidden = false; email.setAttribute('aria-invalid', 'true'); email.focus(); return; }
-    error.hidden = true;
-    email.removeAttribute('aria-invalid');
-    const full = name.value.trim() || name.defaultValue;
-    root.querySelectorAll('.js-first').forEach((el) => { el.textContent = firstName(full); });
+    clearTimeout(auto);
+    names(input.value.trim() || input.defaultValue);
+    announce = true;
+    if (calm()) { show(total - 1); return; }
+    userRun = true;
     play();
   });
+  const cancelAuto = () => clearTimeout(auto);
+  input.addEventListener('focus', cancelAuto);
+  input.addEventListener('input', cancelAuto);
+  root.querySelector('.rl__back').addEventListener('click', () => { stop(); userPaused = true; show(Math.max(0, step - 1)); });
+  root.querySelector('.rl__next').addEventListener('click', () => { stop(); userPaused = true; announce = true; show(Math.min(total - 1, step + 1)); });
+  root.querySelector('.rl__again').addEventListener('click', () => { clearTimeout(auto); announce = true; if (calm()) { show(total - 1); return; } userRun = true; play(); });
+  pause.addEventListener('click', () => { userPaused = !userPaused; paint(); });
+  root.addEventListener('pointerenter', () => { inside = true; });
+  root.addEventListener('pointerleave', () => { inside = false; });
+  root.addEventListener('focusin', () => { inside = true; });
+  root.addEventListener('focusout', (e) => { if (!root.contains(e.relatedTarget)) inside = false; });
+  if ('IntersectionObserver' in window) new IntersectionObserver(([e]) => { visible = e.isIntersecting; }).observe(root);
+  const settle = () => { if (calm()) { stop(); clearTimeout(auto); show(total - 1); } paint(); };
+  reduceMotion.addEventListener('change', settle);
+  document.addEventListener('motion:change', settle);
+
+  // The tab tells the demo when it is shown or hidden.
+  return {
+    shown() {
+      active = true;
+      if (calm()) { show(total - 1); paint(); return; }
+      if (playing) return;
+      show(-1);
+      clearTimeout(auto);
+      auto = setTimeout(() => { if (document.activeElement !== input) play(); }, AUTO);
+    },
+    hidden() { active = false; clearTimeout(auto); },
+  };
 }

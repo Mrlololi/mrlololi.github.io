@@ -7,6 +7,7 @@ import { processSteps, about, faq, contact } from './sections.mjs';
 
 // Stage 6 order: one message per block, one main action (the free first call). Block 3 is the
 // video on the German page; the English page shows the four steps until its video exists.
+// Stage 6f (4.11.2026): «Über mich» before «Eigene Projekte»; the second CTA band is gone.
 export function home(t, config) {
   return [
     hero(t),
@@ -16,8 +17,8 @@ export function home(t, config) {
     pricing(t, config),
     processSteps(t),
     references(t, config),
-    projects(t, config),
     about(t, config),
+    projects(t, config),
     faq(t),
     contact(t, config),
   ].join('\n');

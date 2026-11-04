@@ -26,6 +26,8 @@ export default {
 
   ui: {
     skip: 'Skip to content',
+    motionPause: 'Pause motion',
+    motionPlay: 'Play motion',
     newTab: '(opens in a new tab)',
     menu: 'Menu',
     navLabel: 'Main navigation',
@@ -56,20 +58,20 @@ export default {
   ],
 
   hero: {
-    eyebrow: 'For online course creators in Austria, Germany and Switzerland',
+    eyebrow: 'For online course creators selling in Austria, Germany and Switzerland',
     h1: 'The tech behind your *course launch.*',
     lead: 'I connect your form, email tool, payments and course platform and test everything beforehand, so no sign-up gets lost when sales open. Fixed prices from €190.',
-    primary: 'Free intro call',
+    primary: 'Request a free call',
     secondary: 'See pricing',
     micro: '20 minutes · reply within 2 working days',
-    trust: 'Based in Graz, working remotely · marketing automation since 2023 · business registered in Austria',
+    trust: 'From Graz, working remotely · Online marketing since 2023 · Registered business in Austria',
     ribbon: 'Sign-up received · Email confirmed · Tag added · Payment received · Access granted · Welcome email arrived ·',
     flow: {"label":"Flow: form, ActiveCampaign, payment, course open","nodes":["Form","ActiveCampaign","Payment","Course open"],"lines":["The sign-up comes in and is checked.","Contact and tag are set, the welcome email is sent.","Payment or instalment is recognised, the invoice goes out.","Access is granted, with no manual work."],"chip":"Hi, I'm Iva"},
   },
 
   tools: {
     label: 'I work with',
-    items: ["ActiveCampaign","Zapier","Make","Leadpages","Stripe","Quaderno","Somba","WordPress","Wix","Google Apps Script"],
+    items: ["ActiveCampaign","Zapier","Make","Leadpages","Stripe","Quaderno","WordPress","Wix","Google Apps Script"],
   },
 
   story: {
@@ -120,12 +122,12 @@ export default {
       { text: "Course access granted", seconds: 1.9 },
       { text: "Welcome email arrived", seconds: 2.3 },
     ],
-    summary: "6 steps, 2.3 seconds, 0 errors (simplified example)",
+    summary: "6 steps, 0 errors (simplified example)",
     replay: "Play again",
   },
 
   problems: {
-    h2: "Where launches *usually break*",
+    h2: "Where launches *often break*",
     intro: "Typical places where launches break.",
     slider: {
       label: 'Drag before / after',
@@ -138,7 +140,7 @@ export default {
     items: [
       { problem: "Sign-ups get lost between the form and the CRM.", fix: "I build flows that check every sign-up and resend it automatically on errors, even when many come in at once.", pkg: "launch" },
       { problem: "Launch emails land in spam.", fix: "Set up SPF, DKIM and DMARC correctly and test delivery.", pkg: "quick" },
-      { problem: "The instalment payment failed, but access is still open.", fix: "Automatic reminders, suspension and reactivation, in sync with Quaderno, Somba or Stripe.", pkg: "launch" },
+      { problem: "The instalment payment failed, but access is still open.", fix: "Automatic reminders, suspension and reactivation, in sync with Quaderno, Stripe and your members area.", pkg: "launch" },
     ],
   },
 
@@ -172,14 +174,14 @@ export default {
             "id": "launch",
             "name": "Launch setup",
             "price": "from €1,190",
-            "bullets": ["Landing pages and checkout", "ActiveCampaign flows for sign-up, reminders, launch, onboarding and failed payments", "Forms with double opt-in and tags", "Connections via Zapier or Apps Script to your CRM and members area", "Course setup in Somba, Skool or Circle, Zoom and calendar"],
+            "bullets": ["Landing pages and checkout", "ActiveCampaign flows for sign-up, reminders, launch, onboarding and failed payments", "Forms with double opt-in and tags", "Connections via Zapier or Apps Script to your CRM and members area", "Course setup in your members area, Zoom and calendar"],
             "summary": "Everything is ready when sales open."
           },
           {
             "id": "website",
             "name": "One-page website",
             "price": "from €990",
-            "summary": "Wix, Leadpages or custom HTML, responsive, with Calendly, cookie banner, SEO basics, legal notice and privacy policy, domain, publishing, a handover call and three rounds of revisions."
+            "summary": "Wix, Leadpages or custom HTML, responsive, with Calendly, cookie banner, SEO basics, legal notice and privacy pages set up and linked (texts from you), domain, publishing, a handover call and three rounds of revisions."
           },
           {
             "id": "ki",
@@ -234,15 +236,15 @@ export default {
     "tones": [
       [
         "Formal",
-        "Dear Anna, thank you for your message and sorry for the trouble. I have resent your access, and you will find the invoice attached. I am happy to help with any questions."
+        "Dear Anna, thank you for your message and sorry for the trouble. I'll resend your access right away and send the invoice along. I am happy to help with any questions."
       ],
       [
         "Friendly",
-        "Hi Anna, thanks for your message and sorry for the hassle. I've resent your access and the invoice is attached. Just get in touch if you have questions."
+        "Hi Anna, thanks for your message and sorry for the hassle. I'll resend your access right away, invoice to follow. Just get in touch if you have questions."
       ],
       [
         "Casual",
-        "Hey Anna! Sorry about the mix-up. Your access is on its way again, invoice attached. Just shout if anything's missing."
+        "Hey Anna! Sorry about the mix-up. I'll resend your access right away, invoice to follow. Just shout if anything's missing."
       ]
     ],
     "buttons": [
@@ -383,7 +385,7 @@ export default {
     },
     case2: {
       title: 'Launch tech for an online course creator, since April 2026',
-      text: 'ActiveCampaign and Zapier flows for sign-up, launch, onboarding and payment reminders, landing pages in Leadpages, invoices, instalments and course access with Quaderno and Somba, live sessions with Zoom and Ecamm.',
+      text: 'ActiveCampaign and Zapier flows for sign-up, launch, onboarding and payment reminders, landing pages in Leadpages, invoices, instalments and course access with Quaderno and the members area, live sessions with Zoom and Ecamm.',
     },
     case3: {
       title: 'E-commerce for two German online shops, two and a half years',
@@ -408,10 +410,10 @@ export default {
     // Stage 6: two short paragraphs (shortened from the three before, nothing new).
     paragraphs: [
       "I'm Iva Tsatskrialashvili (he/him) and I live in Graz, Austria. I studied information technology and now study marketing and sales part-time at FH CAMPUS 02. So I understand both: the funnel and the API behind it.",
-      'Since 2023 I have worked for clients in Germany, Switzerland, Italy and Austria, first for online shops, since 2026 also for an online course creator. My business is registered in Austria: proper invoices and one person who is responsible.',
+      'Since 2023 I have worked for clients in Germany, Switzerland and Austria, first for online shops, since 2026 also for an online course creator. My business is registered in Austria: proper invoices and one person who is responsible.',
     ],
-    tools: 'ActiveCampaign, Zapier, Make, Google Apps Script, Leadpages, WordPress, Wix, Shopware, Stripe, Quaderno, Somba, GrooveHQ, Canva, HTML, CSS, JavaScript, Python, SQL',
-    path: ['Tbilisi', 'DACH sales since 2020', 'Erasmus+ in 11 countries', 'Graz since 2025'],
+    tools: 'ActiveCampaign, Zapier, Make, Google Apps Script, Leadpages, WordPress, Wix, Shopware, Stripe, Quaderno, GrooveHQ, Canva, HTML, CSS, JavaScript, Python, SQL',
+    path: ['Tbilisi', 'Sales for German-speaking markets since 2020', 'Erasmus+ in 11 countries', 'Graz since 2025'],
     pathLabel: 'My path',
     projects: 'Side projects: GeoAPP and KittyCats',
   },
@@ -424,12 +426,15 @@ export default {
     items: [
       { q: 'Do I need to know about tech?', a: 'No. You tell me what should happen, I take care of the rest and explain everything in plain words.' },
       { q: 'Do you work remotely?', a: 'Yes. Almost all projects run remotely across Europe. In Graz I am happy to meet in person.' },
-      { q: 'How soon can you start?', a: 'Quick fixes usually within a week. Projects by arrangement, because I take on only a few at a time.' },
+      { q: 'How soon can you start?', a: 'Quick fixes often within a week. Projects by arrangement, because I take on only a few at a time.' },
       { q: 'Do I need specific tools?', a: 'No. I work with what you already have and only suggest a switch when it pays off.' },
       { q: 'How do you handle data?', a: 'I get my own user access instead of your password. When the project ends, you remove my access and I delete the copies of your data that I hold.' },
       { q: 'Do you also do customer support?', a: 'No. I build the tech that takes load off your support, for example draft replies for recurring questions.' },
       { q: 'Are you available on launch day?', a: 'Yes, by arrangement: we agree on the launch day and a time window beforehand. Before that we test every payment case in test mode.' },
       { q: "What if my problem doesn't fit a package?", a: "Send me a short note on what isn't working. You get the price before I start." },
+      // Stage 6f (4.11.2026): two new questions.
+      { q: 'I use a different tool. Does that work?', a: 'Most course platforms connect via ActiveCampaign, Zapier or Make, for example Digistore24, CopeCart, ablefy, Kajabi or Memberspot. In the tech check I look at your tool first and tell you honestly whether I can help.' },
+      { q: "My setup already exists, but it's messy. Do you clean up too?", a: 'Yes. I check tags, automations and Zaps, clean them up and document what happens where. The best start is the tech check.' },
     ],
   },
 
@@ -456,7 +461,7 @@ export default {
     story: {
       screen: 'Example screen: sign-up, automation, inbox and course area',
       panes: ['Form', 'Automation', 'Inbox', 'Course area'],
-      nodes: [['Trigger', 'Form'], ['Tag', 'Autumn course'], ['Mail', 'Confirmation'], ['Wait', 'until confirmed'], ['Payment', 'Stripe'], ['Invoice', 'Quaderno'], ['Access', 'Somba']],
+      nodes: [['Trigger', 'Form'], ['Tag', 'Autumn course'], ['Mail', 'Confirmation'], ['Wait', 'until confirmed'], ['Payment', 'Stripe'], ['Invoice', 'Quaderno'], ['Access', 'Members area']],
       tool: 'Email tool',
       mails: [['Please confirm', 'One click and you are in.'], ['Welcome, {first}!', 'Your access is ready.']],
       phone: 'Inbox',
@@ -518,7 +523,7 @@ export default {
       line: "Logic, Loop, Live: that's how I work.",
       stories: [
         'School with a focus on German, then an IT degree in Tbilisi.',
-        'Sales for the DACH region, later deputy team lead; then customer support in German at CMX Solutions.',
+        'Sales for German-speaking markets, later deputy team lead; then customer support in German at CMX Solutions.',
         'Trainings and youth exchanges: teams, workshops, organisation.',
         'Marketing & Sales degree at FH CAMPUS 02, my own business.',
       ],
@@ -528,7 +533,7 @@ export default {
       intro: 'Short answers to what I am asked most often.',
       also: 'Also asked:',
       missing: 'Question not here? → Write to me',
-      related: [[3, 7], [2, 6], [6, 1], [0, 4], [3, 5], [7, 0], [2, 4], [2, 0]],
+      related: [[3, 7], [2, 6], [6, 1], [8, 9], [3, 5], [7, 0], [2, 4], [2, 0], [3, 9], [8, 0]],
     },
     contact: {
       builderLabel: 'Short brief',
@@ -538,11 +543,11 @@ export default {
       viaOpen: 'not decided yet',
       fields: {
         what: ['What', ['an online course', 'a coaching programme', 'a membership', 'a workshop', 'digital products']],
-        via: ['Via', ['Leadpages', 'WordPress', 'Wix', 'Somba', 'Skool', 'my own website', 'not decided yet']],
+        via: ['Via', ['Leadpages', 'WordPress', 'Wix', 'Digistore24', 'CopeCart', 'ablefy', 'Kajabi', 'Memberspot', 'Skool', 'my own website', 'another tool', 'not decided yet']],
         issue: ['The problem is', ['payments', 'sign-ups', 'emails in spam', 'automations', 'instalments', 'the website']],
         start: ['Start', ['in 4 weeks', 'in 2 weeks', 'right away', 'in 2 to 3 months', 'not decided yet']],
       },
-      preview: 'Preview of your email',
+      preview: 'How your request reaches me',
       to: 'To',
       subjectLabel: 'Subject',
       subject: 'Enquiry via mrlololi.com',
@@ -560,6 +565,14 @@ export default {
         submit: 'Send request',
         sending: 'Sending…',
         showcase: 'This request runs through an automation like the ones I build for you.',
+        paket: 'I am interested in',
+        paketOpen: 'Not sure yet',
+        termin: 'When suits you best? (optional)',
+        terminPlaceholder: 'e.g. mornings, Tue or Thu',
+        terminLine: 'Best time',
+        next: 'In my reply you get two or three time slots, via Zoom or phone.',
+        summaryOne: 'Please check this entry:',
+        summaryMany: 'Please check these {n} entries:',
         errors: {
           name: 'Please enter your name.',
           email: 'Please enter your email address.',
@@ -577,11 +590,12 @@ export default {
       copy: 'Copy',
       copied: 'Copied',
       photoAlt: 'Iva Tsatskrialashvili',
+      after: { title: 'What happens after you click', steps: ['I read your request myself.', 'You get two or three time slots.', 'In the call we clear everything up, and you learn the price before we start.'] },
     },
     projects: {
       hub: { centre: 'Your launch', parts: ['Checkout', 'Email tool', 'Course platform', 'Payment provider'] },
       site: { url: 'your-website.com', blocks: ['Header', 'Hero', 'Booking', 'Legal notice'] },
-      chat: { q: 'Hi, where do I find my login?', a: 'Dear Mia, I have sent your access again. Please also check your spam folder.', tag: 'AI draft' },
+      chat: { q: 'Hi, where do I find my login?', a: 'Dear Mia, I will resend your access right away. Please also check your spam folder.', tag: 'AI draft' },
     },
     refs: { quotes: 'Testimonials' },
     starter: {
@@ -601,10 +615,10 @@ export default {
       open: 'Try the flow yourself',
       close: 'Close',
       again: 'Start over',
-      slow: 'Slow motion, in reality 2.3 seconds',
+      slow: 'Slow motion. In reality this takes only seconds after the payment.',
       short: ['Sign-up', 'Automation', 'In'],
       aboutLabel: 'What you can rely on',
-      aboutRow: ['Fixed prices', 'Test contacts before go-live', 'Documentation and handover', 'Own access instead of your password', 'German and English', 'Reply within 2 working days', '30-day promise', 'Registered business in Austria'],
+      aboutRow: ['Fixed prices', 'Test contacts before go-live', 'Documentation and handover', 'Own access instead of your password', 'German and English'],
     },
     // Stage 6c (29.10.2026): every looping demo has one pause button; its name says which demo.
     c: {
@@ -615,16 +629,40 @@ export default {
       days: ['Day 1', 'Day 14', 'Day 30'],
       faqTyping: 'Logik is typing',
     },
+    r: {
+      tabsLabel: 'View',
+      tabs: ['Overview', 'Step by step'],
+      describe: 'Try the flow yourself',
+      title: 'One purchase, step by step',
+      nameLabel: 'First name',
+      name: 'Anna',
+      start: 'Sign up',
+      note: 'Just a demo, nothing is sent.',
+      steps: [
+        ['Order form', '{name} orders the autumn course.'],
+        ['Payment (Stripe)', 'The payment comes in.'],
+        ['Invoice (Quaderno)', 'The invoice is created and sent.'],
+        ['Tag', 'Tag “Customer autumn course” is added.'],
+        ['Access: members area', 'The course is unlocked.'],
+        ['Welcome email', '“Welcome, {name}!” arrives.'],
+      ],
+      logTitle: 'Log',
+      log: ['Order received', 'Payment received (Stripe)', 'Invoice created (Quaderno)', 'Tag “Customer autumn course” added', 'Access in the members area granted', 'Welcome email arrived'],
+      stepOf: 'Step {n} of {total}',
+      back: 'Back',
+      next: 'Next',
+      again: 'Play again',
+    },
     // Stage 6b (29.10.2026): corrections after the review.
     b: {
       before: { signup: '45/47', spam: 'Spam', rate: 'Instalment 2 failed' },
-      cta: 'Free intro call',
+      cta: 'Request a free call',
       ctaLine: 'Questions about your flow? 20 minutes, free.',
       notDo: "What I don't do: ad copy, ads and ongoing customer support. I'm happy to recommend colleagues for that.",
       ask: 'Enquire',
       example: 'See the example',
       refs: {
-        tools: ['ActiveCampaign', 'Zapier', 'Leadpages', 'Quaderno', 'Somba', 'Zoom'],
+        tools: ['ActiveCampaign', 'Zapier', 'Leadpages', 'Quaderno', 'Zoom'],
         video: 'See the flow in four steps',
         honest: 'Ongoing work since April 2026, name not disclosed.',
         earlierLine: 'That is how I know support teams from the inside, the basis for the AI reply drafts.',
@@ -641,21 +679,24 @@ export default {
     },
     pricing: {
       intro: 'Fixed prices, clear scope. I work with a few clients at a time.',
+      // Stage 6f: English only.
+      audience: 'Selling to German-speaking customers? I set up double opt-in, German-language emails and your legal pages (with your texts).',
       chooser: 'Which package fits?',
       cards: {
         quick: { line: 'One specific task, up to 4 hours of work.', bullets: ['Email delivery (SPF, DKIM, DMARC)', 'Broken links or forms', 'Bookings or an automation'] },
         check: { line: 'One day of analysis with read access to the tools above, then you know where it breaks.', bullets: ['A list of priorities, effort and prices', 'A 45-minute call', 'Fully credited if you order a project within 30 days'] },
-        launch: { line: 'Everything is ready when sales open. Fixed price after the briefing.', bullets: ['Landing pages and checkout', 'ActiveCampaign flows from sign-up to failed payments', 'Forms with double opt-in and tags', 'Course access in Somba, Skool or Circle'] },
+        launch: { line: 'Everything is ready when sales open. Fixed price after the briefing.', bullets: ['Landing pages and checkout', 'ActiveCampaign flows from sign-up to failed payments', 'Forms with double opt-in and tags', 'Course access in your members area'] },
       },
       promise: '30-day promise: if a flow I built does not work as agreed within the first 30 days after handover, I fix it free of charge. On top of statutory warranty rights.',
       more: 'More services',
+      flow: ['Form', 'Payment', 'Access', 'Emails'],
       rows: {
         website: 'A one-pager, published and handed over.',
         ki: 'Draft replies your team only has to check. Optional care €90 a month.',
         support: 'Care and anything outside the packages, from 5 hours a month.',
       },
     },
-    cta: { text: "Not sure what fits? 20 minutes, free. I'll tell you honestly whether I can help.", button: 'Free intro call' },
+    cta: { text: "Not sure what fits? 20 minutes, free. I'll tell you honestly whether I can help.", button: 'Request a free call' },
     refs: {
       labels: { course: 'Online courses', site: 'Website', shop: 'E-commerce', earlier: 'Earlier work' },
       earlier: 'Customer support in German at CMX Solutions',
@@ -668,8 +709,10 @@ export default {
       all: 'All web projects',
       // Shortened from the «What it shows» lines on mrlololi.com/Webprojekte/.
       items: [
-        { key: 'ki', name: 'AI in customer service', path: 'ki-kundenservice/', shows: 'AI with clear rules: a person approves, nothing is sent automatically.' },
+        { key: 'ki', name: 'AI in customer service (in German)', path: 'ki-kundenservice/', shows: 'AI with clear rules: a person approves, nothing is sent automatically.' },
         { key: 'langstarter', name: 'Language Starter', path: 'language-starter/', shows: '45 phrases in 42 languages, speech in the browser, a print layout for one A4 page.' },
+        { key: 'geoapp', name: 'GeoAPP', path: 'geoapp/?lang=en', shows: 'A small app for learning Georgian numbers, answering by choice or by typing.' },
+        { key: 'kittycats', name: 'KittyCats', path: 'kittycats/', shows: 'A layout and scroll animation demo with HTML, CSS and a little GSAP.' },
       ],
       // Stage 6b: the two off-topic ones as one text line.
       more: [
@@ -689,7 +732,7 @@ export default {
       approve: 'Approve',
       approved: 'Approved',
       background: 'What happens in the background',
-      all: 'All 20 examples',
+      all: 'All 20 examples (in German)',
       calc: { hand: 'By hand', draft: 'With drafts', unit: 'h per month', saving: 'Saving: {h} h / €{eur} per month' },
     },
     notFound: {
@@ -763,7 +806,7 @@ export default {
         description: 'Launch emails landing in spam? I set up SPF, DKIM and DMARC correctly and test delivery. A quick fix with up to 4 hours of work, €190 fixed.',
         promise: 'I set up SPF, DKIM and DMARC correctly and test delivery.',
         packages: ['quick'],
-        problem: ['Launch emails land in spam.', 'I see this failure again and again, and it costs sign-ups, revenue or nerves.'],
+        problem: ['Launch emails land in spam.', 'I often see this failure at launches, and it costs sign-ups, revenue or nerves.'],
         // Iva 29.10.2026 (German original in de.mjs).
         explain: { title: 'In short', text: 'SPF sets which servers may send email on behalf of your domain. DKIM signs every email, so the recipient can see it was not changed on the way. DMARC tells the recipient what to do with emails that fail the check, and sends you reports. Since 2024 Gmail and Yahoo require all three records from senders of large volumes of email, and since 2025 Microsoft does too for Outlook and Hotmail.' },
         does: ['Set up SPF, DKIM and DMARC correctly', 'Test delivery'],
@@ -776,7 +819,7 @@ export default {
         ],
         example: 'spam',
         faq: [
-          ['How soon can you start?', 'Quick fixes usually within a week.'],
+          ['How soon can you start?', 'Quick fixes often within a week.'],
           ['What if 4 hours are not enough?', 'Anything outside the packages: €45 per hour. You get the price before I start.'],
           ['Do you need my password?', 'No. I get my own user access instead of your password. When the project ends, you remove my access and I delete the copies of your data that I hold.'],
           ['Do I need to know about tech?', 'No. You tell me what should happen, I take care of the rest and explain everything in plain words.'],
@@ -821,7 +864,7 @@ export default {
         does: ['A knowledge base from your FAQ and course rules', 'A flow in Make or Zapier', 'Draft replies with topic and urgency in GrooveHQ, Gmail or Help Scout', 'A test with 50 sample emails from your inbox, anonymised', 'Handover'],
         doesText: ['Only drafts are created: your team reviews and sends every reply itself.'],
         steps: [
-          ['First call, 20 minutes, free.', 'You tell me which questions keep coming back. I tell you honestly whether I can help.'],
+          ['First call, 20 minutes, free.', 'You tell me which questions come up often. I tell you honestly whether I can help.'],
           ['Quote.', 'After the briefing you get a fixed price.'],
           ['Build.', 'I build the knowledge base and the flow and test with 50 anonymised sample emails.'],
           ['Handover.', 'Written instructions, and a short video on request, so your team can maintain everything.'],
@@ -840,11 +883,11 @@ export default {
         path: '/en/one-page-website/',
         short: 'One-page website',
         h1: 'One-page website with Leadpages or Wix',
-        description: 'A one-page website with Leadpages, Wix or custom HTML: responsive, with booking, legal notice, privacy policy and domain, published. From €990.',
+        description: 'A one-page website with Leadpages, Wix or custom HTML: responsive, with booking, domain and your legal texts linked. From €990.',
         promise: 'A one-pager in Leadpages, Wix or custom HTML, published and ready.',
         packages: ['website'],
         problem: ['You need a website.', 'Design, booking, legal pages and the domain cost time and nerves before the page is even online.'],
-        does: ['Wix, Leadpages or custom HTML, responsive', 'Booking via Calendly', 'Cookie banner and SEO basics', 'Legal notice and privacy policy', 'Domain and publishing', 'A handover call and three rounds of revisions'],
+        does: ['Wix, Leadpages or custom HTML, responsive', 'Booking via Calendly', 'Cookie banner and SEO basics', 'Legal notice and privacy pages set up and linked (texts from you)', 'Domain and publishing', 'A handover call and three rounds of revisions'],
         steps: [
           ['First call, 20 minutes, free.', 'You tell me what your website should show. I tell you honestly whether I can help.'],
           ['Quote.', 'After the briefing you get a fixed price.'],
@@ -854,7 +897,7 @@ export default {
         example: 'case1',
         faq: [
           ['Which website builder do you use?', 'Wix, Leadpages or custom HTML. I work with what you already have and only suggest a switch when it pays off.'],
-          ['Are the legal notice and privacy policy included?', 'Yes. Legal notice and privacy policy, cookie banner and SEO basics are part of the package.'],
+          ['Are the legal notice and privacy policy included?', 'I set up both pages and link them, the texts come from you (for example from a generator or your lawyer). Cookie banner and SEO basics are part of the package.'],
           ['How many revisions are included?', 'Three rounds of revisions, plus a handover call.'],
           ['Do I need to know about tech?', 'No. You tell me what should happen, I take care of the rest and explain everything in plain words.'],
         ],
@@ -864,7 +907,7 @@ export default {
   },
 
   footer: {
-    copyright: '© 2026 Iva Tsatskrialashvili · Advertising agency (Werbeagentur) · Graz, Austria',
+    copyright: '© 2026 Iva Tsatskrialashvili · Graz, Austria',
     legal: 'Legal notice',
     privacy: 'Privacy',
   },
@@ -897,6 +940,15 @@ export default {
     ],
     linksTitle: 'Liability for links',
     links: 'The operators of linked external websites are solely responsible for their content.',
+  },
+
+  thanksPage: {
+    path: '/en/thanks/',
+    title: 'Thank you for your request | mrlololi',
+    description: 'Your request has arrived.',
+    h1: 'Thank you for your request!',
+    text: "You'll get a confirmation by email shortly. I'll reply within two working days.",
+    back: 'Back to the home page',
   },
 
   privacyPage: {

@@ -25,7 +25,8 @@ test('home: no KI demo, no finder, no slider, no run log; block order as in the 
     // Stage 6e brought back the slider, the run-log (behind its button) and the marquees.
     assert.ok(!/id="signup"|class="ribbon|class="trows|class="notdo"/.test(h), 'removed blocks stay removed');
   }
-  const order = ['hero-title', 'tools-title', 'id="problems"', 'id="video"', 'id="services"', 'id="process"', 'id="references"', 'id="projects"', 'id="about"', 'id="faq"', 'id="contact"'];
+  // Stage 6f: «Über mich» before «Eigene Projekte».
+  const order = ['hero-title', 'tools-title', 'id="problems"', 'id="video"', 'id="services"', 'id="process"', 'id="references"', 'id="about"', 'id="projects"', 'id="faq"', 'id="contact"'];
   const at = order.map((k) => deHome.indexOf(k));
   assert.ok(at.every((x, i) => x > 0 && (i === 0 || x > at[i - 1])), `order ${at}`);
   assert.ok(enHome.indexOf('id="path"') > enHome.indexOf('id="problems"') && enHome.indexOf('id="path"') < enHome.indexOf('id="services"'));
@@ -37,11 +38,11 @@ test('hero: eyebrow, H1, one primary button, prices as a text link, micro line, 
   assert.equal((hero.match(/class="btn /g) || []).length, 1, 'one button');
   assert.match(hero, /<a class="text-link" href="#pricing">Preise ansehen<\/a>/);
   // Stage 6b: the micro line right under the button, then the prices link; no «seit 2026» in the hero.
-  assert.match(hero, /<a class="btn btn--primary" href="#contact">Kostenloses Erstgespräch<\/a>\n<p class="hero__micro small">20 Minuten · Antwort in 2 Werktagen<\/p>\n<a class="text-link" href="#pricing">Preise ansehen<\/a>/);
+  assert.match(hero, /<a class="btn btn--primary" href="#contact">Kostenloses Erstgespräch anfragen<\/a>\n<p class="hero__micro small">20 Minuten · Antwort in 2 Werktagen<\/p>\n<a class="text-link" href="#pricing">Preise ansehen<\/a>/);
   for (const h of [deHome, enHome]) assert.ok(!/seit 2026|since 2026/.test(h.slice(h.indexOf('<section class="hero'), h.indexOf('</section>'))), 'no «seit 2026» in the hero');
   assert.match(hero, /keine Anmeldung verloren geht\. Feste Preise ab 190\u00a0€\./);
   assert.match(hero, /Hallo, ich bin Iva/);
-  assert.match(deHome, /<ul class="tools__list" role="list">(<li>[^<]+<\/li>){10}<\/ul>/);
+  assert.match(deHome, /<ul class="tools__list" role="list">(<li>[^<]+<\/li>){9}<\/ul>/); // Stage 6f: one tool less
   assert.ok(!/data-magnet|data-wave|data-tilt/.test(deHome), 'no magnet, letter wave or tilt');
 });
 
@@ -108,7 +109,7 @@ test('problem cards: solved HTML, card 3 never says «fehlgeschlagen» there, li
   assert.ok(!/Kartenzahlung fehlgeschlagen/.test(text(cards[2])), 'the big red chip only in the start frame');
   assert.match(cards[0], /<span class="sig__n">47<\/span>\/47/);
   for (const [i, c] of cards.entries()) {
-    assert.match(c, /<button class="loopctl btn btn--secondary btn--sm loopctl--card" type="button" hidden/);
+    assert.match(c, /<button class="loopctl btn btn--secondary btn--sm loopctl--icon loopctl--card" type="button" data-wait/);
     assert.match(c, new RegExp(`<a class="pc__link" href="#pkg-${de.problems.items[i].pkg}">`));
   }
   assert.equal(de.problems.intro, 'Typische Stellen, an denen Launches haken.');
@@ -124,7 +125,7 @@ test('prices: chooser, three main cards with at most four bullets, more services
     const n = (c.match(/<ul class="item__bullets"[\s\S]*?<\/ul>/)[0].match(/<li>/g) || []).length;
     assert.ok(n >= 1 && n <= 4, `${n} bullets`);
     assert.ok(/item--check/.test(c) || /<a class="item__more" href="\/[^"]+\/">Mehr zu/.test(c));
-    assert.match(c, /class="btn btn--sm btn--primary item__cta" href="mailto:/);
+    assert.match(c, /class="btn btn--sm btn--primary item__cta" href="\/\?paket=[a-z]+#contact"/);
   }
   assert.match(cards[1], /Empfohlener Start/);
   assert.ok(!/item__more/.test(cards[1]), 'Technik-Check without «Mehr …»');
@@ -147,14 +148,14 @@ test('process right under the prices, then the CTA strip; references with their 
   // Stage 6d: the quotes are back in the fanned stack (Fry pink, Ditoma blue, CMX white with its line).
   assert.match(refs, /<li class="qcard qcard--pink">[\s\S]*Alexandra Fry[\s\S]*<li class="qcard qcard--blue">[\s\S]*Ditoma GmbH[\s\S]*<li class="qcard qcard--pist"><span class="label label--peach">Frühere Tätigkeit<\/span>[\s\S]*CMX Solutions[\s\S]*Daher kenne ich Support-Teams/);
   assert.match(refs, /Zitate aus schriftlichen Referenzen, Original auf Anfrage\./);
-  assert.match(refs, /class="ctastrip"/);
+  assert.ok(!/class="ctastrip"/.test(refs), 'Stage 6f: the second CTA band is gone');
 });
 
 test('projects: four cards, one link each (no nested links), 4:3 screenshots, KI first', () => {
-  const p = deHome.slice(deHome.indexOf('id="projects"'), deHome.indexOf('id="about"'));
+  const p = deHome.slice(deHome.indexOf('id="projects"'), deHome.indexOf('id="faq"'));
   const cards = p.match(/<li class="proj">[\s\S]*?<\/li>/g);
-  assert.equal(cards.length, 2, 'Stage 6b: two cards, GeoAPP and KittyCats as one line');
-  assert.match(p, /Außerdem: <a[^>]*>GeoAPP[\s\S]*KittyCats/);
+  assert.equal(cards.length, 4, 'Stage 6f: four aligned cards');
+  for (const [i, n] of ['KI im Kundenservice', 'Language Starter', 'GeoAPP', 'KittyCats'].entries()) assert.ok(cards[i].includes(n), n);
   assert.match(cards[0], /KI im Kundenservice/);
   for (const c of cards) {
     assert.equal((c.match(/<a /g) || []).length, 1, 'one link per card');
@@ -174,7 +175,7 @@ test('about: two paragraphs, photo, four-point timeline; no tool rows, no projec
 
 test('FAQ: every question visible, no inner scroll box, the reading Logik at 40 px', () => {
   const f = deHome.slice(deHome.indexOf('id="faq"'), deHome.indexOf('id="contact"'));
-  assert.equal((f.match(/<details class="faq__item"/g) || []).length, 8);
+  assert.equal((f.match(/<details class="faq__item"/g) || []).length, 10);
   assert.match(f, /Sind Sie am Launch-Tag erreichbar\?/);
   // Stage 6d: the chat panel is back; Logik types about 0.8 s before each answer.
   assert.match(f, /class="wrap faq__grid faqbox" data-also="Auch gefragt:" data-related="/);

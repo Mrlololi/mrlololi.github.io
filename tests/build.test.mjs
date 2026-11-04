@@ -30,13 +30,16 @@ const expected = {
   'en/legal-notice/index.html': { lang: 'en', url: `${SITE}/en/legal-notice/` },
   'en/privacy/index.html': { lang: 'en', url: `${SITE}/en/privacy/` },
   '404.html': { lang: 'de', url: null },
+  // Stage 6f: where the form lands without JS (noindex, not in the sitemap).
+  'danke/index.html': { lang: 'de', url: null },
+  'en/thanks/index.html': { lang: 'en', url: null },
 };
 
 // Stage 5 added the ten service pages (tests/stage5-seo.test.mjs checks them).
-test('builds the seven original pages plus the ten service pages', () => {
+test('builds the seven original pages, the two thank-you pages and the ten service pages', () => {
   const SERVICE = /^(en\/)?(launch-technik|e-mails-landen-im-spam|activecampaign-einrichten|ki-antwortentwuerfe|website-one-pager|course-launch-tech|emails-going-to-spam|activecampaign-setup|ai-reply-drafts|one-page-website)\/index\.html$/;
   assert.deepEqual(all.map((p) => p.file).filter((f) => !SERVICE.test(f)).sort(), Object.keys(expected).sort());
-  assert.equal(all.length, 17);
+  assert.equal(all.length, 19);
 });
 
 for (const [file, { lang, url }] of Object.entries(expected)) {

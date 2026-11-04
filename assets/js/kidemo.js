@@ -3,10 +3,12 @@
 // (the marks light one by one, each with its label), Entwerfen (the arrow draws, the draft appears
 // line by line in about 2 s). A tap on the picture skips to the end. The three steps are buttons
 // that show their frame (aria-current="step"). «Anderes Beispiel» plays the next of three examples;
+// Stage 6f (4.11.2026): «Lesen» takes 2.5 s, the draft is held 6 s, the example never changes by
+// itself (only «Anderes Beispiel»), and the draft is readable from the start (stable height);
 // the tone switches the draft at once; «Freigeben» shows «Freigegeben» for a moment.
 import { demo } from './loops.js';
 
-const READ = 700;
+const READ = 2500;
 const MARK = 380;
 const ARROW = 350;
 const DRAFT = 2000;
@@ -62,13 +64,7 @@ export function init() {
     ls.forEach((l, i) => at(draftAt + ARROW + (i * DRAFT) / ls.length, () => l.classList.add('is-on')));
     return draftAt + ARROW + DRAFT + 200;
   };
-  let rounds = 0;
-  const loopPlay = () => {
-    // From the second round on, each round shows the next example.
-    if (rounds++ > 0) { current = (current + 1) % examples.length; render(); marks().forEach((m) => m.classList.remove('is-on')); lines().forEach((l) => l.classList.remove('is-on')); }
-    return play();
-  };
-  const d = demo(box, { reset, play: loopPlay, finish, rest: 3000, frames: 3, button: box.querySelector('.kidemo__controls .loopctl'), frame: (i) => { clear(); settle(); show(i); } });
+  const d = demo(box, { reset, play, finish, rest: 6000, frames: 3, button: box.querySelector('.kidemo__controls .loopctl'), frame: (i) => { clear(); settle(); show(i); } });
 
   // A tap on the picture skips to the end (never «tap to replay»: phones tap by accident).
   grid.addEventListener('click', () => d?.skip());

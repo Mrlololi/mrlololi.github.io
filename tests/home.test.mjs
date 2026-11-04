@@ -10,7 +10,7 @@ const count = (html, re) => (html.match(re) || []).length;
 
 test('hero: H1, CTAs to contact and pricing', () => {
   assert.match(de, /<h1[^>]*>Die Technik hinter Ihrem <em class="accent">Kurs-Launch\.<\/em><\/h1>/);
-  assert.match(de, /<a class="btn btn--primary" href="#contact">Kostenloses Erstgespräch<\/a>/);
+  assert.match(de, /<a class="btn btn--primary" href="#contact">Kostenloses Erstgespräch anfragen<\/a>/);
   assert.match(de, /<a class="text-link" href="#pricing">Preise ansehen<\/a>/);
 });
 
@@ -50,7 +50,7 @@ test('about: Hallstatt photo 1x/2x, path line', () => {
 });
 
 test('faq: seven details, the tech question first', () => {
-  assert.equal(count(de, /<details class="faq__item" id="faq-\d">/g), 8);
+  assert.equal(count(de, /<details class="faq__item" id="faq-\d+">/g), 10);
   assert.ok(de.indexOf('Muss ich mich mit Technik auskennen?') < de.indexOf('Arbeiten Sie auch remote?'));
 });
 

@@ -3,7 +3,7 @@
 // and play them (through loops.js). Without JS, without GSAP or with reduced motion nothing moves.
 // Stage 6: each demo module is imported when its section comes within a viewport. Stage 6c: every
 // demo loops while visible (loops.js), each with its pause button.
-import { demo } from './loops.js';
+import { demo, initMotionToggle } from './loops.js';
 
 const root = document.documentElement;
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
@@ -15,7 +15,8 @@ initHeader();
 initFlowNodes();
 initHeroLine();
 initMarquee();
-initRunlog();
+initTabs();
+initMotionToggle();
 const home = Boolean(document.querySelector('.hero'));
 // Mascots: their own module, so pages without mascots never load it.
 const mascots = document.querySelector('.mascot') ? import('./mascots.js').then((m) => { m.initMascots(); return m; }).catch(report) : null;
@@ -28,23 +29,24 @@ lazy('[data-video]', () => import('./video.js'));
 lazy('#pricing', () => import('./prices.js'));
 lazy('.kidemo', () => import('./kidemo.js'));
 lazy('#ki-rechner', () => import('./kicalc.js'));
-lazy('#process', () => import('./sections.js'));
+lazy('#process, #references, #about', () => import('./sections.js'));
 lazy('#faq', () => import('./faq.js'));
-lazy('#contact', () => import('./contact.js'));
+lazy('.contact__form', () => import('./contact.js'), new URLSearchParams(location.search).has('paket'));
 lazy('.nf__scene', () => import('./notfound.js'), true);
 
 function report(e) { console.error(e); }
 
 // Imports a section module when its section is within one viewport of the screen (now: at once).
+// Stage 6f: sel may name several sections (a jump to the last one also loads the module).
 function lazy(sel, load, now = false) {
-  const el = document.querySelector(sel);
-  if (!el) return;
+  const els = [...document.querySelectorAll(sel)];
+  if (!els.length) return;
   const go = () => load().then((m) => m.init(ctx)).then(() => motion.then((mo) => mo?.refresh())).catch(report);
   if (now || !('IntersectionObserver' in window)) { go(); return; }
   const io = new IntersectionObserver((entries) => {
     if (entries.some((e) => e.isIntersecting)) { io.disconnect(); go(); }
   }, { rootMargin: '100% 0px' });
-  io.observe(el);
+  els.forEach((el) => io.observe(el));
 }
 
 // The self-hosted GSAP files are fetched only after the page has loaded and painted, so the
@@ -96,35 +98,50 @@ function initHeroLine() {
 }
 
 /* ---------- Tool row: a marquee while visible (ambient: it never takes the focus), with its button ---------- */
-// The «Über mich» row (Stage 6e) is the same component.
+// Stage 6f: the «Über mich» row is static chips now (sections.js).
 function initMarquee() {
-  for (const box of document.querySelectorAll('.tools__in[data-demo="tools"], .aboutrow[data-demo="about"]')) {
-    demo(box, { ambient: true, duration: 2147483000, rest: 0, button: box.querySelector(':scope > .loopctl') });
+  for (const box of document.querySelectorAll('.tools__in[data-demo="tools"]')) {
+    // About 20 px a second, whatever the row's width (Stage 6f).
+    const speed = () => { const tr = box.querySelector('.marquee__track'); if (tr) box.style.setProperty('--marquee-s', `${Math.max(20, Math.round(tr.scrollWidth / 2 / 20))}s`); };
+    demo(box, { duration: 2147483000, rest: 0, frames: 1, button: box.querySelector(':scope > .loopctl'), state: (p) => { if (p === 'run') speed(); } });
   }
 }
 
-/* ---------- «Ablauf selbst ausprobieren»: the run-log demo, its CSS and JS on the first click ---------- */
-function initRunlog() {
-  const button = document.querySelector('.runlog__open');
-  if (!button) return;
-  const slot = document.getElementById('runlog');
-  const label = button.textContent;
-  let loaded = null;
-  button.addEventListener('click', async () => {
-    const open = button.getAttribute('aria-expanded') !== 'true';
-    button.setAttribute('aria-expanded', String(open));
-    button.textContent = open ? button.dataset.close : label;
-    slot.hidden = !open;
-    if (!open || loaded) return;
-    loaded = new Promise((resolve) => {
-      const link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.href = '/assets/css/runlog.css';
-      link.onload = resolve;
-      link.onerror = resolve;
-      document.head.append(link);
-    }).then(() => import('./runlog.js')).then((m) => m.open(slot, document.getElementById('runlog-tpl'), { locale })).catch(report);
-  });
+/* ---------- Video frame: «Video | Schritt für Schritt» (Stage 6f), the run-log loads on its tab ---------- */
+// Proper tabs: arrow keys, Home and End move between them, aria-selected, one panel at a time. The
+// video pauses when the other tab opens. runlog.js loads the first time its tab opens.
+function initTabs() {
+  for (const box of document.querySelectorAll('.vtabs')) {
+    const tabs = [...box.querySelectorAll('[role="tab"]')];
+    const panels = tabs.map((tab) => document.getElementById(tab.getAttribute('aria-controls')));
+    let rl = null;
+    const select = (i, focus = false) => {
+      tabs.forEach((tab, k) => {
+        const on = k === i;
+        tab.setAttribute('aria-selected', String(on));
+        tab.tabIndex = on ? 0 : -1;
+        panels[k].hidden = !on;
+        panels[k].classList.toggle('is-active', on);
+      });
+      if (focus) tabs[i].focus();
+      if (i !== 0) panels[0].querySelectorAll('video').forEach((v) => v.pause());
+      const root = panels[i].querySelector('.rl');
+      if (root && !rl) rl = import('./runlog.js').then((m) => m.open(root)).catch(report);
+      rl?.then((api) => { if (!api) return; if (root) api.shown(); else api.hidden(); });
+    };
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => select(i));
+      tab.addEventListener('keydown', (e) => {
+        const n = tabs.length;
+        const to = { ArrowRight: (i + 1) % n, ArrowLeft: (i - 1 + n) % n, Home: 0, End: n - 1 }[e.key];
+        if (to == null) return;
+        e.preventDefault();
+        select(to, true);
+      });
+    });
+    box.classList.add('is-ready');
+    select(0);
+  }
 }
 
 /* ---------- Hero flow: each node explains its step in one line under the diagram ---------- */

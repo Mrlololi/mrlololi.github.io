@@ -137,6 +137,7 @@ function footer({ t, page, ratgeber }) {
 <div class="site-footer__in">
 ${page.key === 'home' ? footerBrand(t) : ''}${footerServices(t, ratgeber)}
 <p class="site-footer__copy">${esc(t.footer.copyright)}</p>
+<p class="site-footer__motion"><button class="motion-toggle btn btn--secondary btn--sm" type="button" hidden aria-pressed="false" data-pause-label="${esc(t.ui.motionPause)}" data-play-label="${esc(t.ui.motionPlay)}">${esc(t.ui.motionPause)}</button></p>
 <nav id="footer-nav" aria-label="${esc(t.ui.footerNavLabel)}">
 <ul class="site-footer__links">
 ${sections}
