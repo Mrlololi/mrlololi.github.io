@@ -10,6 +10,7 @@
 // - Stage 6d/6e: reveals never leave a section empty (jump to the bottom, then up step by step),
 //   the quote stack is spread at 60 %, the FAQ types before it answers, the marquees move, the
 //   slider follows mouse, touch and keys, the run-log loads only on its button and then plays;
+// - Stage 6h: ?quelle= from a letter's QR code, gefunden and quelle in the payload (JS and no JS);
 // - Stage 6g: no button on top of content, only the global pause toggle, the video when a phone
 //   turns, every mascot answers a click and Enter;
 // - 30.10.2026: the contact form (Make hook mocked), the price chains and the problem cards: no
@@ -471,7 +472,7 @@ export async function checkStage6(browser, base) {
   log('contact form');
   // 7. Kontaktformular 30.10.2026 (Make hook mocked): validation, honeypot, exact payload, success,
   // error and timeout, keyboard only, 390 and 1440 px, DE and EN, reduced motion, no other requests.
-  const KEYS = ['consent', 'elapsed_ms', 'email', 'lang', 'name', 'page', 'plattform', 'problem', 'start', 'termin', 'text', 'was', 'website'];
+  const KEYS = ['consent', 'elapsed_ms', 'email', 'gefunden', 'lang', 'name', 'page', 'plattform', 'problem', 'quelle', 'start', 'termin', 'text', 'was', 'website'];
   const formPage = async ({ width = 1440, lang = '', mode = 'ok', reduced = false } = {}) => {
     const ctx = await browser.newContext({ viewport: { width, height: 860 }, reducedMotion: reduced ? 'reduce' : 'no-preference' });
     const page = await ctx.newPage();
@@ -533,8 +534,8 @@ export async function checkStage6(browser, base) {
     const { ctx, page, posts } = await formPage();
     await page.focus('#brief-start');
     const order = [];
-    for (let i = 0; i < 8; i += 1) { await page.keyboard.press('Tab'); order.push(await page.evaluate(() => document.activeElement.id || document.activeElement.className)); }
-    check('contact form: keyboard order package, name, e-mail, time, text, consent, (privacy link), send; never the honeypot', order.slice(0, 6).join() === 'cf-paket,cf-name,cf-email,cf-termin,cf-text,cf-consent' && !order.includes('cf-website'), order.join(' > '));
+    for (let i = 0; i < 9; i += 1) { await page.keyboard.press('Tab'); order.push(await page.evaluate(() => document.activeElement.id || document.activeElement.className)); }
+    check('contact form: keyboard order package, name, e-mail, time, how you heard about me, text, consent, (privacy link), send; never the honeypot', order.slice(0, 7).join() === 'cf-paket,cf-name,cf-email,cf-termin,cf-gefunden,cf-text,cf-consent' && !order.includes('cf-website'), order.join(' > '));
     await page.focus('#cf-name');
     await page.keyboard.type('Kim Tastatur');
     await page.keyboard.press('Tab');
@@ -820,6 +821,47 @@ export async function checkStage6(browser, base) {
     const loose = await page.evaluate(() => [...document.querySelectorAll('svg.mascot')].filter((s) => s.getBoundingClientRect().width && !s.closest('[data-poke], .mascot-spot, [hidden], template') && !s.classList.contains('faq__logik')).length);
     check(`mascots ${p}: every group answers a click (and Enter) with a bubble, no mascot left out`, total > 0 && ok === total && keyOk === true && loose === 0, `${ok}/${total}, Enter ${keyOk}, loose ${loose}`);
     await page.close();
+  }
+  // Stage 6h: the QR code in a letter: ?quelle=brief-nov#contact brings the form into view, fills
+  // quelle, preselects «Brief per Post»; both go in the payload. A wrong value is ignored.
+  for (const w of [390, 1440]) {
+    const page = await browser.newPage({ viewport: { width: w, height: 844 } });
+    const posts = [];
+    await page.route('https://hook.eu1.make.com/**', (r) => { if (r.request().method() === 'POST') posts.push(JSON.parse(r.request().postData())); return r.fulfill({ status: 200, body: 'Accepted', headers: { 'access-control-allow-origin': '*', 'access-control-allow-headers': 'content-type' } }); });
+    await page.goto(base + '/?quelle=brief-nov#contact', { waitUntil: 'load' });
+    await page.waitForFunction(() => window.__cfReady === true, null, { timeout: 15000 }).catch(() => {});
+    await page.waitForTimeout(800);
+    const r = await page.evaluate(() => { const fm = document.getElementById('contact-form'); const b = fm.getBoundingClientRect(); return { quelle: fm.elements.quelle.value, gefunden: fm.elements.gefunden.value, inView: b.top < innerHeight && b.bottom > 0 }; });
+    await page.fill('#cf-name', 'Anna Test');
+    await page.fill('#cf-email', 'anna@example.com');
+    await page.check('#cf-consent');
+    await page.click('.contact__send');
+    await page.waitForSelector('.contact__done:not([hidden])', { timeout: 5000 }).catch(() => {});
+    const p = posts[0] || {};
+    check(`?quelle=brief-nov#contact @${w}: the form in view, quelle filled, «Brief per Post» chosen, both in the payload`, r.inView && r.quelle === 'brief-nov' && r.gefunden === 'Brief per Post' && p.quelle === 'brief-nov' && p.gefunden === 'Brief per Post', JSON.stringify({ ...r, sent: { quelle: p.quelle, gefunden: p.gefunden } }));
+    await page.close();
+  }
+  {
+    const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+    await page.goto(base + '/?quelle=' + encodeURIComponent('<b>Brief Nov</b>'), { waitUntil: 'load' });
+    const q = await page.evaluate(() => document.getElementById('contact-form').elements.quelle.value);
+    check('?quelle= with other characters is ignored', q === '', JSON.stringify(q));
+    await page.close();
+  }
+  {
+    const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, javaScriptEnabled: false });
+    const page = await ctx.newPage();
+    const posted = [];
+    await page.route('https://hook.eu1.make.com/**', (r) => { posted.push(r.request().postData()); return r.fulfill({ status: 302, headers: { location: `${base}/danke/` } }); });
+    await page.goto(base + '/?quelle=brief-nov', { waitUntil: 'load' });
+    await page.fill('#cf-name', 'Ohne JS');
+    await page.fill('#cf-email', 'nojs@example.com');
+    await page.selectOption('#cf-gefunden', { label: 'LinkedIn' });
+    await page.check('#cf-consent');
+    await Promise.all([page.waitForURL('**/danke/', { timeout: 8000 }).catch(() => {}), page.click('.contact__send')]);
+    const body = posted[0] || '';
+    check('contact form, no JS: gefunden goes with the native post, quelle stays empty without JS', /gefunden=LinkedIn/.test(body) && /(^|&)quelle=(&|$)/.test(body), body.slice(0, 200));
+    await ctx.close();
   }
   return results;
 }

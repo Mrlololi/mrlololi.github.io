@@ -75,6 +75,7 @@ export function problems(t) {
 ${ART[kind](fd[kind], t.s6)}
 ${cardScene(kind)}
 </div>
+${kind === 'signup' ? `<p class="fd-note" aria-hidden="true">${esc(t.s6.b.simplified)}</p>` : ''}
 <figcaption class="sr-only">${esc(fd[kind].alt)}</figcaption>
 </figure>
 <div class="pc__fix"><span class="label label--pist">${esc(t.ui.fix)}</span>

@@ -50,7 +50,15 @@ export function privacy(t, config, { date }) {
     .filter((s) => s.key !== 'booking' || config.booking_url)
     .map((s) => {
       // {email} becomes a mailto link; everything else is escaped text.
-      let text = fill(esc(s.text), { email: mail(config), emailSection: `<a href="#email">${esc(emailTitle)}</a>` });
+      const filled = (x) => fill(esc(x), { email: mail(config), emailSection: `<a href="#email">${esc(emailTitle)}</a>` });
+      // Stage 6h: a section in parts, each part a paragraph with its bold sub-heading («Quelle: …»).
+      if (s.parts) {
+        return `<section id="${s.key}">
+<h2>${esc(s.title)}</h2>
+${s.parts.map(([label, x]) => `<p>${label ? `<strong>${esc(label)}:</strong> ` : ''}${filled(x)}</p>`).join('\n')}
+</section>`;
+      }
+      let text = filled(s.text);
       if (s.dpf && config.github_dpf_verified) text += ` ${esc(s.dpf)}`;
       return `<section id="${s.key}">
 <h2>${esc(s.title)}</h2>

@@ -35,3 +35,9 @@ export const extLink = (href, label, t) =>
 
 // Joins template parts, dropping false/null/undefined.
 export const join = (parts) => parts.filter((p) => p !== false && p != null && p !== '').join('\n');
+
+// Stage 6h: a dated note from config.notes in the page's language, or '' after its «until» day.
+export function note(config, key, lang, now = new Date()) {
+  const n = config.notes?.[key];
+  return n && now.toISOString().slice(0, 10) <= n.until ? n[lang] || '' : '';
+}

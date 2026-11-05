@@ -12,6 +12,8 @@
 // natively with nojs=1, which this file removes). ?paket=<id> preselects «Mir geht es um» and brings
 // the form into view with the focus on the name. «Wann passt es Ihnen?» goes as termin; the package
 // goes as the first line of text. On an invalid submit an error summary links to the fields.
+// Stage 6h: «Wie sind Sie auf mich aufmerksam geworden?» goes as gefunden, the ?quelle= code (set by
+// the form's inline script) as quelle.
 import { briefMail, mailtoHref } from './pure.js';
 
 const TIMEOUT = 10000;
@@ -95,7 +97,8 @@ function builder(section) {
     // (preview and mailto alike).
     let mailBody = m.body;
     const when = termin?.value.trim();
-    const extra = [paketLine(f), when ? `${f.dataset.terminLabel}: ${when}` : '', text?.value.trim()].filter(Boolean).join('\n\n');
+    const found = f.elements.gefunden?.value;
+    const extra = [paketLine(f), when ? `${f.dataset.terminLabel}: ${when}` : '', found ? `${f.dataset.gefundenLabel}: ${found}` : '', text?.value.trim()].filter(Boolean).join('\n\n');
     if (extra) mailBody = mailBody.replace(`\n\n${c.closing}`, `\n\n${extra}\n\n${c.closing}`);
     const who = name?.value.trim();
     if (who) mailBody += `\n${who}`;
@@ -109,6 +112,7 @@ function builder(section) {
   selects.forEach((s) => s.addEventListener('change', update));
   for (const el of [name, text, termin]) el?.addEventListener('input', update);
   section.querySelector('#cf-paket')?.addEventListener('change', update);
+  section.querySelector('#cf-gefunden')?.addEventListener('change', update);
   update();
   copier(section, brief);
 }
@@ -192,6 +196,8 @@ function form(section) {
       ...Object.fromEntries([...f.querySelectorAll('.brief__select')].map((s) => [s.name, s.value])),
       text: [paketLine(f), f.elements.text.value.trim()].filter(Boolean).join('\n\n'),
       termin: f.elements.termin.value.trim(),
+      gefunden: f.elements.gefunden?.value || '',
+      quelle: /^[a-z0-9-]{1,40}$/.test(f.elements.quelle?.value || '') ? f.elements.quelle.value : '',
       consent: fields.consent.checked,
       website: f.elements.website.value,
       elapsed_ms: Math.round(performance.now() - (seen || performance.now())),

@@ -1581,11 +1581,35 @@ svg.faq__logik { cursor: pointer; }
 .hero__chip:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
 a, button, [role="button"] { -webkit-tap-highlight-color: transparent; }
 @media (max-width: 599.98px) { .path__btn { margin-block: 0; } }
-html:not(.js) .motion-toggle { display: none !important; }</style>
+html:not(.js) .motion-toggle { display: none !important; }
+.fd-note, .vid__note { font-size: 0.8125rem; font-weight: 700; color: var(--ink-soft); }
+.fd-note { margin-top: var(--space-1); text-align: right; }
+.vid__note { justify-self: center; }
+.item__call { margin-top: var(--space-1); }
+.item__when { margin-top: var(--space-1); font-size: var(--step--1); font-weight: 700; color: var(--pist-ink); }
+.proj--main { list-style: none; }
+.proj__link--main { display: grid; gap: var(--space-3) var(--space-5); }
+@media (min-width: 760px) { .proj__link--main { grid-template-columns: minmax(0, 24rem) minmax(0, 1fr); align-items: center; } .proj__link--main picture { grid-row: span 2; } }
+.projects__play { margin-top: var(--space-7); font-size: var(--step-1); }
+.projs.projs--play { margin-top: var(--space-3); }
+@media (min-width: 560px) { .projs.projs--play { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1100px) { .projs.projs--play { grid-template-columns: repeat(2, minmax(0, 22rem)); } }
+.projs--play .proj__link { background: rgb(255 255 255 / 0.45); box-shadow: none; }
+.faq__side, .faq__list, .faq__chat { min-width: 0; }
+.faq summary, .faq__a, .faq__chat .bubble { overflow-wrap: anywhere; hyphens: auto; }
+@media (min-width: 760px) {
+.proj__link--main { grid-template-rows: 1fr 1fr; }
+.proj__link--main .proj__name { align-self: end; font-size: var(--step-2); }
+.proj__link--main .proj__shows { align-self: start; font-size: var(--step-0); }
+}
+.svc-facts { margin-top: var(--space-5); }
+.svc-facts__list { display: grid; gap: var(--space-3); }
+.svc-facts__list li { line-height: 1.5; }
+.svc-facts__note { margin-top: var(--space-3); font-weight: 700; }</style>
 <script>document.documentElement.classList.add('js')</script>
 <script type="module">requestAnimationFrame(()=>requestAnimationFrame(()=>import('/assets/js/main.js')))</script>
 <link rel="modulepreload" href="/assets/js/loops.js" fetchpriority="low">
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"ProfessionalService","@id":"https://mrlololi.com/#business","name":"mrlololi","alternateName":"Iva Tsatskrialashvili","description":"Ich baue und betreue die Technik hinter Online-Kursen: ActiveCampaign, Zapier, Landingpages, Zahlungen. Marketing-Automation und Launch-Technik aus Graz.","url":"https://mrlololi.com/","email":"hello@mrlololi.com","image":"https://mrlololi.com/og-image-de.png","logo":"https://mrlololi.com/assets/brand/apple-touch-icon.png","sameAs":["https://www.linkedin.com/in/tsatskrialashvili-iva","https://www.malt.de/profile/ivatsatskrialashvili"],"areaServed":["AT","DE","CH","IT"],"address":{"@type":"PostalAddress","streetAddress":"Herbersteinstraße 4/4181","addressLocality":"Graz","postalCode":"8020","addressCountry":"AT"},"founder":{"@id":"https://mrlololi.com/#iva"},"priceRange":"€€"},{"@type":"Person","@id":"https://mrlololi.com/#iva","name":"Iva Tsatskrialashvili","jobTitle":"Marketing Automation Engineer","knowsAbout":["ActiveCampaign","Zapier","Make","Leadpages","Stripe","E-Mail-Zustellbarkeit","Marketing-Automation"],"address":{"@type":"PostalAddress","addressLocality":"Graz","addressCountry":"AT"},"image":"https://mrlololi.com/assets/img/about-680.jpg","url":"https://mrlololi.com/","sameAs":["https://www.linkedin.com/in/tsatskrialashvili-iva","https://www.malt.de/profile/ivatsatskrialashvili","https://github.com/Mrlololi","https://www.instagram.com/mrlololi/"]},{"@type":"WebSite","@id":"https://mrlololi.com/#website","url":"https://mrlololi.com/","name":"mrlololi","inLanguage":"en","publisher":{"@id":"https://mrlololi.com/#business"}},{"@type":"Service","@id":"https://mrlololi.com/en/course-launch-tech/#service","name":"Launch tech for online courses","serviceType":"Launch tech","description":"Launch tech for online courses: landing pages, checkout, ActiveCampaign, double opt-in and course access, ready when sales open. From €1,190.","url":"https://mrlololi.com/en/course-launch-tech/","inLanguage":"en","provider":{"@id":"https://mrlololi.com/#business"},"areaServed":[{"@type":"Country","name":"AT"},{"@type":"Country","name":"DE"},{"@type":"Country","name":"CH"}],"offers":{"@type":"Offer","name":"Launch setup","url":"https://mrlololi.com/en/course-launch-tech/","priceCurrency":"EUR","priceSpecification":{"@type":"PriceSpecification","minPrice":1190,"priceCurrency":"EUR"}}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mrlololi.com/en/"},{"@type":"ListItem","position":2,"name":"Services","item":"https://mrlololi.com/en/#services"},{"@type":"ListItem","position":3,"name":"Launch tech","item":"https://mrlololi.com/en/course-launch-tech/"}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"ProfessionalService","@id":"https://mrlololi.com/#business","name":"mrlololi","alternateName":"Iva Tsatskrialashvili","description":"Ich teste Ihren Launch, bevor es Ihre Kundschaft tut. Technik hinter Online-Kursen: ActiveCampaign, Zapier, Landingpages, Zahlungen. Aus Graz.","url":"https://mrlololi.com/","email":"hello@mrlololi.com","image":"https://mrlololi.com/og-image-de.png","logo":"https://mrlololi.com/assets/brand/apple-touch-icon.png","sameAs":["https://www.linkedin.com/in/tsatskrialashvili-iva","https://www.malt.de/profile/ivatsatskrialashvili"],"areaServed":["AT","DE","CH","IT"],"address":{"@type":"PostalAddress","streetAddress":"Herbersteinstraße 4/4181","addressLocality":"Graz","postalCode":"8020","addressCountry":"AT"},"founder":{"@id":"https://mrlololi.com/#iva"},"priceRange":"€€"},{"@type":"Person","@id":"https://mrlololi.com/#iva","name":"Iva Tsatskrialashvili","jobTitle":"Marketing Automation Engineer","knowsAbout":["ActiveCampaign","Zapier","Make","Leadpages","Stripe","E-Mail-Zustellbarkeit","Marketing-Automation"],"address":{"@type":"PostalAddress","addressLocality":"Graz","addressCountry":"AT"},"image":"https://mrlololi.com/assets/img/about-680.jpg","url":"https://mrlololi.com/","sameAs":["https://www.linkedin.com/in/tsatskrialashvili-iva","https://www.malt.de/profile/ivatsatskrialashvili","https://github.com/Mrlololi","https://www.instagram.com/mrlololi/"]},{"@type":"WebSite","@id":"https://mrlololi.com/#website","url":"https://mrlololi.com/","name":"mrlololi","inLanguage":"en","publisher":{"@id":"https://mrlololi.com/#business"}},{"@type":"Service","@id":"https://mrlololi.com/en/course-launch-tech/#service","name":"Launch tech for online courses","serviceType":"Launch tech","description":"Launch tech for online courses: landing pages, checkout, ActiveCampaign, double opt-in and course access, ready when sales open. From €1,190.","url":"https://mrlololi.com/en/course-launch-tech/","inLanguage":"en","provider":{"@id":"https://mrlololi.com/#business"},"areaServed":[{"@type":"Country","name":"AT"},{"@type":"Country","name":"DE"},{"@type":"Country","name":"CH"}],"offers":{"@type":"Offer","name":"Launch setup","url":"https://mrlololi.com/en/course-launch-tech/","priceCurrency":"EUR","priceSpecification":{"@type":"PriceSpecification","minPrice":1190,"priceCurrency":"EUR"}}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mrlololi.com/en/"},{"@type":"ListItem","position":2,"name":"Services","item":"https://mrlololi.com/en/#services"},{"@type":"ListItem","position":3,"name":"Launch tech","item":"https://mrlololi.com/en/course-launch-tech/"}]}]}</script>
 </head>
 <body class="page-service">
 <a class="skip" href="#main">Skip to content</a>
@@ -1644,6 +1668,11 @@ html:not(.js) .motion-toggle { display: none !important; }</style>
 <a class="btn btn--sm btn--primary" href="/en/?paket=launch#contact">Enquire<span class="sr-only">: Launch setup</span></a>
 </li>
 </ul>
+<aside class="svc-explain svc-facts" aria-labelledby="svc-explain">
+<h3 id="svc-explain">Good to know</h3>
+<ul class="svc-facts__list" role="list"><li><strong>Included (from €1,190):</strong> Landing pages and checkout, ActiveCampaign flows from sign-up to failed payments, forms with double opt-in and tags, connections via Zapier or Make, payment and invoices, course access in the members area, tests with test contacts, documentation and handover, support on launch day, the 30-day promise. You get the fixed price after the briefing.</li><li><strong>Not included:</strong> Copy for emails and sales pages, ads, course content and videos, legal texts, the costs of your tools.</li><li><strong>Timing:</strong> Ideally get in touch 4 to 6 weeks before the launch, at least 3 weeks.</li><li><strong>Payment:</strong> 50% when you place the order, 50% after go-live. Invoice by email, payable within 14 days.</li><li><strong>Launch day:</strong> I am available by phone and chat in a time window we agree beforehand, billed by effort (€45 per hour). Outside it I reply by 3 pm the next day. I support at most one launch per week.</li></ul>
+<p class="svc-facts__note">I am not planning any launches in February 2027. Launch setups with a project start from 22 February 2027.</p>
+</aside>
 </div>
 </section>
 <section class="svc-sec bg-pist edge" aria-labelledby="svc-steps">
@@ -1701,10 +1730,11 @@ html:not(.js) .motion-toggle { display: none !important; }</style>
 <h2 class="svc-contact__title">Tell me <em class="accent">what's not working.</em></h2>
 <p class="lead">I reply within two working days. The intro call (20 minutes) is free.</p>
 <div class="svc-form" id="svc-form">
-<form class="contact__form contact__form--compact" id="contact-form" action="https://hook.eu1.make.com/49mmc0uciouni5rlvys2vb6drzdhhlph" method="post" onsubmit="return window.__cfReady===true" data-endpoint="https://hook.eu1.make.com/49mmc0uciouni5rlvys2vb6drzdhhlph" data-lang="en" data-sending="Sending…" data-summary-one="Please check this entry:" data-summary-many="Please check these {n} entries:" data-paket-label="I am interested in" data-termin-label="Best time" data-err-name="Please enter your name." data-err-email="Please enter your email address." data-err-emailbad="Please check the email address, for example name@example.com." data-err-consent="Please tick the box so that I may answer your request.">
+<form class="contact__form contact__form--compact" id="contact-form" action="https://hook.eu1.make.com/49mmc0uciouni5rlvys2vb6drzdhhlph" method="post" onsubmit="return window.__cfReady===true" data-endpoint="https://hook.eu1.make.com/49mmc0uciouni5rlvys2vb6drzdhhlph" data-lang="en" data-sending="Sending…" data-summary-one="Please check this entry:" data-summary-many="Please check these {n} entries:" data-paket-label="I am interested in" data-termin-label="Best time" data-gefunden-label="Heard about me via" data-err-name="Please enter your name." data-err-email="Please enter your email address." data-err-emailbad="Please check the email address, for example name@example.com." data-err-consent="Please tick the box so that I may answer your request.">
 <input type="hidden" name="nojs" value="1">
 <input type="hidden" name="lang" value="en">
 <input type="hidden" name="page" value="https://mrlololi.com/en/course-launch-tech/">
+<input type="hidden" name="quelle" value="">
 <div class="contact__errsum" role="alert" tabindex="-1" hidden><p class="contact__errsum-title"></p><ul role="list"></ul></div>
 <div class="brief" role="group" aria-labelledby="brief-label" data-sentence="I sell {what} via {via}. The problem is {issue}. Start: {start}." data-sentence-open="I sell {what}. The platform is not decided yet. The problem is {issue}. Start: {start}." data-via-open="not decided yet" data-greeting="Hello Iva," data-closing="Best regards">
 <p class="brief__label" id="brief-label">Short brief</p>
@@ -1716,6 +1746,7 @@ html:not(.js) .motion-toggle { display: none !important; }</style>
 <div class="field"><label for="cf-name">Your name</label><input id="cf-name" name="name" type="text" autocomplete="name" maxlength="120" required aria-describedby="cf-name-err"><p class="field__err" id="cf-name-err" hidden></p></div>
 <div class="field"><label for="cf-email">Your email address</label><input id="cf-email" name="email" type="email" autocomplete="email" maxlength="160" spellcheck="false" required aria-describedby="cf-email-err"><p class="field__err" id="cf-email-err" hidden></p></div>
 <div class="field field--wide"><label for="cf-termin">When suits you best? (optional)</label><input id="cf-termin" name="termin" type="text" maxlength="160" autocomplete="off" placeholder="e.g. mornings, Tue or Thu"></div>
+<div class="field field--wide"><label for="cf-gefunden">How did you hear about me? (optional)</label><select class="field__select" id="cf-gefunden" name="gefunden"><option value="">Please choose</option><option>Google search</option><option>LinkedIn</option><option>Letter by post</option><option>Recommendation</option><option>Instagram</option><option>Other</option></select></div>
 <div class="field field--wide"><label for="cf-text">Anything to add? (optional)</label><textarea id="cf-text" name="text" rows="4" maxlength="3000"></textarea></div>
 <div class="field field--check"><input id="cf-consent" name="consent" type="checkbox" value="true" required aria-describedby="cf-consent-err"><label for="cf-consent">I agree that my details are processed to answer my request. More in the <a href="/en/privacy/#form">privacy policy</a>.</label><p class="field__err" id="cf-consent-err" hidden></p></div>
 <div class="hp" aria-hidden="true"><label for="cf-website">Please leave empty</label><input id="cf-website" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true"></div>
@@ -1739,6 +1770,7 @@ html:not(.js) .motion-toggle { display: none !important; }</style>
 <label class="contact__manual" hidden><span class="small">Your text to copy</span><textarea readonly rows="6"></textarea></label>
 </div>
 </div>
+<script>(function(){var q=(new URLSearchParams(location.search).get('quelle')||'').toLowerCase();if(!/^[a-z0-9-]{1,40}$/.test(q))return;var f=document.getElementById('contact-form');f.elements.quelle.value=q;if(q.indexOf('brief')===0)f.elements.gefunden.selectedIndex=3;})();</script>
 </form>
 <div class="contact__done" role="status" tabindex="-1" hidden data-text="Thank you, {name}! You'll get a confirmation by email shortly. I'll reply within two working days."><p class="contact__done-text"></p></div>
 <div class="contact__thanks" role="status"></div>

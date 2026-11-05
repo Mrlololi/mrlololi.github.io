@@ -9,7 +9,7 @@ export default {
 
   meta: {
     title: 'Marketing automation & launch tech from Graz | mrlololi',
-    description: 'I build and maintain the tech behind online courses: ActiveCampaign, Zapier, landing pages, payments. Marketing automation and launch tech from Graz.',
+    description: 'I test your launch before your customers do. The tech behind online courses: ActiveCampaign, Zapier, landing pages, payments. From Graz.',
   },
   legalMeta: {
     title: 'Legal notice - Iva Tsatskrialashvili',
@@ -60,7 +60,7 @@ export default {
   hero: {
     eyebrow: 'For online course creators selling in Austria, Germany and Switzerland',
     h1: 'The tech behind your *course launch.*',
-    lead: 'I connect your form, email tool, payments and course platform and test everything beforehand, so no sign-up gets lost when sales open. Fixed prices from €190.',
+    lead: 'I test your launch before your customers do. I connect your form, email tool, payments and course platform, so no sign-up gets lost when sales open. Fixed prices from €190.',
     primary: 'Request a free call',
     secondary: 'See pricing',
     micro: '20 minutes · reply within 2 working days',
@@ -203,14 +203,14 @@ export default {
             "id": "support",
             "name": "Support by the hour",
             "price": "€45 per hour",
-            "summary": "From 5 hours a month: care for your automations, small landing pages, troubleshooting. Billed by the hour at the end of the month."
+            "summary": "€45 per hour for care and anything outside the packages, billed by effort in 15-minute steps. For example care for your automations, small landing pages, troubleshooting. Billed at the end of the month."
           }
         ]
       }
     ],
     cta: "Enquire",
     subjectPrefix: "Enquiry: ",
-    hourly: "Anything outside the packages: €45 per hour.",
+    hourly: "€45 per hour for care and anything outside the packages, billed by effort in 15-minute steps.",
     promise: "On top of statutory warranty rights: if a flow I built does not work as agreed within the first 30 days, I fix it free of charge. This covers my work, not outages of the tools themselves.",
     smallPrint: 'All prices are final. As a small business under Austrian VAT law (§ 6 (1) Z 27 UStG) I do not charge VAT. For businesses with a valid VAT ID in another EU member state, the reverse charge applies.',
   },
@@ -430,10 +430,12 @@ export default {
       { q: 'Do I need specific tools?', a: 'No. I work with what you already have and only suggest a switch when it pays off.' },
       { q: 'How do you handle data?', a: 'I get my own user access instead of your password. When the project ends, you remove my access and I delete the copies of your data that I hold.' },
       { q: 'Do you also do customer support?', a: 'No. I build the tech that takes load off your support, for example draft replies for recurring questions.' },
-      { q: 'Are you available on launch day?', a: 'Yes, by arrangement: we agree on the launch day and a time window beforehand. Before that we test every payment case in test mode.' },
+      { q: 'Are you available on launch day?', a: 'Yes, by phone and chat in a time window we agree beforehand: for example two hours from the start of sales and the last two hours before cart close. I bill this window by effort (€45 per hour). Outside it I reply by 3 pm the next day. We catch most problems beforehand: with test contacts, test purchases and an emergency card with ready answers for your customers. I support at most one launch per week, so that I am really there.' },
       { q: "What if my problem doesn't fit a package?", a: "Send me a short note on what isn't working. You get the price before I start." },
       // Stage 6f (4.11.2026): two new questions.
       { q: 'I use a different tool. Does that work?', a: 'Most course platforms connect via ActiveCampaign, Zapier or Make, for example Digistore24, CopeCart, ablefy, Kajabi or Memberspot. In the tech check I look at your tool first and tell you honestly whether I can help.' },
+      { q: 'Is there a data processing agreement?', a: 'Yes. Before the project starts we sign a data processing agreement under Art. 28 GDPR (the WKO template), including the sub-processors.' },
+      { q: 'And what if you are ill?', a: 'Then I still help: almost everything can be solved remotely from my laptop. Also, all accesses belong to you, and every flow is documented.' },
       { q: "My setup already exists, but it's messy. Do you clean up too?", a: 'Yes. I check tags, automations and Zaps, clean them up and document what happens where. The best start is the tech check.' },
     ],
   },
@@ -454,7 +456,7 @@ export default {
     fixDemo: {
       show: 'Show the fix',
       again: 'Watch again',
-      signup: { from: 'Form', to: 'CRM', retry: 'Check + retry', count: '{n}/47 arrived', alt: 'Animation: sign-ups fly from the form to the CRM, two get lost. With «Check + retry» all 47 arrive.' },
+      signup: { from: 'Form', to: 'CRM', retry: 'Check + retry', count: '{n}/47 arrived', alt: 'Animation: sign-ups fly from the form to the CRM, two get lost. With «Check + retry» all 47 arrive. Simplified example.' },
       spam: { spam: 'Spam', inbox: 'Inbox', badges: ['SPF', 'DKIM', 'DMARC'], alt: 'Animation: a launch email lands in spam. After SPF, DKIM and DMARC it arrives in the inbox.' },
       rate: { failed: 'Card payment failed', open: 'Course open', steps: ['Reminder 1', 'Reminder 2', 'Access paused', 'Payment in', 'Access open again'], alt: 'Animation: an instalment fails, the course stays open. Then: reminder 1, reminder 2, access paused, payment in, access open again.' },
     },
@@ -533,7 +535,7 @@ export default {
       intro: 'Short answers to what I am asked most often.',
       also: 'Also asked:',
       missing: 'Question not here? → Write to me',
-      related: [[3, 7], [2, 6], [6, 1], [8, 9], [3, 5], [7, 0], [2, 4], [2, 0], [3, 9], [8, 0]],
+      related: [[3, 7], [2, 6], [6, 1], [8, 11], [3, 9], [7, 0], [10, 2], [2, 0], [3, 11], [4, 5], [6, 4], [8, 0]],
     },
     contact: {
       builderLabel: 'Short brief',
@@ -570,6 +572,10 @@ export default {
         termin: 'When suits you best? (optional)',
         terminPlaceholder: 'e.g. mornings, Tue or Thu',
         terminLine: 'Best time',
+        gefunden: 'How did you hear about me? (optional)',
+        gefundenPick: 'Please choose',
+        gefundenOptions: ['Google search', 'LinkedIn', 'Letter by post', 'Recommendation', 'Instagram', 'Other'],
+        gefundenLine: 'Heard about me via',
         next: 'In my reply you get two or three time slots, via Zoom or phone.',
         summaryOne: 'Please check this entry:',
         summaryMany: 'Please check these {n} entries:',
@@ -601,7 +607,10 @@ export default {
     starter: {
       quick: { title: 'Checkout', broken: 'Broken link', fixed: 'All working', pay: 'Pay' },
       check: ['ActiveCampaign', 'Zapier/Make', 'Payment', 'Landing pages', 'Double opt-in'],
-      recommended: 'Recommended start',
+      recommended: 'Before your next launch',
+      checkAsk: 'Request a tech check',
+      checkCall: 'With a 20-minute call if you like.',
+      checkReport: 'See a sample report',
     },
   },
 
@@ -657,6 +666,7 @@ export default {
     b: {
       before: { signup: '45/47', spam: 'Spam', rate: 'Instalment 2 failed' },
       cta: 'Request a free call',
+      simplified: 'Simplified example',
       ctaLine: 'Questions about your flow? 20 minutes, free.',
       notDo: "What I don't do: ad copy, ads and ongoing customer support. I'm happy to recommend colleagues for that.",
       ask: 'Enquire',
@@ -684,7 +694,7 @@ export default {
       chooser: 'Which package fits?',
       cards: {
         quick: { line: 'One specific task, up to 4 hours of work.', bullets: ['Email delivery (SPF, DKIM, DMARC)', 'Broken links or forms', 'Bookings or an automation'] },
-        check: { line: 'One day of analysis with read access to the tools above, then you know where it breaks.', bullets: ['A list of priorities, effort and prices', 'A 45-minute call', 'Fully credited if you order a project within 30 days'] },
+        check: { line: 'I test your launch before your customers do.', bullets: ['One day of analysis with read access to your tools', 'A list of priorities, effort and prices', 'A 45-minute call', 'Fully credited if you order a project within 30 days'] },
         launch: { line: 'Everything is ready when sales open. Fixed price after the briefing.', bullets: ['Landing pages and checkout', 'ActiveCampaign flows from sign-up to failed payments', 'Forms with double opt-in and tags', 'Course access in your members area'] },
       },
       promise: '30-day promise: if a flow I built does not work as agreed within the first 30 days after handover, I fix it free of charge. On top of statutory warranty rights.',
@@ -693,7 +703,7 @@ export default {
       rows: {
         website: 'A one-pager, published and handed over.',
         ki: 'Draft replies your team only has to check. Optional care €90 a month.',
-        support: 'Care and anything outside the packages, from 5 hours a month.',
+        support: '€45 per hour for care and anything outside the packages, billed by effort in 15-minute steps.',
       },
     },
     cta: { text: "Not sure what fits? 20 minutes, free. I'll tell you honestly whether I can help.", button: 'Request a free call' },
@@ -706,13 +716,14 @@ export default {
       h2: 'Side *projects*',
       line: 'Built by me, not client work.',
       shows: 'What it shows:',
+      play: 'Playground and learning projects',
       all: 'All web projects',
       // Shortened from the «What it shows» lines on mrlololi.com/Webprojekte/.
       items: [
         { key: 'ki', name: 'AI in customer service (in German)', path: 'ki-kundenservice/', shows: 'AI drafts for customer emails. A person approves, nothing is sent automatically.' },
         { key: 'langstarter', name: 'Language Starter', path: 'language-starter/', shows: '66 first phrases in 42 languages, with group mode, poster and projector.' },
         { key: 'geoapp', name: 'GeoAPP', path: 'geoapp/?lang=en', shows: 'A small app for learning Georgian numbers, answering by choice or by typing.' },
-        { key: 'kittycats', name: 'KittyCats', path: 'kittycats/', shows: 'A layout and scroll animation demo with HTML, CSS and a little GSAP.' },
+        { key: 'kittycats', home: false, name: 'KittyCats', path: 'kittycats/', shows: 'A layout and scroll animation demo with HTML, CSS and a little GSAP.' },
       ],
       // Stage 6b: the two off-topic ones as one text line.
       more: [
@@ -790,6 +801,18 @@ export default {
         promise: 'I connect forms, ActiveCampaign, Zapier, checkout and your members area and test everything, so no sign-up gets lost when sales open.',
         packages: ['launch'],
         problem: ['Sign-ups get lost between the form and the CRM.', 'The instalment payment failed, but access is still open.', 'Each of these failures costs sign-ups, revenue or nerves.'],
+        explain: {
+          title: 'Good to know',
+          place: 'does',
+          parts: [
+            ['Included (from €1,190)', 'Landing pages and checkout, ActiveCampaign flows from sign-up to failed payments, forms with double opt-in and tags, connections via Zapier or Make, payment and invoices, course access in the members area, tests with test contacts, documentation and handover, support on launch day, the 30-day promise. You get the fixed price after the briefing.'],
+            ['Not included', 'Copy for emails and sales pages, ads, course content and videos, legal texts, the costs of your tools.'],
+            ['Timing', 'Ideally get in touch 4 to 6 weeks before the launch, at least 3 weeks.'],
+            ['Payment', '50% when you place the order, 50% after go-live. Invoice by email, payable within 14 days.'],
+            ['Launch day', 'I am available by phone and chat in a time window we agree beforehand, billed by effort (€45 per hour). Outside it I reply by 3 pm the next day. I support at most one launch per week.'],
+          ],
+          note: 'launch_break',
+        },
         steps: [
           ['First call, 20 minutes, free.', 'You tell me what you are planning for your launch. I tell you honestly whether I can help.'],
           ['Quote.', 'After the briefing you get a fixed price.'],
@@ -828,7 +851,7 @@ export default {
         example: 'spam',
         faq: [
           ['How soon can you start?', 'Quick fixes often within a week.'],
-          ['What if 4 hours are not enough?', 'Anything outside the packages: €45 per hour. You get the price before I start.'],
+          ['What if 4 hours are not enough?', '€45 per hour for care and anything outside the packages, billed by effort in 15-minute steps. You get the price before I start.'],
           ['Do you need my password?', 'No. I get my own user access instead of your password. When the project ends, you remove my access and I delete the copies of your data that I hold.'],
           ['Do I need to know about tech?', 'No. You tell me what should happen, I take care of the rest and explain everything in plain words.'],
         ],
@@ -853,7 +876,7 @@ export default {
         example: 'case2',
         faq: [
           ['What do I get from the tech check?', 'You get a list with priorities, effort and prices and a 45-minute call. If you book a project within 30 days, the €290 is fully credited.'],
-          ['How is support billed?', 'At €45 per hour, from 5 hours a month. Billed by the hour at the end of the month.'],
+          ['How is support billed?', '€45 per hour for care and anything outside the packages, billed by effort in 15-minute steps. The invoice comes at the end of the month.'],
           ['Do you work remotely?', 'Yes. Almost all projects run remotely across Europe. In Graz I am happy to meet in person.'],
           ['Do I need specific tools?', 'No. I work with what you already have and only suggest a switch when it pays off.'],
           ['How do you handle data?', 'I get my own user access instead of your password. When the project ends, you remove my access and I delete the copies of your data that I hold.'],
@@ -972,7 +995,21 @@ export default {
       { key: 'cookies', title: 'No cookies, no analytics', text: "This website sets no cookies and uses no analytics or tracking tools. Fonts and scripts are loaded from the website's own server." },
       { key: 'email', title: 'Contact by email', text: 'If you write to me, I process your details in order to answer your enquiry (Art. 6(1)(b) GDPR, for general enquiries Art. 6(1)(f) GDPR). Emails to hello@mrlololi.com are forwarded via Cloudflare Email Routing (Cloudflare, Inc., USA) to my mailbox at Google (Gmail). The transfer to the USA relies on the EU-US Data Privacy Framework (Art. 45 GDPR). I delete enquiries that do not lead to an assignment after 12 months at the latest. If an assignment follows, I keep business-relevant correspondence until the statutory retention period ends (usually 7 years, § 132 BAO).' },
       // Contact form 30.10.2026 (translation of the German text).
-      { key: 'form', title: 'Contact form', text: 'When you send the contact form, I process your name, your email address, the phrases you selected, your optional text and the time of sending. The purpose is to answer your request and, where applicable, to take pre-contractual steps (Art. 6(1)(b) GDPR). The request is processed via Make, a service of Celonis (Celonis Inc., New York, USA, and its subsidiaries), which acts as my processor. The scenario runs in Make’s EU region. Where data is transferred to the USA, this relies on the EU-US Data Privacy Framework (Art. 45 GDPR); Celonis Inc. is certified under it. From Make, the request is sent to me by email via Google Gmail, and you receive an automatic confirmation (see {emailSection}). Make keeps execution logs only for a limited time. I keep the emails as long as your request requires and statutory retention duties demand; after that I delete them. You do not have to use the form: you can always write to me directly at {email}.' },
+      { key: 'form', title: 'Contact form', text: 'When you send the contact form, I process your name, your email address, the phrases you selected, your optional text, your optional preferred time, your optional answer on how you heard about me, where applicable the code from a link (for example the QR code in a letter) and the time of sending. The purpose is to answer your request and, where applicable, to take pre-contractual steps (Art. 6(1)(b) GDPR). The request is processed via Make, a service of Celonis (Celonis Inc., New York, USA, and its subsidiaries), which acts as my processor. The scenario runs in Make’s EU region. Where data is transferred to the USA, this relies on the EU-US Data Privacy Framework (Art. 45 GDPR); Celonis Inc. is certified under it. From Make, the request is sent to me by email via Google Gmail, and you receive an automatic confirmation (see {emailSection}). Make keeps execution logs only for a limited time. I keep the emails as long as your request requires and statutory retention duties demand; after that I delete them. You do not have to use the form: you can always write to me directly at {email}.' },
+      // Stage 6h (5.11.2026): translation of the German text.
+      {
+        key: 'post',
+        title: 'Contacting businesses by post (direct marketing)',
+        parts: [
+          ['', 'I write a single letter, once, to individual businesses that my services might suit. For this I process: name, company name, business address and, where applicable, the contact person’s role, information publicly visible on the company’s website, my observation about it (with date and screenshot) and the contact history (date of the letter, reply, objection).'],
+          ['Source', 'the publicly accessible legal notice (Impressum) and the company’s website.'],
+          ['Legal basis', 'my legitimate interest in presenting my services to businesses (Art. 6(1)(f) GDPR, Recital 47). I write to each business at most once in 12 months, and not if the website objects to advertising.'],
+          ['Recipients', 'no disclosure to third parties. Technical service providers acting as my processors: Google (Google Drive, Gmail; Google Ireland Ltd.). Where data is transferred to the USA, this relies on the EU-US Data Privacy Framework (Art. 45 GDPR). I print the letters myself; they are delivered by the postal service.'],
+          ['Storage', 'Without a reply, I delete the data 12 months after the letter. If you object, I keep only a blocking note (company, domain, date) so that I do not write to you again. If an assignment follows, the periods under “{emailSection}” apply.'],
+          ['Objection', 'You can object to the use of your data for direct marketing at any time without giving reasons (Art. 21(2) GDPR), by email to {email} or by post.'],
+          ['', 'Until 4 November 2026 I sent, in individual cases, a single email with a note instead of a letter; I treat this data in the same way.'],
+        ],
+      },
       { key: 'booking', title: 'Booking a call', text: 'The “Book a call” button leads to an external provider. Its privacy policy applies there. Data is only transferred when you click the link.' },
       { key: 'links', title: 'External links', text: 'Links to LinkedIn, Malt or reference websites lead to third-party sites. Data is only transferred to these providers when you click them.' },
       // Privacy addition 28.10.2026 (translation of the German text).

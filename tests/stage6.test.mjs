@@ -132,7 +132,7 @@ test('prices: chooser, three main cards with at most four bullets, more services
     assert.ok(/item--check/.test(c) || /<a class="item__more" href="\/[^"]+\/">Mehr zu/.test(c));
     assert.match(c, /class="btn btn--sm btn--primary item__cta" href="\/\?paket=[a-z]+#contact"/);
   }
-  assert.match(cards[1], /Empfohlener Start/);
+  assert.match(cards[1], /Vor dem nächsten Launch/); // Stage 6h
   assert.ok(!/item__more/.test(cards[1]), 'Technik-Check without «Mehr …»');
   assert.match(s, /Mehr zu KI-Antwortentwürfen/);
   assert.match(s, /<p class="notdo-line">Was ich nicht mache: Werbetexte, Werbeanzeigen und laufenden Kundensupport\./);
@@ -158,9 +158,12 @@ test('process right under the prices, then the CTA strip; references with their 
 
 test('projects: four cards, one link each (no nested links), 4:3 screenshots, KI first', () => {
   const p = deHome.slice(deHome.indexOf('id="projects"'), deHome.indexOf('id="faq"'));
-  const cards = p.match(/<li class="proj">[\s\S]*?<\/li>/g);
-  assert.equal(cards.length, 4, 'Stage 6f: four aligned cards');
-  for (const [i, n] of ['KI im Kundenservice', 'Language Starter', 'GeoAPP', 'KittyCats'].entries()) assert.ok(cards[i].includes(n), n);
+  // Stage 6h: the KI project as the main card, GeoAPP and Language Starter lighter below, no KittyCats.
+  const cards = p.match(/<(?:li|div) class="proj(?: proj--main)?">[\s\S]*?<\/(?:li|div)>/g);
+  assert.equal(cards.length, 3);
+  for (const [i, n] of ['KI im Kundenservice', 'Language Starter', 'GeoAPP'].entries()) assert.ok(cards[i].includes(n), n);
+  assert.ok(!p.includes('KittyCats'));
+  assert.match(p, /<h3 class="projects__play">Spielwiese und Lernprojekte<\/h3>/);
   assert.match(cards[0], /KI im Kundenservice/);
   for (const c of cards) {
     assert.equal((c.match(/<a /g) || []).length, 1, 'one link per card');
@@ -180,7 +183,7 @@ test('about: two paragraphs, photo, four-point timeline; no tool rows, no projec
 
 test('FAQ: every question visible, no inner scroll box, the reading Logik at 40 px', () => {
   const f = deHome.slice(deHome.indexOf('id="faq"'), deHome.indexOf('id="contact"'));
-  assert.equal((f.match(/<details class="faq__item"/g) || []).length, 10);
+  assert.equal((f.match(/<details class="faq__item"/g) || []).length, 12);
   assert.match(f, /Sind Sie am Launch-Tag erreichbar\?/);
   // Stage 6d: the chat panel is back; Logik types about 0.8 s before each answer.
   assert.match(f, /class="wrap faq__grid faqbox" data-also="Auch gefragt:" data-related="/);

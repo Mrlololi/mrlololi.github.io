@@ -31,7 +31,7 @@ export function videoFigure(t, labelledby = '') {
   const lines = v.lines.map((l, i) => `<li><p>${esc(l)}</p><p class="vid__scene">${esc(t.s6.b.scenes[i])}</p></li>`).join('');
   return `<figure class="vid" data-video${labelledby ? ` aria-labelledby="${labelledby}"` : ''}>
 <div class="vid__frame">
-${videoEl(v.label)}
+${videoEl(`${v.label}, ${t.s6.b.simplified}`)}
 <picture class="vid__poster">
 <source media="${TALL}" type="image/webp" srcset="${FILES.tall.poster}.webp" width="${FILES.tall.w}" height="${FILES.tall.h}">
 <source media="${TALL}" srcset="${FILES.tall.poster}.jpg" width="${FILES.tall.w}" height="${FILES.tall.h}">
@@ -41,6 +41,7 @@ ${videoEl(v.label)}
 <button class="vid__play" type="button" hidden>${playIcon}<span>${esc(v.play)}</span></button>
 <noscript><a class="vid__file" href="${FILES.wide.video}">${esc(v.play)} (MP4)</a></noscript>
 </div>
+<p class="vid__note">${esc(t.s6.b.simplified)}</p>
 <details class="vid__text faq__item">
 <summary>${esc(v.transcript)}</summary>
 <p class="vid__chapters-title" id="vid-chapters">${esc(v.chaptersTitle)}</p>

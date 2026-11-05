@@ -31,7 +31,7 @@ lazy('.kidemo', () => import('./kidemo.js'));
 lazy('#ki-rechner', () => import('./kicalc.js'));
 lazy('#process, #references, #about', () => import('./sections.js'));
 lazy('#faq', () => import('./faq.js'));
-lazy('.contact__form', () => import('./contact.js'), new URLSearchParams(location.search).has('paket'));
+lazy('.contact__form', () => import('./contact.js'), ['paket', 'quelle'].some((k) => new URLSearchParams(location.search).has(k)));
 lazy('.nf__scene', () => import('./notfound.js'), true);
 
 function report(e) { console.error(e); }

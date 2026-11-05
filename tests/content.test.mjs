@@ -23,7 +23,7 @@ for (const [name, t] of [['de', de], ['en', en]]) {
     assert.equal(t.pricing.groups.length, 3);
     assert.deepEqual(t.pricing.groups.map((g) => g.items.length), [2, 3, 1]);
     assert.equal(t.process.steps.length, 4);
-    assert.equal(t.faq.items.length, 10); // Stage 6f: «anderes Tool», «Setup aufräumen»
+    assert.equal(t.faq.items.length, 12); // Stage 6f: «anderes Tool», «Setup aufräumen»; 6h: AVV, «krank»
     assert.equal(t.about.path.length, 4);
     assert.equal(t.hero.flow.nodes.length, 4);
     assert.equal(t.about.paragraphs.length, 2); // Stage 6: two short paragraphs
@@ -33,7 +33,7 @@ for (const [name, t] of [['de', de], ['en', en]]) {
 
   test(`${name}: offers Iva does not make (yet) are gone (16.10.2026)`, () => {
     const all = JSON.stringify(t);
-    for (const gone of [/Zapier-(Rechnung|Kosten)|Zapier (bill|costs)/, /Retainer|retainer/, /Standby|standby/, /Express|plus 50/, /60 €|€60/, /Auftragsverarbeitung|data processing agreement/, /hunderten|hundreds/, /aufwärmen|warm up/]) {
+    for (const gone of [/Zapier-(Rechnung|Kosten)|Zapier (bill|costs)/, /Retainer|retainer/, /Standby|standby/, /Express|plus 50/, /60 €|€60/, /hunderten|hundreds/, /aufwärmen|warm up/]) {
       assert.ok(!gone.test(all), `still on the site: ${gone}`);
     }
   });
@@ -83,7 +83,7 @@ test('prices as decided by Iva (16.10.2026)', () => {
   assert.deepEqual(prices(de), ['190 € fix', '290 € fix', 'ab 1.190 €', 'ab 990 €', 'ab 590 €', '45 € pro Stunde']);
   assert.deepEqual(prices(en), ['€190 fixed', '€290 fixed', 'from €1,190', 'from €990', 'from €590', '€45 per hour']);
   assert.equal(de.pricing.groups[1].note, 'Festpreis nach dem Briefing.');
-  assert.equal(de.pricing.hourly, 'Alles außerhalb der Pakete: 45 € pro Stunde.');
+  assert.equal(de.pricing.hourly, '45 € pro Stunde für Pflege und alles außerhalb der Pakete, abgerechnet nach Aufwand in 15-Minuten-Schritten.'); // Stage 6h
   assert.equal(de.pricing.groups[1].items[2].extra.label, 'Optional: Pflege 90 € pro Monat');
   assert.equal(de.faq.items[0].q, 'Muss ich mich mit Technik auskennen?');
   // Stage 6b: softer, without absolute promises.

@@ -124,6 +124,11 @@ ${items}
 // The four choices carry the payload's field names, so the native (no JS) post matches the JSON one.
 const PAYLOAD = { what: 'was', via: 'plattform', issue: 'problem', start: 'start' };
 
+// Stage 6h: ?quelle=<code> (e.g. the QR code in a letter: ?quelle=brief-nov#contact) goes into the hidden
+// field, only [a-z0-9-], at most 40 characters; «brief…» preselects «Brief per Post». It runs inline,
+// so it works before contact.js has loaded; without JS the field stays empty. No cookies, no storage.
+const QUELLE = `<script>(function(){var q=(new URLSearchParams(location.search).get('quelle')||'').toLowerCase();if(!/^[a-z0-9-]{1,40}$/.test(q))return;var f=document.getElementById('contact-form');f.elements.quelle.value=q;if(q.indexOf('brief')===0)f.elements.gefunden.selectedIndex=3;})();</script>`;
+
 export function contactForm(t, config, { page, paket = '', compact = false } = {}) {
   const c = t.s4.contact;
   const email = config.contact_email;
@@ -147,10 +152,11 @@ export function contactForm(t, config, { page, paket = '', compact = false } = {
 </div>`;
   // The service pages stay without mascots (Stage 5): the compact form's panels have none.
   const thanks = `<div class="thanks">${compact ? '' : mascotScene('contact', [[2, 'wave']])}<div class="thanks__text"><p>${esc(c.thanks)}</p></div></div>`;
-  return `<form class="contact__form${compact ? ' contact__form--compact' : ''}" id="contact-form" action="${esc(config.contact_hook)}" method="post" onsubmit="return window.__cfReady===true" data-endpoint="${esc(config.contact_hook)}" data-lang="${t.lang}" data-sending="${esc(f.sending)}" data-summary-one="${esc(f.summaryOne)}" data-summary-many="${esc(f.summaryMany)}" data-paket-label="${esc(f.paket)}" data-termin-label="${esc(f.terminLine)}"${errs}>
+  return `<form class="contact__form${compact ? ' contact__form--compact' : ''}" id="contact-form" action="${esc(config.contact_hook)}" method="post" onsubmit="return window.__cfReady===true" data-endpoint="${esc(config.contact_hook)}" data-lang="${t.lang}" data-sending="${esc(f.sending)}" data-summary-one="${esc(f.summaryOne)}" data-summary-many="${esc(f.summaryMany)}" data-paket-label="${esc(f.paket)}" data-termin-label="${esc(f.terminLine)}" data-gefunden-label="${esc(f.gefundenLine)}"${errs}>
 <input type="hidden" name="nojs" value="1">
 <input type="hidden" name="lang" value="${t.lang}">
 <input type="hidden" name="page" value="${esc(absUrl(config, page))}">
+<input type="hidden" name="quelle" value="">
 <div class="contact__errsum" role="alert" tabindex="-1" hidden><p class="contact__errsum-title"></p><ul role="list"></ul></div>
 <div class="brief" role="group" aria-labelledby="brief-label" data-sentence="${esc(c.sentence)}" data-sentence-open="${esc(c.sentenceOpen)}" data-via-open="${esc(c.viaOpen)}"${c.lower ? ' data-lower' : ''} data-greeting="${esc(c.greeting)}" data-closing="${esc(c.closing)}">
 <p class="brief__label" id="brief-label">${esc(c.builderLabel)}</p>
@@ -162,6 +168,7 @@ ${preview}
 ${field('name', 'text', 'autocomplete="name" maxlength="120" required')}
 ${field('email', 'email', 'autocomplete="email" maxlength="160" spellcheck="false" required')}
 <div class="field field--wide"><label for="cf-termin">${esc(f.termin)}</label><input id="cf-termin" name="termin" type="text" maxlength="160" autocomplete="off" placeholder="${esc(f.terminPlaceholder)}"></div>
+<div class="field field--wide"><label for="cf-gefunden">${esc(f.gefunden)}</label><select class="field__select" id="cf-gefunden" name="gefunden"><option value="">${esc(f.gefundenPick)}</option>${f.gefundenOptions.map((o) => `<option>${esc(o)}</option>`).join('')}</select></div>
 <div class="field field--wide"><label for="cf-text">${esc(f.text)}</label><textarea id="cf-text" name="text" rows="4" maxlength="3000"></textarea></div>
 <div class="field field--check"><input id="cf-consent" name="consent" type="checkbox" value="true" required aria-describedby="cf-consent-err"><label for="cf-consent">${fill(esc(f.consent), { link: `<a href="${t.paths.privacy}#form">${esc(f.consentLink)}</a>` })}</label><p class="field__err" id="cf-consent-err" hidden></p></div>
 <div class="hp" aria-hidden="true"><label for="cf-website">${esc(f.honeypot)}</label><input id="cf-website" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true"></div>
@@ -185,6 +192,7 @@ ${booking}
 <label class="contact__manual" hidden><span class="small">${esc(t.s6.contact.manual)}</span><textarea readonly rows="6"></textarea></label>
 </div>
 </div>
+${QUELLE}
 </form>
 <div class="contact__done" role="status" tabindex="-1" hidden data-text="${esc(f.done)}">${compact ? '' : mascotScene('contact-done', [[2, 'joy']])}<p class="contact__done-text"></p></div>
 <div class="contact__thanks" role="status"></div>

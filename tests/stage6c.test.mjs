@@ -97,8 +97,8 @@ test('«Über mich» row: what clients can rely on; the access item in the FAQ w
 });
 
 test('FAQ chat: question list and chat panel, F1 photo, «Auch gefragt» for all eight questions', () => {
-  assert.equal(de.s4.faq.related.length, 10);
-  assert.ok(de.s4.faq.related.flat().every((i) => i >= 0 && i < 10));
+  assert.equal(de.s4.faq.related.length, 12);
+  assert.ok(de.s4.faq.related.flat().every((i) => i >= 0 && i < 12));
   assert.match(deHome, /data-photo="\/assets\/img\/avatar-88\.webp"/);
   assert.match(js('faq.js'), /bubble--typing/);
 });

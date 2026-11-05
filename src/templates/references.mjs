@@ -85,15 +85,19 @@ ${config.case_study ? study(t, config.case_study) : ''}
 // Stage 6, «Eigene Projekte»: a compact row. Each card is one link (no links inside it) with a 4:3
 // screenshot and one «Was es zeigt» line; «Alle Webprojekte» leads to the overview. Webprojekte
 // links open in a new tab and say so (as everywhere since the Fixes of 21.10.2026).
+// Stage 6h (5.11.2026): the KI project is the main card; GeoAPP and Language Starter follow lighter
+// under «Spielwiese und Lernprojekte»; KittyCats stays in Webprojekte only (p.items keeps its line,
+// home: false).
 export function projects(t, config) {
   const p = t.s6.projects;
-  const cards = p.items.map((it) => `<li class="proj">
-<a class="proj__link card" href="${config.projects_url}${it.path}" target="_blank" rel="noopener">
-<picture><source type="image/avif" srcset="/assets/img/project-${it.key}-400.avif 400w, /assets/img/project-${it.key}-800.avif 800w" sizes="(min-width: 960px) 16rem, (min-width: 560px) 45vw, 90vw"><source type="image/webp" srcset="/assets/img/project-${it.key}-400.webp 400w, /assets/img/project-${it.key}-800.webp 800w" sizes="(min-width: 960px) 16rem, (min-width: 560px) 45vw, 90vw"><img src="/assets/img/project-${it.key}-400.jpg" srcset="/assets/img/project-${it.key}-400.jpg 400w, /assets/img/project-${it.key}-800.jpg 800w" sizes="(min-width: 960px) 16rem, (min-width: 560px) 45vw, 90vw" width="400" height="300" loading="lazy" decoding="async" alt=""></picture>
+  const pic = (it, sizes) => `<picture><source type="image/avif" srcset="/assets/img/project-${it.key}-400.avif 400w, /assets/img/project-${it.key}-800.avif 800w" sizes="${sizes}"><source type="image/webp" srcset="/assets/img/project-${it.key}-400.webp 400w, /assets/img/project-${it.key}-800.webp 800w" sizes="${sizes}"><img src="/assets/img/project-${it.key}-400.jpg" srcset="/assets/img/project-${it.key}-400.jpg 400w, /assets/img/project-${it.key}-800.jpg 800w" sizes="${sizes}" width="400" height="300" loading="lazy" decoding="async" alt=""></picture>`;
+  const link = (it, cls, sizes) => `<a class="${cls} card" href="${config.projects_url}${it.path}" target="_blank" rel="noopener">
+${pic(it, sizes)}
 <span class="proj__name">${esc(it.name)}</span>
 <span class="proj__shows"><span class="proj__label">${esc(p.shows)}</span> ${esc(it.shows)}</span><span class="sr-only"> ${esc(t.ui.newTab)}</span>
-</a>
-</li>`).join('\n');
+</a>`;
+  const home = p.items.filter((it) => it.home !== false);
+  const [main, ...play] = home;
   return `<section class="section projects bg-lav edge" id="projects" aria-labelledby="projects-title">
 <div class="wrap">
 <div class="projects__head">
@@ -101,8 +105,14 @@ export function projects(t, config) {
 <p class="projects__line">${esc(p.line)}</p></div>
 <p class="projects__all">${extLink(config.projects_url, esc(p.all), t)}</p>
 </div>
-<ul class="projs" role="list">
-${cards}
+<div class="proj proj--main">
+${link(main, 'proj__link proj__link--main', '(min-width: 760px) 24rem, 90vw')}
+</div>
+<h3 class="projects__play">${esc(p.play)}</h3>
+<ul class="projs projs--play" role="list">
+${play.map((it) => `<li class="proj">
+${link(it, 'proj__link', '(min-width: 560px) 16rem, 90vw')}
+</li>`).join('\n')}
 </ul>
 </div>
 </section>`;

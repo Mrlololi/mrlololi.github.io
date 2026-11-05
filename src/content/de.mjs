@@ -10,7 +10,7 @@ export default {
 
   meta: {
     title: 'Marketing-Automation & Launch-Technik aus Graz | mrlololi',
-    description: 'Ich baue und betreue die Technik hinter Online-Kursen: ActiveCampaign, Zapier, Landingpages, Zahlungen. Marketing-Automation und Launch-Technik aus Graz.',
+    description: 'Ich teste Ihren Launch, bevor es Ihre Kundschaft tut. Technik hinter Online-Kursen: ActiveCampaign, Zapier, Landingpages, Zahlungen. Aus Graz.',
   },
   legalMeta: {
     title: 'Impressum - Iva Tsatskrialashvili',
@@ -62,7 +62,8 @@ export default {
   hero: {
     eyebrow: 'Für Online-Kursanbieter:innen im DACH-Raum',
     h1: 'Die Technik hinter Ihrem *Kurs-Launch.*',
-    lead: 'Ich verbinde Formular, E-Mail-Tool, Zahlung und Kursplattform und teste alles vorher, damit beim Verkaufsstart keine Anmeldung verloren geht. Feste Preise ab 190 €.',
+    // Stage 6h: the one positioning line first.
+    lead: 'Ich teste Ihren Launch, bevor es Ihre Kundschaft tut. Ich verbinde Formular, E-Mail-Tool, Zahlung und Kursplattform, damit beim Verkaufsstart keine Anmeldung verloren geht. Feste Preise ab 190 €.',
     primary: 'Kostenloses Erstgespräch anfragen',
     secondary: 'Preise ansehen',
     micro: '20 Minuten · Antwort in 2 Werktagen',
@@ -205,14 +206,14 @@ export default {
             "id": "support",
             "name": "Betreuung nach Stunden",
             "price": "45 € pro Stunde",
-            "summary": "Ab 5 Stunden im Monat: Pflege Ihrer Automationen, kleine Landingpages, Fehlerbehebung. Abrechnung am Monatsende nach Stunden."
+            "summary": "45 € pro Stunde für Pflege und alles außerhalb der Pakete, abgerechnet nach Aufwand in 15-Minuten-Schritten. Zum Beispiel Pflege Ihrer Automationen, kleine Landingpages, Fehlerbehebung. Abrechnung am Monatsende."
           }
         ]
       }
     ],
     cta: "Anfragen",
     subjectPrefix: "Anfrage: ",
-    hourly: "Alles außerhalb der Pakete: 45 € pro Stunde.",
+    hourly: "45 € pro Stunde für Pflege und alles außerhalb der Pakete, abgerechnet nach Aufwand in 15-Minuten-Schritten.",
     promise: "Zusätzlich zur gesetzlichen Gewährleistung: Läuft ein von mir gebauter Ablauf in den ersten 30 Tagen nicht wie vereinbart, behebe ich das ohne Berechnung. Das gilt für meine Arbeit, nicht für Ausfälle der Tools selbst.",
     smallPrint: 'Alle Preise sind Endpreise. Als Kleinunternehmer gemäß § 6 Abs. 1 Z 27 UStG weise ich keine Umsatzsteuer aus. Bei Unternehmen mit gültiger UID in einem anderen EU-Mitgliedstaat geht die Steuerschuld auf den Leistungsempfänger über (Reverse Charge).',
   },
@@ -272,11 +273,12 @@ export default {
     inputs: [
       { id: 'emails', label: 'E-Mails pro Woche', value: 120, min: 0, max: 5000, step: 1 },
       { id: 'minutes', label: 'Minuten pro Antwort', value: 6, min: 0, max: 120, step: 1 },
-      { id: 'share', label: 'Anteil Standardfragen in %', value: 60, min: 0, max: 100, step: 1 },
-      { id: 'rate', label: 'Stundensatz Ihres Teams in €', value: 25, min: 0, max: 300, step: 1 },
+      // Stage 6h: the inputs are the visitor's assumptions.
+      { id: 'share', label: 'Anteil Standardfragen in % (Ihre Annahme)', value: 60, min: 0, max: 100, step: 1 },
+      { id: 'rate', label: 'Stundensatz Ihres Teams in € (Ihre Annahme)', value: 25, min: 0, max: 300, step: 1 },
     ],
     sentence: 'Standardantworten kosten Ihr Team rund {h} Stunden im Monat. Mit Antwortentwürfen sparen Sie etwa {saved_h} Stunden, das sind rund {saved_eur} € pro Monat.',
-    note: 'Schätzung. Annahme: Ein geprüfter Entwurf spart 70 % der Zeit pro Standardantwort.',
+    note: 'Schätzung. Annahme, anpassbar: Ein geprüfter Entwurf spart 70 % der Zeit pro Standardantwort.',
   },
 
   finder: {
@@ -431,10 +433,13 @@ export default {
       { q: 'Brauche ich bestimmte Tools?', a: 'Nein. Ich arbeite mit dem, was Sie schon haben, und schlage einen Wechsel nur vor, wenn er sich rechnet.' },
       { q: 'Wie gehen Sie mit Daten um?', a: 'Ich bekomme einen eigenen Benutzerzugang statt Ihres Passworts. Nach Projektende entfernen Sie meinen Zugang, und ich lösche die Kopien Ihrer Daten, die bei mir liegen.' },
       { q: 'Übernehmen Sie auch den Kundensupport?', a: 'Nein. Ich baue die Technik, die Ihren Support entlastet, zum Beispiel Antwortentwürfe für wiederkehrende Fragen.' },
-      { q: 'Sind Sie am Launch-Tag erreichbar?', a: 'Ja, nach Absprache: Den Launch-Tag und ein Zeitfenster legen wir vorher fest. Vorher testen wir jeden Zahlungsfall im Testmodus.' },
+      // Stage 6h (5.11.2026): the launch-day window.
+      { q: 'Sind Sie am Launch-Tag erreichbar?', a: 'Ja, telefonisch und per Chat in einem Zeitfenster, das wir vorher festlegen: zum Beispiel zwei Stunden ab Verkaufsstart und die letzten zwei Stunden vor Cart Close. Dieses Fenster rechne ich nach Aufwand ab (45 € pro Stunde). Außerhalb antworte ich bis 15 Uhr am nächsten Tag. Die meisten Pannen fangen wir vorher ab: mit Testkontakten, Testkäufen und einer Notfallkarte mit fertigen Antworten für Ihre Kundinnen. Ich begleite höchstens einen Launch pro Woche, damit ich wirklich da bin.' },
       { q: 'Was, wenn mein Problem in kein Paket passt?', a: 'Schreiben Sie mir kurz, was nicht funktioniert. Sie erfahren den Preis, bevor ich anfange.' },
       // Stage 6f (4.11.2026): two new questions.
       { q: 'Ich nutze ein anderes Tool. Geht das?', a: 'Die meisten Kursplattformen lassen sich über ActiveCampaign, Zapier oder Make anbinden, z. B. Digistore24, CopeCart, ablefy, Kajabi oder Memberspot. Im Technik-Check schaue ich mir Ihr Tool zuerst an und sage Ihnen ehrlich, ob ich helfen kann.' },
+      { q: 'Gibt es einen Auftragsverarbeitungsvertrag?', a: 'Ja. Vor Projektstart schließen wir einen AVV nach Art. 28 DSGVO (Muster der WKO), inklusive der Unterauftragsverarbeiter.' },
+      { q: 'Und wenn Sie krank sind?', a: 'Dann helfe ich trotzdem: Fast alles lässt sich remote vom Laptop aus lösen. Außerdem gehören alle Zugänge Ihnen, und jeder Ablauf ist dokumentiert.' },
       { q: 'Mein Setup ist schon da, aber unübersichtlich. Räumen Sie auch auf?', a: 'Ja. Ich prüfe Tags, Automationen und Zaps, räume auf und dokumentiere, was wo passiert. Am besten starten wir mit dem Technik-Check.' },
     ],
   },
@@ -455,7 +460,7 @@ export default {
     fixDemo: {
       show: 'Lösung ansehen',
       again: 'Nochmal ansehen',
-      signup: { from: 'Formular', to: 'CRM', retry: 'Prüfen + Wiederholen', count: '{n}/47 angekommen', alt: 'Animation: Anmeldungen fliegen vom Formular ins CRM, zwei gehen verloren. Mit «Prüfen + Wiederholen» kommen alle 47 an.' },
+      signup: { from: 'Formular', to: 'CRM', retry: 'Prüfen + Wiederholen', count: '{n}/47 angekommen', alt: 'Animation: Anmeldungen fliegen vom Formular ins CRM, zwei gehen verloren. Mit «Prüfen + Wiederholen» kommen alle 47 an. Vereinfachtes Beispiel.' },
       spam: { spam: 'Spam', inbox: 'Posteingang', badges: ['SPF', 'DKIM', 'DMARC'], alt: 'Animation: Eine Launch-Mail landet im Spam. Nach SPF, DKIM und DMARC kommt sie im Posteingang an.' },
       rate: { failed: 'Kartenzahlung fehlgeschlagen', open: 'Kurs offen', steps: ['Erinnerung 1', 'Erinnerung 2', 'Zugang pausiert', 'Zahlung da', 'Zugang wieder offen'], alt: 'Animation: Eine Rate schlägt fehl, der Kurs bleibt offen. Danach: Erinnerung 1, Erinnerung 2, Zugang pausiert, Zahlung da, Zugang wieder offen.' },
     },
@@ -534,7 +539,7 @@ export default {
       intro: 'Kurze Antworten auf das, was ich am häufigsten gefragt werde.',
       also: 'Auch gefragt:',
       missing: 'Frage nicht dabei? → Schreiben Sie mir',
-      related: [[3, 7], [2, 6], [6, 1], [8, 9], [3, 5], [7, 0], [2, 4], [2, 0], [3, 9], [8, 0]],
+      related: [[3, 7], [2, 6], [6, 1], [8, 11], [3, 9], [7, 0], [10, 2], [2, 0], [3, 11], [4, 5], [6, 4], [8, 0]],
     },
     contact: {
       builderLabel: 'Kurzes Briefing',
@@ -574,6 +579,11 @@ export default {
         termin: 'Wann passt es Ihnen am besten? (optional)',
         terminPlaceholder: 'z. B. vormittags, Di oder Do',
         terminLine: 'Wann es passt',
+        // Stage 6h: where people come from (no cookies; ?quelle= from a link, e.g. a letter's QR code).
+        gefunden: 'Wie sind Sie auf mich aufmerksam geworden? (optional)',
+        gefundenPick: 'Bitte wählen',
+        gefundenOptions: ['Google-Suche', 'LinkedIn', 'Brief per Post', 'Empfehlung', 'Instagram', 'Sonstiges'],
+        gefundenLine: 'Aufmerksam geworden über',
         next: 'In meiner Antwort bekommen Sie zwei, drei Terminvorschläge, per Zoom oder Telefon.',
         summaryOne: 'Bitte prüfen Sie diese Angabe:',
         summaryMany: 'Bitte prüfen Sie diese {n} Angaben:',
@@ -606,7 +616,11 @@ export default {
     starter: {
       quick: { title: 'Checkout', broken: 'Link defekt', fixed: 'Alles läuft', pay: 'Bezahlen' },
       check: ['ActiveCampaign', 'Zapier/Make', 'Zahlung', 'Landingpages', 'Double-Opt-In'],
-      recommended: 'Empfohlener Start',
+      recommended: 'Vor dem nächsten Launch',
+      // Stage 6h: the Technik-Check card's own button and its small line.
+      checkAsk: 'Technik-Check anfragen',
+      checkCall: 'Auf Wunsch mit 20-Minuten-Gespräch.',
+      checkReport: 'Beispielbericht ansehen',
     },
   },
 
@@ -664,6 +678,8 @@ export default {
     b: {
       before: { signup: '45/47', spam: 'Spam', rate: 'Rate 2 fehlgeschlagen' },
       cta: 'Erstgespräch anfragen',
+      // Stage 6h: under pictures whose counters look like a measurement.
+      simplified: 'Vereinfachtes Beispiel',
       ctaLine: 'Fragen zu Ihrem Ablauf? 20 Minuten, kostenlos.',
       chapterLabel: 'Video ab {time} abspielen: {name}',
       // One sentence per scene: what the picture shows (the video has no sound, WCAG 1.2.1).
@@ -717,7 +733,7 @@ export default {
       chooser: 'Welches Paket passt?',
       cards: {
         quick: { line: 'Eine konkrete Aufgabe, Aufwand bis zu 4 Stunden.', bullets: ['E-Mail-Zustellung (SPF, DKIM, DMARC)', 'Defekte Links oder Formulare', 'Termine oder eine Automation'] },
-        check: { line: 'Ein Analysetag mit Lesezugriff auf die Tools oben, danach wissen Sie, wo es hakt.', bullets: ['Liste mit Prioritäten, Aufwand und Preisen', 'Gespräch von 45 Minuten', 'Bei einem Auftrag innerhalb von 30 Tagen voll angerechnet'] },
+        check: { line: 'Ich teste Ihren Launch, bevor es Ihre Kundschaft tut.', bullets: ['Ein Analysetag mit Lesezugriff auf Ihre Tools', 'Liste mit Prioritäten, Aufwand und Preisen', 'Gespräch von 45 Minuten', 'Bei einem Auftrag innerhalb von 30 Tagen voll angerechnet'] },
         launch: { line: 'Zum Verkaufsstart ist alles startklar. Festpreis nach dem Briefing.', bullets: ['Landingpages und Checkout', 'ActiveCampaign-Abläufe von der Anmeldung bis zum Zahlungsausfall', 'Formulare mit Double-Opt-In und Tags', 'Kurszugang in Ihrem Mitgliederbereich'] },
       },
       promise: '30-Tage-Zusage: Läuft ein von mir gebauter Ablauf in den ersten 30 Tagen nach Übergabe nicht wie vereinbart, behebe ich das ohne Berechnung. Zusätzlich zur gesetzlichen Gewährleistung.',
@@ -727,7 +743,7 @@ export default {
       rows: {
         website: 'Ein One-Pager, fertig veröffentlicht.',
         ki: 'Antwortentwürfe, die Ihr Team nur noch prüft. Pflege optional 90 € pro Monat.',
-        support: 'Pflege und alles außerhalb der Pakete, ab 5 Stunden im Monat.',
+        support: '45 € pro Stunde für Pflege und alles außerhalb der Pakete, abgerechnet nach Aufwand in 15-Minuten-Schritten.',
       },
     },
     cta: { text: 'Nicht sicher, was passt? 20 Minuten, kostenlos. Ich sage ehrlich, ob ich helfen kann.', button: 'Kostenloses Erstgespräch anfragen' },
@@ -740,6 +756,7 @@ export default {
       h2: 'Eigene *Projekte*',
       line: 'Selbst gebaut, keine Kundenarbeit.',
       shows: 'Was es zeigt:',
+      play: 'Spielwiese und Lernprojekte',
       all: 'Alle Webprojekte',
       // Shortened from the «Was es zeigt» lines on mrlololi.com/Webprojekte/.
       items: [
@@ -747,7 +764,8 @@ export default {
         { key: 'langstarter', name: 'Language Starter', path: 'language-starter/?ui=de', shows: '66 erste Sätze in 42 Sprachen, mit Gruppenmodus, Plakat und Beamer.' },
         // Stage 6f: GeoAPP and KittyCats as cards too (lines from their pages).
         { key: 'geoapp', name: 'GeoAPP', path: 'geoapp/?lang=de', shows: 'Eine kleine Lern-App für georgische Zahlen, mit Antwort zur Auswahl oder zum Eintippen.' },
-        { key: 'kittycats', name: 'KittyCats', path: 'kittycats/', shows: 'Eine Demo für Layout und Scroll-Animation mit HTML, CSS und etwas GSAP.' },
+        // Stage 6h: KittyCats stays in Webprojekte, not on the home page.
+        { key: 'kittycats', home: false, name: 'KittyCats', path: 'kittycats/', shows: 'Eine Demo für Layout und Scroll-Animation mit HTML, CSS und etwas GSAP.' },
       ],
       // Stage 6b: the two off-topic ones as one text line.
       more: [
@@ -830,6 +848,20 @@ export default {
         promise: 'Ich verbinde Formulare, ActiveCampaign, Zapier, Checkout und Mitgliederbereich und teste alles, damit zum Verkaufsstart keine Anmeldung verloren geht.',
         packages: ['launch'],
         problem: ['Anmeldungen verschwinden zwischen Formular und CRM.', 'Die Ratenzahlung ist fehlgeschlagen, der Zugang bleibt trotzdem offen.', 'Jeder dieser Fehler kostet Anmeldungen, Umsatz oder Nerven.'],
+        // Stage 6h: the launch-day window; the dated February note comes from config.notes.
+        // Stage 6h (6f section 15): the launch facts, right after the package; the February note from config.notes.
+        explain: {
+          title: 'Gut zu wissen',
+          place: 'does',
+          parts: [
+            ['Enthalten (ab 1.190 €)', 'Landingpages und Checkout, ActiveCampaign-Abläufe von der Anmeldung bis zum Zahlungsausfall, Formulare mit Double-Opt-In und Tags, Verbindungen über Zapier oder Make, Zahlung und Rechnung, Kurszugang im Mitgliederbereich, Tests mit Testkontakten, Dokumentation und Übergabe, Begleitung am Launch-Tag, 30-Tage-Zusage. Den Festpreis bekommen Sie nach dem Briefing.'],
+            ['Nicht enthalten', 'Texte für E-Mails und Verkaufsseiten, Werbeanzeigen, Inhalte und Videos des Kurses, Rechtstexte, die Kosten Ihrer Tools.'],
+            ['Zeitplan', 'Am besten 4 bis 6 Wochen vor dem Launch melden, mindestens 3 Wochen.'],
+            ['Zahlung', '50 % bei Auftrag, 50 % nach dem Livegang. Rechnung per E-Mail, zahlbar innerhalb von 14 Tagen.'],
+            ['Launch-Tag', 'Ich bin telefonisch und per Chat in einem Zeitfenster erreichbar, das wir vorher festlegen, abgerechnet nach Aufwand (45 € pro Stunde). Außerhalb antworte ich bis 15 Uhr am nächsten Tag. Ich begleite höchstens einen Launch pro Woche.'],
+          ],
+          note: 'launch_break',
+        },
         steps: [
           ['Erstgespräch, 20 Minuten, kostenlos.', 'Sie erzählen, was für Ihren Launch geplant ist. Ich sage ehrlich, ob ich helfen kann.'],
           ['Angebot.', 'Nach dem Briefing bekommen Sie einen Festpreis.'],
@@ -868,7 +900,7 @@ export default {
         example: 'spam',
         faq: [
           ['Wie schnell können Sie starten?', 'Quick-Fixes oft innerhalb einer Woche.'],
-          ['Was, wenn 4 Stunden nicht reichen?', 'Alles außerhalb der Pakete: 45 € pro Stunde. Sie erfahren den Preis, bevor ich anfange.'],
+          ['Was, wenn 4 Stunden nicht reichen?', '45 € pro Stunde für Pflege und alles außerhalb der Pakete, abgerechnet nach Aufwand in 15-Minuten-Schritten. Sie erfahren den Preis, bevor ich anfange.'],
           ['Bekommen Sie mein Passwort?', 'Nein. Ich bekomme einen eigenen Benutzerzugang statt Ihres Passworts. Nach Projektende entfernen Sie meinen Zugang, und ich lösche die Kopien Ihrer Daten, die bei mir liegen.'],
           ['Muss ich mich mit Technik auskennen?', 'Nein. Sie sagen mir, was passieren soll, ich kümmere mich um den Rest und erkläre alles in einfachen Worten.'],
         ],
@@ -893,7 +925,7 @@ export default {
         example: 'case2',
         faq: [
           ['Was bekomme ich beim Technik-Check?', 'Sie bekommen eine Liste mit Prioritäten, Aufwand und Preisen und ein Gespräch von 45 Minuten. Beauftragen Sie innerhalb von 30 Tagen ein Projekt, rechne ich die 290 € voll an.'],
-          ['Wie wird die Betreuung abgerechnet?', 'Mit 45 € pro Stunde, ab 5 Stunden im Monat. Abgerechnet wird am Monatsende nach Stunden.'],
+          ['Wie wird die Betreuung abgerechnet?', '45 € pro Stunde für Pflege und alles außerhalb der Pakete, abgerechnet nach Aufwand in 15-Minuten-Schritten. Die Rechnung kommt am Monatsende.'],
           ['Arbeiten Sie auch remote?', 'Ja. Fast alle Projekte laufen remote im DACH-Raum. In Graz komme ich gern persönlich vorbei.'],
           ['Brauche ich bestimmte Tools?', 'Nein. Ich arbeite mit dem, was Sie schon haben, und schlage einen Wechsel nur vor, wenn er sich rechnet.'],
           ['Wie gehen Sie mit Daten um?', 'Ich bekomme einen eigenen Benutzerzugang statt Ihres Passworts. Nach Projektende entfernen Sie meinen Zugang, und ich lösche die Kopien Ihrer Daten, die bei mir liegen.'],
@@ -1038,7 +1070,21 @@ export default {
       { key: 'cookies', title: 'Keine Cookies, keine Analyse', text: 'Diese Website setzt keine Cookies und verwendet keine Analyse- oder Tracking-Werkzeuge. Schriften und Skripte werden vom eigenen Server geladen.' },
       { key: 'email', title: 'Kontakt per E-Mail', text: 'Wenn Sie mir schreiben, verarbeite ich Ihre Angaben, um Ihre Anfrage zu beantworten (Art. 6 Abs. 1 lit. b DSGVO, bei allgemeinen Anfragen lit. f). E-Mails an hello@mrlololi.com werden über Cloudflare Email Routing (Cloudflare, Inc., USA) an mein Postfach bei Google (Gmail) weitergeleitet. Die Übermittlung in die USA stützt sich auf das EU-US Data Privacy Framework (Art. 45 DSGVO). Anfragen ohne Auftrag lösche ich nach spätestens 12 Monaten. Entsteht ein Auftrag, bewahre ich geschäftsrelevante Korrespondenz bis zum Ende der gesetzlichen Aufbewahrungsfrist auf (in der Regel 7 Jahre, § 132 BAO).' },
       // Kontaktformular 30.10.2026 (docs/PROMPT_Kontaktformular_2026-10-30.md).
-      { key: 'form', title: 'Kontaktformular', text: 'Wenn Sie das Kontaktformular absenden, verarbeite ich Ihren Namen, Ihre E-Mail-Adresse, die ausgewählten Satzteile, Ihren optionalen Text und den Zeitpunkt des Absendens. Zweck ist die Beantwortung Ihrer Anfrage und gegebenenfalls vorvertragliche Schritte (Art. 6 Abs. 1 lit. b DSGVO). Die Anfrage wird über Make verarbeitet, einen Dienst von Celonis (Celonis Inc., New York, USA, und ihre Tochtergesellschaften), der als Auftragsverarbeiter für mich tätig ist. Das Szenario läuft in der EU-Region von Make. Soweit Daten in die USA übermittelt werden, stützt sich das auf das EU-US Data Privacy Framework (Art. 45 DSGVO); Celonis Inc. ist danach zertifiziert. Von Make aus wird die Anfrage per E-Mail über Google Gmail an mich geschickt, und Sie erhalten eine automatische Bestätigung (siehe {emailSection}). Make bewahrt Ausführungsprotokolle nur für begrenzte Zeit auf. Die E-Mails bewahre ich so lange auf, wie es für Ihre Anfrage nötig ist und gesetzliche Aufbewahrungspflichten es verlangen; danach lösche ich sie. Sie müssen das Formular nicht nutzen: Sie können mir jederzeit direkt an {email} schreiben.' },
+      { key: 'form', title: 'Kontaktformular', text: 'Wenn Sie das Kontaktformular absenden, verarbeite ich Ihren Namen, Ihre E-Mail-Adresse, die ausgewählten Satzteile, Ihren optionalen Text, Ihren optionalen Terminwunsch, Ihre optionale Angabe, wie Sie auf mich aufmerksam geworden sind, gegebenenfalls die Kennung aus einem Link (zum Beispiel dem QR-Code in einem Brief) und den Zeitpunkt des Absendens. Zweck ist die Beantwortung Ihrer Anfrage und gegebenenfalls vorvertragliche Schritte (Art. 6 Abs. 1 lit. b DSGVO). Die Anfrage wird über Make verarbeitet, einen Dienst von Celonis (Celonis Inc., New York, USA, und ihre Tochtergesellschaften), der als Auftragsverarbeiter für mich tätig ist. Das Szenario läuft in der EU-Region von Make. Soweit Daten in die USA übermittelt werden, stützt sich das auf das EU-US Data Privacy Framework (Art. 45 DSGVO); Celonis Inc. ist danach zertifiziert. Von Make aus wird die Anfrage per E-Mail über Google Gmail an mich geschickt, und Sie erhalten eine automatische Bestätigung (siehe {emailSection}). Make bewahrt Ausführungsprotokolle nur für begrenzte Zeit auf. Die E-Mails bewahre ich so lange auf, wie es für Ihre Anfrage nötig ist und gesetzliche Aufbewahrungspflichten es verlangen; danach lösche ich sie. Sie müssen das Formular nicht nutzen: Sie können mir jederzeit direkt an {email} schreiben.' },
+      // Stage 6h (5.11.2026): letters to businesses (wording by Iva, word for word).
+      {
+        key: 'post',
+        title: 'Kontaktaufnahme mit Unternehmen per Post (Direktwerbung)',
+        parts: [
+          ['', 'Ich schreibe einzelnen Unternehmen, für die meine Leistungen passen könnten, einmalig einen Brief. Dafür verarbeite ich: Name, Firmenname, Geschäftsanschrift und gegebenenfalls Funktion der Ansprechperson, öffentlich sichtbare Angaben auf der Website des Unternehmens, meine Beobachtung dazu (mit Datum und Screenshot) sowie den Kontaktverlauf (Datum des Briefs, Antwort, Widerspruch).'],
+          ['Quelle', 'das öffentlich zugängliche Impressum und die Website des Unternehmens.'],
+          ['Rechtsgrundlage', 'mein berechtigtes Interesse, Unternehmen meine Leistungen vorzustellen (Art. 6 Abs. 1 lit. f DSGVO, Erwägungsgrund 47). Ich schreibe jedes Unternehmen höchstens einmal in 12 Monaten an und nicht, wenn auf der Website der Werbung widersprochen wird.'],
+          ['Empfänger', 'keine Weitergabe an Dritte. Technische Dienstleister, die als Auftragsverarbeiter für mich tätig sind: Google (Google Drive, Gmail; Google Ireland Ltd.). Soweit Daten in die USA übermittelt werden, stützt sich das auf das EU-US Data Privacy Framework (Art. 45 DSGVO). Die Briefe drucke ich selbst; zugestellt werden sie von der Post.'],
+          ['Speicherdauer', 'Ohne Rückmeldung lösche ich die Daten 12 Monate nach dem Brief. Wenn Sie widersprechen, speichere ich nur einen Sperrvermerk (Firma, Domain, Datum), damit ich Sie nicht erneut anschreibe. Entsteht ein Auftrag, gelten die Fristen unter „{emailSection}“.'],
+          ['Widerspruch', 'Sie können der Verwendung Ihrer Daten für Direktwerbung jederzeit ohne Begründung widersprechen (Art. 21 Abs. 2 DSGVO), per E-Mail an {email} oder per Post.'],
+          ['', 'Bis 4. November 2026 habe ich in Einzelfällen statt eines Briefs eine einmalige E-Mail mit einem Hinweis geschickt; diese Daten behandle ich ebenso.'],
+        ],
+      },
       { key: 'booking', title: 'Terminbuchung', text: 'Der Button „Termin buchen“ führt zu einem externen Anbieter. Dort gelten dessen Datenschutzbestimmungen. Daten werden erst übertragen, wenn Sie den Link anklicken.' },
       { key: 'links', title: 'Externe Links', text: 'Links zu LinkedIn, Malt oder Referenz-Websites führen zu fremden Seiten. Erst beim Anklicken werden Daten an diese Anbieter übertragen.' },
       // Datenschutz-Ergänzung 28.10.2026 (Iva, wörtlich; Ich-Form wie der Rest der Seite).

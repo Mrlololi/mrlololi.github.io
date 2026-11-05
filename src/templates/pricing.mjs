@@ -1,4 +1,4 @@
-import { esc, accent } from './util.mjs';
+import { esc, accent, note } from './util.mjs';
 
 // Stage 6: «Leistungen und Preise» in one glance. On top the five «Welches Paket passt?» lines as
 // jump links (the target card gets a short ring, CSS :target). Three main cards (name, price, one
@@ -45,8 +45,13 @@ const moreLink = (t, id, cls) => {
   return NO_MORE.has(id) || !page ? '' : `<a class="${cls}" href="${page.path}">${esc(page.moreLabel ?? `${t.services.ui.more} ${page.short}`)}</a>`;
 };
 
-function card(t, it, email) {
+function card(t, it, email, config) {
   const c = t.s6.pricing.cards[it.id];
+  const s = t.s4.starter;
+  // Stage 6h: the Technik-Check card asks in its own words; its availability comes from config.notes.
+  const isCheck = it.id === 'check';
+  const when = isCheck ? note(config, 'check_availability', t.lang) : '';
+  const extra = isCheck ? `<p class="item__call small">${esc(s.checkCall)}</p>${when ? `\n<p class="item__when">${esc(when)}</p>` : ''}${config.check_report_url ? `\n<a class="item__report text-link" href="${esc(config.check_report_url)}">${esc(s.checkReport)}</a>` : ''}` : '';
   const badge = it.id === 'check' ? `<span class="label label--lav item__badge">${esc(t.s4.starter.recommended)}</span>` : '';
   return `<li class="item item--${it.id} card card--lift" id="pkg-${it.id}">
 <div class="item__head">${badge}<h3 class="item__name">${esc(it.name)}</h3>
@@ -56,7 +61,8 @@ ${VIZ[it.id](t)}
 <ul class="item__bullets" role="list">${c.bullets.map((b) => `<li>${check}<span>${esc(b)}</span></li>`).join('')}</ul>
 <div class="item__actions">
 ${moreLink(t, it.id, 'item__more')}
-<a class="btn btn--sm btn--primary item__cta" href="${ask(t, email, it)}">${esc(t.pricing.cta)}<span class="sr-only">: ${esc(it.name)}</span></a>
+${isCheck ? `<a class="btn btn--sm btn--primary item__cta" href="${ask(t, email, it)}">${esc(s.checkAsk)}</a>` : `<a class="btn btn--sm btn--primary item__cta" href="${ask(t, email, it)}">${esc(t.pricing.cta)}<span class="sr-only">: ${esc(it.name)}</span></a>`}
+${extra}
 </div>
 </li>`;
 }
@@ -94,7 +100,7 @@ ${chooser}
 </nav>
 <div class="pkgs-wrap demo" data-demo="prices">
 <ul class="pkgs" role="list">
-${MAIN.map((id) => card(t, items[id], config.contact_email)).join('\n')}
+${MAIN.map((id) => card(t, items[id], config.contact_email, config)).join('\n')}
 </ul>
 <div class="promise-row">
 <div class="promise">${check}<p>${esc(p.promise)}</p>

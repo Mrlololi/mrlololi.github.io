@@ -58,7 +58,7 @@ test('contact.js: one POST as JSON with keepalive, 10 s timeout, exactly the agr
   for (const [k, n] of [['what', 'was'], ['via', 'plattform'], ['issue', 'problem'], ['start', 'start']]) assert.ok(byFile['index.html'].includes(`name="${n}" data-key="${k}"`), n);
   const block = js.slice(js.indexOf('const payload = {'), js.indexOf('};', js.indexOf('const payload = {')));
   const keys = [...block.matchAll(/^\s{6}(\w+):/gm)].map((m) => m[1]);
-  assert.deepEqual(keys, ['name', 'email', 'text', 'termin', 'consent', 'website', 'elapsed_ms', 'lang', 'page']);
+  assert.deepEqual(keys, ['name', 'email', 'text', 'termin', 'gefunden', 'quelle', 'consent', 'website', 'elapsed_ms', 'lang', 'page']); // Stage 6h: gefunden, quelle
   assert.ok(!/document\.cookie|localStorage|sessionStorage/.test(js));
 });
 

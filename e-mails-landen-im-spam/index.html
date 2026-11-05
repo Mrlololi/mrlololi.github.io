@@ -1581,11 +1581,35 @@ svg.faq__logik { cursor: pointer; }
 .hero__chip:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
 a, button, [role="button"] { -webkit-tap-highlight-color: transparent; }
 @media (max-width: 599.98px) { .path__btn { margin-block: 0; } }
-html:not(.js) .motion-toggle { display: none !important; }</style>
+html:not(.js) .motion-toggle { display: none !important; }
+.fd-note, .vid__note { font-size: 0.8125rem; font-weight: 700; color: var(--ink-soft); }
+.fd-note { margin-top: var(--space-1); text-align: right; }
+.vid__note { justify-self: center; }
+.item__call { margin-top: var(--space-1); }
+.item__when { margin-top: var(--space-1); font-size: var(--step--1); font-weight: 700; color: var(--pist-ink); }
+.proj--main { list-style: none; }
+.proj__link--main { display: grid; gap: var(--space-3) var(--space-5); }
+@media (min-width: 760px) { .proj__link--main { grid-template-columns: minmax(0, 24rem) minmax(0, 1fr); align-items: center; } .proj__link--main picture { grid-row: span 2; } }
+.projects__play { margin-top: var(--space-7); font-size: var(--step-1); }
+.projs.projs--play { margin-top: var(--space-3); }
+@media (min-width: 560px) { .projs.projs--play { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1100px) { .projs.projs--play { grid-template-columns: repeat(2, minmax(0, 22rem)); } }
+.projs--play .proj__link { background: rgb(255 255 255 / 0.45); box-shadow: none; }
+.faq__side, .faq__list, .faq__chat { min-width: 0; }
+.faq summary, .faq__a, .faq__chat .bubble { overflow-wrap: anywhere; hyphens: auto; }
+@media (min-width: 760px) {
+.proj__link--main { grid-template-rows: 1fr 1fr; }
+.proj__link--main .proj__name { align-self: end; font-size: var(--step-2); }
+.proj__link--main .proj__shows { align-self: start; font-size: var(--step-0); }
+}
+.svc-facts { margin-top: var(--space-5); }
+.svc-facts__list { display: grid; gap: var(--space-3); }
+.svc-facts__list li { line-height: 1.5; }
+.svc-facts__note { margin-top: var(--space-3); font-weight: 700; }</style>
 <script>document.documentElement.classList.add('js')</script>
 <script type="module">requestAnimationFrame(()=>requestAnimationFrame(()=>import('/assets/js/main.js')))</script>
 <link rel="modulepreload" href="/assets/js/loops.js" fetchpriority="low">
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"ProfessionalService","@id":"https://mrlololi.com/#business","name":"mrlololi","alternateName":"Iva Tsatskrialashvili","description":"Ich baue und betreue die Technik hinter Online-Kursen: ActiveCampaign, Zapier, Landingpages, Zahlungen. Marketing-Automation und Launch-Technik aus Graz.","url":"https://mrlololi.com/","email":"hello@mrlololi.com","image":"https://mrlololi.com/og-image-de.png","logo":"https://mrlololi.com/assets/brand/apple-touch-icon.png","sameAs":["https://www.linkedin.com/in/tsatskrialashvili-iva","https://www.malt.de/profile/ivatsatskrialashvili"],"areaServed":["AT","DE","CH","IT"],"address":{"@type":"PostalAddress","streetAddress":"Herbersteinstraße 4/4181","addressLocality":"Graz","postalCode":"8020","addressCountry":"AT"},"founder":{"@id":"https://mrlololi.com/#iva"},"priceRange":"€€"},{"@type":"Person","@id":"https://mrlololi.com/#iva","name":"Iva Tsatskrialashvili","jobTitle":"Marketing Automation Engineer","knowsAbout":["ActiveCampaign","Zapier","Make","Leadpages","Stripe","E-Mail-Zustellbarkeit","Marketing-Automation"],"address":{"@type":"PostalAddress","addressLocality":"Graz","addressCountry":"AT"},"image":"https://mrlololi.com/assets/img/about-680.jpg","url":"https://mrlololi.com/","sameAs":["https://www.linkedin.com/in/tsatskrialashvili-iva","https://www.malt.de/profile/ivatsatskrialashvili","https://github.com/Mrlololi","https://www.instagram.com/mrlololi/"]},{"@type":"WebSite","@id":"https://mrlololi.com/#website","url":"https://mrlololi.com/","name":"mrlololi","inLanguage":"de","publisher":{"@id":"https://mrlololi.com/#business"}},{"@type":"Service","@id":"https://mrlololi.com/e-mails-landen-im-spam/#service","name":"E-Mails landen im Spam? SPF, DKIM und DMARC einrichten","serviceType":"E-Mails im Spam","description":"Launch-Mails landen im Spam? Ich richte SPF, DKIM und DMARC richtig ein und teste die Zustellung. Quick-Fix mit bis zu 4 Stunden Aufwand, 190 € fix.","url":"https://mrlololi.com/e-mails-landen-im-spam/","inLanguage":"de","provider":{"@id":"https://mrlololi.com/#business"},"areaServed":[{"@type":"Country","name":"AT"},{"@type":"Country","name":"DE"},{"@type":"Country","name":"CH"}],"offers":{"@type":"Offer","name":"Quick-Fix","url":"https://mrlololi.com/e-mails-landen-im-spam/","priceCurrency":"EUR","price":190}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Startseite","item":"https://mrlololi.com/"},{"@type":"ListItem","position":2,"name":"Leistungen","item":"https://mrlololi.com/#services"},{"@type":"ListItem","position":3,"name":"E-Mails im Spam","item":"https://mrlololi.com/e-mails-landen-im-spam/"}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"ProfessionalService","@id":"https://mrlololi.com/#business","name":"mrlololi","alternateName":"Iva Tsatskrialashvili","description":"Ich teste Ihren Launch, bevor es Ihre Kundschaft tut. Technik hinter Online-Kursen: ActiveCampaign, Zapier, Landingpages, Zahlungen. Aus Graz.","url":"https://mrlololi.com/","email":"hello@mrlololi.com","image":"https://mrlololi.com/og-image-de.png","logo":"https://mrlololi.com/assets/brand/apple-touch-icon.png","sameAs":["https://www.linkedin.com/in/tsatskrialashvili-iva","https://www.malt.de/profile/ivatsatskrialashvili"],"areaServed":["AT","DE","CH","IT"],"address":{"@type":"PostalAddress","streetAddress":"Herbersteinstraße 4/4181","addressLocality":"Graz","postalCode":"8020","addressCountry":"AT"},"founder":{"@id":"https://mrlololi.com/#iva"},"priceRange":"€€"},{"@type":"Person","@id":"https://mrlololi.com/#iva","name":"Iva Tsatskrialashvili","jobTitle":"Marketing Automation Engineer","knowsAbout":["ActiveCampaign","Zapier","Make","Leadpages","Stripe","E-Mail-Zustellbarkeit","Marketing-Automation"],"address":{"@type":"PostalAddress","addressLocality":"Graz","addressCountry":"AT"},"image":"https://mrlololi.com/assets/img/about-680.jpg","url":"https://mrlololi.com/","sameAs":["https://www.linkedin.com/in/tsatskrialashvili-iva","https://www.malt.de/profile/ivatsatskrialashvili","https://github.com/Mrlololi","https://www.instagram.com/mrlololi/"]},{"@type":"WebSite","@id":"https://mrlololi.com/#website","url":"https://mrlololi.com/","name":"mrlololi","inLanguage":"de","publisher":{"@id":"https://mrlololi.com/#business"}},{"@type":"Service","@id":"https://mrlololi.com/e-mails-landen-im-spam/#service","name":"E-Mails landen im Spam? SPF, DKIM und DMARC einrichten","serviceType":"E-Mails im Spam","description":"Launch-Mails landen im Spam? Ich richte SPF, DKIM und DMARC richtig ein und teste die Zustellung. Quick-Fix mit bis zu 4 Stunden Aufwand, 190 € fix.","url":"https://mrlololi.com/e-mails-landen-im-spam/","inLanguage":"de","provider":{"@id":"https://mrlololi.com/#business"},"areaServed":[{"@type":"Country","name":"AT"},{"@type":"Country","name":"DE"},{"@type":"Country","name":"CH"}],"offers":{"@type":"Offer","name":"Quick-Fix","url":"https://mrlololi.com/e-mails-landen-im-spam/","priceCurrency":"EUR","price":190}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Startseite","item":"https://mrlololi.com/"},{"@type":"ListItem","position":2,"name":"Leistungen","item":"https://mrlololi.com/#services"},{"@type":"ListItem","position":3,"name":"E-Mails im Spam","item":"https://mrlololi.com/e-mails-landen-im-spam/"}]}]}</script>
 </head>
 <body class="page-service">
 <a class="skip" href="#main">Zum Inhalt springen</a>
@@ -1687,7 +1711,7 @@ html:not(.js) .motion-toggle { display: none !important; }</style>
 </details>
 <details class="faq__item svc-faq__item">
 <summary>Was, wenn 4 Stunden nicht reichen?</summary>
-<p>Alles außerhalb der Pakete: 45 € pro Stunde. Sie erfahren den Preis, bevor ich anfange.</p>
+<p>45 € pro Stunde für Pflege und alles außerhalb der Pakete, abgerechnet nach Aufwand in 15-Minuten-Schritten. Sie erfahren den Preis, bevor ich anfange.</p>
 </details>
 <details class="faq__item svc-faq__item">
 <summary>Bekommen Sie mein Passwort?</summary>
@@ -1711,10 +1735,11 @@ html:not(.js) .motion-toggle { display: none !important; }</style>
 <h2 class="svc-contact__title">Erzählen Sie mir, <em class="accent">was hakt.</em></h2>
 <p class="lead">Ich antworte innerhalb von zwei Werktagen. Das Erstgespräch (20 Minuten) ist kostenlos.</p>
 <div class="svc-form" id="svc-form">
-<form class="contact__form contact__form--compact" id="contact-form" action="https://hook.eu1.make.com/49mmc0uciouni5rlvys2vb6drzdhhlph" method="post" onsubmit="return window.__cfReady===true" data-endpoint="https://hook.eu1.make.com/49mmc0uciouni5rlvys2vb6drzdhhlph" data-lang="de" data-sending="Wird gesendet…" data-summary-one="Bitte prüfen Sie diese Angabe:" data-summary-many="Bitte prüfen Sie diese {n} Angaben:" data-paket-label="Mir geht es um" data-termin-label="Wann es passt" data-err-name="Bitte geben Sie Ihren Namen ein." data-err-email="Bitte geben Sie Ihre E-Mail-Adresse ein." data-err-emailbad="Bitte prüfen Sie die E-Mail-Adresse, zum Beispiel name@beispiel.at." data-err-consent="Bitte setzen Sie das Häkchen, damit ich Ihre Anfrage beantworten darf.">
+<form class="contact__form contact__form--compact" id="contact-form" action="https://hook.eu1.make.com/49mmc0uciouni5rlvys2vb6drzdhhlph" method="post" onsubmit="return window.__cfReady===true" data-endpoint="https://hook.eu1.make.com/49mmc0uciouni5rlvys2vb6drzdhhlph" data-lang="de" data-sending="Wird gesendet…" data-summary-one="Bitte prüfen Sie diese Angabe:" data-summary-many="Bitte prüfen Sie diese {n} Angaben:" data-paket-label="Mir geht es um" data-termin-label="Wann es passt" data-gefunden-label="Aufmerksam geworden über" data-err-name="Bitte geben Sie Ihren Namen ein." data-err-email="Bitte geben Sie Ihre E-Mail-Adresse ein." data-err-emailbad="Bitte prüfen Sie die E-Mail-Adresse, zum Beispiel name@beispiel.at." data-err-consent="Bitte setzen Sie das Häkchen, damit ich Ihre Anfrage beantworten darf.">
 <input type="hidden" name="nojs" value="1">
 <input type="hidden" name="lang" value="de">
 <input type="hidden" name="page" value="https://mrlololi.com/e-mails-landen-im-spam/">
+<input type="hidden" name="quelle" value="">
 <div class="contact__errsum" role="alert" tabindex="-1" hidden><p class="contact__errsum-title"></p><ul role="list"></ul></div>
 <div class="brief" role="group" aria-labelledby="brief-label" data-sentence="Ich verkaufe {what} über {via}. Es hakt bei {issue}. Start: {start}." data-sentence-open="Ich verkaufe {what}. Die Plattform ist noch offen. Es hakt bei {issue}. Start: {start}." data-via-open="noch offen" data-lower data-greeting="Hallo Iva," data-closing="Viele Grüße">
 <p class="brief__label" id="brief-label">Kurzes Briefing</p>
@@ -1726,6 +1751,7 @@ html:not(.js) .motion-toggle { display: none !important; }</style>
 <div class="field"><label for="cf-name">Ihr Name</label><input id="cf-name" name="name" type="text" autocomplete="name" maxlength="120" required aria-describedby="cf-name-err"><p class="field__err" id="cf-name-err" hidden></p></div>
 <div class="field"><label for="cf-email">Ihre E-Mail-Adresse</label><input id="cf-email" name="email" type="email" autocomplete="email" maxlength="160" spellcheck="false" required aria-describedby="cf-email-err"><p class="field__err" id="cf-email-err" hidden></p></div>
 <div class="field field--wide"><label for="cf-termin">Wann passt es Ihnen am besten? (optional)</label><input id="cf-termin" name="termin" type="text" maxlength="160" autocomplete="off" placeholder="z. B. vormittags, Di oder Do"></div>
+<div class="field field--wide"><label for="cf-gefunden">Wie sind Sie auf mich aufmerksam geworden? (optional)</label><select class="field__select" id="cf-gefunden" name="gefunden"><option value="">Bitte wählen</option><option>Google-Suche</option><option>LinkedIn</option><option>Brief per Post</option><option>Empfehlung</option><option>Instagram</option><option>Sonstiges</option></select></div>
 <div class="field field--wide"><label for="cf-text">Möchten Sie noch etwas ergänzen? (optional)</label><textarea id="cf-text" name="text" rows="4" maxlength="3000"></textarea></div>
 <div class="field field--check"><input id="cf-consent" name="consent" type="checkbox" value="true" required aria-describedby="cf-consent-err"><label for="cf-consent">Ich bin einverstanden, dass meine Angaben zur Beantwortung meiner Anfrage verarbeitet werden. Mehr in der <a href="/datenschutz/#form">Datenschutzerklärung</a>.</label><p class="field__err" id="cf-consent-err" hidden></p></div>
 <div class="hp" aria-hidden="true"><label for="cf-website">Bitte leer lassen</label><input id="cf-website" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true"></div>
@@ -1749,6 +1775,7 @@ html:not(.js) .motion-toggle { display: none !important; }</style>
 <label class="contact__manual" hidden><span class="small">Ihr Text zum Kopieren</span><textarea readonly rows="6"></textarea></label>
 </div>
 </div>
+<script>(function(){var q=(new URLSearchParams(location.search).get('quelle')||'').toLowerCase();if(!/^[a-z0-9-]{1,40}$/.test(q))return;var f=document.getElementById('contact-form');f.elements.quelle.value=q;if(q.indexOf('brief')===0)f.elements.gefunden.selectedIndex=3;})();</script>
 </form>
 <div class="contact__done" role="status" tabindex="-1" hidden data-text="Danke, {name}! Sie bekommen gleich eine Bestätigung per E-Mail. Ich melde mich innerhalb von zwei Werktagen."><p class="contact__done-text"></p></div>
 <div class="contact__thanks" role="status"></div>

@@ -248,7 +248,10 @@ test('service pages: structure (problem, what I do, steps, example, 3 to 5 FAQ, 
   assert.ok(deBox.includes('SPF legt fest, welche Server im Namen Ihrer Domain senden dürfen. DKIM signiert jede Mail, damit der Empfänger sieht, dass sie unterwegs nicht verändert wurde. DMARC sagt dem Empfänger, was mit Mails passieren soll, die die Prüfung nicht bestehen, und schickt Ihnen Berichte. Seit 2024 verlangen Gmail und Yahoo von Absendern mit vielen Mails alle drei Einträge, seit 2025 auch Microsoft für Outlook und Hotmail.'));
   const enBox = explain(by(en, 'spam'));
   assert.ok(enBox && enBox.includes('>In short</h3>') && /Since 2024 Gmail and Yahoo/.test(enBox) && /since 2025 Microsoft/.test(enBox));
-  for (const k of ['launch', 'activecampaign', 'ki', 'website']) assert.ok(!by(de, k).includes('<aside class="svc-explain"'), k);
+  for (const k of ['activecampaign', 'ki', 'website']) assert.ok(!by(de, k).includes('<aside class="svc-explain"'), k);
+  // Stage 6h: /launch-technik/ has its «Gut zu wissen» box (launch day, the dated February note).
+  assert.match(by(de, 'launch'), /<h3 id="svc-explain">Gut zu wissen<\/h3>\n<ul class="svc-facts__list" role="list"><li><strong>Enthalten \(ab 1\.190 €\):<\/strong>[\s\S]*?<strong>Launch-Tag:<\/strong> Ich bin telefonisch und per Chat[\s\S]*?<p class="svc-facts__note">Im Februar 2027 plane ich keine Launches ein\. Launch-Setups mit Projektstart ab 22\. Februar 2027\.<\/p>/);
+  assert.match(by(en, 'launch'), /<h3 id="svc-explain">Good to know<\/h3>[\s\S]*?I am not planning any launches in February 2027\./);
   // ActiveCampaign page names the three countries once.
   const ac = by(de, 'activecampaign').replace(/<[^>]+>/g, ' ');
   assert.equal((ac.match(/Österreich, Deutschland und der Schweiz/g) || []).length, 1);
@@ -352,10 +355,11 @@ test('sitemap contains exactly the live pages, with lastmod from page_dates', ()
   assert.equal(locs.length, 16);
   assert.equal(config.page_dates.website, '2026-10-28');
   // Stage 6 (29.10.2026): the KI demo and calculator moved to the KI page, the video to the launch page.
-  for (const k of ['launch', 'ki']) assert.equal(config.page_dates[k], '2026-10-29', k);
+  assert.equal(config.page_dates.ki, '2026-10-29');
+  assert.equal(config.page_dates.launch, '2026-11-05'); // Stage 6h: «Gut zu wissen»
   // Iva's corrections of 29.10.2026 changed these two pages.
   for (const k of ['spam', 'activecampaign']) assert.equal(config.page_dates[k], '2026-10-29', k);
-  assert.match(xml, new RegExp(`<loc>${SITE}/en/course-launch-tech/</loc>\\s*<lastmod>2026-10-29</lastmod>\\s*<xhtml:link rel="alternate" hreflang="de" href="${SITE}/launch-technik/"/>`));
+  assert.match(xml, new RegExp(`<loc>${SITE}/en/course-launch-tech/</loc>\\s*<lastmod>2026-11-05</lastmod>\\s*<xhtml:link rel="alternate" hreflang="de" href="${SITE}/launch-technik/"/>`));
 });
 
 test('robots.txt names the Webprojekte sitemap only when it answered 200', () => {

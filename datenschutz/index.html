@@ -1581,11 +1581,35 @@ svg.faq__logik { cursor: pointer; }
 .hero__chip:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
 a, button, [role="button"] { -webkit-tap-highlight-color: transparent; }
 @media (max-width: 599.98px) { .path__btn { margin-block: 0; } }
-html:not(.js) .motion-toggle { display: none !important; }</style>
+html:not(.js) .motion-toggle { display: none !important; }
+.fd-note, .vid__note { font-size: 0.8125rem; font-weight: 700; color: var(--ink-soft); }
+.fd-note { margin-top: var(--space-1); text-align: right; }
+.vid__note { justify-self: center; }
+.item__call { margin-top: var(--space-1); }
+.item__when { margin-top: var(--space-1); font-size: var(--step--1); font-weight: 700; color: var(--pist-ink); }
+.proj--main { list-style: none; }
+.proj__link--main { display: grid; gap: var(--space-3) var(--space-5); }
+@media (min-width: 760px) { .proj__link--main { grid-template-columns: minmax(0, 24rem) minmax(0, 1fr); align-items: center; } .proj__link--main picture { grid-row: span 2; } }
+.projects__play { margin-top: var(--space-7); font-size: var(--step-1); }
+.projs.projs--play { margin-top: var(--space-3); }
+@media (min-width: 560px) { .projs.projs--play { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1100px) { .projs.projs--play { grid-template-columns: repeat(2, minmax(0, 22rem)); } }
+.projs--play .proj__link { background: rgb(255 255 255 / 0.45); box-shadow: none; }
+.faq__side, .faq__list, .faq__chat { min-width: 0; }
+.faq summary, .faq__a, .faq__chat .bubble { overflow-wrap: anywhere; hyphens: auto; }
+@media (min-width: 760px) {
+.proj__link--main { grid-template-rows: 1fr 1fr; }
+.proj__link--main .proj__name { align-self: end; font-size: var(--step-2); }
+.proj__link--main .proj__shows { align-self: start; font-size: var(--step-0); }
+}
+.svc-facts { margin-top: var(--space-5); }
+.svc-facts__list { display: grid; gap: var(--space-3); }
+.svc-facts__list li { line-height: 1.5; }
+.svc-facts__note { margin-top: var(--space-3); font-weight: 700; }</style>
 <script>document.documentElement.classList.add('js')</script>
 <script type="module">requestAnimationFrame(()=>requestAnimationFrame(()=>import('/assets/js/main.js')))</script>
 <link rel="modulepreload" href="/assets/js/loops.js" fetchpriority="low">
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"ProfessionalService","@id":"https://mrlololi.com/#business","name":"mrlololi","alternateName":"Iva Tsatskrialashvili","description":"Ich baue und betreue die Technik hinter Online-Kursen: ActiveCampaign, Zapier, Landingpages, Zahlungen. Marketing-Automation und Launch-Technik aus Graz.","url":"https://mrlololi.com/","email":"hello@mrlololi.com","image":"https://mrlololi.com/og-image-de.png","logo":"https://mrlololi.com/assets/brand/apple-touch-icon.png","sameAs":["https://www.linkedin.com/in/tsatskrialashvili-iva","https://www.malt.de/profile/ivatsatskrialashvili"],"areaServed":["AT","DE","CH","IT"],"address":{"@type":"PostalAddress","streetAddress":"Herbersteinstraße 4/4181","addressLocality":"Graz","postalCode":"8020","addressCountry":"AT"},"founder":{"@id":"https://mrlololi.com/#iva"},"priceRange":"€€"},{"@type":"Person","@id":"https://mrlololi.com/#iva","name":"Iva Tsatskrialashvili","jobTitle":"Marketing Automation Engineer","knowsAbout":["ActiveCampaign","Zapier","Make","Leadpages","Stripe","E-Mail-Zustellbarkeit","Marketing-Automation"],"address":{"@type":"PostalAddress","addressLocality":"Graz","addressCountry":"AT"},"image":"https://mrlololi.com/assets/img/about-680.jpg","url":"https://mrlololi.com/","sameAs":["https://www.linkedin.com/in/tsatskrialashvili-iva","https://www.malt.de/profile/ivatsatskrialashvili","https://github.com/Mrlololi","https://www.instagram.com/mrlololi/"]},{"@type":"WebSite","@id":"https://mrlololi.com/#website","url":"https://mrlololi.com/","name":"mrlololi","inLanguage":"de","publisher":{"@id":"https://mrlololi.com/#business"}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"ProfessionalService","@id":"https://mrlololi.com/#business","name":"mrlololi","alternateName":"Iva Tsatskrialashvili","description":"Ich teste Ihren Launch, bevor es Ihre Kundschaft tut. Technik hinter Online-Kursen: ActiveCampaign, Zapier, Landingpages, Zahlungen. Aus Graz.","url":"https://mrlololi.com/","email":"hello@mrlololi.com","image":"https://mrlololi.com/og-image-de.png","logo":"https://mrlololi.com/assets/brand/apple-touch-icon.png","sameAs":["https://www.linkedin.com/in/tsatskrialashvili-iva","https://www.malt.de/profile/ivatsatskrialashvili"],"areaServed":["AT","DE","CH","IT"],"address":{"@type":"PostalAddress","streetAddress":"Herbersteinstraße 4/4181","addressLocality":"Graz","postalCode":"8020","addressCountry":"AT"},"founder":{"@id":"https://mrlololi.com/#iva"},"priceRange":"€€"},{"@type":"Person","@id":"https://mrlololi.com/#iva","name":"Iva Tsatskrialashvili","jobTitle":"Marketing Automation Engineer","knowsAbout":["ActiveCampaign","Zapier","Make","Leadpages","Stripe","E-Mail-Zustellbarkeit","Marketing-Automation"],"address":{"@type":"PostalAddress","addressLocality":"Graz","addressCountry":"AT"},"image":"https://mrlololi.com/assets/img/about-680.jpg","url":"https://mrlololi.com/","sameAs":["https://www.linkedin.com/in/tsatskrialashvili-iva","https://www.malt.de/profile/ivatsatskrialashvili","https://github.com/Mrlololi","https://www.instagram.com/mrlololi/"]},{"@type":"WebSite","@id":"https://mrlololi.com/#website","url":"https://mrlololi.com/","name":"mrlololi","inLanguage":"de","publisher":{"@id":"https://mrlololi.com/#business"}}]}</script>
 </head>
 <body class="page-privacy">
 <a class="skip" href="#main">Zum Inhalt springen</a>
@@ -1627,7 +1651,17 @@ html:not(.js) .motion-toggle { display: none !important; }</style>
 </section>
 <section id="form">
 <h2>Kontaktformular</h2>
-<p>Wenn Sie das Kontaktformular absenden, verarbeite ich Ihren Namen, Ihre E-Mail-Adresse, die ausgewählten Satzteile, Ihren optionalen Text und den Zeitpunkt des Absendens. Zweck ist die Beantwortung Ihrer Anfrage und gegebenenfalls vorvertragliche Schritte (Art. 6 Abs. 1 lit. b DSGVO). Die Anfrage wird über Make verarbeitet, einen Dienst von Celonis (Celonis Inc., New York, USA, und ihre Tochtergesellschaften), der als Auftragsverarbeiter für mich tätig ist. Das Szenario läuft in der EU-Region von Make. Soweit Daten in die USA übermittelt werden, stützt sich das auf das EU-US Data Privacy Framework (Art. 45 DSGVO); Celonis Inc. ist danach zertifiziert. Von Make aus wird die Anfrage per E-Mail über Google Gmail an mich geschickt, und Sie erhalten eine automatische Bestätigung (siehe <a href="#email">Kontakt per E-Mail</a>). Make bewahrt Ausführungsprotokolle nur für begrenzte Zeit auf. Die E-Mails bewahre ich so lange auf, wie es für Ihre Anfrage nötig ist und gesetzliche Aufbewahrungspflichten es verlangen; danach lösche ich sie. Sie müssen das Formular nicht nutzen: Sie können mir jederzeit direkt an <a href="mailto:hello@mrlololi.com">hello@mrlololi.com</a> schreiben.</p>
+<p>Wenn Sie das Kontaktformular absenden, verarbeite ich Ihren Namen, Ihre E-Mail-Adresse, die ausgewählten Satzteile, Ihren optionalen Text, Ihren optionalen Terminwunsch, Ihre optionale Angabe, wie Sie auf mich aufmerksam geworden sind, gegebenenfalls die Kennung aus einem Link (zum Beispiel dem QR-Code in einem Brief) und den Zeitpunkt des Absendens. Zweck ist die Beantwortung Ihrer Anfrage und gegebenenfalls vorvertragliche Schritte (Art. 6 Abs. 1 lit. b DSGVO). Die Anfrage wird über Make verarbeitet, einen Dienst von Celonis (Celonis Inc., New York, USA, und ihre Tochtergesellschaften), der als Auftragsverarbeiter für mich tätig ist. Das Szenario läuft in der EU-Region von Make. Soweit Daten in die USA übermittelt werden, stützt sich das auf das EU-US Data Privacy Framework (Art. 45 DSGVO); Celonis Inc. ist danach zertifiziert. Von Make aus wird die Anfrage per E-Mail über Google Gmail an mich geschickt, und Sie erhalten eine automatische Bestätigung (siehe <a href="#email">Kontakt per E-Mail</a>). Make bewahrt Ausführungsprotokolle nur für begrenzte Zeit auf. Die E-Mails bewahre ich so lange auf, wie es für Ihre Anfrage nötig ist und gesetzliche Aufbewahrungspflichten es verlangen; danach lösche ich sie. Sie müssen das Formular nicht nutzen: Sie können mir jederzeit direkt an <a href="mailto:hello@mrlololi.com">hello@mrlololi.com</a> schreiben.</p>
+</section>
+<section id="post">
+<h2>Kontaktaufnahme mit Unternehmen per Post (Direktwerbung)</h2>
+<p>Ich schreibe einzelnen Unternehmen, für die meine Leistungen passen könnten, einmalig einen Brief. Dafür verarbeite ich: Name, Firmenname, Geschäftsanschrift und gegebenenfalls Funktion der Ansprechperson, öffentlich sichtbare Angaben auf der Website des Unternehmens, meine Beobachtung dazu (mit Datum und Screenshot) sowie den Kontaktverlauf (Datum des Briefs, Antwort, Widerspruch).</p>
+<p><strong>Quelle:</strong> das öffentlich zugängliche Impressum und die Website des Unternehmens.</p>
+<p><strong>Rechtsgrundlage:</strong> mein berechtigtes Interesse, Unternehmen meine Leistungen vorzustellen (Art. 6 Abs. 1 lit. f DSGVO, Erwägungsgrund 47). Ich schreibe jedes Unternehmen höchstens einmal in 12 Monaten an und nicht, wenn auf der Website der Werbung widersprochen wird.</p>
+<p><strong>Empfänger:</strong> keine Weitergabe an Dritte. Technische Dienstleister, die als Auftragsverarbeiter für mich tätig sind: Google (Google Drive, Gmail; Google Ireland Ltd.). Soweit Daten in die USA übermittelt werden, stützt sich das auf das EU-US Data Privacy Framework (Art. 45 DSGVO). Die Briefe drucke ich selbst; zugestellt werden sie von der Post.</p>
+<p><strong>Speicherdauer:</strong> Ohne Rückmeldung lösche ich die Daten 12 Monate nach dem Brief. Wenn Sie widersprechen, speichere ich nur einen Sperrvermerk (Firma, Domain, Datum), damit ich Sie nicht erneut anschreibe. Entsteht ein Auftrag, gelten die Fristen unter „<a href="#email">Kontakt per E-Mail</a>“.</p>
+<p><strong>Widerspruch:</strong> Sie können der Verwendung Ihrer Daten für Direktwerbung jederzeit ohne Begründung widersprechen (Art. 21 Abs. 2 DSGVO), per E-Mail an <a href="mailto:hello@mrlololi.com">hello@mrlololi.com</a> oder per Post.</p>
+<p>Bis 4. November 2026 habe ich in Einzelfällen statt eines Briefs eine einmalige E-Mail mit einem Hinweis geschickt; diese Daten behandle ich ebenso.</p>
 </section>
 <section id="links">
 <h2>Externe Links</h2>
@@ -1645,7 +1679,7 @@ html:not(.js) .motion-toggle { display: none !important; }</style>
 <h2>Beschwerde</h2>
 <p>Sie können sich bei der Österreichischen Datenschutzbehörde beschweren: Barichgasse 40-42, 1030 Wien, www.dsb.gv.at.</p>
 </section>
-<p class="small">Stand: 30.10.2026</p>
+<p class="small">Stand: 05.11.2026</p>
 </article>
 </main>
 <footer class="site-footer bg-ink edge">

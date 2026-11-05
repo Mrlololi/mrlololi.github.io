@@ -1581,11 +1581,35 @@ svg.faq__logik { cursor: pointer; }
 .hero__chip:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
 a, button, [role="button"] { -webkit-tap-highlight-color: transparent; }
 @media (max-width: 599.98px) { .path__btn { margin-block: 0; } }
-html:not(.js) .motion-toggle { display: none !important; }</style>
+html:not(.js) .motion-toggle { display: none !important; }
+.fd-note, .vid__note { font-size: 0.8125rem; font-weight: 700; color: var(--ink-soft); }
+.fd-note { margin-top: var(--space-1); text-align: right; }
+.vid__note { justify-self: center; }
+.item__call { margin-top: var(--space-1); }
+.item__when { margin-top: var(--space-1); font-size: var(--step--1); font-weight: 700; color: var(--pist-ink); }
+.proj--main { list-style: none; }
+.proj__link--main { display: grid; gap: var(--space-3) var(--space-5); }
+@media (min-width: 760px) { .proj__link--main { grid-template-columns: minmax(0, 24rem) minmax(0, 1fr); align-items: center; } .proj__link--main picture { grid-row: span 2; } }
+.projects__play { margin-top: var(--space-7); font-size: var(--step-1); }
+.projs.projs--play { margin-top: var(--space-3); }
+@media (min-width: 560px) { .projs.projs--play { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1100px) { .projs.projs--play { grid-template-columns: repeat(2, minmax(0, 22rem)); } }
+.projs--play .proj__link { background: rgb(255 255 255 / 0.45); box-shadow: none; }
+.faq__side, .faq__list, .faq__chat { min-width: 0; }
+.faq summary, .faq__a, .faq__chat .bubble { overflow-wrap: anywhere; hyphens: auto; }
+@media (min-width: 760px) {
+.proj__link--main { grid-template-rows: 1fr 1fr; }
+.proj__link--main .proj__name { align-self: end; font-size: var(--step-2); }
+.proj__link--main .proj__shows { align-self: start; font-size: var(--step-0); }
+}
+.svc-facts { margin-top: var(--space-5); }
+.svc-facts__list { display: grid; gap: var(--space-3); }
+.svc-facts__list li { line-height: 1.5; }
+.svc-facts__note { margin-top: var(--space-3); font-weight: 700; }</style>
 <script>document.documentElement.classList.add('js')</script>
 <script type="module">requestAnimationFrame(()=>requestAnimationFrame(()=>import('/assets/js/main.js')))</script>
 <link rel="modulepreload" href="/assets/js/loops.js" fetchpriority="low">
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"ProfessionalService","@id":"https://mrlololi.com/#business","name":"mrlololi","alternateName":"Iva Tsatskrialashvili","description":"Ich baue und betreue die Technik hinter Online-Kursen: ActiveCampaign, Zapier, Landingpages, Zahlungen. Marketing-Automation und Launch-Technik aus Graz.","url":"https://mrlololi.com/","email":"hello@mrlololi.com","image":"https://mrlololi.com/og-image-de.png","logo":"https://mrlololi.com/assets/brand/apple-touch-icon.png","sameAs":["https://www.linkedin.com/in/tsatskrialashvili-iva","https://www.malt.de/profile/ivatsatskrialashvili"],"areaServed":["AT","DE","CH","IT"],"address":{"@type":"PostalAddress","streetAddress":"Herbersteinstraße 4/4181","addressLocality":"Graz","postalCode":"8020","addressCountry":"AT"},"founder":{"@id":"https://mrlololi.com/#iva"},"priceRange":"€€"},{"@type":"Person","@id":"https://mrlololi.com/#iva","name":"Iva Tsatskrialashvili","jobTitle":"Marketing Automation Engineer","knowsAbout":["ActiveCampaign","Zapier","Make","Leadpages","Stripe","E-Mail-Zustellbarkeit","Marketing-Automation"],"address":{"@type":"PostalAddress","addressLocality":"Graz","addressCountry":"AT"},"image":"https://mrlololi.com/assets/img/about-680.jpg","url":"https://mrlololi.com/","sameAs":["https://www.linkedin.com/in/tsatskrialashvili-iva","https://www.malt.de/profile/ivatsatskrialashvili","https://github.com/Mrlololi","https://www.instagram.com/mrlololi/"]},{"@type":"WebSite","@id":"https://mrlololi.com/#website","url":"https://mrlololi.com/","name":"mrlololi","inLanguage":"en","publisher":{"@id":"https://mrlololi.com/#business"}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"ProfessionalService","@id":"https://mrlololi.com/#business","name":"mrlololi","alternateName":"Iva Tsatskrialashvili","description":"Ich teste Ihren Launch, bevor es Ihre Kundschaft tut. Technik hinter Online-Kursen: ActiveCampaign, Zapier, Landingpages, Zahlungen. Aus Graz.","url":"https://mrlololi.com/","email":"hello@mrlololi.com","image":"https://mrlololi.com/og-image-de.png","logo":"https://mrlololi.com/assets/brand/apple-touch-icon.png","sameAs":["https://www.linkedin.com/in/tsatskrialashvili-iva","https://www.malt.de/profile/ivatsatskrialashvili"],"areaServed":["AT","DE","CH","IT"],"address":{"@type":"PostalAddress","streetAddress":"Herbersteinstraße 4/4181","addressLocality":"Graz","postalCode":"8020","addressCountry":"AT"},"founder":{"@id":"https://mrlololi.com/#iva"},"priceRange":"€€"},{"@type":"Person","@id":"https://mrlololi.com/#iva","name":"Iva Tsatskrialashvili","jobTitle":"Marketing Automation Engineer","knowsAbout":["ActiveCampaign","Zapier","Make","Leadpages","Stripe","E-Mail-Zustellbarkeit","Marketing-Automation"],"address":{"@type":"PostalAddress","addressLocality":"Graz","addressCountry":"AT"},"image":"https://mrlololi.com/assets/img/about-680.jpg","url":"https://mrlololi.com/","sameAs":["https://www.linkedin.com/in/tsatskrialashvili-iva","https://www.malt.de/profile/ivatsatskrialashvili","https://github.com/Mrlololi","https://www.instagram.com/mrlololi/"]},{"@type":"WebSite","@id":"https://mrlololi.com/#website","url":"https://mrlololi.com/","name":"mrlololi","inLanguage":"en","publisher":{"@id":"https://mrlololi.com/#business"}}]}</script>
 </head>
 <body class="page-legal">
 <a class="skip" href="#main">Skip to content</a>

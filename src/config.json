@@ -17,10 +17,10 @@
   "header_variant": "light",
   "ratgeber_live": false,
   "page_dates": {
-    "home": "2026-10-30",
+    "home": "2026-11-05",
     "legal": "2026-10-29",
-    "privacy": "2026-10-30",
-    "launch": "2026-10-29",
+    "privacy": "2026-11-05",
+    "launch": "2026-11-05",
     "spam": "2026-10-29",
     "activecampaign": "2026-10-29",
     "ki": "2026-10-29",
@@ -29,5 +29,18 @@
   "github_dpf_verified": true,
   "github_dpf_checked": "2026-10-15: dataprivacyframework.gov/list shows GitHub (San Francisco, CA) Active for the EU-U.S. DPF, Non-HR data",
   "cloudflare_dpf_checked": "2026-10-21: dataprivacyframework.gov/participant/5666 Cloudflare, Inc.: EU-U.S. DPF Active (re-certification under review), next due 09/15/2027",
-  "google_dpf_checked": "2026-10-21: dataprivacyframework.gov/participant/5780 Google LLC: EU-U.S. DPF Active, next due 09/13/2027"
+  "google_dpf_checked": "2026-10-21: dataprivacyframework.gov/participant/5780 Google LLC: EU-U.S. DPF Active, next due 09/13/2027",
+  "notes": {
+    "check_availability": {
+      "until": "2026-12-31",
+      "de": "Termine ab Januar 2027",
+      "en": "Dates from January 2027"
+    },
+    "launch_break": {
+      "until": "2027-02-21",
+      "de": "Im Februar 2027 plane ich keine Launches ein. Launch-Setups mit Projektstart ab 22. Februar 2027.",
+      "en": "I am not planning any launches in February 2027. Launch setups with a project start from 22 February 2027."
+    }
+  },
+  "check_report_url": ""
 }

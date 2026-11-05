@@ -1581,11 +1581,35 @@ svg.faq__logik { cursor: pointer; }
 .hero__chip:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
 a, button, [role="button"] { -webkit-tap-highlight-color: transparent; }
 @media (max-width: 599.98px) { .path__btn { margin-block: 0; } }
-html:not(.js) .motion-toggle { display: none !important; }</style>
+html:not(.js) .motion-toggle { display: none !important; }
+.fd-note, .vid__note { font-size: 0.8125rem; font-weight: 700; color: var(--ink-soft); }
+.fd-note { margin-top: var(--space-1); text-align: right; }
+.vid__note { justify-self: center; }
+.item__call { margin-top: var(--space-1); }
+.item__when { margin-top: var(--space-1); font-size: var(--step--1); font-weight: 700; color: var(--pist-ink); }
+.proj--main { list-style: none; }
+.proj__link--main { display: grid; gap: var(--space-3) var(--space-5); }
+@media (min-width: 760px) { .proj__link--main { grid-template-columns: minmax(0, 24rem) minmax(0, 1fr); align-items: center; } .proj__link--main picture { grid-row: span 2; } }
+.projects__play { margin-top: var(--space-7); font-size: var(--step-1); }
+.projs.projs--play { margin-top: var(--space-3); }
+@media (min-width: 560px) { .projs.projs--play { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1100px) { .projs.projs--play { grid-template-columns: repeat(2, minmax(0, 22rem)); } }
+.projs--play .proj__link { background: rgb(255 255 255 / 0.45); box-shadow: none; }
+.faq__side, .faq__list, .faq__chat { min-width: 0; }
+.faq summary, .faq__a, .faq__chat .bubble { overflow-wrap: anywhere; hyphens: auto; }
+@media (min-width: 760px) {
+.proj__link--main { grid-template-rows: 1fr 1fr; }
+.proj__link--main .proj__name { align-self: end; font-size: var(--step-2); }
+.proj__link--main .proj__shows { align-self: start; font-size: var(--step-0); }
+}
+.svc-facts { margin-top: var(--space-5); }
+.svc-facts__list { display: grid; gap: var(--space-3); }
+.svc-facts__list li { line-height: 1.5; }
+.svc-facts__note { margin-top: var(--space-3); font-weight: 700; }</style>
 <script>document.documentElement.classList.add('js')</script>
 <script type="module">requestAnimationFrame(()=>requestAnimationFrame(()=>import('/assets/js/main.js')))</script>
 <link rel="modulepreload" href="/assets/js/loops.js" fetchpriority="low">
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"ProfessionalService","@id":"https://mrlololi.com/#business","name":"mrlololi","alternateName":"Iva Tsatskrialashvili","description":"Ich baue und betreue die Technik hinter Online-Kursen: ActiveCampaign, Zapier, Landingpages, Zahlungen. Marketing-Automation und Launch-Technik aus Graz.","url":"https://mrlololi.com/","email":"hello@mrlololi.com","image":"https://mrlololi.com/og-image-de.png","logo":"https://mrlololi.com/assets/brand/apple-touch-icon.png","sameAs":["https://www.linkedin.com/in/tsatskrialashvili-iva","https://www.malt.de/profile/ivatsatskrialashvili"],"areaServed":["AT","DE","CH","IT"],"address":{"@type":"PostalAddress","streetAddress":"Herbersteinstraße 4/4181","addressLocality":"Graz","postalCode":"8020","addressCountry":"AT"},"founder":{"@id":"https://mrlololi.com/#iva"},"priceRange":"€€"},{"@type":"Person","@id":"https://mrlololi.com/#iva","name":"Iva Tsatskrialashvili","jobTitle":"Marketing Automation Engineer","knowsAbout":["ActiveCampaign","Zapier","Make","Leadpages","Stripe","E-Mail-Zustellbarkeit","Marketing-Automation"],"address":{"@type":"PostalAddress","addressLocality":"Graz","addressCountry":"AT"},"image":"https://mrlololi.com/assets/img/about-680.jpg","url":"https://mrlololi.com/","sameAs":["https://www.linkedin.com/in/tsatskrialashvili-iva","https://www.malt.de/profile/ivatsatskrialashvili","https://github.com/Mrlololi","https://www.instagram.com/mrlololi/"]},{"@type":"WebSite","@id":"https://mrlololi.com/#website","url":"https://mrlololi.com/","name":"mrlololi","inLanguage":"en","publisher":{"@id":"https://mrlololi.com/#business"}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"ProfessionalService","@id":"https://mrlololi.com/#business","name":"mrlololi","alternateName":"Iva Tsatskrialashvili","description":"Ich teste Ihren Launch, bevor es Ihre Kundschaft tut. Technik hinter Online-Kursen: ActiveCampaign, Zapier, Landingpages, Zahlungen. Aus Graz.","url":"https://mrlololi.com/","email":"hello@mrlololi.com","image":"https://mrlololi.com/og-image-de.png","logo":"https://mrlololi.com/assets/brand/apple-touch-icon.png","sameAs":["https://www.linkedin.com/in/tsatskrialashvili-iva","https://www.malt.de/profile/ivatsatskrialashvili"],"areaServed":["AT","DE","CH","IT"],"address":{"@type":"PostalAddress","streetAddress":"Herbersteinstraße 4/4181","addressLocality":"Graz","postalCode":"8020","addressCountry":"AT"},"founder":{"@id":"https://mrlololi.com/#iva"},"priceRange":"€€"},{"@type":"Person","@id":"https://mrlololi.com/#iva","name":"Iva Tsatskrialashvili","jobTitle":"Marketing Automation Engineer","knowsAbout":["ActiveCampaign","Zapier","Make","Leadpages","Stripe","E-Mail-Zustellbarkeit","Marketing-Automation"],"address":{"@type":"PostalAddress","addressLocality":"Graz","addressCountry":"AT"},"image":"https://mrlololi.com/assets/img/about-680.jpg","url":"https://mrlololi.com/","sameAs":["https://www.linkedin.com/in/tsatskrialashvili-iva","https://www.malt.de/profile/ivatsatskrialashvili","https://github.com/Mrlololi","https://www.instagram.com/mrlololi/"]},{"@type":"WebSite","@id":"https://mrlololi.com/#website","url":"https://mrlololi.com/","name":"mrlololi","inLanguage":"en","publisher":{"@id":"https://mrlololi.com/#business"}}]}</script>
 </head>
 <body class="page-privacy">
 <a class="skip" href="#main">Skip to content</a>
@@ -1627,7 +1651,17 @@ html:not(.js) .motion-toggle { display: none !important; }</style>
 </section>
 <section id="form">
 <h2>Contact form</h2>
-<p>When you send the contact form, I process your name, your email address, the phrases you selected, your optional text and the time of sending. The purpose is to answer your request and, where applicable, to take pre-contractual steps (Art. 6(1)(b) GDPR). The request is processed via Make, a service of Celonis (Celonis Inc., New York, USA, and its subsidiaries), which acts as my processor. The scenario runs in Make’s EU region. Where data is transferred to the USA, this relies on the EU-US Data Privacy Framework (Art. 45 GDPR); Celonis Inc. is certified under it. From Make, the request is sent to me by email via Google Gmail, and you receive an automatic confirmation (see <a href="#email">Contact by email</a>). Make keeps execution logs only for a limited time. I keep the emails as long as your request requires and statutory retention duties demand; after that I delete them. You do not have to use the form: you can always write to me directly at <a href="mailto:hello@mrlololi.com">hello@mrlololi.com</a>.</p>
+<p>When you send the contact form, I process your name, your email address, the phrases you selected, your optional text, your optional preferred time, your optional answer on how you heard about me, where applicable the code from a link (for example the QR code in a letter) and the time of sending. The purpose is to answer your request and, where applicable, to take pre-contractual steps (Art. 6(1)(b) GDPR). The request is processed via Make, a service of Celonis (Celonis Inc., New York, USA, and its subsidiaries), which acts as my processor. The scenario runs in Make’s EU region. Where data is transferred to the USA, this relies on the EU-US Data Privacy Framework (Art. 45 GDPR); Celonis Inc. is certified under it. From Make, the request is sent to me by email via Google Gmail, and you receive an automatic confirmation (see <a href="#email">Contact by email</a>). Make keeps execution logs only for a limited time. I keep the emails as long as your request requires and statutory retention duties demand; after that I delete them. You do not have to use the form: you can always write to me directly at <a href="mailto:hello@mrlololi.com">hello@mrlololi.com</a>.</p>
+</section>
+<section id="post">
+<h2>Contacting businesses by post (direct marketing)</h2>
+<p>I write a single letter, once, to individual businesses that my services might suit. For this I process: name, company name, business address and, where applicable, the contact person’s role, information publicly visible on the company’s website, my observation about it (with date and screenshot) and the contact history (date of the letter, reply, objection).</p>
+<p><strong>Source:</strong> the publicly accessible legal notice (Impressum) and the company’s website.</p>
+<p><strong>Legal basis:</strong> my legitimate interest in presenting my services to businesses (Art. 6(1)(f) GDPR, Recital 47). I write to each business at most once in 12 months, and not if the website objects to advertising.</p>
+<p><strong>Recipients:</strong> no disclosure to third parties. Technical service providers acting as my processors: Google (Google Drive, Gmail; Google Ireland Ltd.). Where data is transferred to the USA, this relies on the EU-US Data Privacy Framework (Art. 45 GDPR). I print the letters myself; they are delivered by the postal service.</p>
+<p><strong>Storage:</strong> Without a reply, I delete the data 12 months after the letter. If you object, I keep only a blocking note (company, domain, date) so that I do not write to you again. If an assignment follows, the periods under “<a href="#email">Contact by email</a>” apply.</p>
+<p><strong>Objection:</strong> You can object to the use of your data for direct marketing at any time without giving reasons (Art. 21(2) GDPR), by email to <a href="mailto:hello@mrlololi.com">hello@mrlololi.com</a> or by post.</p>
+<p>Until 4 November 2026 I sent, in individual cases, a single email with a note instead of a letter; I treat this data in the same way.</p>
 </section>
 <section id="links">
 <h2>External links</h2>
@@ -1645,7 +1679,7 @@ html:not(.js) .motion-toggle { display: none !important; }</style>
 <h2>Complaints</h2>
 <p>You can lodge a complaint with the Austrian Data Protection Authority: Barichgasse 40-42, 1030 Vienna, www.dsb.gv.at.</p>
 </section>
-<p class="small">Last updated: 30 October 2026</p>
+<p class="small">Last updated: 5 November 2026</p>
 </article>
 </main>
 <footer class="site-footer bg-ink edge">

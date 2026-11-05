@@ -1,4 +1,4 @@
-import { esc, accent, absUrl, extLink, quoted, keepHyphenated } from './util.mjs';
+import { esc, accent, absUrl, extLink, quoted, keepHyphenated, note } from './util.mjs';
 import { kiDemo, calculator } from './ki.mjs';
 import { videoFigure, videoLd } from './video.mjs';
 import { contactForm } from './sections.mjs';
@@ -173,16 +173,21 @@ ${s.key === 'launch' && t.s6.video ? `<section class="svc-sec svc-video bg-pist 
 ${videoFigure(t)}
 </div>
 </section>` : ''}
-${section('problem', 'bg-pink', L.problem, `<p class="svc-text">${s.problem.map(esc).join(' ')}</p>${s.explain ? `
+${section('problem', 'bg-pink', L.problem, `<p class="svc-text">${s.problem.map(esc).join(' ')}</p>${s.explain && !s.explain.place ? `
 <aside class="svc-explain" aria-labelledby="svc-explain">
 <h3 id="svc-explain">${esc(s.explain.title)}</h3>
-<p>${esc(s.explain.text)}</p>
+<p>${esc(s.explain.text)}${s.explain.note ? ` ${esc(note(config, s.explain.note, t.lang))}` : ''}</p>
 </aside>` : ''}`)}
 ${section('does', 'bg-blue', L.does, `<ul class="svc-list">${list.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>
 ${text.map((p) => `<p class="svc-text">${esc(p)}</p>`).join('\n')}
 <ul class="svc-pkgs" role="list">
 ${cards}
-</ul>`)}
+</ul>${s.explain?.place === 'does' ? `
+<aside class="svc-explain svc-facts" aria-labelledby="svc-explain">
+<h3 id="svc-explain">${esc(s.explain.title)}</h3>
+<ul class="svc-facts__list" role="list">${s.explain.parts.map(([label, x]) => `<li><strong>${esc(label)}:</strong> ${esc(x)}</li>`).join('')}</ul>${note(config, s.explain.note, t.lang) ? `
+<p class="svc-facts__note">${esc(note(config, s.explain.note, t.lang))}</p>` : ''}
+</aside>` : ''}`)}
 ${section('steps', 'bg-pist', L.steps, `<ol class="svc-steps" role="list">
 ${steps}
 </ol>`)}
