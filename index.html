@@ -657,7 +657,6 @@ html:not(.js) .brief__preview { display: none; }
 .svc-explain { display: grid; gap: var(--space-2); padding: var(--space-5); background: var(--sheet); border: 1px solid var(--line); border-radius: var(--radius-card); }
 .svc-explain h3 { font-size: var(--step-1); }
 .svc-explain p { line-height: 1.6; }
-#references, #projects, #about, #faq { content-visibility: auto; contain-intrinsic-size: auto 900px; }
 .hero__eyebrow { font-size: var(--step--1); font-weight: 700; letter-spacing: 0.01em; color: var(--pink-ink); }
 .hero__micro { margin-top: calc(-1 * var(--space-2)); }
 .mascot-spot { width: max(17.06%, 3.5rem); }
@@ -1259,15 +1258,15 @@ html:not(.js) .calc__fields { display: none; }
 .faqbox { display: grid; gap: var(--space-6); }
 .faq__chat { display: none; }
 @media (min-width: 960px) {
-.faqbox.is-chat { grid-template-columns: minmax(0, 4fr) minmax(0, 5fr) minmax(0, 5fr); grid-template-areas: "side list chat"; align-items: start; }
-.faqbox.is-chat .faq__side { grid-area: side; }
-.faqbox.is-chat .faq__list { grid-area: list; }
-.faqbox.is-chat .faq__item .faq__a { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-.faqbox.is-chat .faq__item summary { font-size: var(--step-0); padding-block: var(--space-3); }
-.faqbox.is-chat .faq__item summary::after { content: "\2192"; }
-.faqbox.is-chat .faq__item[open] { border-color: var(--lav-ink); }
-.faqbox.is-chat .faq__item[open] summary { color: var(--lav-ink); }
-.faqbox.is-chat .faq__chat { grid-area: chat; position: sticky; top: calc(var(--header-h) + var(--space-5)); display: grid; align-content: start; gap: var(--space-3); min-height: 22rem; padding: var(--space-5); border-radius: 22px; background: #fff; border: 1px solid var(--line); }
+.js .faqbox { grid-template-columns: minmax(0, 4fr) minmax(0, 5fr) minmax(0, 5fr); grid-template-areas: "side list chat"; align-items: start; }
+.js .faqbox .faq__side { grid-area: side; }
+.js .faqbox .faq__list { grid-area: list; }
+.js .faqbox .faq__item .faq__a { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.js .faqbox .faq__item summary { font-size: var(--step-0); padding-block: var(--space-3); }
+.js .faqbox .faq__item summary::after { content: "\2192"; }
+.js .faqbox .faq__item[open] { border-color: var(--lav-ink); }
+.js .faqbox .faq__item[open] summary { color: var(--lav-ink); }
+.js .faqbox .faq__chat { grid-area: chat; position: sticky; top: calc(var(--header-h) + var(--space-5)); display: grid; align-content: start; gap: var(--space-3); min-height: 22rem; padding: var(--space-5); border-radius: 22px; background: #fff; border: 1px solid var(--line); }
 }
 .bubble { max-width: 92%; margin: 0; padding: var(--space-3) var(--space-4); border-radius: 18px; line-height: 1.5; }
 .bubble--visitor { justify-self: end; background: var(--ink); color: #fff; border-bottom-right-radius: 6px; font-weight: 600; }
@@ -1511,7 +1510,8 @@ html:not(.js) .rl__ctl button, html:not(.js) .rl__go { display: none; }
 @media (min-width: 900px) {
 .qcard { transition: transform 0.6s var(--ease-soft); position: relative; }
 .qcard--pink { --tilt: -3deg; } .qcard--blue { --tilt: 2.5deg; } .qcard--pist { --tilt: -2deg; } .qcard--lav { --tilt: 2deg; }
-.qcards.is-stacked .qcard { transform: none; }
+.qcards.is-stacked .qcard { transform: translate(var(--sx, 0), var(--sy, 0)) rotate(var(--st, 0deg)); transition: none; }
+.qcards.is-fanning .qcard { transition: transform 0.6s var(--ease-soft) calc(var(--i, 0) * 0.15s); }
 .qcard:is(:hover, :focus-within) { transform: translateY(-4px); z-index: 2; }
 }
 @media (max-width: 899.98px) {
@@ -1605,7 +1605,22 @@ html:not(.js) .motion-toggle { display: none !important; }
 .svc-facts { margin-top: var(--space-5); }
 .svc-facts__list { display: grid; gap: var(--space-3); }
 .svc-facts__list li { line-height: 1.5; }
-.svc-facts__note { margin-top: var(--space-3); font-weight: 700; }</style>
+.svc-facts__note { margin-top: var(--space-3); font-weight: 700; }
+.js .ba__control { display: grid; visibility: hidden; }
+.js .ba.is-ready .ba__control { visibility: visible; }
+.sig__n { display: inline-block; min-width: 2ch; text-align: right; }
+.faq__cats { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-bottom: var(--space-1); }
+@media (min-width: 960px) {
+.js .faqbox { grid-template-areas: "side cats cats" "side list chat"; row-gap: var(--space-5); }
+.js .faqbox .faq__side { grid-row: 1 / span 2; }
+.js .faqbox .faq__cats { grid-area: cats; margin: 0; }
+}
+html:not(.js) .faq__cats { display: none; }
+.faq__cat { min-height: var(--target); }
+.faq__item[hidden] { display: none; }
+.faq__item summary:focus-visible { outline: none; }
+.faq__item:has(> summary:focus-visible) { outline: 3px solid var(--ink); outline-offset: -1px; }
+.contact__ghost { color: transparent; }</style>
 <script>document.documentElement.classList.add('js')</script>
 <script type="module">requestAnimationFrame(()=>requestAnimationFrame(()=>import('/assets/js/main.js')))</script>
 <link rel="modulepreload" href="/assets/js/loops.js" fetchpriority="low">
@@ -2065,56 +2080,58 @@ html:not(.js) .motion-toggle { display: none !important; }
 <p class="faq__intro">Kurze Antworten auf das, was ich am häufigsten gefragt werde.</p>
 <a class="faq__more" href="#contact">Frage nicht dabei? → Schreiben Sie mir</a>
 </div>
+<div class="faq__cats" role="group" aria-label="Fragen nach Thema"><button class="chip faq__cat" type="button" data-cat="0" aria-pressed="true">Alle</button><button class="chip faq__cat" type="button" data-cat="1" aria-pressed="false">Zusammenarbeit</button><button class="chip faq__cat" type="button" data-cat="2" aria-pressed="false">Technik und Tools</button><button class="chip faq__cat" type="button" data-cat="3" aria-pressed="false">Launch</button><button class="chip faq__cat" type="button" data-cat="4" aria-pressed="false">Daten und Verträge</button></div>
 <div class="faq__list">
-<details class="faq__item" id="faq-1">
+<details class="faq__item" id="faq-1" data-cat="2">
 <summary>Muss ich mich mit Technik auskennen?</summary>
 <div class="faq__a"><p>Nein. Sie sagen mir, was passieren soll, ich kümmere mich um den Rest und erkläre alles in einfachen Worten.</p></div>
 </details>
-<details class="faq__item" id="faq-2">
+<details class="faq__item" id="faq-2" data-cat="1">
 <summary>Arbeiten Sie auch remote?</summary>
 <div class="faq__a"><p>Ja. Fast alle Projekte laufen remote im DACH-Raum. In Graz komme ich gern persönlich vorbei.</p></div>
 </details>
-<details class="faq__item" id="faq-3">
+<details class="faq__item" id="faq-3" data-cat="1">
 <summary>Wie schnell können Sie starten?</summary>
 <div class="faq__a"><p>Quick-Fixes oft innerhalb einer Woche. Projekte nach Absprache, weil ich bewusst nur wenige gleichzeitig annehme.</p></div>
 </details>
-<details class="faq__item" id="faq-4">
+<details class="faq__item" id="faq-4" data-cat="2">
 <summary>Brauche ich bestimmte Tools?</summary>
 <div class="faq__a"><p>Nein. Ich arbeite mit dem, was Sie schon haben, und schlage einen Wechsel nur vor, wenn er sich rechnet.</p></div>
 </details>
-<details class="faq__item" id="faq-5">
+<details class="faq__item" id="faq-5" data-cat="4">
 <summary>Wie gehen Sie mit Daten um?</summary>
 <div class="faq__a"><p>Ich bekomme einen eigenen Benutzerzugang statt Ihres Passworts. Nach Projektende entfernen Sie meinen Zugang, und ich lösche die Kopien Ihrer Daten, die bei mir liegen.</p></div>
 </details>
-<details class="faq__item" id="faq-6">
+<details class="faq__item" id="faq-6" data-cat="1">
 <summary>Übernehmen Sie auch den Kundensupport?</summary>
 <div class="faq__a"><p>Nein. Ich baue die Technik, die Ihren Support entlastet, zum Beispiel Antwortentwürfe für wiederkehrende Fragen.</p></div>
 </details>
-<details class="faq__item" id="faq-7">
+<details class="faq__item" id="faq-7" data-cat="3">
 <summary>Sind Sie am Launch-Tag erreichbar?</summary>
 <div class="faq__a"><p>Ja, telefonisch und per Chat in einem Zeitfenster, das wir vorher festlegen: zum Beispiel zwei Stunden ab Verkaufsstart und die letzten zwei Stunden vor Cart Close. Dieses Fenster rechne ich nach Aufwand ab (45 € pro Stunde). Außerhalb antworte ich bis 15 Uhr am nächsten Tag. Die meisten Pannen fangen wir vorher ab: mit Testkontakten, Testkäufen und einer Notfallkarte mit fertigen Antworten für Ihre Kundinnen. Ich begleite höchstens einen Launch pro Woche, damit ich wirklich da bin.</p></div>
 </details>
-<details class="faq__item" id="faq-8">
+<details class="faq__item" id="faq-8" data-cat="1">
 <summary>Was, wenn mein Problem in kein Paket passt?</summary>
 <div class="faq__a"><p>Schreiben Sie mir kurz, was nicht funktioniert. Sie erfahren den Preis, bevor ich anfange.</p></div>
 </details>
-<details class="faq__item" id="faq-9">
+<details class="faq__item" id="faq-9" data-cat="2">
 <summary>Ich nutze ein anderes Tool. Geht das?</summary>
 <div class="faq__a"><p>Die meisten Kursplattformen lassen sich über ActiveCampaign, Zapier oder Make anbinden, z. B. Digistore24, CopeCart, ablefy, Kajabi oder Memberspot. Im Technik-Check schaue ich mir Ihr Tool zuerst an und sage Ihnen ehrlich, ob ich helfen kann.</p></div>
 </details>
-<details class="faq__item" id="faq-10">
+<details class="faq__item" id="faq-10" data-cat="4">
 <summary>Gibt es einen Auftragsverarbeitungsvertrag?</summary>
 <div class="faq__a"><p>Ja. Vor Projektstart schließen wir einen AVV nach Art. 28 DSGVO (Muster der WKO), inklusive der Unterauftragsverarbeiter.</p></div>
 </details>
-<details class="faq__item" id="faq-11">
+<details class="faq__item" id="faq-11" data-cat="3">
 <summary>Und wenn Sie krank sind?</summary>
 <div class="faq__a"><p>Dann helfe ich trotzdem: Fast alles lässt sich remote vom Laptop aus lösen. Außerdem gehören alle Zugänge Ihnen, und jeder Ablauf ist dokumentiert.</p></div>
 </details>
-<details class="faq__item" id="faq-12">
+<details class="faq__item" id="faq-12" data-cat="2">
 <summary>Mein Setup ist schon da, aber unübersichtlich. Räumen Sie auch auf?</summary>
 <div class="faq__a"><p>Ja. Ich prüfe Tags, Automationen und Zaps, räume auf und dokumentiere, was wo passiert. Am besten starten wir mit dem Technik-Check.</p></div>
 </details>
 </div>
+<div class="faq__chat" aria-hidden="true"></div>
 <template id="faq-reader"><span class="faq__reading" aria-hidden="true"><svg viewBox="-8 -8 120 124" data-mascot="0" data-emo="think" class="mascot mascot--logik faq__logik" data-base="think" focusable="false"><ellipse data-part="shadow" class="m-shadow" cx="50" cy="109" rx="23" ry="3.6" fill="#2B2A33" opacity=".13"/><g data-part="rig"><g data-part="legs"><path class="o" d="M41 92v12M59 92v12" fill="none" stroke="#2B2A33" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><path class="o" d="M36 105h9M55 105h9" fill="none" stroke="#2B2A33" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g><g data-part="body"><clipPath id="mb-logik-think-faq"><path d="M25.5 30.5A16 16 0 0 1 39.7 22H60.3A16 16 0 0 1 74.5 30.5L86.1 52.5A16 16 0 0 1 86.1 67.5L74.5 89.5A16 16 0 0 1 60.3 98H39.7A16 16 0 0 1 25.5 89.5L13.9 67.5A16 16 0 0 1 13.9 52.5z"/></clipPath><path d="M25.5 30.5A16 16 0 0 1 39.7 22H60.3A16 16 0 0 1 74.5 30.5L86.1 52.5A16 16 0 0 1 86.1 67.5L74.5 89.5A16 16 0 0 1 60.3 98H39.7A16 16 0 0 1 25.5 89.5L13.9 67.5A16 16 0 0 1 13.9 52.5z" fill="#F4C9D3"/><g data-part="belly"><ellipse clip-path="url(#mb-logik-think-faq)" cx="50" cy="103" rx="36" ry="26" fill="#FBE6EC"/></g><circle cx="28.5" cy="65" r="4.6" fill="#9C3F58" opacity=".22"/><circle cx="71.5" cy="65" r="4.6" fill="#9C3F58" opacity=".22"/><ellipse cx="33" cy="34" rx="8" ry="4.8" fill="#fff" opacity=".6" transform="rotate(-32 33 34)"/><path class="o" d="M25.5 30.5A16 16 0 0 1 39.7 22H60.3A16 16 0 0 1 74.5 30.5L86.1 52.5A16 16 0 0 1 86.1 67.5L74.5 89.5A16 16 0 0 1 60.3 98H39.7A16 16 0 0 1 25.5 89.5L13.9 67.5A16 16 0 0 1 13.9 52.5z" fill="none" stroke="#2B2A33" stroke-width="3.5" stroke-linejoin="round"/></g><g data-part="eyes"><g class="m-eye"><circle cx="38.7" cy="53.8" r="4.6" fill="#2B2A33"/><circle cx="40.540000000000006" cy="52.419999999999995" r="1.6" fill="#fff"/></g><g class="m-eye"><circle cx="63.7" cy="53.8" r="4.6" fill="#2B2A33"/><circle cx="65.54" cy="52.419999999999995" r="1.6" fill="#fff"/></g><path d="M56.5 43q6-4 12-1" fill="none" stroke="#2B2A33" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></g><g data-part="mouth"><path d="M47 72q4-2.5 9-.5" fill="none" stroke="#2B2A33" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></g><g data-part="accessory"><g class="m-glasses" fill="none" stroke="#2B2A33" stroke-width="2.6"><circle cx="37.5" cy="55" r="9.5"/><circle cx="62.5" cy="55" r="9.5"/><path d="M47 55h6" stroke-linecap="round"/></g></g><g data-part="arms"><path class="o" d="M17 72q-7 4 -7 13" fill="none" stroke="#2B2A33" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><circle class="o" cx="10" cy="85" r="4.4" fill="#F4C9D3" stroke="#2B2A33" stroke-width="2.4"/><path d="M83 72C92 78 67 82 58 79" fill="none" stroke="#2B2A33" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="58" cy="79" r="4.4" fill="#F4C9D3" stroke="#2B2A33" stroke-width="2.4"/></g></g></svg><span class="faq__dots"><i></i><i></i><i></i></span></span></template>
 </div>
 </section>

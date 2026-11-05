@@ -55,7 +55,9 @@ function dock(gsap, wide) {
     tl.fromTo(sec, { '--dock': 1 }, { '--dock': 0, ease: 'none' }, 0);
     const before = sec.previousElementSibling;
     const inner = before?.querySelector(':scope > .wrap');
-    if (wide && inner && !before.querySelector('[data-pin]') && !before.classList.contains('tools')) {
+    // Stage 6i: nor do sections that open and close (the video transcript, the FAQ with its categories):
+    // their height change moved the next section and with it the drift, so the content jumped.
+    if (wide && inner && !before.querySelector('[data-pin], details') && !before.classList.contains('tools')) {
       tl.fromTo(inner, { y: 0 }, { y: () => -0.06 * innerHeight, ease: 'none', immediateRender: false }, 0);
     }
   }

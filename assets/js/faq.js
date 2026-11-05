@@ -19,9 +19,9 @@ export function init({ reduceMotion }) {
   const reader = () => tpl.content.firstElementChild.cloneNode(true);
 
   /* ---------- wide: the chat panel ---------- */
-  const chat = el('div', 'faq__chat');
-  chat.setAttribute('aria-hidden', 'true');
-  box.append(chat);
+  // Stage 6i: the panel is in the HTML (its column stands from the start).
+  let chat = box.querySelector('.faq__chat');
+  if (!chat) { chat = el('div', 'faq__chat'); chat.setAttribute('aria-hidden', 'true'); box.append(chat); }
   let timer = 0;
   const say = (i) => {
     const item = items[i];
@@ -44,7 +44,7 @@ export function init({ reduceMotion }) {
         const c = el('button', 'chip faq__chip', items[k].querySelector('summary').textContent);
         c.type = 'button';
         c.tabIndex = -1;
-        c.addEventListener('click', () => { items[k].open = true; });
+        c.addEventListener('click', () => { if (items[k].hidden) filter('0'); items[k].open = true; });
         chips.append(c);
       }
       also.append(chips);
@@ -79,6 +79,18 @@ export function init({ reduceMotion }) {
       say(i);
     } else beat(d);
   }));
+  /* ---------- Stage 6i: categories; only hides and shows questions ---------- */
+  const cats = [...box.querySelectorAll('.faq__cat')];
+  function filter(c) {
+    cats.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.cat === c)));
+    items.forEach((d) => { d.hidden = c !== '0' && d.dataset.cat !== c; });
+    // On wide screens the panel shows a question of the chosen category.
+    if (box.classList.contains('is-chat') && !items.some((d) => d.open && !d.hidden)) {
+      const first = items.find((d) => !d.hidden);
+      if (first) first.open = true;
+    }
+  }
+  cats.forEach((b) => b.addEventListener('click', () => filter(b.dataset.cat)));
   const apply = () => {
     box.classList.toggle('is-chat', wide.matches);
     if (wide.matches) {

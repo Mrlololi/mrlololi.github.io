@@ -51,7 +51,7 @@ test('about: the Hallstatt photo 1x/2x (Stage 6g 1a: unchanged, no second photo)
 });
 
 test('faq: seven details, the tech question first', () => {
-  assert.equal(count(de, /<details class="faq__item" id="faq-\d+">/g), 12);
+  assert.equal(count(de, /<details class="faq__item" id="faq-\d+" data-cat="\d">/g), 12); // Stage 6i: data-cat
   assert.ok(de.indexOf('Muss ich mich mit Technik auskennen?') < de.indexOf('Arbeiten Sie auch remote?'));
 });
 

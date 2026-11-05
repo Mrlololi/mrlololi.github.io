@@ -632,8 +632,8 @@ html:not(.js) .brief__preview { display: none; }
 
 
 
-/* Below the fold: rendered when near (anchor jumps land, the sizes are remembered once seen). */
-#references, #projects, #about, #faq { content-visibility: auto; contain-intrinsic-size: auto 900px; }
+/* Stage 6i: no content-visibility any more (a section measured at 900 px and rendered at its real
+   height moved what was on screen during a fast scroll). */
 
 /* Hero */
 .hero__eyebrow { font-size: var(--step--1); font-weight: 700; letter-spacing: 0.01em; color: var(--pink-ink); }
@@ -1305,15 +1305,15 @@ html:not(.js) .calc__fields { display: none; }
 .faqbox { display: grid; gap: var(--space-6); }
 .faq__chat { display: none; }
 @media (min-width: 960px) {
-  .faqbox.is-chat { grid-template-columns: minmax(0, 4fr) minmax(0, 5fr) minmax(0, 5fr); grid-template-areas: "side list chat"; align-items: start; }
-  .faqbox.is-chat .faq__side { grid-area: side; }
-  .faqbox.is-chat .faq__list { grid-area: list; }
-  .faqbox.is-chat .faq__item .faq__a { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-  .faqbox.is-chat .faq__item summary { font-size: var(--step-0); padding-block: var(--space-3); }
-  .faqbox.is-chat .faq__item summary::after { content: "\2192"; }
-  .faqbox.is-chat .faq__item[open] { border-color: var(--lav-ink); }
-  .faqbox.is-chat .faq__item[open] summary { color: var(--lav-ink); }
-  .faqbox.is-chat .faq__chat { grid-area: chat; position: sticky; top: calc(var(--header-h) + var(--space-5)); display: grid; align-content: start; gap: var(--space-3); min-height: 22rem; padding: var(--space-5); border-radius: 22px; background: #fff; border: 1px solid var(--line); }
+  .js .faqbox { grid-template-columns: minmax(0, 4fr) minmax(0, 5fr) minmax(0, 5fr); grid-template-areas: "side list chat"; align-items: start; }
+  .js .faqbox .faq__side { grid-area: side; }
+  .js .faqbox .faq__list { grid-area: list; }
+  .js .faqbox .faq__item .faq__a { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .js .faqbox .faq__item summary { font-size: var(--step-0); padding-block: var(--space-3); }
+  .js .faqbox .faq__item summary::after { content: "\2192"; }
+  .js .faqbox .faq__item[open] { border-color: var(--lav-ink); }
+  .js .faqbox .faq__item[open] summary { color: var(--lav-ink); }
+  .js .faqbox .faq__chat { grid-area: chat; position: sticky; top: calc(var(--header-h) + var(--space-5)); display: grid; align-content: start; gap: var(--space-3); min-height: 22rem; padding: var(--space-5); border-radius: 22px; background: #fff; border: 1px solid var(--line); }
 }
 .bubble { max-width: 92%; margin: 0; padding: var(--space-3) var(--space-4); border-radius: 18px; line-height: 1.5; }
 .bubble--visitor { justify-self: end; background: var(--ink); color: #fff; border-bottom-right-radius: 6px; font-weight: 600; }
@@ -1609,7 +1609,8 @@ html:not(.js) .rl__ctl button, html:not(.js) .rl__go { display: none; }
 @media (min-width: 900px) {
   .qcard { transition: transform 0.6s var(--ease-soft); position: relative; }
   .qcard--pink { --tilt: -3deg; } .qcard--blue { --tilt: 2.5deg; } .qcard--pist { --tilt: -2deg; } .qcard--lav { --tilt: 2deg; }
-  .qcards.is-stacked .qcard { transform: none; }
+  .qcards.is-stacked .qcard { transform: translate(var(--sx, 0), var(--sy, 0)) rotate(var(--st, 0deg)); transition: none; }
+  .qcards.is-fanning .qcard { transition: transform 0.6s var(--ease-soft) calc(var(--i, 0) * 0.15s); }
   .qcard:is(:hover, :focus-within) { transform: translateY(-4px); z-index: 2; }
 }
 @media (max-width: 899.98px) {
@@ -1737,3 +1738,26 @@ html:not(.js) .motion-toggle { display: none !important; }
 .svc-facts__list { display: grid; gap: var(--space-3); }
 .svc-facts__list li { line-height: 1.5; }
 .svc-facts__note { margin-top: var(--space-3); font-weight: 700; }
+
+/* ---------- Stage 6i: nothing moves near the video; FAQ categories; one focus ring ---------- */
+/* «Chaos / Geordnet»: the range below the picture keeps its place before slider.js arrives (with JS). */
+.js .ba__control { display: grid; visibility: hidden; }
+.js .ba.is-ready .ba__control { visibility: visible; }
+/* The sign-up counter: «0» to «47» never changes the width of the line. */
+.sig__n { display: inline-block; min-width: 2ch; text-align: right; }
+/* FAQ categories: one row of small chips above the questions, wrapping on phones. */
+.faq__cats { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-bottom: var(--space-1); }
+/* Wide: the chips stand in one row over the questions and the chat panel. */
+@media (min-width: 960px) {
+  .js .faqbox { grid-template-areas: "side cats cats" "side list chat"; row-gap: var(--space-5); }
+  .js .faqbox .faq__side { grid-row: 1 / span 2; }
+  .js .faqbox .faq__cats { grid-area: cats; margin: 0; }
+}
+html:not(.js) .faq__cats { display: none; }
+.faq__cat { min-height: var(--target); }
+.faq__item[hidden] { display: none; }
+/* One rounded focus ring on the question (not a rectangle on the summary plus the open border). */
+.faq__item summary:focus-visible { outline: none; }
+.faq__item:has(> summary:focus-visible) { outline: 3px solid var(--ink); outline-offset: -1px; }
+/* The contact bubble types over its own sentence (the rest transparent): its height never changes. */
+.contact__ghost { color: transparent; }

@@ -63,9 +63,14 @@ function bubble(section) {
     inView = e.isIntersecting;
     clearInterval(timer);
     if (!inView) { p.textContent = full; return; }
+    // Stage 6i: the whole sentence stays in the layout (the rest transparent), so the bubble never
+    // changes its height while it types; screen readers always get the full sentence.
+    const ghost = document.createElement('span');
+    ghost.className = 'contact__ghost';
+    const show = (n) => { ghost.textContent = full.slice(n); p.replaceChildren(document.createTextNode(full.slice(0, n)), ghost); };
     let n = 0;
-    p.textContent = '';
-    timer = setInterval(() => { n += 1; p.textContent = full.slice(0, n); if (n >= full.length) clearInterval(timer); }, 45);
+    show(0);
+    timer = setInterval(() => { n += 1; show(n); if (n >= full.length) { clearInterval(timer); p.textContent = full; } }, 45);
   }, { threshold: 0.8 }).observe(p);
 }
 

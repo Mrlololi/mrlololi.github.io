@@ -106,12 +106,57 @@ function browserPan() {
   });
 }
 
-/* ---------- Referenzen: the quote cards fan out once, when 30 % of them is visible ---------- */
+/* ---------- Referenzen: the quote cards fan out from a stack, on every return ---------- */
+// Stage 6i (Iva: «больше нет анимации появления?»): while the row is fully out of view the cards lie
+// stacked in its middle (slightly turned, overlapping); once 30 % is visible they fan out one after the
+// other (0.6 s each, 0.15 s apart) to their tilted places. Transforms only (no layout shift). Never
+// restacked while the focus is inside; reduced motion, motion paused or a narrow window: final layout.
+const FAN_MS = 600;
+const FAN_STEP = 150;
+const TURN = [-5, 4, -2, 6];
 function quoteFan() {
   const box = document.querySelector('.qcards');
-  if (!box || calm()) return;
-  box.classList.add('is-stacked');
-  once(box, 0.3, () => requestAnimationFrame(() => box.classList.replace('is-stacked', 'is-fanned')));
+  if (!box || !('IntersectionObserver' in window)) return;
+  const cards = [...box.querySelectorAll('.qcard')];
+  const wide = matchMedia('(min-width: 900px)');
+  let delay = 0;
+  let done = 0;
+  const final = () => { clearTimeout(delay); clearTimeout(done); box.classList.remove('is-stacked', 'is-fanning'); };
+  // Layout positions (offsets ignore transforms): every card goes over the middle of the row.
+  const place = () => {
+    const at = cards.map((c) => [c.offsetLeft + c.offsetWidth / 2, c.offsetTop + Math.min(c.offsetHeight, 320) / 2]);
+    const mx = at.reduce((a, p) => a + p[0], 0) / at.length;
+    const my = at.reduce((a, p) => a + p[1], 0) / at.length;
+    cards.forEach((c, i) => {
+      c.style.setProperty('--sx', `${Math.round(mx - at[i][0] + (i - (cards.length - 1) / 2) * 18)}px`);
+      c.style.setProperty('--sy', `${Math.round(my - at[i][1] + i * 6)}px`);
+      c.style.setProperty('--st', `${TURN[i % TURN.length]}deg`);
+      c.style.setProperty('--i', String(i));
+    });
+  };
+  const stack = () => {
+    if (!wide.matches || calm() || box.matches(':focus-within')) { final(); return; }
+    clearTimeout(done);
+    place();
+    box.classList.remove('is-fanning');
+    box.classList.add('is-stacked');
+  };
+  const fan = () => {
+    if (!box.classList.contains('is-stacked')) return;
+    if (calm()) { final(); return; }
+    void box.offsetWidth;
+    box.classList.add('is-fanning');
+    box.classList.remove('is-stacked');
+    done = setTimeout(() => box.classList.remove('is-fanning'), FAN_MS + FAN_STEP * (cards.length - 1) + 80);
+  };
+  new IntersectionObserver((entries) => {
+    for (const e of entries) {
+      if (!e.isIntersecting) { clearTimeout(delay); stack(); } else if (e.intersectionRatio >= 0.3 && box.classList.contains('is-stacked')) { clearTimeout(delay); delay = setTimeout(fan, 180); }
+    }
+  }, { threshold: [0, 0.3] }).observe(box);
+  document.addEventListener('motion:change', () => { if (motion.paused) final(); });
+  wide.addEventListener('change', final);
+  reduceMotion.addEventListener?.('change', final);
 }
 
 /* ---------- Über mich: a soft highlight moves from chip to chip (1 s each, then a rest) ---------- */

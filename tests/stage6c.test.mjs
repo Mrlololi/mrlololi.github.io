@@ -107,7 +107,8 @@ test('references: the long screenshot scrolls in its frame; the stack opens from
   assert.match(deHome, /<div class="browser__view">\n<picture class="case__shot">[\s\S]*case-alexandrafry-long-640/);
   // Stage 6f: timed, not scrubbed: the screenshot pans through the conductor, the quotes fan out once.
   assert.match(js('sections.js'), /function browserPan\(\)/);
-  assert.match(js('sections.js'), /classList\.replace\('is-stacked', 'is-fanned'\)/);
+  // Stage 6i: stacked while out of view, fanned out one after another on every return.
+  assert.match(js('sections.js'), /box\.classList\.add\('is-fanning'\);\n    box\.classList\.remove\('is-stacked'\);/);
   const code = js('sections.js').replace(/\/\/.*$/gm, '').replace(/function aboutPhoto[\s\S]*?\n}\n/, '');
   assert.ok(!/scrub/.test(code), 'no scroll-scrubbed motion on what people read (the photo reveal stays)');
 });

@@ -10,6 +10,8 @@
 // - Stage 6d/6e: reveals never leave a section empty (jump to the bottom, then up step by step),
 //   the quote stack is spread at 60 %, the FAQ types before it answers, the marquees move, the
 //   slider follows mouse, touch and keys, the run-log loads only on its button and then plays;
+// - Stage 6i: no layout shift while scrolling (CLS 0), the transcript, the quote fan on entry and return,
+//   FAQ categories and one focus ring;
 // - Stage 6h: ?quelle= from a letter's QR code, gefunden and quelle in the payload (JS and no JS);
 // - Stage 6g: no button on top of content, only the global pause toggle, the video when a phone
 //   turns, every mascot answers a click and Enter;
@@ -862,6 +864,119 @@ export async function checkStage6(browser, base) {
     const body = posted[0] || '';
     check('contact form, no JS: gefunden goes with the native post, quelle stays empty without JS', /gefunden=LinkedIn/.test(body) && /(^|&)quelle=(&|$)/.test(body), body.slice(0, 200));
     await ctx.close();
+  }
+  // Stage 6i: scrolling slowly and fast through the whole home page, up and down, with the loops
+  // running at the problem cards and the video: no layout shift after the first paint.
+  for (const w of [1440, 390]) {
+    const page = await browser.newPage({ viewport: { width: w, height: w < 600 ? 844 : 900 } });
+    await page.addInitScript(() => {
+      window.__shifts = [];
+      new PerformanceObserver((l) => { for (const e of l.getEntries()) if (!e.hadRecentInput) window.__shifts.push({ v: e.value, src: (e.sources || []).map((x) => x.node?.className || x.node?.nodeName || '?').join(' | ') }); }).observe({ type: 'layout-shift', buffered: true });
+    });
+    await page.goto(base + '/', { waitUntil: 'load' });
+    await page.waitForTimeout(1500);
+    const H = await page.evaluate(() => document.body.scrollHeight);
+    const at = await page.evaluate(() => ['problems', 'video'].map((id) => document.getElementById(id).getBoundingClientRect().top + scrollY));
+    const wheel = async (to, step, ms) => { let y = await page.evaluate(() => scrollY); const dir = Math.sign(to - y); while ((to - y) * dir > 0) { await page.mouse.wheel(0, dir * step); await page.waitForTimeout(ms); y += dir * step; } };
+    await page.mouse.move(w / 2, 400);
+    for (let r = 0; r < 3; r += 1) {
+      await wheel(at[0], 120, 40); await page.waitForTimeout(4000);
+      await wheel(at[1] + 200, 60, 50); await page.waitForTimeout(4000);
+      await wheel(at[0] - 300, 60, 50);
+    }
+    await wheel(H, 120, 30); await wheel(0, 400, 25); await wheel(H, 400, 25); await wheel(0, 120, 30);
+    await page.waitForTimeout(800);
+    const sh = await page.evaluate(() => window.__shifts);
+    const total = sh.reduce((a, x) => a + x.v, 0);
+    check(`scroll @${w}: slow and fast, up and down, loops running: CLS 0, no single shift > 0.001`, total < 0.001 && sh.every((x) => x.v <= 0.001), JSON.stringify({ total: total.toFixed(4), shifts: sh.slice(0, 6) }));
+    await page.close();
+  }
+  // Stage 6i: opening and closing «Text des Videos» moves nothing above it.
+  {
+    const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+    await page.goto(base + '/', { waitUntil: 'load' });
+    await page.waitForTimeout(1500);
+    await page.evaluate(() => { const s = document.querySelector('.vid__text > summary'); scrollTo(0, s.getBoundingClientRect().top + scrollY - 500); });
+    await page.waitForTimeout(500);
+    const pos = () => page.evaluate(() => [scrollY, Math.round(document.getElementById('video').getBoundingClientRect().top), Math.round(document.querySelector('.vid__text > summary').getBoundingClientRect().top)]);
+    const a = await pos();
+    await page.click('.vid__text > summary'); await page.waitForTimeout(400);
+    const b = await pos();
+    await page.click('.vid__text > summary'); await page.waitForTimeout(400);
+    const c = await pos();
+    check('video: opening and closing the transcript moves nothing above it', JSON.stringify(a) === JSON.stringify(b) && JSON.stringify(a) === JSON.stringify(c), JSON.stringify([a, b, c]));
+    await page.close();
+  }
+  // Stage 6i: the quote fan enters from a stack on entry and again after the row was fully out of view.
+  {
+    const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+    await page.goto(base + '/', { waitUntil: 'load' });
+    await page.waitForTimeout(1500);
+    await page.evaluate(() => { window.__fan = []; window.__runs = 0; const box = document.querySelector('.qcards'); new MutationObserver(() => window.__fan.push(box.className.replace('qcards', '').trim() || 'final')).observe(box, { attributes: true, attributeFilter: ['class'] }); box.addEventListener('transitionrun', (e) => { if (e.target.classList.contains('qcard') && e.propertyName === 'transform') window.__runs += 1; }); });
+    const top = await page.evaluate(() => document.querySelector('.qcards').getBoundingClientRect().top + scrollY);
+    await page.evaluate((y) => scrollTo(0, y - 1800), top); await page.waitForTimeout(1200);
+    const startStacked = await page.evaluate(() => document.querySelector('.qcards').classList.contains('is-stacked'));
+    const n = await page.evaluate(() => document.querySelectorAll('.qcard').length);
+    await page.evaluate((y) => scrollTo(0, y - 300), top); await page.waitForTimeout(1600);
+    const first = await page.evaluate(() => [...window.__fan]);
+    const rects = await page.evaluate(() => [...document.querySelectorAll('.qcard')].map((c) => { const r = c.getBoundingClientRect(); return [r.left, r.right]; }));
+    const apart = rects.every((r, i) => i === 0 || r[0] >= rects[i - 1][1] - 12);
+    await page.evaluate(() => scrollTo(0, 0)); await page.waitForTimeout(600);
+    await page.evaluate((y) => scrollTo(0, y - 300), top); await page.waitForTimeout(1600);
+    const all = await page.evaluate(() => ({ fan: window.__fan, runs: window.__runs }));
+    const fans = all.fan.filter((x) => x === 'is-fanning').length;
+    check('quote fan: stacked before entry, fans out (one transition per card), spread apart; again after leaving and coming back', startStacked && first.includes('is-fanning') && apart && fans >= 2 && all.runs >= n * 2, JSON.stringify({ startStacked, ...all, apart }));
+    // Reduced motion: final layout, no entrance.
+    const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, reducedMotion: 'reduce' });
+    const p2 = await ctx.newPage();
+    await p2.goto(base + '/', { waitUntil: 'load' }); await p2.waitForTimeout(1200);
+    const cls = await p2.evaluate(() => document.querySelector('.qcards').className);
+    check('quote fan, reduced motion: final layout, never stacked', cls === 'qcards', cls);
+    await ctx.close();
+    await page.close();
+  }
+  // Stage 6i: FAQ categories (real toggle buttons), filtering only hides and shows questions, the chat
+  // panel stays where it is, «Auch gefragt» opens a question of another category; one focus ring.
+  {
+    const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+    await page.goto(base + '/', { waitUntil: 'load' });
+    await page.locator('#faq').scrollIntoViewIfNeeded();
+    await page.waitForSelector('.faqbox.is-chat');
+    await page.waitForTimeout(1500);
+    const chatTop = () => page.evaluate(() => Math.round(document.querySelector('.faq__chat').getBoundingClientRect().top - document.querySelector('.faqbox').getBoundingClientRect().top));
+    const visible = () => page.evaluate(() => [...document.querySelectorAll('.faq__list .faq__item')].filter((x) => !x.hidden && x.getBoundingClientRect().height).map((x) => x.id));
+    const oneRow = await page.evaluate(() => new Set([...document.querySelectorAll('.faq__cat')].map((b) => Math.round(b.getBoundingClientRect().top))).size === 1);
+    const t0 = await chatTop();
+    await page.click('.faq__cat[data-cat="3"]'); await page.waitForTimeout(1200);
+    const launch = await visible();
+    const pressed = await page.evaluate(() => [...document.querySelectorAll('.faq__cat')].map((b) => b.getAttribute('aria-pressed')).join());
+    const t1 = await chatTop();
+    const shown = await page.evaluate(() => document.querySelector('.faq__chat .bubble--visitor')?.textContent || '');
+    // «Auch gefragt» chip to a question outside «Launch» («Wie schnell können Sie starten?»).
+    const chip = page.locator('.faq__chat .faq__chip', { hasText: 'Wie schnell' });
+    await chip.click(); await page.waitForTimeout(1200);
+    const after = await page.evaluate(() => ({ open: [...document.querySelectorAll('.faq__list .faq__item')].find((x) => x.open)?.id, all: document.querySelector('.faq__cat[data-cat="0"]').getAttribute('aria-pressed'), hidden: document.querySelectorAll('.faq__list .faq__item[hidden]').length }));
+    check('FAQ categories: one row, «Launch» shows its two questions, aria-pressed, the panel keeps its place and shows one of them', oneRow && launch.join() === 'faq-7,faq-11' && pressed === 'false,false,false,true,false' && t0 === t1 && /Launch-Tag/.test(shown), JSON.stringify({ oneRow, launch, pressed, t0, t1, shown }));
+    check('FAQ categories: «Auch gefragt» opens a question of another category (back to «Alle»)', after.open === 'faq-3' && after.all === 'true' && after.hidden === 0, JSON.stringify(after));
+    // One focus ring: no outline on the summary, a 3 px ring on the rounded question.
+    await page.focus('#faq-2 > summary'); await page.keyboard.press('Shift+Tab'); await page.keyboard.press('Tab');
+    const ring = await page.evaluate(() => { const sm = document.activeElement; const it = sm.closest('.faq__item'); return { id: it?.id, summary: getComputedStyle(sm).outlineStyle, item: getComputedStyle(it).outlineStyle + ' ' + getComputedStyle(it).outlineWidth, radius: getComputedStyle(it).borderTopLeftRadius }; });
+    check('FAQ: one rounded focus ring on the question (none on the summary)', ring.id === 'faq-2' && ring.summary === 'none' && ring.item === 'solid 3px' && ring.radius === '16px', JSON.stringify(ring));
+    await page.close();
+    // Phones: the chips wrap, filtering works in the accordion. Without JS: no chips, all 12 questions.
+    const ph = await browser.newPage({ viewport: { width: 390, height: 844 } });
+    await ph.goto(base + '/', { waitUntil: 'load' });
+    await ph.locator('#faq').scrollIntoViewIfNeeded(); await ph.waitForTimeout(1500);
+    await ph.click('.faq__cat[data-cat="4"]'); await ph.waitForTimeout(300);
+    const phone = await ph.evaluate(() => ({ v: [...document.querySelectorAll('.faq__list .faq__item')].filter((x) => !x.hidden).map((x) => x.id).join(), over: document.documentElement.scrollWidth - innerWidth }));
+    check('FAQ categories @390: «Daten und Verträge» shows two questions, nothing wider than the screen', phone.v === 'faq-5,faq-10' && phone.over <= 0, JSON.stringify(phone));
+    await ph.close();
+    const nj = await browser.newContext({ viewport: { width: 1440, height: 900 }, javaScriptEnabled: false });
+    const np = await nj.newPage();
+    await np.goto(base + '/', { waitUntil: 'load' });
+    const nojs = await np.evaluate(() => ({ cats: getComputedStyle(document.querySelector('.faq__cats')).display, items: [...document.querySelectorAll('.faq__list .faq__item')].filter((x) => x.getBoundingClientRect().height > 0).length }));
+    check('FAQ without JS: no category chips, all 12 questions visible', nojs.cats === 'none' && nojs.items === 12, JSON.stringify(nojs));
+    await nj.close();
   }
   return results;
 }

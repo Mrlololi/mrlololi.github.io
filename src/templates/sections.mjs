@@ -86,11 +86,16 @@ ${t.about.path.map((stop, i) => `<li class="path__stop"><span class="path__label
 // Wide screens: the chosen question as a bubble on the right, Logik (40 px) types for about 0.8 s,
 // then Iva's answer (F1 photo) and «Auch gefragt» chips. Phones: the accordion with the same
 // typing beat on the first open. Reduced motion: instant (assets/js/faq.js). Without JS: details.
+// Stage 6i: category chips above the list (real buttons, aria-pressed; hidden without JS, where all
+// questions stay visible). The chat panel is in the HTML from the start, so the three columns stand
+// before faq.js arrives and nothing below moves.
 export function faq(t) {
   const s = t.s4.faq;
+  const catOf = (i) => s.cats.groups.findIndex(([, ids]) => ids.includes(i)) + 1;
+  const cats = `<div class="faq__cats" role="group" aria-label="${esc(s.cats.label)}"><button class="chip faq__cat" type="button" data-cat="0" aria-pressed="true">${esc(s.cats.all)}</button>${s.cats.groups.map(([name], k) => `<button class="chip faq__cat" type="button" data-cat="${k + 1}" aria-pressed="false">${esc(name)}</button>`).join('')}</div>`;
   const items = t.faq.items
     .map(
-      (f, i) => `<details class="faq__item" id="faq-${i + 1}">
+      (f, i) => `<details class="faq__item" id="faq-${i + 1}" data-cat="${catOf(i)}">
 <summary>${esc(f.q)}</summary>
 <div class="faq__a"><p>${esc(f.a)}</p></div>
 </details>`
@@ -104,9 +109,11 @@ export function faq(t) {
 <p class="faq__intro">${esc(s.intro)}</p>
 <a class="faq__more" href="#contact">${esc(s.missing)}</a>
 </div>
+${cats}
 <div class="faq__list">
 ${items}
 </div>
+<div class="faq__chat" aria-hidden="true"></div>
 <template id="faq-reader"><span class="faq__reading" aria-hidden="true">${reader}<span class="faq__dots"><i></i><i></i><i></i></span></span></template>
 </div>
 </section>`;

@@ -540,6 +540,8 @@ export default {
       also: 'Auch gefragt:',
       missing: 'Frage nicht dabei? → Schreiben Sie mir',
       related: [[3, 7], [2, 6], [6, 1], [8, 11], [3, 9], [7, 0], [10, 2], [2, 0], [3, 11], [4, 5], [6, 4], [8, 0]],
+      // Stage 6i: small category chips above the list, «Alle» first (indices into faq.items).
+      cats: { label: 'Fragen nach Thema', all: 'Alle', groups: [['Zusammenarbeit', [1, 2, 5, 7]], ['Technik und Tools', [0, 3, 8, 11]], ['Launch', [6, 10]], ['Daten und Verträge', [4, 9]]] },
     },
     contact: {
       builderLabel: 'Kurzes Briefing',

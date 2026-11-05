@@ -536,6 +536,7 @@ export default {
       also: 'Also asked:',
       missing: 'Question not here? → Write to me',
       related: [[3, 7], [2, 6], [6, 1], [8, 11], [3, 9], [7, 0], [10, 2], [2, 0], [3, 11], [4, 5], [6, 4], [8, 0]],
+      cats: { label: 'Questions by topic', all: 'All', groups: [['Working together', [1, 2, 5, 7]], ['Tech and tools', [0, 3, 8, 11]], ['Launch', [6, 10]], ['Data and contracts', [4, 9]]] },
     },
     contact: {
       builderLabel: 'Short brief',
