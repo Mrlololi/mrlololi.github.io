@@ -80,10 +80,17 @@ ${header({ t, page, isHome, variant: config.header_variant || 'light' })}
 ${main}
 </main>
 ${footer({ t, page, ratgeber })}
+${/class="[^"]*\bmascot\b/.test(main) || page.key === 'home' ? `<script type="application/json" id="mascot-say">${JSON.stringify({ one: t.brand.pokeOne, many: t.brand.pokeMany, and: t.brand.and, lines: t.brand.lines }).replace(/</g, '\\u003c')}</script>` : ''}
 </body>
 </html>
 `;
 }
+
+// Stage 6f/6g: the one control for all moving pictures (WCAG 2.2.2): «Bewegung pausieren» in the
+// header (next to «Menü» on phones) and in the footer, the same state (loops.js, localStorage).
+// Hidden without JS (nothing moves then): CSS html:not(.js), so its place is there from the first paint.
+const motionIcon = '<svg class="motion-toggle__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path class="motion-toggle__pause" d="M9 6v12M15 6v12"/><path class="motion-toggle__play" d="M8 5.5v13l10.5-6.5z"/></svg>';
+const motionToggle = (t, cls = '') => `<button class="motion-toggle btn btn--secondary btn--sm${cls ? ` ${cls}` : ''}" type="button" aria-pressed="false" data-pause-label="${esc(t.ui.motionPause)}" data-play-label="${esc(t.ui.motionPlay)}">${motionIcon}<span class="motion-toggle__text">${esc(t.ui.motionPause)}</span></button>`;
 
 // Stage 4: variant «light» (warm white bar with blur) or «halo» (pink bar, white ring around each ball).
 function header({ t, page, isHome, variant }) {
@@ -95,6 +102,7 @@ function header({ t, page, isHome, variant }) {
 <a class="wordmark" href="${t.paths.home}">${lockup({ kind: 'header', class: 'logo', wordId: 'mrl-word', halo: variant === 'halo' })}<span class="sr-only">mrlololi ${esc(t.ui.wordmarkName)}</span></a>
 <nav class="site-nav" aria-label="${esc(t.ui.navLabel)}">
 <a class="site-nav__jump" href="#footer-nav">${esc(t.ui.menu)}</a>
+${motionToggle(t, 'motion-toggle--head')}
 <button class="site-nav__toggle" type="button" aria-expanded="false" aria-controls="site-nav-list" hidden>${esc(t.ui.menu)}</button>
 <ul class="site-nav__list" id="site-nav-list">
 ${items}
@@ -137,7 +145,7 @@ function footer({ t, page, ratgeber }) {
 <div class="site-footer__in">
 ${page.key === 'home' ? footerBrand(t) : ''}${footerServices(t, ratgeber)}
 <p class="site-footer__copy">${esc(t.footer.copyright)}</p>
-<p class="site-footer__motion"><button class="motion-toggle btn btn--secondary btn--sm" type="button" hidden aria-pressed="false" data-pause-label="${esc(t.ui.motionPause)}" data-play-label="${esc(t.ui.motionPlay)}">${esc(t.ui.motionPause)}</button></p>
+<p class="site-footer__motion">${motionToggle(t)}</p>
 <nav id="footer-nav" aria-label="${esc(t.ui.footerNavLabel)}">
 <ul class="site-footer__links">
 ${sections}

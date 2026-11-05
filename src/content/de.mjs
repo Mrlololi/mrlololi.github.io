@@ -696,6 +696,7 @@ export default {
       play: '50 Sekunden ansehen',
       label: 'Video: Der Weg einer Anmeldung, 50 Sekunden, ohne Ton, Text im Bild',
       chaptersLabel: 'Kapitel des Videos',
+      chaptersTitle: 'Kapitel',
       chapters: [['Anmeldung', 0.1], ['Warteschlange', 4.1], ['Mail kommt an', 18.1], ['Rate', 26.1], ['Zugang', 34.1]],
       transcript: 'Text des Videos',
       // The seven lines of a.srt (video-konveyer), without timecodes.
@@ -742,8 +743,8 @@ export default {
       all: 'Alle Webprojekte',
       // Shortened from the «Was es zeigt» lines on mrlololi.com/Webprojekte/.
       items: [
-        { key: 'ki', name: 'KI im Kundenservice', path: 'ki-kundenservice/', shows: 'KI mit klaren Regeln: Ein Mensch gibt frei, nichts geht automatisch raus.' },
-        { key: 'langstarter', name: 'Language Starter', path: 'language-starter/?ui=de', shows: '45 Sätze in 42 Sprachen, Sprachausgabe im Browser, ein Druckbild für ein A4-Blatt.' },
+        { key: 'ki', name: 'KI im Kundenservice', path: 'ki-kundenservice/', shows: 'KI-Entwürfe für Kundenmails. Ein Mensch gibt frei, nichts geht automatisch raus.' },
+        { key: 'langstarter', name: 'Language Starter', path: 'language-starter/?ui=de', shows: '66 erste Sätze in 42 Sprachen, mit Gruppenmodus, Plakat und Beamer.' },
         // Stage 6f: GeoAPP and KittyCats as cards too (lines from their pages).
         { key: 'geoapp', name: 'GeoAPP', path: 'geoapp/?lang=de', shows: 'Eine kleine Lern-App für georgische Zahlen, mit Antwort zur Auswahl oder zum Eintippen.' },
         { key: 'kittycats', name: 'KittyCats', path: 'kittycats/', shows: 'Eine Demo für Layout und Scroll-Animation mit HTML, CSS und etwas GSAP.' },
@@ -785,6 +786,15 @@ export default {
     tagline: 'Logik, Lösung, Live.',
     // Accessible name of a mascot button in the hero ({name}: Logik, Lösung, Live).
     mascotJump: '{name} springt',
+    // Stage 6g: a click on a mascot group (its accessible name), then one of these short lines.
+    pokeOne: '{name} winkt',
+    pokeMany: '{names} winken',
+    and: 'und',
+    lines: {
+      logik: ['Erst denken, dann bauen.', 'Ich prüfe das kurz.', 'Jede Anmeldung zählt.', 'Klingt logisch, oder?'],
+      loesung: ['Das kriegen wir hin.', 'Schraube fest, läuft.', 'Einmal testen, bitte.', 'Gelöst!'],
+      live: ['Hallo!', 'Kurs offen!', 'Alles läuft.', 'Schön, dass Sie da sind.'],
+    },
   },
 
   // Stage 5 (28.10.2026): one page per service. The copy is reworded from the home page and

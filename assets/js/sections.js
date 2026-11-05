@@ -38,7 +38,7 @@ function once(el, share, fn) {
 function processSteps() {
   const wrap = document.querySelector('.steps-wrap');
   if (!wrap) return;
-  demo(wrap, { button: wrap.querySelector(':scope > .loopctl'), duration: 3200, rest: 2500 });
+  demo(wrap, { tap: '.steps', duration: 3200, rest: 2500 });
 }
 
 /* ---------- Über mich: the timeline line draws in 2 s; each dot comes on as it passes ---------- */
@@ -122,7 +122,7 @@ function aboutChips() {
   let timers = [];
   const clear = () => { timers.forEach(clearTimeout); timers = []; chips.forEach((c) => c.classList.remove('is-lit')); };
   demo(row, {
-    button: row.querySelector(':scope > .loopctl'),
+    tap: '.aboutrow__chips',
     frames: 1,
     rest: 3000,
     reset: clear,

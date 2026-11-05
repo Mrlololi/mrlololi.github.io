@@ -59,7 +59,6 @@ ${h.flow.nodes.map((n, i) => {
 }).join('')}
 </div>
 <ul class="hf__lines" role="list">${h.flow.lines.map((l, i) => `<li id="hf-line-${i + 1}">${esc(l)}</li>`).join('')}</ul>
-${loopButton(t, 'hero')}
 </figure>
 </div>
 </div>
@@ -80,7 +79,6 @@ export function tools(t) {
 <ul class="tools__list tools__copy" role="list" aria-hidden="true">${pills}</ul>
 </div>
 </div>
-${loopButton(t, 'tools')}
 </div>
 </section>`;
 }

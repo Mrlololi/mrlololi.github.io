@@ -14,16 +14,18 @@ const byFile = Object.fromEntries(all.map((p) => [p.file, p.html]));
 const deHome = byFile['index.html'];
 const js = (f) => readFileSync(new URL(`../assets/js/${f}`, import.meta.url), 'utf8');
 
-test('every looping demo has its pause button (44 px secondary button, named for screen readers)', () => {
+// Stage 6g (Iva 4.11.2026: «слишком много»): no pause button on the pictures; one global toggle in the
+// header and the footer (WCAG 2.2.2), a tap on a picture pauses it; text controls only on the KI demo
+// and the run-log.
+test('pause: no button on the pictures, the global toggle in header and footer, text controls only on the two demos', () => {
   for (const sel of ['data-demo="hero"', 'data-demo="tools"', 'data-demo="prices"', 'data-demo="process"', 'data-demo="about"']) assert.ok(deHome.includes(sel), sel);
-  // Stage 6f: small round icon buttons, their place kept from the start (data-wait).
-  const buttons = deHome.match(/<button class="loopctl btn btn--secondary btn--sm loopctl--icon[^"]*" type="button" data-wait data-pause-label="Pause" data-play-label="Abspielen" data-step-label="Nächster Schritt">/g) || [];
-  assert.ok(buttons.length >= 9, String(buttons.length));
-  assert.ok(!/class="loopctl[^"]*" type="button" hidden/.test(deHome), 'no hidden pause button that would shift the layout');
-  assert.match(deHome, /<span class="loopctl__text">Pause<\/span><span class="sr-only">: Ablauf oben<\/span>/);
+  for (const f of ['index.html', 'en/index.html', '404.html']) assert.ok(!/class="loopctl/.test(byFile[f]), f);
+  for (const f of ['index.html', 'en/index.html', 'impressum/index.html', '404.html']) assert.equal((byFile[f].match(/<button class="motion-toggle/g) || []).length, 2, f);
+  assert.match(deHome, /<button class="motion-toggle btn btn--secondary btn--sm motion-toggle--head" type="button" aria-pressed="false"/);
+  assert.match(byFile['ki-antwortentwuerfe/index.html'], /class="loopctl btn btn--secondary btn--sm" type="button"/);
+  assert.match(deHome, /<div class="rl__ctl">/);
   assert.ok(!/class="replay\b/.test(deHome), 'no «Nochmal ansehen» button while it loops');
-  assert.match(byFile['ki-antwortentwuerfe/index.html'], /class="loopctl btn/);
-  assert.match(byFile['404.html'], /class="loopctl btn/);
+  for (const f of ['main.js', 'prices.js', 'fixdemos.js', 'sections.js']) assert.match(js(f), /tap: /, f);
 });
 
 test('loops.js: loop while visible, pause kept for the visit, no cap on plays', () => {

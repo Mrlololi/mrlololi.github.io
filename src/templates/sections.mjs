@@ -1,6 +1,5 @@
 import { esc, accent, extLink, fill, absUrl } from './util.mjs';
 import { mascotScene } from './mascots.mjs';
-import { loopButton } from './hero.mjs';
 import { ctaStrip } from './pricing.mjs';
 import { briefMail } from '../../assets/js/pure.js';
 import { MASCOTS, mascotSvg } from '../../assets/js/mascot-art.js';
@@ -38,7 +37,6 @@ export function processSteps(t) {
 <ol class="steps" role="list">
 ${steps}
 </ol>
-${loopButton(t, 'process')}
 </div>
 ${ctaStrip(t)}
 </div>
@@ -75,7 +73,6 @@ ${t.about.paragraphs.map((p) => `<p data-enter="lines">${esc(p)}</p>`).join('\n'
 <div class="aboutrow demo" data-demo="about" role="group" aria-labelledby="aboutrow-label">
 <p class="aboutrow__label" id="aboutrow-label">${esc(t.s6.e.aboutLabel)}</p>
 <ul class="aboutrow__chips" role="list">${t.s6.e.aboutRow.map((x) => `<li class="trust">${esc(x)}</li>`).join('')}</ul>
-${loopButton(t, 'about')}
 </div>
 <ol class="path" role="list" aria-label="${esc(t.about.pathLabel)}">
 ${t.about.path.map((stop, i) => `<li class="path__stop"><span class="path__label">${esc(stop)}</span><p class="path__story" id="path-story-${i + 1}">${esc(s.stories[i])}</p></li>`).join('\n')}
@@ -208,7 +205,7 @@ ${contactForm(t, config, { page: t.paths.home })}
 </div>
 <div class="contact__side">
 <div class="contact__card">
-<div class="contact__who"><picture><source type="image/avif" srcset="/assets/img/avatar-44.avif 1x, /assets/img/avatar-88.avif 2x"><source type="image/webp" srcset="/assets/img/avatar-44.webp 1x, /assets/img/avatar-88.webp 2x"><img src="/assets/img/avatar-44.jpg" srcset="/assets/img/avatar-88.jpg 2x" width="64" height="64" loading="lazy" decoding="async" alt="${esc(c.photoAlt)}"></picture>
+<div class="contact__who"><picture><source type="image/avif" srcset="/assets/img/avatar-88.avif 1x, /assets/img/avatar-128.avif 2x"><source type="image/webp" srcset="/assets/img/avatar-88.webp 1x, /assets/img/avatar-128.webp 2x"><img src="/assets/img/avatar-88.jpg" srcset="/assets/img/avatar-128.jpg 2x" width="64" height="64" loading="lazy" decoding="async" alt="${esc(c.photoAlt)}"></picture>
 <p class="contact__bubble" data-text="${esc(c.bubble)}">${esc(c.bubble)}</p></div>
 <p class="contact__time-row"><time class="contact__time" hidden data-label="${esc(c.time)}" data-locale="${t.locale}"></time></p>
 <ul class="contact__links" role="list">
@@ -218,6 +215,7 @@ ${contactForm(t, config, { page: t.paths.home })}
 </ul>
 </div>
 <div class="contact__after card">
+<picture class="contact__iva"><source type="image/avif" srcset="/assets/img/contact-iva-340.avif 340w, /assets/img/contact-iva-573.avif 573w" sizes="5.5rem"><source type="image/webp" srcset="/assets/img/contact-iva-340.webp 340w, /assets/img/contact-iva-573.webp 573w" sizes="5.5rem"><img src="/assets/img/contact-iva-340.jpg" srcset="/assets/img/contact-iva-340.jpg 340w, /assets/img/contact-iva-573.jpg 573w" sizes="5.5rem" width="340" height="456" loading="lazy" decoding="async" alt="${esc(c.photoAlt)}"></picture>
 <h3 class="contact__after-title">${esc(c.after.title)}</h3>
 <ol class="contact__steps" role="list">${c.after.steps.map((s, i) => `<li><span class="contact__step-n" aria-hidden="true">${i + 1}</span><span>${esc(s)}</span></li>`).join('')}</ol>
 </div>

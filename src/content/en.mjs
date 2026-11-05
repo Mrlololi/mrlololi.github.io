@@ -709,8 +709,8 @@ export default {
       all: 'All web projects',
       // Shortened from the «What it shows» lines on mrlololi.com/Webprojekte/.
       items: [
-        { key: 'ki', name: 'AI in customer service (in German)', path: 'ki-kundenservice/', shows: 'AI with clear rules: a person approves, nothing is sent automatically.' },
-        { key: 'langstarter', name: 'Language Starter', path: 'language-starter/', shows: '45 phrases in 42 languages, speech in the browser, a print layout for one A4 page.' },
+        { key: 'ki', name: 'AI in customer service (in German)', path: 'ki-kundenservice/', shows: 'AI drafts for customer emails. A person approves, nothing is sent automatically.' },
+        { key: 'langstarter', name: 'Language Starter', path: 'language-starter/', shows: '66 first phrases in 42 languages, with group mode, poster and projector.' },
         { key: 'geoapp', name: 'GeoAPP', path: 'geoapp/?lang=en', shows: 'A small app for learning Georgian numbers, answering by choice or by typing.' },
         { key: 'kittycats', name: 'KittyCats', path: 'kittycats/', shows: 'A layout and scroll animation demo with HTML, CSS and a little GSAP.' },
       ],
@@ -750,6 +750,14 @@ export default {
     tagline: 'Logic, Loop, Live.',
     // Accessible name of a mascot button in the hero ({name}: Logik, Lösung, Live).
     mascotJump: '{name} jumps',
+    pokeOne: '{name} waves',
+    pokeMany: '{names} wave',
+    and: 'and',
+    lines: {
+      logik: ['Think first, then build.', 'Let me check that.', 'Every sign-up counts.', 'Sounds logical, right?'],
+      loesung: ['We can fix that.', 'Bolt tight, it runs.', 'One more test, please.', 'Sorted!'],
+      live: ['Hello!', 'Course open!', 'All running.', 'Nice to see you.'],
+    },
   },
 
   // Stage 5 (28.10.2026): one page per service, the English twins of the German pages (de.mjs).

@@ -1,5 +1,4 @@
 import { esc, accent } from './util.mjs';
-import { loopButton } from './hero.mjs';
 
 // Stage 6: «Leistungen und Preise» in one glance. On top the five «Welches Paket passt?» lines as
 // jump links (the target card gets a short ring, CSS :target). Three main cards (name, price, one
@@ -101,11 +100,10 @@ ${MAIN.map((id) => card(t, items[id], config.contact_email)).join('\n')}
 <div class="promise">${check}<p>${esc(p.promise)}</p>
 <ol class="days" role="list" aria-hidden="true">${t.s6.c.days.map((d) => `<li>${esc(d)}</li>`).join('')}</ol>
 </div>
-<p class="tariff__ctl">${loopButton(t, 'prices')}</p>
 </div>
 </div>
 <div class="more demo" data-demo="more">
-<div class="more__head"><h3 class="more__title">${esc(p.more)}</h3>${loopButton(t, 'more')}</div>
+<div class="more__head"><h3 class="more__title">${esc(p.more)}</h3></div>
 <ul class="rows" role="list">
 ${MORE.map((id) => row(t, items[id], config.contact_email)).join('\n')}
 </ul>

@@ -4,7 +4,7 @@
 // follow the pointer), running while the hero loops and stopping with its pause button
 // («hero:motion»). The footer three wave when the footer comes into view. Reduced motion: nothing
 // moves, a click only shows the happy face for a moment.
-import { parts } from './mascot-art.js';
+import { parts, MASCOTS } from './mascot-art.js';
 import { reduceMotion, motion } from './loops.js';
 
 // Swaps eyes, mouth, arms and accessory for another emotion (the body stays).
@@ -42,7 +42,7 @@ export function initMascots() {
   const spots = [...document.querySelectorAll('.mascot-spot')];
   for (const b of spots) {
     const svg = b.querySelector('.mascot');
-    b.querySelector('.mascot-btn').addEventListener('click', () => jump(svg));
+    b.querySelector('.mascot-btn').addEventListener('click', () => { jump(svg); speak(b, [svg]); });
     // Choosing a flow node also greets it.
     document.querySelector(`.hf__btn--${b.dataset.node}`)?.addEventListener('click', () => jump(svg, 18));
   }
@@ -58,6 +58,85 @@ export function initMascots() {
     flow.addEventListener('demo:run', () => hops(0));
   }
   footer();
+  poke();
+}
+
+/* ---------- Stage 6g: every mascot reacts (Iva's wish) ---------- */
+// Each group of mascots (a scene, the footer three, the 404 picture) becomes one button: one tab stop,
+// a name («Logik, Lösung und Live winken»), a visible focus ring, at least 44 px. A click or Enter /
+// Space: a hop (only the happy face under reduced motion) and a small bubble with one short line;
+// the line is also told to screen readers (polite). The reading Logik in the FAQ chat answers a click
+// too, without a tab stop in the middle of the chat. Groups added later (thank-you panels, the chat)
+// are prepared when they appear.
+const GROUPS = '.mscene, .footer-mascots, .nf__scene';
+const say = (() => { try { return JSON.parse(document.getElementById('mascot-say')?.textContent || 'null'); } catch { return null; } })();
+const KEYS = MASCOTS.map((m) => m.key);
+const last = new Map();
+let live = null;
+
+function speak(host, svgs) {
+  if (!say) return;
+  const key = KEYS[Number(svgs[0]?.dataset.mascot)] || 'live';
+  const lines = say.lines[key] || [];
+  if (!lines.length) return;
+  let i = Math.floor(Math.random() * lines.length);
+  if (lines.length > 1 && i === last.get(key)) i = (i + 1) % lines.length;
+  last.set(key, i);
+  const box = host instanceof SVGElement ? host.parentElement : host;
+  if (getComputedStyle(box).position === 'static') box.style.position = 'relative'; // no shift: no offsets
+  box.querySelector(':scope > .mbubble')?.remove();
+  const b = document.createElement('span');
+  b.className = 'mbubble';
+  b.setAttribute('aria-hidden', 'true');
+  b.textContent = lines[i];
+  box.append(b);
+  setTimeout(() => b.remove(), 2400);
+  if (!live) { live = document.createElement('p'); live.className = 'sr-only'; live.setAttribute('aria-live', 'polite'); document.body.append(live); }
+  live.textContent = '';
+  setTimeout(() => { live.textContent = `${MASCOTS[KEYS.indexOf(key)].name}: ${lines[i]}`; }, 50);
+}
+
+function prepare(g) {
+  if ('poke' in g.dataset) return;
+  const svgs = [...g.querySelectorAll('svg.mascot')];
+  if (!svgs.length || !say) return;
+  const names = svgs.map((s) => MASCOTS[Number(s.dataset.mascot)].name);
+  const label = names.length === 1 ? say.one.replace('{name}', names[0]) : say.many.replace('{names}', `${names.slice(0, -1).join(', ')} ${say.and} ${names.at(-1)}`);
+  g.dataset.poke = '';
+  // Inside a picture that is hidden from screen readers (the problem cards): clickable only, no tab
+  // stop there (a focusable element may not sit inside aria-hidden).
+  if (g.parentElement?.closest('[aria-hidden="true"]')) return;
+  g.setAttribute('role', 'button');
+  g.tabIndex = 0;
+  g.setAttribute('aria-label', label);
+  g.removeAttribute('aria-hidden');
+  svgs.forEach((s) => s.setAttribute('aria-hidden', 'true'));
+}
+
+function hit(g, target) {
+  const one = target?.closest('svg.mascot');
+  const svgs = one ? [one] : [...g.querySelectorAll('svg.mascot')];
+  svgs.forEach((s, i) => setTimeout(() => jump(s, 22), i * 90));
+  speak(g, svgs);
+}
+
+function poke() {
+  const all = (root) => { if (root.matches?.(GROUPS)) prepare(root); root.querySelectorAll?.(GROUPS).forEach(prepare); };
+  all(document);
+  new MutationObserver((list) => list.forEach((m) => m.addedNodes.forEach((n) => { if (n.nodeType === 1) all(n); }))).observe(document.body, { childList: true, subtree: true });
+  document.addEventListener('click', (e) => {
+    const g = e.target.closest('[data-poke]');
+    if (g) { hit(g, e.target); return; }
+    const reader = e.target.closest('svg.faq__logik');
+    if (reader) { jump(reader, 18); speak(reader, [reader]); }
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    const g = e.target.closest?.('[data-poke]');
+    if (!g || e.target !== g) return;
+    e.preventDefault();
+    hit(g);
+  });
 }
 
 // Footer: each time it comes into view all three wave three times (about 2 s), then rest.

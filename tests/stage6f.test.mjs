@@ -117,7 +117,7 @@ test('6. KI card: the full text reserves the height; equal picture heights; KI p
 });
 
 test('7. one conductor: icon pause buttons in place from the start, global «Bewegung pausieren»', () => {
-  for (const h of [deHome, enHome]) assert.match(h, /<button class="motion-toggle btn btn--secondary btn--sm" type="button" hidden aria-pressed="false" data-pause-label="[^"]+" data-play-label="[^"]+">/);
+  for (const h of [deHome, enHome]) assert.match(h, /<button class="motion-toggle btn btn--secondary btn--sm" type="button" aria-pressed="false" data-pause-label="[^"]+" data-play-label="[^"]+">/);
   assert.match(css, /\.loopctl\[data-wait\] \{ visibility: hidden; \}/);
   assert.match(js('loops.js'), /try \{ localStorage\.setItem\('motion-paused'/);
   assert.match(js('main.js'), /initMotionToggle\(\);/);
@@ -139,7 +139,7 @@ test('11/12/13/14. Launch flow picture, EN audience line, 404 order, video and e
   assert.match(enHome, /For online course creators selling in Austria, Germany and Switzerland/);
   assert.match(enHome, /<p class="services__audience">Selling to German-speaking customers\? I set up double opt-in, German-language emails and your legal pages \(with your texts\)\.<\/p>/);
   assert.match(enHome, /AI in customer service \(in German\)/);
-  assert.match(deHome, /<video class="vid__v vid__v--wide" controls playsinline muted preload="none" tabindex="-1"/);
+  assert.match(deHome, /<video class="vid__v" playsinline muted preload="none" tabindex="-1"/);
   assert.match(css, /\.hero__eyebrow \{ color: #8E3650; \}/);
   assert.match(css, /\.nf-en \.nf__alt \{ order: -1; \}/);
 });

@@ -42,14 +42,20 @@ export const motion = {
 };
 document.documentElement.dataset.motion = motion.paused ? 'paused' : 'on';
 
-// The footer toggle «Bewegung pausieren» / «Bewegung abspielen».
+// The toggle «Bewegung pausieren» / «Bewegung abspielen» (Stage 6g: in the header and the footer, one
+// state; every toggle shows it).
 export function initMotionToggle() {
-  for (const b of document.querySelectorAll('.motion-toggle')) {
-    const label = () => { b.textContent = motion.paused ? b.dataset.playLabel : b.dataset.pauseLabel; b.setAttribute('aria-pressed', String(motion.paused)); };
-    b.hidden = false;
-    label();
-    b.addEventListener('click', () => { motion.set(!motion.paused); label(); });
-  }
+  const toggles = [...document.querySelectorAll('.motion-toggle')];
+  const label = () => toggles.forEach((b) => {
+    const text = motion.paused ? b.dataset.playLabel : b.dataset.pauseLabel;
+    const span = b.querySelector('.motion-toggle__text');
+    if (span) span.textContent = text; else b.textContent = text;
+    b.setAttribute('aria-pressed', String(motion.paused));
+    b.setAttribute('aria-label', text);
+  });
+  toggles.forEach((b) => { b.hidden = false; b.addEventListener('click', () => motion.set(!motion.paused)); });
+  document.addEventListener('motion:change', label);
+  label();
 }
 
 function observer() {
@@ -141,7 +147,10 @@ function paint(d) {
 // on load (hero, 404); the loop takes over after that. held(): true while the demo should hold. button: its pause button (or null). manual:
 // never autoplays (a card inside a group that loops as a chain). ambient: kept for the callers, no
 // longer outside the one-demo rule (Stage 6f).
-export function demo(el, { reset = () => {}, play = () => {}, finish = () => {}, frame, state, held, frames = 2, duration = 3000, rest = MIN_REST, loadMs = 0, button = null, manual = false, key = el?.dataset.demo }) {
+// tap (Stage 6g): a click or tap on the picture itself (or on the elements tap names) pauses or resumes
+// this demo; a small state icon shows on hover and for a moment after the tap (CSS [data-tap]).
+// Links, buttons and fields inside keep their own meaning.
+export function demo(el, { reset = () => {}, play = () => {}, finish = () => {}, frame, state, held, frames = 2, duration = 3000, rest = MIN_REST, loadMs = 0, button = null, manual = false, tap = false, key = el?.dataset.demo }) {
   if (!el) return null;
   const d = { el, key, hooks: { reset, play, finish, state, held }, button, auto: !manual, phase: 'end', looping: false, enough: false, timer: 0, duration, rest: Math.max(MIN_REST, rest), frames, step: frames - 1, paused: Boolean(key) && store.get(key) };
   // For the demo's own controls: skip to the end of this round, or start a round now.
@@ -154,6 +163,27 @@ export function demo(el, { reset = () => {}, play = () => {}, finish = () => {},
   };
   d.replay = () => { if (reduceMotion.matches || d.paused || motion.paused) { finish(); set(d, 'end'); } else if (d.looping) cycle(d); else decide(); };
   all.push(d);
+  const toggle = () => {
+    d.paused = !d.paused;
+    if (key) store.set(key, d.paused);
+    paint(d);
+    if (d.paused) stop(d, 'end');
+    decide();
+  };
+  if (tap && !manual) {
+    const targets = typeof tap === 'string' ? [...el.querySelectorAll(tap)] : [el];
+    const mark = () => targets.forEach((x) => { x.dataset.tap = d.paused ? 'paused' : 'on'; });
+    mark();
+    el.addEventListener('click', (e) => {
+      const hit = targets.find((x) => x.contains(e.target));
+      if (!hit || e.target.closest('a, button, input, select, textarea, summary, label, [role="button"]')) return;
+      if (reduceMotion.matches || motion.paused) return;
+      toggle();
+      mark();
+      hit.classList.add('is-flash');
+      setTimeout(() => hit.classList.remove('is-flash'), 1200);
+    });
+  }
   if (button) {
     paint(d);
     button.addEventListener('click', () => {
@@ -163,11 +193,7 @@ export function demo(el, { reset = () => {}, play = () => {}, finish = () => {},
         el.dataset.play = d.step === frames - 1 ? 'end' : 'start';
         return;
       }
-      d.paused = !d.paused;
-      if (key) store.set(key, d.paused);
-      paint(d);
-      if (d.paused) stop(d, 'end');
-      decide();
+      toggle();
     });
   }
   if (reduceMotion.matches || !('IntersectionObserver' in window) || manual) return d;

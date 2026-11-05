@@ -53,23 +53,28 @@ test('nav: Leistungen, Projekte, Über mich, Kontakt (EN alike)', () => {
   assert.match(deHome, /<section class="section projects[^"]*" id="projects"/);
 });
 
-test('video: only on the DE home and /launch-technik/, preload none, two sources, neither with src', () => {
+// Stage 6g: one <video> with both files in data attributes (video.js picks one by orientation);
+// no native controls before the first play (one set of controls at a time).
+test('video: only on the DE home and /launch-technik/, preload none, one element, no src yet', () => {
   const withVideo = all.filter((p) => p.html.includes('data-video')).map((p) => p.file).sort();
   assert.deepEqual(withVideo, ['index.html', 'launch-technik/index.html']);
   for (const f of withVideo) {
     const h = byFile[f];
     const vids = h.match(/<video\b[^>]*>/g);
-    assert.equal(vids.length, 2, f);
+    assert.equal(vids.length, 1, f);
     for (const v of vids) {
       assert.match(v, /preload="none"/);
-      assert.match(v, /\bcontrols\b/);
+      assert.ok(!/\bcontrols\b/.test(v), 'controls only after the first play');
+      assert.match(v, /data-wide="\/assets\/video\/anmeldung-16x9\.mp4" data-tall="\/assets\/video\/anmeldung-9x16\.mp4"/);
       assert.match(v, /\bplaysinline\b/);
       assert.match(v, /\bmuted\b/);
       assert.ok(!/\sautoplay\b/.test(v), 'no autoplay');
       assert.ok(!/\ssrc=/.test(v), 'src only from the script');
-      assert.match(v, /data-src="\/assets\/video\/anmeldung-(16x9|9x16)\.mp4"/);
     }
-    assert.equal((h.match(/<button class="vid__chip chip" type="button" data-t="[\d.]+" aria-label="Video ab \d:\d\d abspielen: [^"]+">/g) || []).length, 5);
+    // Stage 6g: the chapters as a small list inside the transcript, not big buttons under the video.
+    const tr = h.slice(h.indexOf('<details class="vid__text'), h.indexOf('</details>', h.indexOf('<details class="vid__text')));
+    assert.equal((tr.match(/<button class="vid__chip" type="button" data-t="[\d.]+" aria-label="Video ab \d:\d\d abspielen: [^"]+">/g) || []).length, 5);
+    assert.match(tr, /<p class="vid__chapters-title" id="vid-chapters">Kapitel<\/p>/);
     assert.match(h, /aria-label="Video ab 0:04 abspielen: Warteschlange">[\s\S]*?<span class="vid__time">0:04<\/span> Warteschlange<\/button>/);
     for (const scene of de.s6.b.scenes) assert.ok(h.includes(scene.replace(/«/g, '«')), scene);
     assert.match(h, /<summary>Text des Videos<\/summary>/);
@@ -109,7 +114,7 @@ test('problem cards: solved HTML, card 3 never says «fehlgeschlagen» there, li
   assert.ok(!/Kartenzahlung fehlgeschlagen/.test(text(cards[2])), 'the big red chip only in the start frame');
   assert.match(cards[0], /<span class="sig__n">47<\/span>\/47/);
   for (const [i, c] of cards.entries()) {
-    assert.match(c, /<button class="loopctl btn btn--secondary btn--sm loopctl--icon loopctl--card" type="button" data-wait/);
+    assert.ok(!/class="loopctl/.test(c), 'Stage 6g: no pause button on the card');
     assert.match(c, new RegExp(`<a class="pc__link" href="#pkg-${de.problems.items[i].pkg}">`));
   }
   assert.equal(de.problems.intro, 'Typische Stellen, an denen Launches haken.');

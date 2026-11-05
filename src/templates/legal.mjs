@@ -1,6 +1,5 @@
 import { esc, fill, formatDate } from './util.mjs';
 import { mascotSvg } from '../../assets/js/mascot-art.js';
-import { loopButton } from './hero.mjs';
 import { mascotScene } from './mascots.mjs';
 
 const mail = (config) => `<a href="mailto:${esc(config.contact_email)}">${esc(config.contact_email)}</a>`;
@@ -129,7 +128,6 @@ ${nfLinks(t, ratgeber)}
 <div class="nf__pic">
 ${nfScene(t)}
 <p class="nf__caption">${esc(t.s6.b.repaired)}</p>
-<p class="nf__ctl">${loopButton(t, 'notFound')}</p>
 </div>
 </div>
 <section class="nf__in nf__alt" lang="${alt.lang}" aria-labelledby="nf-alt">

@@ -18,14 +18,14 @@ export function init({ locale }) {
   const cards = figs.map((fig) => card(fig, locale));
   const row = matchMedia('(min-width: 1100px)').matches;
   if (!row) {
-    cards.forEach((c) => demo(c.fig, { ...c.hooks, rest: PAUSE, button: c.fig.querySelector(':scope > .loopctl') }));
+    cards.forEach((c) => demo(c.fig, { ...c.hooks, rest: PAUSE, tap: '.fixdemo__art' }));
     return;
   }
   let timers = [];
   const set = (c, phase) => { c.fig.dataset.play = phase; };
   const clear = () => { timers.forEach(clearTimeout); timers = []; };
   demo(document.querySelector('.pcs'), {
-    button: document.querySelector('.pcs__ctl .loopctl'),
+    tap: '.fixdemo__art',
     rest: 600,
     frames: 2,
     reset: () => { clear(); cards.forEach((c) => { c.hooks.reset(); set(c, 'start'); }); },

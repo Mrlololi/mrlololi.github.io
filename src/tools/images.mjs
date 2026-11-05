@@ -33,10 +33,15 @@ await mkdir(out, { recursive: true });
 // Über mich: Hallstatt photo 900x1200 -> 4:5 crop (a little sky trimmed), shown at 340 px. Back by Iva's
 // choice (29.10.2026, after Stage 6b); the #252 photo of Stage 6b is kept in src/_alt/stage6b/img/.
 await variants(src('about-hallstatt.jpg'), 'about', [[340, 425], [680, 850]], { crop: { left: 0, top: 75, width: 900, height: 1125 } });
+// Stage 6g, section 1a (Iva, 5.11.2026): the portrait at the lake in Hallstatt (573x768) is the only new
+// photo: the contact block beside «Ich lese Ihre Anfrage selbst» (340 and 573 wide, never above the
+// source) and the round badge below. The other AI portraits stay in input/ (sources in src/_alt/stage6g/).
+await variants(src('iva-hallstatt-see.jpg'), 'contact-iva', [[340, 456], [573, 768]]);
 // Hero chip and FAQ chat avatar: the smiling face, square, shown round at 44 / 36 px.
 // Hero badge and FAQ: Iva's choice F1 (DSC01286, square face crop, 29.10.2026). Earlier ones:
 // src/_alt/stage5/img/ (smiling), src/_alt/stage6b/img/ (#140).
-await variants(src('avatar-iva-badge-F1.jpg'), 'avatar', [[44, 44], [88, 88]]);
+// Stage 6g (1a): the round badge, a square face crop of the Hallstatt lake portrait.
+await variants(src('iva-hallstatt-see.jpg'), 'avatar', [[44, 44], [88, 88], [128, 128]], { crop: { left: 135, top: 90, width: 300, height: 300 } });
 // Case 1 screenshot 1440x900 (16:10), shown at up to 640 px.
 await variants(src('case-alexandrafry.png'), 'case-alexandrafry', [[640, 400], [1280, 800]]);
 // Stage 4: the long capture that scrolls inside the browser frame (capture-case.mjs --long).

@@ -12,14 +12,14 @@ export function init() {
   const cards = document.querySelector('.pkgs-wrap[data-demo="prices"]');
   if (cards) {
     chain(cards, [['.viz--quick', 0, 1800], ['.viz--check', 1000, 2300], ['.viz--flow', 2100, 1700], ['.days', 2600, 1800]], {
-      button: cards.querySelector('.tariff__ctl .loopctl'),
+      tap: '.viz, .days',
       rest: 600,
     });
   }
   const more = document.querySelector('.more[data-demo="more"]');
   if (more) {
     chain(more, [['.viz--site', 0, 1500], ['.viz--chat', 2500, 1900, typer]], {
-      button: more.querySelector('.more__head .loopctl'),
+      tap: '.viz',
       rest: 1000,
     });
   }

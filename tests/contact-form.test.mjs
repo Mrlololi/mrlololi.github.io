@@ -78,8 +78,9 @@ test('Datenschutz: section «Kontaktformular» / «Contact form» before «Termi
 test('prices: two chains with their pause buttons beside them; the 30-day box centred (max 820 px)', () => {
   const h = byFile['index.html'];
   assert.match(h, /<div class="pkgs-wrap demo" data-demo="prices">\n<ul class="pkgs"/);
-  assert.match(h, /<div class="promise-row">\n<div class="promise">[\s\S]*?<\/div>\n<p class="tariff__ctl"><button class="loopctl/);
-  assert.match(h, /<div class="more demo" data-demo="more">\n<div class="more__head"><h3 class="more__title">Weitere Leistungen<\/h3><button class="loopctl[^"]*"[^>]*>[\s\S]*?<span class="sr-only">: Bilder bei «Weitere Leistungen»<\/span><\/button><\/div>/);
+  // Stage 6g: no pause buttons on the pictures (the global toggle and a tap on the picture).
+  assert.match(h, /<div class="promise-row">\n<div class="promise">[\s\S]*?<\/div>\n<\/div>/);
+  assert.match(h, /<div class="more demo" data-demo="more">\n<div class="more__head"><h3 class="more__title">Weitere Leistungen<\/h3><\/div>/);
   assert.match(css, /\.promise-row \.promise \{ width: 100%; max-width: 51\.25rem;/);
   const p = readFileSync(new URL('../assets/js/prices.js', import.meta.url), 'utf8');
   assert.match(p, /\['\.viz--site', 0, 1500\], \['\.viz--chat', 2500, 1900, typer\]/);

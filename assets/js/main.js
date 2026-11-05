@@ -92,9 +92,9 @@ function initHeroLine() {
     flow.closest('.hero__visual').dataset.motion = on ? 'on' : 'off';
     document.dispatchEvent(new CustomEvent('hero:motion', { detail: on }));
   };
-  d = demo(flow, { duration: 4300, rest: 3000, loadMs: Math.max(0, 4300 - performance.now()), button: flow.querySelector(':scope > .loopctl'), state: () => queueMicrotask(tell) });
+  d = demo(flow, { duration: 4300, rest: 3000, loadMs: Math.max(0, 4300 - performance.now()), tap: '.hf-wrap', state: () => queueMicrotask(tell) });
   if (d && !d.paused && d.timer) { d.phase = 'load'; tell(); }
-  flow.querySelector(':scope > .loopctl')?.addEventListener('click', () => queueMicrotask(tell));
+  flow.addEventListener('click', () => queueMicrotask(tell));
 }
 
 /* ---------- Tool row: a marquee while visible (ambient: it never takes the focus), with its button ---------- */
@@ -103,7 +103,7 @@ function initMarquee() {
   for (const box of document.querySelectorAll('.tools__in[data-demo="tools"]')) {
     // About 20 px a second, whatever the row's width (Stage 6f).
     const speed = () => { const tr = box.querySelector('.marquee__track'); if (tr) box.style.setProperty('--marquee-s', `${Math.max(20, Math.round(tr.scrollWidth / 2 / 20))}s`); };
-    demo(box, { duration: 2147483000, rest: 0, frames: 1, button: box.querySelector(':scope > .loopctl'), state: (p) => { if (p === 'run') speed(); } });
+    demo(box, { duration: 2147483000, rest: 0, frames: 1, tap: '.marquee', state: (p) => { if (p === 'run') speed(); } });
   }
 }
 

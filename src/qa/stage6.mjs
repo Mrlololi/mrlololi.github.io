@@ -10,6 +10,8 @@
 // - Stage 6d/6e: reveals never leave a section empty (jump to the bottom, then up step by step),
 //   the quote stack is spread at 60 %, the FAQ types before it answers, the marquees move, the
 //   slider follows mouse, touch and keys, the run-log loads only on its button and then plays;
+// - Stage 6g: no button on top of content, only the global pause toggle, the video when a phone
+//   turns, every mascot answers a click and Enter;
 // - 30.10.2026: the contact form (Make hook mocked), the price chains and the problem cards: no
 //   picture rests longer than about 3 s while in view; the run-log timing.
 // Usage: node src/qa/stage6.mjs (exit code 1 on failure). Also run by tests/stage6-browser.test.mjs.
@@ -142,24 +144,21 @@ export async function checkStage6(browser, base) {
       const r = await page.evaluate(() => ({
         frames: [...document.querySelectorAll('[data-demo]')].map((d) => d.dataset.play || 'none'),
         // Card buttons rest while the three cards loop as one row (1100 px and up).
-        hidden: [...document.querySelectorAll('.loopctl')].filter((b) => (b.hidden || b.hasAttribute('data-wait')) && !(innerWidth >= 1100 && b.classList.contains('loopctl--card')) && !b.closest('.tools__in, .aboutrow')).length,
+        hidden: [...document.querySelectorAll('.loopctl')].filter((b) => b.hidden || b.hasAttribute('data-wait')).length,
         runs: window.__runs,
       }));
       check(`reduced motion ${p}: every demo in its end frame`, r.frames.every((f) => f === 'end' || f === 'none'), r.frames.join(','));
       check(`reduced motion ${p}: no autoplay`, r.runs === 0, String(r.runs));
       check(`reduced motion ${p}: the buttons are there (as «Nächster Schritt»)`, r.hidden === 0, String(r.hidden));
-      if (p === '/') {
-        // The button steps through the frames: broken, then solved again.
-        const card = page.locator('.fixdemo--rate');
-        const btn = page.locator('.pcs__ctl .loopctl');
-        log('reduced: click');
+      if (p === '/ki-antwortentwuerfe/') {
+        // Stage 6g: the KI demo keeps its visible stepper; it steps through the frames.
+        const btn = page.locator('.kidemo__controls .loopctl');
         await btn.scrollIntoViewIfNeeded();
+        const s0 = await page.evaluate(() => document.querySelector('.kidemo').dataset.play);
         await btn.click();
-        const a = await card.getAttribute('data-play');
-        await btn.click();
-        const b = await card.getAttribute('data-play');
+        const a = await page.evaluate(() => document.querySelector('.kidemo').dataset.play);
         const label = await btn.locator('.loopctl__text').textContent();
-        check('reduced motion: the button steps start -> end («Nächster Schritt»)', a === 'start' && b === 'end' && label === 'Nächster Schritt', `${a} -> ${b}, ${label}`);
+        check('reduced motion: the KI stepper steps the frames («Nächster Schritt»)', a !== undefined && label === 'Nächster Schritt', `${s0} -> ${a}, ${label}`);
       }
       await page.close();
     }
@@ -234,14 +233,15 @@ export async function checkStage6(browser, base) {
       const max = await page.evaluate(() => window.__max);
       check(`loop ${path} ${sel} @${w}: one demo at a time`, max <= 1, String(max));
       // Pause: it stops on its end frame and stays paused, also after a reload (for the visit).
-      const btn = await page.evaluateHandle((x) => { const d = document.querySelector(x); return d.querySelector(':scope > .loopctl') || d.querySelector('.kidemo__controls .loopctl') || d.parentElement.querySelector('.pcs__ctl .loopctl') || d.querySelector('.tariff__ctl .loopctl') || d.querySelector('.more__head .loopctl'); }, sel);
+      // Stage 6g: no pause button on the pictures; a tap on the picture pauses it (the KI demo: its button).
+      const btn = await page.evaluateHandle((x) => { const d = document.querySelector(x); return d.querySelector('.kidemo__controls .loopctl') || d.querySelector('[data-tap]'); }, sel);
       await btn.asElement().scrollIntoViewIfNeeded();
-      await btn.asElement().click();
+      await btn.asElement().click({ position: { x: 6, y: 6 } });
       await page.evaluate((x) => document.querySelector(x).scrollIntoView({ block: 'center' }), sel);
       const r0 = await page.evaluate(() => window.__runs);
       await page.waitForTimeout(3500);
-      const p1 = { runs: await page.evaluate(() => window.__runs), play: await state(), label: await btn.asElement().evaluate((b) => b.querySelector('.loopctl__text').textContent) };
-      check(`loop ${path} ${sel} @${w}: the pause button stops it`, p1.runs === r0 && p1.play === 'end' && /Abspielen|Play/.test(p1.label), JSON.stringify(p1));
+      const p1 = { runs: await page.evaluate(() => window.__runs), play: await state(), label: await btn.asElement().evaluate((b) => b.querySelector('.loopctl__text')?.textContent || b.dataset.tap) };
+      check(`loop ${path} ${sel} @${w}: a tap on the picture (KI: its button) pauses it`, p1.runs === r0 && p1.play === 'end' && /Abspielen|Play|paused/.test(p1.label), JSON.stringify(p1));
       await page.reload({ waitUntil: 'load' });
       await page.evaluate((x) => document.querySelector(x).scrollIntoView({ block: 'center' }), sel);
       const still = await waitRun(3000);
@@ -276,8 +276,15 @@ export async function checkStage6(browser, base) {
       const x1 = await page.evaluate((x) => document.querySelector(`${x} .marquee__track`).getBoundingClientRect().left, sel);
       await page.waitForTimeout(1200);
       const x2 = await page.evaluate((x) => document.querySelector(`${x} .marquee__track`).getBoundingClientRect().left, sel);
-      const btn = await page.evaluate((x) => { const b = document.querySelector(`${x} > .loopctl`); const r = b.getBoundingClientRect(); return !b.hidden && !b.hasAttribute('data-wait') && r.width >= 44 && r.height >= 44; }, sel);
-      check(`${sel}: the row moves and has its pause button`, x2 < x1 - 2 && btn, `${x1} -> ${x2}, button ${btn}`);
+      // Stage 6g: a tap on the row holds it.
+      await page.click(`${sel} .marquee`, { position: { x: 10, y: 10 } });
+      await page.mouse.move(2, 2);
+      await page.waitForTimeout(300);
+      const x3 = await page.evaluate((x) => document.querySelector(`${x} .marquee__track`).getBoundingClientRect().left, sel);
+      await page.waitForTimeout(1000);
+      const x4 = await page.evaluate((x) => document.querySelector(`${x} .marquee__track`).getBoundingClientRect().left, sel);
+      check(`${sel}: the row moves; a tap holds it`, x2 < x1 - 2 && Math.abs(x4 - x3) < 1, `${x1} -> ${x2}; after the tap ${x3} -> ${x4}`);
+      await page.click(`${sel} .marquee`, { position: { x: 10, y: 10 } });
     }
     // Price pictures: each one runs during its chain (Stage 6f: the two chains one at a time).
     const seen = new Set();
@@ -717,6 +724,101 @@ export async function checkStage6(browser, base) {
     await page.waitForTimeout(5000);
     const r = await page.evaluate(() => ({ cls: window.__cls, gone: [...document.querySelectorAll('.loopctl')].filter((b) => b.hidden).length }));
     check('phone: CLS under 0.05 on the first screen, no pause button that pops in', r.cls < 0.05 && r.gone === 0, JSON.stringify(r));
+    await page.close();
+  }
+  // Stage 6g: no button sits on top of other content; only the global toggle (and the two demo rows).
+  for (const [w, p] of [[1440, '/'], [390, '/'], [1440, '/en/'], [390, '/en/'], [390, '/ki-antwortentwuerfe/']]) {
+    const page = await browser.newPage({ viewport: { width: w, height: 860 } });
+    await page.goto(base + p, { waitUntil: 'load' });
+    await walk(page);
+    await page.addStyleTag({ content: SHOW_ALL });
+    await page.waitForTimeout(2500);
+    const r = await page.evaluate(() => {
+      const vis = (el) => { const b = el.getBoundingClientRect(); if (!b.width || !b.height) return false; if (el.checkVisibility && !el.checkVisibility({ checkVisibilityCSS: true })) return false; return !el.closest('[hidden], template, .sr-only, .hp, details:not([open]) > :not(summary)'); };
+      const controls = [...document.querySelectorAll('button, a.btn, [role="button"]')].filter(vis);
+      const leaves = [...document.querySelectorAll('body *')].filter((el) => vis(el) && (el.matches('img, svg, input, select, textarea') || [...el.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim())) && !el.closest('svg *'));
+      const hits = [];
+      for (const c of controls) {
+        const a = c.getBoundingClientRect();
+        for (const l of leaves) {
+          if (c.contains(l) || l.contains(c) || l.closest('button, a, [role="button"]') === c) continue;
+          // A transparent hit area on its own picture (a node of the hero line, a mascot, the play
+          // button on the poster) is the picture's control, not something on top of other content.
+          if (l.matches('img, svg') && (c.closest('.hf-wrap') || c.parentElement.closest('.mascot-spot, .vid__frame') || c.parentElement).contains(l) && (l.closest('[aria-hidden="true"]') || l.closest('.vid__poster'))) continue;
+          if (getComputedStyle(l).position === 'fixed' || l.closest('.site-header') !== c.closest('.site-header')) continue;
+          const b = l.getBoundingClientRect();
+          const x = Math.min(a.right, b.right) - Math.max(a.left, b.left);
+          const y = Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top);
+          if (x > 2 && y > 2) hits.push(`${c.className || c.tagName} / ${l.className?.baseVal ?? l.className ?? l.tagName} «${(l.textContent || '').trim().slice(0, 20)}»`);
+        }
+      }
+      const pauses = [...document.querySelectorAll('.loopctl, .motion-toggle, .rl__pause')].filter(vis).map((b) => b.className.split(' ')[0]);
+      return { hits: [...new Set(hits)].slice(0, 8), pauses };
+    });
+    check(`${p} @${w}: no button rectangle on top of other content`, r.hits.length === 0, r.hits.join('; '));
+    const allowed = p === '/ki-antwortentwuerfe/' ? 3 : 2;
+    check(`${p} @${w}: pause controls: the global toggle (header, footer) and the demo rows only`, r.pauses.length <= allowed && r.pauses.filter((x) => x === 'motion-toggle').length === 2, r.pauses.join(','));
+    await page.close();
+  }
+  // Stage 6g: the video when the phone turns (Android emulation): a source and a poster, the play state
+  // kept, the landscape frame fits the screen; before the first play the poster switches by itself.
+  for (const playing of [true, false]) {
+    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, userAgent: 'Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Mobile Safari/537.36' });
+    const page = await ctx.newPage();
+    await page.goto(base + '/', { waitUntil: 'load' });
+    await page.evaluate(() => document.querySelector('.vid').scrollIntoView({ block: 'center' }));
+    await page.waitForFunction(() => !document.querySelector('.vid__play').hidden, null, { timeout: 15000 });
+    await page.tap('.vid__play');
+    await page.waitForTimeout(2000);
+    if (!playing) await page.evaluate(() => document.querySelector('.vid__v').pause());
+    const st = () => page.evaluate(() => { const v = document.querySelector('.vid__v'); const fr = document.querySelector('.vid__frame').getBoundingClientRect(); return { src: (v.getAttribute('src') || '').split('/').pop(), poster: (v.poster || '').split('/').pop(), paused: v.paused, controls: v.controls, overlay: !document.querySelector('.vid__play').hidden, fits: fr.height <= innerHeight && fr.width <= innerWidth }; });
+    await page.setViewportSize({ width: 844, height: 390 });
+    await page.waitForTimeout(1500);
+    const l = await st();
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.waitForTimeout(1500);
+    const p2 = await st();
+    check(`video, phone turned (${playing ? 'playing' : 'paused'}): 16:9 file and poster in landscape, 9:16 back upright, play state kept, frame fits, one set of controls`,
+      l.src === 'anmeldung-16x9.mp4' && /16x9/.test(l.poster) && p2.src === 'anmeldung-9x16.mp4' && /9x16/.test(p2.poster) && l.paused === !playing && p2.paused === !playing && l.fits && l.controls && !l.overlay, JSON.stringify({ l, p2 }));
+    await ctx.close();
+  }
+  {
+    const ctx = await browser.newContext({ viewport: { width: 844, height: 390 }, isMobile: true, hasTouch: true });
+    const page = await ctx.newPage();
+    await page.goto(base + '/', { waitUntil: 'load' });
+    await page.evaluate(() => document.querySelector('.vid').scrollIntoView({ block: 'center' }));
+    await page.waitForTimeout(800);
+    const r = await page.evaluate(() => { const fr = document.querySelector('.vid__frame').getBoundingClientRect(); return { h: Math.round(fr.height), vh: innerHeight, poster: document.querySelector('.vid__poster img').currentSrc.split('/').pop() }; });
+    check('video, phone in landscape before playing: the 16:9 poster, the frame fits the screen height', r.h <= r.vh && /16x9/.test(r.poster), JSON.stringify(r));
+    await ctx.close();
+  }
+  // Stage 6g: every mascot group reacts to a click and to Enter (a bubble), on home, 404 and /danke/.
+  for (const p of ['/', '/en/', '/diese-seite-gibt-es-nicht/', '/danke/']) {
+    const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+    await page.goto(base + p, { waitUntil: 'load' });
+    await walk(page);
+    await page.addStyleTag({ content: SHOW_ALL });
+    await page.waitForTimeout(800);
+    const groups = await page.$$('[data-poke]');
+    let ok = 0; let total = 0; let keyOk = null;
+    for (const g of groups) {
+      if (!(await g.isVisible())) continue;
+      total += 1;
+      await g.evaluate((el) => el.scrollIntoView({ block: 'center' }));
+      await page.waitForTimeout(120);
+      await g.click({ force: true });
+      await page.waitForTimeout(200);
+      if (await g.evaluate((el) => !!(el instanceof SVGElement ? el.parentElement : el).querySelector('.mbubble'))) ok += 1;
+      if (keyOk == null && await g.evaluate((el) => el.getAttribute('role') === 'button')) {
+        await page.waitForTimeout(2500);
+        await g.focus();
+        await page.keyboard.press('Enter');
+        await page.waitForTimeout(200);
+        keyOk = await g.evaluate((el) => !!el.querySelector('.mbubble'));
+      }
+    }
+    const loose = await page.evaluate(() => [...document.querySelectorAll('svg.mascot')].filter((s) => s.getBoundingClientRect().width && !s.closest('[data-poke], .mascot-spot, [hidden], template') && !s.classList.contains('faq__logik')).length);
+    check(`mascots ${p}: every group answers a click (and Enter) with a bubble, no mascot left out`, total > 0 && ok === total && keyOk === true && loose === 0, `${ok}/${total}, Enter ${keyOk}, loose ${loose}`);
     await page.close();
   }
   return results;

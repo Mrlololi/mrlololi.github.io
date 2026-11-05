@@ -11,10 +11,12 @@ const all = pages(config, { live: {} });
 const byFile = Object.fromEntries(all.map((p) => [p.file, p.html]));
 const root = (p) => new URL(`../${p}`, import.meta.url);
 
-test('photos (Iva 29.10.2026): badge F1, «Über mich» Hallstatt again; the others kept in _alt', () => {
+test('photos (Stage 6g 1a, Iva 5.11.2026): badge and contact from the Hallstatt lake portrait, «Über mich» Hallstatt; earlier sources kept', () => {
   const images = readFileSync(root('src/tools/images.mjs'), 'utf8');
-  assert.match(images, /src\('avatar-iva-badge-F1\.jpg'\), 'avatar'/);
+  assert.match(images, /src\('iva-hallstatt-see\.jpg'\), 'avatar'/);
+  assert.match(images, /src\('iva-hallstatt-see\.jpg'\), 'contact-iva'/);
   assert.match(images, /src\('about-hallstatt\.jpg'\), 'about'/);
+  assert.ok(!/iva-(badge-31|about-graz|contact-kaffee|og-38)/.test(images.replace(/\/\/.*$/gm, '')), 'the other AI portraits are not used');
   for (const f of ['src/images/avatar-iva-badge-F1.jpg', 'src/images/about-hallstatt.jpg', 'src/_alt/stage5/img/avatar-laecheln.jpg', 'src/_alt/stage6b/img/about-iva-2026-10-29.jpg', 'src/_alt/stage6b/img/about-680.jpg', 'src/_alt/stage6b/img/avatar-iva-2026-10-29.jpg', 'src/_alt/stage6b/img/avatar-88.jpg']) assert.ok(existsSync(root(f)), f);
   assert.ok(!existsSync(root('src/images/about-iva-2026-10-29.jpg')) && !existsSync(root('src/images/avatar-iva-2026-10-29.jpg')), 'the 6b photos are no longer sources');
   for (const f of ['avatar-44', 'avatar-88', 'about-340', 'about-680']) for (const ext of ['avif', 'webp', 'jpg']) assert.ok(existsSync(root(`assets/img/${f}.${ext}`)), `${f}.${ext}`);
@@ -65,7 +67,7 @@ test('404: the text and links first, then the picture with «Repariert. Hier geh
   const h = byFile['404.html'];
   assert.match(h, /<div class="nf__text">\n<h1>Hier ist die Leitung unterbrochen\.<\/h1>/);
   assert.ok(h.indexOf('<h1>') < h.indexOf('class="nf__scene'), 'text before the picture');
-  assert.match(h, /<\/div>\n<p class="nf__caption">Repariert\. Hier geht es weiter:<\/p>\n<p class="nf__ctl"><button class="loopctl[^"]*"/);
+  assert.match(h, /<\/div>\n<p class="nf__caption">Repariert\. Hier geht es weiter:<\/p>\n<\/div>/);
   assert.match(h, /location\.pathname\.startsWith\('\/en\/'\)/, 'English first under /en/');
 });
 

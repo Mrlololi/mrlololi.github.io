@@ -41,10 +41,11 @@ test('references: case link opens in a new tab with noopener (Fixes 21.10.2026);
   assert.match(en, /“He was also highly adaptable/);
 });
 
-test('about: Hallstatt photo 1x/2x, path line', () => {
+test('about: the Hallstatt photo 1x/2x (Stage 6g 1a: unchanged, no second photo), path line', () => {
   assert.match(de, /<source type="image\/avif" srcset="\/assets\/img\/about-340\.avif 340w, \/assets\/img\/about-680\.avif 680w"/);
   assert.match(de, /<img src="\/assets\/img\/about-340\.jpg"[^>]*width="340" height="425"[^>]*loading="lazy"[^>]*alt="Iva Tsatskrialashvili"/);
-  assert.ok(!de.includes('portrait-'), 'the CV photo is gone');
+  assert.ok(!de.includes('/portrait-'), 'the CV photo is gone');
+  assert.ok(!de.includes('about__second'), 'no second photo');
   assert.match(de, /<ol class="path" role="list" aria-label="Mein Weg">/);
   assert.equal(count(de, /<li class="path__stop">/g), 4);
 });

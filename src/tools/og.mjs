@@ -16,7 +16,7 @@ const fontsReady = (page) => page.evaluate(() => Promise.all(['680 60px "Bricola
 
 // Stage 5: one card per service page, assets/og/<lang>-<key>.png (--only-pages skips the home cards).
 await mkdir(path.join(repoRoot, 'assets/og'), { recursive: true });
-for (const t of [de, en]) {
+for (const t of process.argv.includes('--only-home') ? [] : [de, en]) {
   const prices = Object.fromEntries(t.pricing.groups.flatMap((g) => g.items).map((it) => [it.id, it.price]));
   for (const s of t.services.pages) {
     const page = await browser.newPage({ viewport: { width: 1200, height: 630 } });

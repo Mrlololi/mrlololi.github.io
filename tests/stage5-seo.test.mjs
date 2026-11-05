@@ -71,7 +71,7 @@ test('every page carries #business and #iva, identical on all pages', () => {
   assert.equal(iva.jobTitle, 'Marketing Automation Engineer');
   assert.deepEqual(iva.knowsAbout, ['ActiveCampaign', 'Zapier', 'Make', 'Leadpages', 'Stripe', 'E-Mail-Zustellbarkeit', 'Marketing-Automation']);
   assert.deepEqual(iva.address, { '@type': 'PostalAddress', addressLocality: 'Graz', addressCountry: 'AT' });
-  assert.equal(iva.image, `${SITE}/assets/img/about-680.jpg`);
+  assert.equal(iva.image, `${SITE}/assets/img/about-680.jpg`); // Stage 6g 1a: unchanged
   assert.ok(existsSync(path.join(root, 'assets/img/about-680.jpg')));
   assert.equal(iva.url, `${SITE}/`);
   assert.deepEqual(iva.sameAs, [config.linkedin, config.malt, 'https://github.com/Mrlololi', 'https://www.instagram.com/mrlololi/']);
