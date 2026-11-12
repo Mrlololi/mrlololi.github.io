@@ -2,7 +2,7 @@ import { esc, accent, extLink, fill, absUrl } from './util.mjs';
 import { mascotScene } from './mascots.mjs';
 import { ctaStrip } from './pricing.mjs';
 import { briefMail } from '../../assets/js/pure.js';
-import { MASCOTS, mascotSvg } from '../../assets/js/mascot-art.js';
+import { MASCOTS, mascotSvg } from '../../assets/js/kit/mascot-art.js';
 
 // Small pictograms for the four steps (assets/js/sections.js animates each once the line reaches it).
 const ICONS = {

@@ -4,7 +4,7 @@
 import { writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { chromium, qaDir, repoRoot } from '../qa/browsers.mjs';
-import { MASCOTS, EMOTIONS, mascotSvg } from '../../assets/js/mascot-art.js';
+import { MASCOTS, EMOTIONS, mascotSvg } from '../../assets/js/kit/mascot-art.js';
 
 const BGS = [['paper', 'Papier', '#FDF8F4'], ['pink', 'Rosa', '#F4C9D3'], ['dark', 'Dunkel (Footer)', '#2B2A33']];
 const SIZES = [36, 72, 160];

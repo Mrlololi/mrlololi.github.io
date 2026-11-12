@@ -418,7 +418,7 @@ export default {
     tools: 'ActiveCampaign, Zapier, Make, Google Apps Script, Leadpages, WordPress, Wix, Shopware, Stripe, Quaderno, GrooveHQ, Canva, HTML, CSS, JavaScript, Python, SQL',
     path: ['Tbilisi', 'DACH-Vertrieb ab 2020', 'Erasmus+ in 11 Ländern', 'Graz seit 2025'],
     pathLabel: 'Mein Weg',
-    projects: 'Eigene Projekte: GeoAPP und KittyCats',
+    projects: 'Eigene Projekte: KI im Kundenservice, Language Starter und GeoAPP',
   },
 
   notdo: {"label":"Was ich nicht mache:","text":"Werbetexte schreiben, Werbeanzeigen schalten oder Ihren Kundensupport übernehmen. Dafür empfehle ich Ihnen gern Kolleg:innen."},
@@ -764,15 +764,8 @@ export default {
       items: [
         { key: 'ki', name: 'KI im Kundenservice', path: 'ki-kundenservice/', shows: 'KI-Entwürfe für Kundenmails. Ein Mensch gibt frei, nichts geht automatisch raus.' },
         { key: 'langstarter', name: 'Language Starter', path: 'language-starter/?ui=de', shows: '66 erste Sätze in 42 Sprachen, mit Gruppenmodus, Plakat und Beamer.' },
-        // Stage 6f: GeoAPP and KittyCats as cards too (lines from their pages).
+        // Stage 6f: GeoAPP as a card too (line from its page).
         { key: 'geoapp', name: 'GeoAPP', path: 'geoapp/?lang=de', shows: 'Eine kleine Lern-App für georgische Zahlen, mit Antwort zur Auswahl oder zum Eintippen.' },
-        // Stage 6h: KittyCats stays in Webprojekte, not on the home page.
-        { key: 'kittycats', home: false, name: 'KittyCats', path: 'kittycats/', shows: 'Eine Demo für Layout und Scroll-Animation mit HTML, CSS und etwas GSAP.' },
-      ],
-      // Stage 6b: the two off-topic ones as one text line.
-      more: [
-        { name: 'GeoAPP', path: 'geoapp/?lang=de' },
-        { name: 'KittyCats', path: 'kittycats/' },
       ],
     },
     contact: { fallback: 'Öffnet sich nichts? Schreiben Sie an {email}', copy: 'Text kopieren', copied: 'Text kopiert', manual: 'Ihr Text zum Kopieren' },
@@ -814,6 +807,10 @@ export default {
       logik: ['Erst denken, dann bauen.', 'Ich prüfe das kurz.', 'Jede Anmeldung zählt.', 'Klingt logisch, oder?'],
       loesung: ['Das kriegen wir hin.', 'Schraube fest, läuft.', 'Einmal testen, bitte.', 'Gelöst!'],
       live: ['Hallo!', 'Kurs offen!', 'Alles läuft.', 'Schön, dass Sie da sind.'],
+      // Stage 7a: lines of a group (data-say), at most five words, nothing promised.
+      footer: ['Danke fürs Vorbeischauen!', 'Bis bald!', 'Fragen? Einfach schreiben.'],
+      legal: ['Wer hier arbeitet.', 'Alles Wichtige auf einen Blick.'],
+      privacy: ['Keine Cookies, kein Tracking.', 'In Ruhe nachlesen.'],
     },
   },
 

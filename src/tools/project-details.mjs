@@ -1,6 +1,6 @@
 // Stage 6g (4.11.2026): «Eigene Projekte» show a readable detail of each project at about 1:1 instead
-// of a shrunk whole page: the KI draft, one Language Starter phrase card, one GeoAPP number task, one
-// KittyCats kitten. Each is taken from the live page at a phone width (the text wraps at about 320 px)
+// of a shrunk whole page: the KI draft, one Language Starter phrase card, one GeoAPP number task
+// (KittyCats removed in Stage 7a). Each is taken from the live page at a phone width (the text wraps at about 320 px)
 // and saved as project-<key>-400/800 (4:3, AVIF + WebP + JPG). The earlier whole-page shots are kept
 // in assets/img/_alt/. Usage: node src/tools/project-details.mjs [--only=ki,geoapp]
 import { mkdir, stat, copyFile } from 'node:fs/promises';
@@ -28,7 +28,6 @@ const PROJECTS = [
     await page.locator('.quiz-card button', { hasText: "Los geht's" }).first().click();
     await page.waitForTimeout(900);
   }, find: '.quiz-card section.screen' },
-  { key: 'kittycats', url: 'https://mrlololi.com/Webprojekte/kittycats/', find: 'li.cat-card' },
 ];
 const out = path.join(repoRoot, 'assets/img');
 const keep = path.join(out, '_alt/stage6f');

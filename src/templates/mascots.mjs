@@ -1,5 +1,5 @@
 import { esc, fill } from './util.mjs';
-import { MASCOTS, mascotSvg } from '../../assets/js/mascot-art.js';
+import { MASCOTS, mascotSvg } from '../../assets/js/kit/mascot-art.js';
 
 // Hero: each mascot stands next to its flow node and hops when the pulse lights that node
 // (assets/js/mascots.js). A transparent button over each makes it jump; like the node buttons it
@@ -20,15 +20,17 @@ export function heroMascots(t, node) {
   }).join('');
 }
 
-// Footer (home pages only): all three wave next to the dark lockup. Decorative.
+// Footer: all three wave next to the dark lockup (home) or in a slim row (every other page, Stage 7a).
+// With JS the group is one button (assets/js/kit/mascot-react.js) with the footer lines.
 export function footerMascots() {
-  return `<span class="footer-mascots" aria-hidden="true">${MASCOTS.map((m, i) => mascotSvg(i, 'wave', `class="mascot mascot--on-dark" data-base="wave" focusable="false"`)).join('')}</span>`;
+  return `<span class="footer-mascots" data-say="footer" aria-hidden="true">${MASCOTS.map((m, i) => mascotSvg(i, 'wave', `class="mascot mascot--on-dark" data-base="wave" focusable="false"`)).join('')}</span>`;
 }
 
 // Stage 4 scenes (8 more places on the home page): small decorative groups next to content. The
 // section's module moves them (2-4 s, transform and opacity only); without it they stand in pose.
 // members: [[mascot index, emotion, extra class]]. The suffix keeps every belly clipPath id unique.
-export function mascotScene(scene, members, cls = '', suffix = scene) {
+// say (Stage 7a): the group speaks these lines (t.brand.lines[say]) instead of each mascot's own.
+export function mascotScene(scene, members, cls = '', suffix = scene, say = '') {
   const svgs = members.map(([i, emo, extra = '']) => mascotSvg(i, emo, `class="mascot mascot--${MASCOTS[i].key}${extra ? ` ${extra}` : ''}" data-base="${emo}" focusable="false"`, `-${suffix}`));
-  return `<span class="mscene mscene--${scene}${cls ? ` ${cls}` : ''}" data-scene="${scene}" aria-hidden="true">${svgs.join('')}</span>`;
+  return `<span class="mscene mscene--${scene}${cls ? ` ${cls}` : ''}" data-scene="${scene}"${say ? ` data-say="${say}"` : ''} aria-hidden="true">${svgs.join('')}</span>`;
 }

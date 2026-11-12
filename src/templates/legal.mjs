@@ -1,5 +1,5 @@
 import { esc, fill, formatDate } from './util.mjs';
-import { mascotSvg } from '../../assets/js/mascot-art.js';
+import { mascotSvg } from '../../assets/js/kit/mascot-art.js';
 import { mascotScene } from './mascots.mjs';
 
 const mail = (config) => `<a href="mailto:${esc(config.contact_email)}">${esc(config.contact_email)}</a>`;
@@ -16,10 +16,17 @@ function facts(rows, config) {
     .join('\n');
 }
 
+// Stage 7a: a small thinking Logik next to the heading of Impressum and Datenschutz (its box is
+// reserved in the CSS, so nothing moves when it loads); with JS one button with its own lines.
+const docHead = (h1, say) => `<div class="doc__head">
+<h1>${esc(h1)}</h1>
+${mascotScene('legal', [[0, 'think']], '', `legal-${say}`, say)}
+</div>`;
+
 export function impressum(t, config) {
   const L = t.legalPage;
   return `<article class="doc">
-<h1>${esc(L.h1)}</h1>
+${docHead(L.h1, 'legal')}
 <section>
 <address>${L.address.map(esc).join('<br>')}<br>
 ${esc(L.emailLabel)}: ${mail(config)}${phone(L, config)}</address>
@@ -67,7 +74,7 @@ ${s.parts.map(([label, x]) => `<p>${label ? `<strong>${esc(label)}:</strong> ` :
     })
     .join('\n');
   return `<article class="doc">
-<h1>${esc(P.h1)}</h1>
+${docHead(P.h1, 'privacy')}
 ${sections}
 <p class="small">${esc(t.ui.lastUpdated)}: ${formatDate(date, t.locale)}</p>
 </article>`;

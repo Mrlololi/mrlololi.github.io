@@ -17,6 +17,9 @@ const css = ['components', 'main'].map((f) => readFileSync(new URL(`../../assets
 // ratgeber: true once the Ratgeber is live (config.ratgeber_live and at least one article).
 export function layout({ t, other, config, page, main, ratgeber = false }) {
   const isHome = page.key === 'home';
+  // Stage 7a: the footer three are on every page; the mascot modules are preloaded only where the
+  // page itself shows mascots (service pages load them later, for the footer).
+  const bodyMascots = isHome || /class="[^"]*\bmascot\b/.test(main);
   const alts = alternatesFor(page.path);
   const canonical = !page.noindex;
   const ogImage = absUrl(config, page.ogImage || `/og-image-${t.lang}.png`);
@@ -63,7 +66,7 @@ export function layout({ t, other, config, page, main, ratgeber = false }) {
     // main.js in turn loads the GSAP files after load (home pages only).
     `<script type="module">requestAnimationFrame(()=>requestAnimationFrame(()=>import('/assets/js/main.js')))</script>`,
     // main.js's own imports are fetched early at low priority, so they are ready when it runs.
-    ...['loops', ...(isHome ? ['mascots', 'mascot-art'] : [])].map((m) => `<link rel="modulepreload" href="/assets/js/${m}.js" fetchpriority="low">`),
+    ...['kit/motion', ...(bodyMascots ? ['mascots', 'kit/mascot-react', 'kit/mascot-art'] : [])].map((m) => `<link rel="modulepreload" href="/assets/js/${m}.js" fetchpriority="low">`),
     // Stage 5: the business and Iva (#business, #iva) on every page, plus the page's own nodes.
     jsonLd(t, config, page.ld || []),
   ]);
@@ -80,7 +83,7 @@ ${header({ t, page, isHome, variant: config.header_variant || 'light' })}
 ${main}
 </main>
 ${footer({ t, page, ratgeber })}
-${/class="[^"]*\bmascot\b/.test(main) || page.key === 'home' ? `<script type="application/json" id="mascot-say">${JSON.stringify({ one: t.brand.pokeOne, many: t.brand.pokeMany, and: t.brand.and, lines: t.brand.lines }).replace(/</g, '\\u003c')}</script>` : ''}
+<script type="application/json" id="mascot-say">${JSON.stringify({ one: t.brand.pokeOne, many: t.brand.pokeMany, and: t.brand.and, lines: t.brand.lines }).replace(/</g, '\\u003c')}</script>
 </body>
 </html>
 `;
@@ -143,7 +146,7 @@ function footer({ t, page, ratgeber }) {
   const sections = t.nav.map((n) => `<li><a href="${base}${n.href}">${esc(n.label)}</a></li>`).join('\n');
   return `<footer class="site-footer bg-ink edge">
 <div class="site-footer__in">
-${page.key === 'home' ? footerBrand(t) : ''}${footerServices(t, ratgeber)}
+${page.key === 'home' ? footerBrand(t) : `<div class="site-footer__trio">${footerMascots()}</div>`}${footerServices(t, ratgeber)}
 <p class="site-footer__copy">${esc(t.footer.copyright)}</p>
 <p class="site-footer__motion">${motionToggle(t)}</p>
 <nav id="footer-nav" aria-label="${esc(t.ui.footerNavLabel)}">

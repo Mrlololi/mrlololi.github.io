@@ -4,36 +4,13 @@
 // follow the pointer), running while the hero loops and stopping with its pause button
 // («hero:motion»). The footer three wave when the footer comes into view. Reduced motion: nothing
 // moves, a click only shows the happy face for a moment.
-import { parts, MASCOTS } from './mascot-art.js';
-import { reduceMotion, motion } from './loops.js';
+// Stage 7a (11.11.2026): the reactions, the bubbles and the group buttons live in the mascot kit
+// (assets/js/kit/mascot-react.js, shared with Webprojekte); this file adds the hero, the footer wave
+// and the idles on top of it.
+import { setPose, jump, react, speak, initPoke } from './kit/mascot-react.js';
+import { reduceMotion, motion } from './kit/motion.js';
 
-// Swaps eyes, mouth, arms and accessory for another emotion (the body stays).
-export function setPose(svg, emo) {
-  if (svg.dataset.emo === emo) return;
-  const p = parts(Number(svg.dataset.mascot), emo);
-  for (const [name, html] of Object.entries(p)) svg.querySelector(`[data-part="${name}"]`).innerHTML = html;
-  svg.dataset.emo = emo;
-}
-
-// A jump (click) or a smaller hop (node lit), happy face while in the air (Web Animations).
-// A click while one is still in the air starts it again (every click answers).
-const flights = new WeakMap();
-function jump(svg, height = 30) {
-  const prev = flights.get(svg);
-  if (prev) { prev.cancel?.(); clearTimeout(prev.timer); }
-  svg.dataset.jumping = 'true';
-  const land = () => { flights.delete(svg); delete svg.dataset.jumping; setPose(svg, svg.dataset.base); };
-  setPose(svg, 'joy');
-  if (reduceMotion.matches || !svg.animate) { flights.set(svg, { timer: setTimeout(land, 1200) }); return; }
-  const a = svg.animate([
-    { transform: 'translateY(0) scale(1.1, 0.9)', easing: 'ease-out' },
-    { transform: `translateY(-${height}%) scale(0.94, 1.06)`, offset: 0.45, easing: 'ease-in' },
-    { transform: 'translateY(0) scale(1.08, 0.92)', offset: 0.82, easing: 'ease-out' },
-    { transform: 'none' },
-  ], { duration: 650 });
-  a.onfinish = land;
-  flights.set(svg, a);
-}
+export { setPose };
 
 // The moments the hero line lights each node (ms after the line starts, as in the CSS).
 const LIT = { 1: 300, 2: 1400, 3: 2500, 4: 3600 };
@@ -42,7 +19,7 @@ export function initMascots() {
   const spots = [...document.querySelectorAll('.mascot-spot')];
   for (const b of spots) {
     const svg = b.querySelector('.mascot');
-    b.querySelector('.mascot-btn').addEventListener('click', () => { jump(svg); speak(b, [svg]); });
+    b.querySelector('.mascot-btn').addEventListener('click', () => { react(svg, 30); speak(b, [svg]); });
     // Choosing a flow node also greets it.
     document.querySelector(`.hf__btn--${b.dataset.node}`)?.addEventListener('click', () => jump(svg, 18));
   }
@@ -58,7 +35,12 @@ export function initMascots() {
     flow.addEventListener('demo:run', () => hops(0));
   }
   footer();
-  poke();
+  initPoke({ lines: say, groups: GROUPS });
+  // The reading Logik in the FAQ chat answers a click too, without a tab stop in the middle of the chat.
+  document.addEventListener('click', (e) => {
+    const reader = e.target.closest?.('svg.faq__logik');
+    if (reader) { react(reader, 18); speak(reader, [reader]); }
+  });
 }
 
 /* ---------- Stage 6g: every mascot reacts (Iva's wish) ---------- */
@@ -69,90 +51,23 @@ export function initMascots() {
 // too, without a tab stop in the middle of the chat. Groups added later (thank-you panels, the chat)
 // are prepared when they appear.
 const GROUPS = '.mscene, .footer-mascots, .nf__scene';
+// Stage 7a: the footer three are on every page now (data-say="footer"), Logik on the legal pages.
 const say = (() => { try { return JSON.parse(document.getElementById('mascot-say')?.textContent || 'null'); } catch { return null; } })();
-const KEYS = MASCOTS.map((m) => m.key);
-const last = new Map();
-let live = null;
-
-function speak(host, svgs) {
-  if (!say) return;
-  const key = KEYS[Number(svgs[0]?.dataset.mascot)] || 'live';
-  const lines = say.lines[key] || [];
-  if (!lines.length) return;
-  let i = Math.floor(Math.random() * lines.length);
-  if (lines.length > 1 && i === last.get(key)) i = (i + 1) % lines.length;
-  last.set(key, i);
-  const box = host instanceof SVGElement ? host.parentElement : host;
-  if (getComputedStyle(box).position === 'static') box.style.position = 'relative'; // no shift: no offsets
-  box.querySelector(':scope > .mbubble')?.remove();
-  const b = document.createElement('span');
-  b.className = 'mbubble';
-  b.setAttribute('aria-hidden', 'true');
-  b.textContent = lines[i];
-  box.append(b);
-  setTimeout(() => b.remove(), 2400);
-  if (!live) { live = document.createElement('p'); live.className = 'sr-only'; live.setAttribute('aria-live', 'polite'); document.body.append(live); }
-  live.textContent = '';
-  setTimeout(() => { live.textContent = `${MASCOTS[KEYS.indexOf(key)].name}: ${lines[i]}`; }, 50);
-}
-
-function prepare(g) {
-  if ('poke' in g.dataset) return;
-  const svgs = [...g.querySelectorAll('svg.mascot')];
-  if (!svgs.length || !say) return;
-  const names = svgs.map((s) => MASCOTS[Number(s.dataset.mascot)].name);
-  const label = names.length === 1 ? say.one.replace('{name}', names[0]) : say.many.replace('{names}', `${names.slice(0, -1).join(', ')} ${say.and} ${names.at(-1)}`);
-  g.dataset.poke = '';
-  // Inside a picture that is hidden from screen readers (the problem cards): clickable only, no tab
-  // stop there (a focusable element may not sit inside aria-hidden).
-  if (g.parentElement?.closest('[aria-hidden="true"]')) return;
-  g.setAttribute('role', 'button');
-  g.tabIndex = 0;
-  g.setAttribute('aria-label', label);
-  g.removeAttribute('aria-hidden');
-  svgs.forEach((s) => s.setAttribute('aria-hidden', 'true'));
-}
-
-function hit(g, target) {
-  const one = target?.closest('svg.mascot');
-  const svgs = one ? [one] : [...g.querySelectorAll('svg.mascot')];
-  svgs.forEach((s, i) => setTimeout(() => jump(s, 22), i * 90));
-  speak(g, svgs);
-}
-
-function poke() {
-  const all = (root) => { if (root.matches?.(GROUPS)) prepare(root); root.querySelectorAll?.(GROUPS).forEach(prepare); };
-  all(document);
-  new MutationObserver((list) => list.forEach((m) => m.addedNodes.forEach((n) => { if (n.nodeType === 1) all(n); }))).observe(document.body, { childList: true, subtree: true });
-  document.addEventListener('click', (e) => {
-    const g = e.target.closest('[data-poke]');
-    if (g) { hit(g, e.target); return; }
-    const reader = e.target.closest('svg.faq__logik');
-    if (reader) { jump(reader, 18); speak(reader, [reader]); }
-  });
-  document.addEventListener('keydown', (e) => {
-    if (e.key !== 'Enter' && e.key !== ' ') return;
-    const g = e.target.closest?.('[data-poke]');
-    if (!g || e.target !== g) return;
-    e.preventDefault();
-    hit(g);
-  });
-}
-
 // Footer: each time it comes into view all three wave three times (about 2 s), then rest.
 function footer() {
   const box = document.querySelector('.footer-mascots');
-  if (!box || reduceMotion.matches || motion.paused || !('IntersectionObserver' in window)) return;
-  const arms = [...box.querySelectorAll('.m-wave')];
-  for (const arm of arms) {
-    arm.style.transformBox = 'view-box';
-    arm.style.transformOrigin = arm.dataset.origin.split(' ').map((v) => `${v}px`).join(' ');
-  }
+  if (!box || reduceMotion.matches || !('IntersectionObserver' in window)) return;
   let seen = false;
   new IntersectionObserver(([e]) => {
     if (!e.isIntersecting) { seen = false; return; }
-    if (seen || document.hidden) return;
+    if (seen || document.hidden || motion.paused) return;
     seen = true;
+    // Asked again each time: a click swaps the arms (pose), so older ones are gone.
+    const arms = [...box.querySelectorAll('svg:not([data-jumping]) .m-wave')];
+    for (const arm of arms) {
+      arm.style.transformBox = 'view-box';
+      arm.style.transformOrigin = arm.dataset.origin.split(' ').map((v) => `${v}px`).join(' ');
+    }
     arms.forEach((arm, i) => arm.animate?.([{ transform: 'rotate(0)' }, { transform: 'rotate(-22deg)' }, { transform: 'rotate(0)' }], { duration: 600, iterations: 3, delay: i * 150, easing: 'ease-in-out' }));
   }, { threshold: 0.6 }).observe(box);
 }

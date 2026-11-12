@@ -5,7 +5,7 @@
 // (1100 px and up) they play as one chain, one pause button for the row. 30.10.2026 (Iva: no picture
 // rests longer than about 3 s while in view): each card starts 1.2 s after the one before (a wave
 // from left to right), 0.6 s rest after the third, again; so every card moves again after 3 s. Stacked (phones), each card loops on its own with its own button.
-import { demo } from './loops.js';
+import { demo } from './kit/motion.js';
 import { setPose } from './mascots.js';
 
 const LENGTH = 3600;

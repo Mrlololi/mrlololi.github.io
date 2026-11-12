@@ -58,7 +58,7 @@ test('3. showcase: the KI card first, «Spielwiese und Lernprojekte» with GeoAP
   assert.ok(p.indexOf('Spielwiese und Lernprojekte') < p.indexOf('Language Starter') && p.indexOf('Spielwiese und Lernprojekte') < p.indexOf('GeoAPP'));
   assert.ok(!/KittyCats|kittycats/.test(p));
   assert.match(enHome, /Playground and learning projects/);
-  assert.ok(de.s6.projects.items.some((x) => x.key === 'kittycats' && x.home === false), 'the line is kept');
+  assert.ok(!de.s6.projects.items.some((x) => x.key === 'kittycats'), 'Stage 7a: KittyCats gone from the sources');
 });
 
 test('4. Technik-Check card: badge, own button, call line, dated availability, report link only with a URL', () => {

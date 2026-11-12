@@ -200,10 +200,13 @@ test('service pages: «Anfragen» to /?paket=<id>#contact, the compact form at t
   }
 });
 
-test('service pages: no mascots', () => {
+// Stage 7a: the footer three are on every page now; the page body itself stays without mascots.
+test('service pages: no mascots in the page body', () => {
   for (const s of SERVICES) {
     const h = byFile[s.file];
-    assert.ok(!/class="[^"]*\b(mascot|mscene|footer-mascots|trio)/.test(h), `${s.path}: mascot markup`);
+    const main = h.slice(h.indexOf('<main'), h.indexOf('</main>'));
+    assert.ok(!/class="[^"]*\b(mascot|mscene|footer-mascots|trio)/.test(main), `${s.path}: mascot markup`);
+    assert.match(h, /<div class="site-footer__trio"><span class="footer-mascots" data-say="footer"/, `${s.path}: footer three`);
     assert.ok(!h.includes('mascot-art.js') && !h.includes('/mascots.js'), `${s.path}: mascot module`);
   }
 });

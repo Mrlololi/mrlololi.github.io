@@ -58,21 +58,21 @@ test('9. new video renders published, the old ones only local (_alt ignored)', (
 test('4. every mascot reacts: lines DE/EN, one group button each (mascots.js)', () => {
   for (const t of [de, en]) for (const k of ['logik', 'loesung', 'live']) assert.ok(t.brand.lines[k].length >= 3 && t.brand.lines[k].length <= 5, `${t.lang} ${k}`);
   for (const f of ['index.html', 'en/index.html', '404.html', 'danke/index.html', 'en/thanks/index.html']) assert.match(byFile[f], /<script type="application\/json" id="mascot-say">/, f);
-  const m = js('mascots.js');
+  const m = js('mascots.js') + js('kit/mascot-react.js');
   assert.match(m, /const GROUPS = '\.mscene, \.footer-mascots, \.nf__scene';/);
   assert.match(m, /g\.setAttribute\('role', 'button'\);/);
   assert.match(m, /new MutationObserver/);
 });
 
 test('5. pause: no picture button, a tap on the picture, the global toggle with one state', () => {
-  const l = js('loops.js');
+  const l = js('kit/motion.js');
   assert.match(l, /tap = false/);
   assert.match(l, /document\.addEventListener\('motion:change', label\);/);
   assert.ok(!/class="loopctl/.test(deHome));
 });
 
 test('7. project cards: readable details, updated texts', () => {
-  for (const k of ['ki', 'langstarter', 'geoapp', 'kittycats']) assert.ok(existsSync(root(`src/images/project-${k}-detail.png`)), k);
+  for (const k of ['ki', 'langstarter', 'geoapp']) assert.ok(existsSync(root(`src/images/project-${k}-detail.png`)), k);
   assert.equal(de.s6.projects.items.find((x) => x.key === 'langstarter').shows, '66 erste Sätze in 42 Sprachen, mit Gruppenmodus, Plakat und Beamer.');
   assert.ok(!/45 (Sätze|phrases)/.test(deHome + byFile['en/index.html']));
 });

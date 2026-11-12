@@ -1,6 +1,6 @@
 import { esc, seconds, accent } from './util.mjs';
 import { lockup } from './brand.mjs';
-import { MASCOTS, mascotSvg } from '../../assets/js/mascot-art.js';
+import { MASCOTS, mascotSvg } from '../../assets/js/kit/mascot-art.js';
 
 // 1200x630 social image (colour variant B): the large lockup with the tagline, name, the hero
 // promise and a completed run-log excerpt. The three mascots (v2, flat) stand next to the lockup;

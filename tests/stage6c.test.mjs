@@ -29,7 +29,7 @@ test('pause: no button on the pictures, the global toggle in header and footer, 
 });
 
 test('loops.js: loop while visible, pause kept for the visit, no cap on plays', () => {
-  const l = js('loops.js');
+  const l = js('kit/motion.js');
   assert.match(l, /sessionStorage/);
   assert.ok(!/MAX_AUTO/.test(l), 'no cap of two plays');
   assert.match(l, /function cycle\(d\)/);

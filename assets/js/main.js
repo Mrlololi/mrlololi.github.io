@@ -3,7 +3,7 @@
 // and play them (through loops.js). Without JS, without GSAP or with reduced motion nothing moves.
 // Stage 6: each demo module is imported when its section comes within a viewport. Stage 6c: every
 // demo loops while visible (loops.js), each with its pause button.
-import { demo, initMotionToggle } from './loops.js';
+import { demo, initMotionToggle } from './kit/motion.js';
 
 const root = document.documentElement;
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');

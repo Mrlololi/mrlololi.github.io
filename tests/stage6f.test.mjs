@@ -119,7 +119,7 @@ test('6. KI card: the full text reserves the height; equal picture heights; KI p
 test('7. one conductor: icon pause buttons in place from the start, global «Bewegung pausieren»', () => {
   for (const h of [deHome, enHome]) assert.match(h, /<button class="motion-toggle btn btn--secondary btn--sm" type="button" aria-pressed="false" data-pause-label="[^"]+" data-play-label="[^"]+">/);
   assert.match(css, /\.loopctl\[data-wait\] \{ visibility: hidden; \}/);
-  assert.match(js('loops.js'), /try \{ localStorage\.setItem\('motion-paused'/);
+  assert.match(js('kit/motion.js'), /try \{ localStorage\.setItem\('motion-paused'/);
   assert.match(js('main.js'), /initMotionToggle\(\);/);
 });
 

@@ -2,7 +2,7 @@
 // Writes mrlololi-site/qa/mascots-sheet.png.  Usage: node src/tools/mascot-sheet.mjs
 import path from 'node:path';
 import { chromium, qaDir } from '../qa/browsers.mjs';
-import { MASCOTS, EMOTIONS, mascotSvg } from '../../assets/js/mascot-art.js';
+import { MASCOTS, EMOTIONS, mascotSvg } from '../../assets/js/kit/mascot-art.js';
 
 const cell = (i, e) => `<div class="c">${mascotSvg(i, e, 'class="mascot"')}<span>${e}</span></div>`;
 const rows = MASCOTS.map((m, i) => `<div class="n">${m.name}</div>${EMOTIONS.map((e) => cell(i, e)).join('')}`).join('');

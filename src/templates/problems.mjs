@@ -56,6 +56,8 @@ const KINDS = ['signup', 'spam', 'rate'];
 // Casting (fixed site-wide): Logik is the problem and the thinking, Lösung the fix, Live the result.
 // Cards 1 and 2: Logik (worried while broken, calm when solved); card 3: Lösung. Live joins only in
 // the solved frame, with a small star twinkle. Both stand next to the result, 56 px.
+// Stage 7a: the pair sits next to the picture (not inside its aria-hidden art), on the same spot, so
+// it is one keyboard stop like every other mascot group.
 function cardScene(kind) {
   const lead = kind === 'rate' ? [1, 'joy', 'mscene__lead'] : [0, 'idle', 'mscene__lead'];
   return mascotScene('problems', [lead, [2, 'joy', 'mscene__live']], 'mscene--pair', `problems-${kind}`);
@@ -71,8 +73,10 @@ export function problems(t) {
 <div class="pc__problem"><span class="label label--pink">${esc(t.ui.problem)}</span>
 <h3 class="pc__title">${esc(item.problem)}</h3></div>
 <figure class="fixdemo fixdemo--${kind} demo" data-demo="fix-${kind}">
+<div class="fixdemo__stage">
 <div class="fixdemo__art" aria-hidden="true">
 ${ART[kind](fd[kind], t.s6)}
+</div>
 ${cardScene(kind)}
 </div>
 ${kind === 'signup' ? `<p class="fd-note" aria-hidden="true">${esc(t.s6.b.simplified)}</p>` : ''}

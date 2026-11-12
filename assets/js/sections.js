@@ -10,7 +10,7 @@
 // media query had no phone branch); the quotes fan out once (0.6 s, CSS); the alexandrafry.ch
 // screenshot pans slowly through the conductor (1.5 s top, 12 s pan, 2 s hold, back), holding on
 // hover and focus; the «Über mich» chips get a soft highlight one by one. The photo keeps its reveal.
-import { demo, reduceMotion, motion } from './loops.js';
+import { demo, reduceMotion, motion } from './kit/motion.js';
 
 export async function init({ motion: gsapReady }) {
   timelineStories();

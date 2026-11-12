@@ -16,9 +16,17 @@
 //   is-fading) before the start frame, never a hard cut.
 // - One global «Bewegung pausieren» (footer, localStorage): every demo stays on its end frame.
 // The demo element carries data-play="start|run|end" for the CSS; without it the CSS shows the end.
+// Stage 7a (11.11.2026): this file is the shared motion core of the mascot kit (assets/js/kit/). The
+// main site imports it directly; Webprojekte keeps a vendored copy (site/assets/js/mrl-kit/, checked by
+// tools/sync-mrl-kit.mjs). Same attribute and key on both: html[data-motion="paused"] and localStorage
+// «motion-paused» (one origin, so a pause on mrlololi.com holds on /Webprojekte/ too).
+// Two options for a row of pictures that take turns (the Webprojekte hub): rotate (when one round
+// ends, the next visible one in page order plays; pointing at or focusing its card takes the turn) and
+// idle: 'end' (a picture that waits shows its finished frame, not its start frame).
 export const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
 const all = [];
 let io = null;
+let lastTurn = null; // rotate: the demo whose round ended last
 const SHARE = 1 / 3;
 const MIN_REST = 2500;
 const FADE = 450;
@@ -47,10 +55,12 @@ document.documentElement.dataset.motion = motion.paused ? 'paused' : 'on';
 export function initMotionToggle() {
   const toggles = [...document.querySelectorAll('.motion-toggle')];
   const label = () => toggles.forEach((b) => {
+    b.setAttribute('aria-pressed', String(motion.paused));
+    // Webprojekte: a button without label attributes holds both texts in both languages (CSS shows one).
+    if (!b.dataset.pauseLabel) return;
     const text = motion.paused ? b.dataset.playLabel : b.dataset.pauseLabel;
     const span = b.querySelector('.motion-toggle__text');
     if (span) span.textContent = text; else b.textContent = text;
-    b.setAttribute('aria-pressed', String(motion.paused));
     b.setAttribute('aria-label', text);
   });
   toggles.forEach((b) => { b.hidden = false; b.addEventListener('click', () => motion.set(!motion.paused)); });
@@ -82,14 +92,35 @@ const distance = (d) => { const r = d.el.getBoundingClientRect(); return Math.ab
 // The free demo nearest the centre loops; every other one holds its start frame (its end, when paused).
 function decide() {
   const can = (d) => d.auto && d.enough && !d.paused && !motion.paused && !document.hidden && !reduceMotion.matches;
-  const best = all.filter(can).sort((a, b) => distance(a) - distance(b))[0];
+  const free = all.filter(can);
+  const best = turn(free) || free.sort((a, b) => distance(a) - distance(b))[0];
   for (const d of all) {
     if (!d.auto) continue;
-    if (d === best) { if (!d.looping) { d.looping = true; cycle(d); } continue; }
-    const still = d.paused || motion.paused || reduceMotion.matches;
+    if (d === best) { if (!d.looping) { d.looping = true; begin(d); } continue; }
+    const still = d.paused || motion.paused || reduceMotion.matches || d.idle === 'end';
     if (d.looping) stop(d, still ? 'end' : 'start');
     else if (!still && d.phase !== 'start') { d.hooks.reset(); set(d, 'start'); }
   }
+}
+
+// Rotate: the one the visitor points at, else the one playing now, else the next after the last turn.
+function turn(free) {
+  const row = all.filter((d) => d.rotate);
+  if (!row.length) return null;
+  const ok = free.filter((d) => d.rotate);
+  if (!ok.length) return null;
+  const now = ok.find((d) => d.want) || ok.find((d) => d.looping);
+  if (now) return now;
+  const from = row.indexOf(lastTurn);
+  for (let i = 1; i <= row.length; i++) { const d = row[(from + i + row.length) % row.length]; if (ok.includes(d)) return d; }
+  return ok[0];
+}
+
+// A waiting picture that shows its finished frame fades out before it starts (no hard cut).
+function begin(d) {
+  if (d.idle !== 'end' || d.phase !== 'end') { cycle(d); return; }
+  d.el.classList.add('is-fading');
+  d.timer = setTimeout(() => { if (d.looping) cycle(d); else d.el.classList.remove('is-fading'); }, FADE);
 }
 
 function cycle(d) {
@@ -107,7 +138,15 @@ function cycle(d) {
     wait(d, d.rest, () => {
       if (!d.looping) return;
       d.el.classList.add('is-fading');
-      d.timer = setTimeout(() => { if (d.looping) cycle(d); else d.el.classList.remove('is-fading'); }, FADE);
+      d.timer = setTimeout(() => {
+        if (!d.looping) { d.el.classList.remove('is-fading'); return; }
+        if (!d.rotate) { cycle(d); return; }
+        // Rotate: hand the turn on; this picture comes back on its finished frame.
+        lastTurn = d;
+        d.want = false;
+        stop(d, 'end');
+        decide();
+      }, FADE);
     });
   });
 }
@@ -150,9 +189,23 @@ function paint(d) {
 // tap (Stage 6g): a click or tap on the picture itself (or on the elements tap names) pauses or resumes
 // this demo; a small state icon shows on hover and for a moment after the tap (CSS [data-tap]).
 // Links, buttons and fields inside keep their own meaning.
-export function demo(el, { reset = () => {}, play = () => {}, finish = () => {}, frame, state, held, frames = 2, duration = 3000, rest = MIN_REST, loadMs = 0, button = null, manual = false, tap = false, key = el?.dataset.demo }) {
+// rotate, idle, card (Stage 7a): see the top of this file; card is the element whose hover or focus
+// takes the turn (default: the demo itself).
+export function demo(el, { reset = () => {}, play = () => {}, finish = () => {}, frame, state, held, frames = 2, duration = 3000, rest = MIN_REST, loadMs = 0, button = null, manual = false, tap = false, key = el?.dataset.demo, rotate = false, idle = 'start', card = el }) {
   if (!el) return null;
-  const d = { el, key, hooks: { reset, play, finish, state, held }, button, auto: !manual, phase: 'end', looping: false, enough: false, timer: 0, duration, rest: Math.max(MIN_REST, rest), frames, step: frames - 1, paused: Boolean(key) && store.get(key) };
+  const d = { el, key, hooks: { reset, play, finish, state, held }, button, auto: !manual, phase: 'end', looping: false, enough: false, timer: 0, duration, rest: Math.max(MIN_REST, rest), frames, step: frames - 1, paused: Boolean(key) && store.get(key), rotate, idle, want: false };
+  if (rotate && card) {
+    const want = () => {
+      if (d.want) return;
+      d.want = true;
+      for (const x of all) if (x !== d && x.rotate && x.looping) stop(x, 'end');
+      decide();
+    };
+    card.addEventListener('pointerenter', want);
+    card.addEventListener('focusin', want);
+    card.addEventListener('pointerleave', () => { d.want = false; });
+    card.addEventListener('focusout', () => { d.want = false; });
+  }
   // For the demo's own controls: skip to the end of this round, or start a round now.
   d.skip = () => {
     if (d.phase !== 'run') return;
@@ -197,7 +250,7 @@ export function demo(el, { reset = () => {}, play = () => {}, finish = () => {},
     });
   }
   if (reduceMotion.matches || !('IntersectionObserver' in window) || manual) return d;
-  if (d.paused || motion.paused) set(d, 'end');
+  if (d.paused || motion.paused || idle === 'end') set(d, 'end');
   else if (loadMs > 0) {
     // Leave the CSS alone while it plays on load, rest on its end frame, then the loop decides.
     d.auto = false;

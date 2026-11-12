@@ -415,7 +415,7 @@ export default {
     tools: 'ActiveCampaign, Zapier, Make, Google Apps Script, Leadpages, WordPress, Wix, Shopware, Stripe, Quaderno, GrooveHQ, Canva, HTML, CSS, JavaScript, Python, SQL',
     path: ['Tbilisi', 'Sales for German-speaking markets since 2020', 'Erasmus+ in 11 countries', 'Graz since 2025'],
     pathLabel: 'My path',
-    projects: 'Side projects: GeoAPP and KittyCats',
+    projects: 'Side projects: AI in customer service, Language Starter and GeoAPP',
   },
 
   notdo: {"label":"What I don't do:","text":"write ad copy, run ads or take over your customer support. I'm happy to recommend colleagues for that."},
@@ -724,12 +724,6 @@ export default {
         { key: 'ki', name: 'AI in customer service (in German)', path: 'ki-kundenservice/', shows: 'AI drafts for customer emails. A person approves, nothing is sent automatically.' },
         { key: 'langstarter', name: 'Language Starter', path: 'language-starter/', shows: '66 first phrases in 42 languages, with group mode, poster and projector.' },
         { key: 'geoapp', name: 'GeoAPP', path: 'geoapp/?lang=en', shows: 'A small app for learning Georgian numbers, answering by choice or by typing.' },
-        { key: 'kittycats', home: false, name: 'KittyCats', path: 'kittycats/', shows: 'A layout and scroll animation demo with HTML, CSS and a little GSAP.' },
-      ],
-      // Stage 6b: the two off-topic ones as one text line.
-      more: [
-        { name: 'GeoAPP', path: 'geoapp/?lang=en' },
-        { name: 'KittyCats', path: 'kittycats/' },
       ],
     },
     contact: { fallback: 'Nothing opens? Write to {email}', copy: 'Copy text', copied: 'Text copied', manual: 'Your text to copy' },
@@ -769,6 +763,10 @@ export default {
       logik: ['Think first, then build.', 'Let me check that.', 'Every sign-up counts.', 'Sounds logical, right?'],
       loesung: ['We can fix that.', 'Bolt tight, it runs.', 'One more test, please.', 'Sorted!'],
       live: ['Hello!', 'Course open!', 'All running.', 'Nice to see you.'],
+      // Stage 7a: lines of a group (data-say), at most five words, nothing promised.
+      footer: ['Thanks for stopping by!', 'See you soon!', 'Questions? Just write.'],
+      legal: ['Who works here.', 'The key facts at once.'],
+      privacy: ['No cookies, no tracking.', 'Read it at your pace.'],
     },
   },
 

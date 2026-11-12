@@ -6,7 +6,7 @@
 //   one before is still finishing (a wave from left to right).
 // - «Weitere Leistungen» on its own: blocks drop into the One-Pager, 1 s, the KI draft types itself.
 // Stage 6f: like every demo they rest at least 2.5 s and play only when nearest the centre (loops.js).
-import { demo } from './loops.js';
+import { demo } from './kit/motion.js';
 
 export function init() {
   const cards = document.querySelector('.pkgs-wrap[data-demo="prices"]');

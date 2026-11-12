@@ -86,8 +86,7 @@ ${config.case_study ? study(t, config.case_study) : ''}
 // screenshot and one «Was es zeigt» line; «Alle Webprojekte» leads to the overview. Webprojekte
 // links open in a new tab and say so (as everywhere since the Fixes of 21.10.2026).
 // Stage 6h (5.11.2026): the KI project is the main card; GeoAPP and Language Starter follow lighter
-// under «Spielwiese und Lernprojekte»; KittyCats stays in Webprojekte only (p.items keeps its line,
-// home: false).
+// under «Spielwiese und Lernprojekte». Stage 7a: KittyCats is gone from the sources (offline since 5.11.).
 export function projects(t, config) {
   const p = t.s6.projects;
   const pic = (it, sizes) => `<picture><source type="image/avif" srcset="/assets/img/project-${it.key}-400.avif 400w, /assets/img/project-${it.key}-800.avif 800w" sizes="${sizes}"><source type="image/webp" srcset="/assets/img/project-${it.key}-400.webp 400w, /assets/img/project-${it.key}-800.webp 800w" sizes="${sizes}"><img src="/assets/img/project-${it.key}-400.jpg" srcset="/assets/img/project-${it.key}-400.jpg 400w, /assets/img/project-${it.key}-800.jpg 800w" sizes="${sizes}" width="400" height="300" loading="lazy" decoding="async" alt=""></picture>`;

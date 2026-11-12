@@ -88,7 +88,7 @@ test('performance hints: three font preloads incl. the accent, module preloads, 
   assert.equal((deHome.match(/<link rel="preload"[^>]*as="font"/g) || []).length, 3);
   assert.match(deHome, /<link rel="preload" href="\/assets\/fonts\/eb-garamond-italic-500\.woff2" as="font" type="font\/woff2" crossorigin>/);
   // Stage 6: the demo controller; the rest comes lazily with its section.
-  for (const m of ['loops']) assert.match(deHome, new RegExp(`<link rel="modulepreload" href="/assets/js/${m}\\.js"`));
+  for (const m of ['kit/motion']) assert.match(deHome, new RegExp(`<link rel="modulepreload" href="/assets/js/${m}\\.js"`));
   const css = readFileSync(root('assets/css/main.css'), 'utf8');
   assert.equal((css.match(/^\.calc__fields \{/gm) || []).length, 1);
 });

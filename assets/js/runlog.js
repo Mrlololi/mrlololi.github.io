@@ -9,7 +9,7 @@
 //   Nochmal abspielen) plays even with the pointer inside; the automatic rounds after it wait. Zurück / Weiter step by hand.
 // - Reduced motion (or motion paused): the end frame, every button works, nothing plays by itself.
 // - The result is announced (polite) only after a visitor's action. Nothing is sent anywhere.
-import { reduceMotion, motion } from './loops.js';
+import { reduceMotion, motion } from './kit/motion.js';
 
 const STEP = 1000;
 const HOLD = 4000;

@@ -442,6 +442,12 @@ html:not(.js) .hf__btn { display: none; }
 .footer-mascots .mascot { display: block; width: 3.25rem; height: auto; overflow: visible; }
 .mascot--on-dark .o { stroke: var(--on-ink); }
 .mascot--on-dark .m-shadow { fill: #fff; opacity: 0.14; }
+/* Stage 7a: the three in a slim row in the footer of every other page (same size as on home). */
+.site-footer__trio { flex-basis: 100%; display: flex; align-items: flex-end; min-height: 3.6rem; margin-bottom: var(--space-2); }
+/* Impressum and Datenschutz: a small thinking Logik next to the heading, its box reserved (56 px). */
+.doc__head { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-4); }
+.mscene--legal { flex: none; display: block; width: 3.5rem; height: 3.62rem; }
+.mscene--legal .mascot { display: block; width: 3.5rem; height: auto; overflow: visible; }
 @media (min-width: 80rem) {
   .site-footer__in { flex-wrap: wrap; }
 }
@@ -675,6 +681,7 @@ html:not(.js) .brief__preview { display: none; }
 }
 .pc__fix { flex: 1; }
 .fixdemo { position: relative; display: grid; margin: 0; padding: var(--space-4) var(--space-5); border-top: 1px solid var(--line); }
+.fixdemo__stage { position: relative; }
 .fixdemo__art { position: relative; height: 12.75rem; display: grid; gap: var(--space-3); align-content: start; font-size: 0.8125rem; font-weight: 700; }
 .tick, .cross { width: 1rem; height: 1rem; flex: none; }
 .tick circle { fill: var(--done); }

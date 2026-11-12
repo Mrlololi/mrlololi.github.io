@@ -2,7 +2,7 @@
 // in and snaps it together, Live waves), then rests; loops.js takes it over afterwards (end frame,
 // «Nochmal» never needed: it is short). Hovering or focusing a link card sends one pulse along
 // the repaired line. Reduced motion: the repaired still picture, no pulse.
-import { demo } from './loops.js';
+import { demo } from './kit/motion.js';
 
 export function init({ reduceMotion }) {
   const scene = document.querySelector('.nf__scene');

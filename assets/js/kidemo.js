@@ -6,7 +6,7 @@
 // Stage 6f (4.11.2026): «Lesen» takes 2.5 s, the draft is held 6 s, the example never changes by
 // itself (only «Anderes Beispiel»), and the draft is readable from the start (stable height);
 // the tone switches the draft at once; «Freigeben» shows «Freigegeben» for a moment.
-import { demo } from './loops.js';
+import { demo } from './kit/motion.js';
 
 const READ = 2500;
 const MARK = 380;

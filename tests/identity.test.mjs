@@ -81,11 +81,18 @@ test('header lockup (outlined SVG) on every page, footer dark lockup only on the
     // The footer word reuses the header's outlines (no second copy of the letters).
     assert.match(h, /<g fill="#2B2A33"><path id="mrl-word" d="M/);
     assert.match(h, /class="brand-lockup__word"><use href="#mrl-word" fill="#FFFFFF"\/>/);
-    assert.match(h, /<span class="footer-mascots" aria-hidden="true">(<svg [^>]*class="mascot mascot--on-dark"[^>]*data-emo="wave"|<svg viewBox="-8 -8 120 124" data-mascot="0" data-emo="wave")/);
+    assert.match(h, /<span class="footer-mascots" data-say="footer" aria-hidden="true">(<svg [^>]*class="mascot mascot--on-dark"[^>]*data-emo="wave"|<svg viewBox="-8 -8 120 124" data-mascot="0" data-emo="wave")/);
   }
   // Stage 6f: the thank-you pages show Live, like the success panel.
+  // Stage 7a: every other page has no footer lockup but the footer three in a slim row; mascots in the
+  // body only on 404, thanks and the two legal pages (Logik next to the heading).
+  const legal = ['impressum/index.html', 'datenschutz/index.html', 'en/legal-notice/index.html', 'en/privacy/index.html'];
   for (const { file: f, html: h } of others.filter((p) => !['404.html', 'danke/index.html', 'en/thanks/index.html'].includes(p.file))) {
-    assert.ok(!h.includes('<div class="site-footer__brand">') && !/<(svg|span|button)[^>]*class="mascot/.test(h), `${f}: no footer lockup, no mascots`);
+    const main = h.slice(h.indexOf('<main'), h.indexOf('</main>'));
+    assert.ok(!h.includes('<div class="site-footer__brand">'), `${f}: no footer lockup`);
+    assert.match(h, /<div class="site-footer__trio"><span class="footer-mascots" data-say="footer" aria-hidden="true">/, `${f}: footer three`);
+    if (legal.includes(f)) assert.match(main, /<div class="doc__head">\n<h1>[^<]+<\/h1>\n<span class="mscene mscene--legal" data-scene="legal" data-say="(legal|privacy)" aria-hidden="true"><svg [^>]*data-mascot="0" data-emo="think"/, `${f}: Logik`);
+    else assert.ok(!/<(svg|span|button)[^>]*class="mascot/.test(main), `${f}: no mascots in the body`);
   }
 });
 
@@ -117,7 +124,7 @@ test('hero: Logik at Formular, Lösung at ActiveCampaign, Live at Kurs offen, as
 });
 
 test('mascots v2: hexagon, ball, teardrop; two-tone belly clipped to the body; glasses in every emotion', async () => {
-  const { MASCOTS, EMOTIONS, mascotSvg } = await import('../assets/js/mascot-art.js');
+  const { MASCOTS, EMOTIONS, mascotSvg } = await import('../assets/js/kit/mascot-art.js');
   assert.deepEqual(MASCOTS.map((m) => [m.fill, m.belly]), [['#F4C9D3', '#FBE6EC'], ['#BFD8EE', '#E4F0FA'], ['#CFE3C2', '#EAF4E3']]);
   for (const [i] of MASCOTS.entries()) {
     for (const e of EMOTIONS) {
@@ -137,7 +144,7 @@ test('mascots v2: hexagon, ball, teardrop; two-tone belly clipped to the body; g
 test('mascot weight: three SVGs plus the mascot JS stay within 15 KB gzip; no Lottie, Rive or three.js', () => {
   const svgs = [...de.matchAll(/<span class="mascot-spot[\s\S]*?<\/button><\/span>/g)].map((m) => m[0]).join('');
   assert.equal((svgs.match(/<svg /g) || []).length, 3);
-  const js = ['mascot-art.js', 'mascots.js'].map((f) => readFileSync(file(`assets/js/${f}`), 'utf8')).join('');
+  const js = ['kit/mascot-art.js', 'kit/mascot-react.js', 'mascots.js'].map((f) => readFileSync(file(`assets/js/${f}`), 'utf8')).join('');
   const kb = gzipSync(svgs + js, { level: 9 }).length / 1024;
   assert.ok(kb <= 15, `${kb.toFixed(1)} KB`);
   const vendor = readdirSync(file('assets/vendor'));
