@@ -140,6 +140,8 @@ test('11/12/13/14. Launch flow picture, EN audience line, 404 order, video and e
   assert.match(enHome, /<p class="services__audience">Selling to German-speaking customers\? I set up double opt-in, German-language emails and your legal pages \(with your texts\)\.<\/p>/);
   assert.match(enHome, /AI in customer service \(in German\)/);
   assert.match(deHome, /<video class="vid__v" playsinline muted preload="none" tabindex="-1"/);
-  assert.match(css, /\.hero__eyebrow \{ color: #8E3650; \}/);
+  // Stage 7b: the hand patch went; the eyebrow reads --pink-ink, which is #8E3650 now.
+  assert.match(css, /\.hero__eyebrow \{ font-size: var\(--step--1\); font-weight: 700; letter-spacing: 0\.01em; color: var\(--pink-ink\); \}/);
+  assert.match(readFileSync(new URL('../assets/css/components.css', import.meta.url), 'utf8'), /--pink-ink: #8E3650;/);
   assert.match(css, /\.nf-en \.nf__alt \{ order: -1; \}/);
 });

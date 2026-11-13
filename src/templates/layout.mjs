@@ -27,6 +27,8 @@ export function layout({ t, other, config, page, main, ratgeber = false }) {
   const head = join([
     '<meta charset="utf-8">',
     '<meta name="viewport" content="width=device-width, initial-scale=1">',
+    // Stage 7b: the main site has no dark theme (design system 1); the «dark» gate runs only emulate the OS.
+    '<meta name="color-scheme" content="light">',
     `<title>${esc(page.title)}</title>`,
     `<meta name="description" content="${esc(page.description)}">`,
     page.noindex && '<meta name="robots" content="noindex">',

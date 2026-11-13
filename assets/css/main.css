@@ -445,7 +445,10 @@ html:not(.js) .hf__btn { display: none; }
 /* Stage 7a: the three in a slim row in the footer of every other page (same size as on home). */
 .site-footer__trio { flex-basis: 100%; display: flex; align-items: flex-end; min-height: 3.6rem; margin-bottom: var(--space-2); }
 /* Impressum and Datenschutz: a small thinking Logik next to the heading, its box reserved (56 px). */
-.doc__head { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-4); }
+/* Stage 7b fix: a long single word (Datenschutzerklärung) and Logik do not fit side by side at 360 px:
+   the row wraps and Logik moves under the heading, to the right (no sideways scroll). */
+.doc__head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--space-4); }
+.doc__head > .mscene--legal { margin-left: auto; }
 .mscene--legal { flex: none; display: block; width: 3.5rem; height: 3.62rem; }
 .mscene--legal .mascot { display: block; width: 3.5rem; height: auto; overflow: visible; }
 @media (min-width: 80rem) {
@@ -553,8 +556,6 @@ html:not(.js) .brief__preview { display: none; }
 @media (max-width: 799.98px) {
   .site-header[data-variant="light"] .site-nav__list { background: rgb(253 249 246 / 0.97); }
 }
-/* The blue initial on peach needs the darker blue ink (4.35:1 with --blue-ink). */
-.about__line .tl-blue { color: #285B88; }
 /* Drawn dots and the switch's track are not controls: normal weight keeps them from reading as buttons (clickable.mjs). */
 .browser__bar i { font-weight: 400; }
 /* ---------- Stage 5: service pages (one light template, no mascots, no demo scripts) ---------- */
@@ -998,7 +999,7 @@ html:not(.js) .kisteps, html:not(.js) .kidemo__controls, html:not(.js) .kidemo__
 .hl--anliegen { --c: var(--blue); --k: var(--blue-ink); }
 .hl--fehlt { --c: var(--pink); --k: var(--pink-ink); }
 .hl--stimmung { --c: var(--lav); --k: var(--lav-ink); }
-.hl--dringlichkeit { --c: #F7DCC8; --k: #7A4E2D; }
+.hl--dringlichkeit { --c: var(--peach); --k: var(--peach-ink); }
 .hl__tag { display: inline-block; margin-inline-start: 0.3rem; padding: 0 0.35rem; border-radius: 4px; background: var(--k); color: #fff; font-size: 0.8125rem; font-weight: 700; line-height: 1.5; vertical-align: 0.1em; white-space: nowrap; }
 .kidemo__arrow { width: 3rem; height: 1.5rem; align-self: center; justify-self: center; fill: none; stroke: var(--lav-ink); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
 @media (max-width: 859.98px) { .kidemo__arrow { transform: rotate(90deg); } }
@@ -1639,8 +1640,7 @@ html[data-motion="paused"] .ref--site .browser__view { overflow-y: auto; }
 @media (min-width: 900px) { .nf__main { grid-template-columns: minmax(0, 1fr) minmax(0, 22rem); } }
 .nf__text { display: grid; gap: var(--space-4); justify-items: start; text-align: left; }
 .nf__pic { display: grid; gap: var(--space-2); justify-items: center; }
-/* Accessibility leftovers: the eyebrow at 4.5:1 on the hero gradient, an opaque phone menu. */
-.hero__eyebrow { color: #8E3650; }
+/* Accessibility leftovers: an opaque phone menu (the eyebrow reads --pink-ink since Stage 7b). */
 .site-header[data-variant="light"] .site-nav__list { background: #FDF9F6; }
 @media (max-width: 799.98px) { .js .site-nav__list { background: #FDF9F6; } }
 

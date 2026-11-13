@@ -1,0 +1,26 @@
+{
+  "note": "Stage 7b ratchet (design system 1.1 rule 3, 1.3). Each number is the most allowed; it may only fall. Measured on the untouched Stage 7a tree (0374bf0) on 12.11.2026 (hex 147, rgb 32, radius 111, shadow 17, durations 46, mediaWidths 19, svgTemplates 19); lowered after the 7b tokens (hex 141, radius 110). Counter: src/qa/design-debt.mjs; test: tests/stage7b.test.mjs. Lower a number when the code gets lower, never raise it.",
+  "rules": {
+    "hex": "#rgb / #rrggbb / #rrggbbaa literals in assets/css/*.css, comments removed, the :root block of components.css left out (data-URIs included)",
+    "rgb": "rgb( and rgba( literals, same files and same exclusions",
+    "radius": "border-radius declarations whose value still holds a number with a unit or a percentage after var(...) and calc(...) are removed",
+    "shadow": "box-shadow declarations whose value is not only var(...), none, inherit or initial",
+    "durations": "distinct time values (ms or s, normalised to ms) in any declaration of those files",
+    "mediaWidths": "distinct widths (number + unit as written) in @media conditions of those files",
+    "svgTemplates": "occurrences of <svg in src/templates/*.mjs"
+  },
+  "max": {
+    "hex": 141,
+    "rgb": 32,
+    "radius": 110,
+    "shadow": 17,
+    "durations": 46,
+    "mediaWidths": 19,
+    "svgTemplates": 19
+  },
+  "weight": {
+    "note": "home page ratchet (scope item 1f): built index.html gzip level 9, DOM = document.querySelectorAll('*').length after load at 1280 px",
+    "homeHtmlGzKb": 50,
+    "homeDom": 1800
+  }
+}

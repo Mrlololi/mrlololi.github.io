@@ -180,6 +180,11 @@ export async function runGates({ which = 'all', quick = false, log = console.log
       if (existsSync(tool)) { try { out = execFileSync(process.execPath, [tool, '--check'], { encoding: 'utf8' }); ok = true; } catch (e) { out = String(e.stderr || e.message); } }
       check('Webprojekte mrl-kit equals the main kit', ok, out.trim());
     }
+    if (which !== 'wp') {
+      // Stage 7b gate 6: pages that must not change, motion paused, pixel diff <= 0.1 % against the
+      // baseline taken after the 7b tokens (node src/qa/gates.mjs --visual-baseline writes it).
+      for (const r of await visualRegression(browser, server.url, { update: baselineMode })) check(r.name, r.pass, r.details);
+    }
   } finally {
     await browser.close();
     await server.close();
@@ -187,7 +192,52 @@ export async function runGates({ which = 'all', quick = false, log = console.log
   return results;
 }
 
+/* ---------- Stage 7b gate 6: visual regression ---------- */
+export const STILL_PAGES = ['/impressum/', '/datenschutz/', '/danke/', '/404.html'];
+const BASE_DIR = path.resolve(fileURLToPath(new URL('../../../qa/s7b-baseline/', import.meta.url)));
+const baselineMode = process.argv.includes('--visual-baseline');
+
+export async function visualRegression(browser, base, { update = false, pages = STILL_PAGES, limit = 0.001 } = {}) {
+  const { mkdirSync, writeFileSync, readFileSync } = await import('node:fs');
+  const sharp = (await import('sharp')).default;
+  mkdirSync(BASE_DIR, { recursive: true });
+  const out = [];
+  for (const p of pages) {
+    for (const w of [390, 1280]) {
+      const ctx = await browser.newContext({ viewport: { width: w, height: 900 }, reducedMotion: 'no-preference' });
+      await ctx.addInitScript(() => { try { localStorage.setItem('motion-paused', '1'); } catch { /* none */ } });
+      const page = await ctx.newPage();
+      await page.goto(base + p, { waitUntil: 'load' });
+      await page.waitForTimeout(1500);
+      const png = await page.screenshot({ fullPage: true, animations: 'disabled' });
+      await ctx.close();
+      const file = path.join(BASE_DIR, `${p.replace(/\W+/g, '_') || 'home'}-${w}.png`);
+      if (update || !existsSync(file)) { writeFileSync(file, png); out.push({ name: `visual baseline written: ${p} ${w}`, pass: true, details: file }); continue; }
+      const [a, b] = await Promise.all([png, readFileSync(file)].map((x) => sharp(x).removeAlpha().raw().toBuffer({ resolveWithObject: true })));
+      if (a.info.width !== b.info.width || a.info.height !== b.info.height) {
+        writeFileSync(file.replace(/\.png$/, '.now.png'), png);
+        out.push({ name: `visual: ${p} ${w} unchanged`, pass: false, details: `size ${a.info.width}x${a.info.height}, baseline ${b.info.width}x${b.info.height}` });
+        continue;
+      }
+      let diff = 0;
+      for (let i = 0; i < a.data.length; i += 3) if (Math.abs(a.data[i] - b.data[i]) > 16 || Math.abs(a.data[i + 1] - b.data[i + 1]) > 16 || Math.abs(a.data[i + 2] - b.data[i + 2]) > 16) diff++;
+      const share = diff / (a.data.length / 3);
+      if (share > limit) writeFileSync(file.replace(/\.png$/, '.now.png'), png);
+      out.push({ name: `visual: ${p} ${w} unchanged (diff ${(share * 100).toFixed(3)} %, limit ${limit * 100} %)`, pass: share <= limit, details: share > limit ? file.replace(/\.png$/, '.now.png') : '' });
+    }
+  }
+  return out;
+}
+
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  if (baselineMode && !['main', 'wp', 'all'].some((x) => process.argv.includes(x))) {
+    // Only the baseline of gate 6: node src/qa/gates.mjs --visual-baseline
+    const server = await startBoth(8795);
+    const browser = await chromium.launch();
+    for (const r of await visualRegression(browser, server.url, { update: true })) console.log(r.name);
+    await browser.close(); await server.close();
+    process.exit(0);
+  }
   const which = ['main', 'wp', 'all'].find((x) => process.argv.includes(x)) || 'all';
   const results = await runGates({ which, quick: process.argv.includes('--quick') });
   const failed = results.filter((r) => !r.pass);

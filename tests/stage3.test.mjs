@@ -53,7 +53,8 @@ test('contrast: text colours on every section colour, card and label (variant B)
   need('access line (pist-ink) on the welcome card', hex('#3F6B31'), over(hex('#F4C9D3'), 0.5, pistCard));
   need('form error on the story card', hex('#A23B2F'), pistCard);
   need('tone label on the draft', hex('#5A4A9C'), over(hex('#DCD3F0'), 0.55, over(WHITE, 0.55, hex(sections.pink))));
-  for (const [fg, bg] of [['#9C3F58', '#FBE7EC'], ['#3F6B31', '#E6F1DF'], ['#285B88', '#E3EEF8'], ['#5A4A9C', '#EEEAF8'], ['#7A4E2D', '#FBEDE3'], ['#2B2A33', '#FFFFFF']]) need(`label ${fg} on ${bg}`, hex(fg), hex(bg));
+  // Stage 7b: the pink label text reads the darker --pink-ink (#8E3650, was #9C3F58).
+  for (const [fg, bg] of [['#8E3650', '#FBE7EC'], ['#3F6B31', '#E6F1DF'], ['#285B88', '#E3EEF8'], ['#5A4A9C', '#EEEAF8'], ['#7A4E2D', '#FBEDE3'], ['#2B2A33', '#FFFFFF']]) need(`label ${fg} on ${bg}`, hex(fg), hex(bg));
   need('footer text', hex('#F3EEF0'), hex('#2B2A33'));
   assert.deepEqual(fails, []);
 });

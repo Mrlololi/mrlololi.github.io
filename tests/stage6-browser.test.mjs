@@ -9,7 +9,8 @@ import { checkStage6 } from '../src/qa/stage6.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
-test('Stage 6 in a browser: layout gate, reduced motion, no JS, reflow, autoplay', { timeout: 600000 }, async () => {
+// Stage 7b (12.11.2026, Iva): 40 min, the gate itself takes about 20 min (it timed out at 10 min since 6f).
+test('Stage 6 in a browser: layout gate, reduced motion, no JS, reflow, autoplay', { timeout: 2400000 }, async () => {
   const server = await startServer({ root });
   const browser = await chromium.launch();
   try {

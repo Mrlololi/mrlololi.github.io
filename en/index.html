@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
 <title>Marketing automation &amp; launch tech from Graz | mrlololi</title>
 <meta name="description" content="I test your launch before your customers do. The tech behind online courses: ActiveCampaign, Zapier, landing pages, payments. From Graz.">
 <link rel="canonical" href="https://mrlololi.com/en/">
@@ -47,11 +48,16 @@
 --line: rgb(43 42 51 / 0.08);
 --wire: #E3DBE2;
 --field: #8A8592;
---pink: #F4C9D3; --pink-tint: #FDF0F3; --pink-ink: #9C3F58;
---blue: #BFD8EE; --blue-tint: #EEF5FB; --blue-ink: #2F6A9E;
+--pink: #F4C9D3; --pink-tint: #FDF0F3; --pink-ink: #8E3650;
+--blue: #BFD8EE; --blue-tint: #EEF5FB; --blue-ink: #285B88;
 --pist: #CFE3C2; --pist-tint: #F2F8EE; --pist-ink: #3F6B31;
 --lav: #DCD3F0; --lav-tint: #F4F1FB; --lav-ink: #5A4A9C;
---done: #4E8A3E;
+--peach: #F7DCC8; --peach-tint: #FDF6F1; --peach-ink: #7A4E2D;
+--done: #3F7531;
+--error: #8A2F45;
+--muted: #6E6A78;
+--card: #FFFFFF;
+--sec-paper: #FDF9F6;
 --font-display: "Bricolage Grotesque", "Bricolage Fallback", Arial, sans-serif;
 --font-body: "Atkinson Hyperlegible Next", "Atkinson Fallback", Arial, sans-serif;
 --font-accent: "EB Garamond", "EB Garamond Fallback", Georgia, "Times New Roman", serif;
@@ -71,6 +77,7 @@
 --radius-card: 20px;
 --radius-big: 28px;
 --radius-field: 12px;
+--radius-tag: 6px;
 --shadow-soft: 0 1px 2px rgb(43 42 51 / 0.06);
 --ease-soft: cubic-bezier(0.2, 0.8, 0.2, 1);
 --header-h: 4rem;
@@ -78,8 +85,17 @@
 --radius-pill: 999px;
 --lift: -2px;
 --shadow-hover: 0 10px 24px rgb(43 42 51 / 0.08);
+--shadow-raised: 0 2px 4px rgb(43 42 51 / .06), 0 22px 44px -18px rgb(43 42 51 / .26);
 --surface: var(--sheet);
 --surface-line: 1px solid var(--line);
+--i-stroke: 1.75;
+--i-fill: none;
+--t-press: 120ms;
+--t-ui: 200ms;
+--t-enter: 500ms;
+--t-beat: 1800ms;
+--t-fade: 450ms;
+--ease-io: cubic-bezier(0.45, 0, 0.55, 1);
 }
 .btn {
 display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
@@ -99,14 +115,14 @@ transition: transform 0.2s ease, box-shadow 0.2s ease;
 .text-link { font-weight: 700; display: inline-flex; align-items: center; min-height: 2.75rem; }
 .btn--sm { min-height: 2.75rem; padding: 0 var(--space-4); font-size: var(--step--1); }
 .label {
-display: inline-block; justify-self: start; padding: 0.1rem 0.5rem; border-radius: 6px; border: 0;
+display: inline-block; justify-self: start; padding: 0.1rem 0.5rem; border-radius: var(--radius-tag); border: 0;
 background: rgb(255 255 255 / 0.7); color: var(--ink); font-size: 0.8125rem; font-weight: 700; line-height: 1.6; white-space: nowrap; cursor: default;
 }
 .label--pink { background: #FBE7EC; color: var(--pink-ink); }
 .label--pist { background: #E6F1DF; color: var(--pist-ink); }
-.label--blue { background: #E3EEF8; color: #285B88; }
+.label--blue { background: #E3EEF8; color: var(--blue-ink); }
 .label--lav { background: #EEEAF8; color: var(--lav-ink); }
-.label--peach { background: #FBEDE3; color: #7A4E2D; }
+.label--peach { background: #FBEDE3; color: var(--peach-ink); }
 .card, .instrument {
 background: var(--surface);
 border: var(--surface-line);
@@ -498,7 +514,8 @@ html:not(.js) .hf__btn { display: none; }
 .mascot--on-dark .o { stroke: var(--on-ink); }
 .mascot--on-dark .m-shadow { fill: #fff; opacity: 0.14; }
 .site-footer__trio { flex-basis: 100%; display: flex; align-items: flex-end; min-height: 3.6rem; margin-bottom: var(--space-2); }
-.doc__head { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-4); }
+.doc__head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--space-4); }
+.doc__head > .mscene--legal { margin-left: auto; }
 .mscene--legal { flex: none; display: block; width: 3.5rem; height: 3.62rem; }
 .mscene--legal .mascot { display: block; width: 3.5rem; height: auto; overflow: visible; }
 @media (min-width: 80rem) {
@@ -594,7 +611,6 @@ html:not(.js) .brief__preview { display: none; }
 @media (max-width: 799.98px) {
 .site-header[data-variant="light"] .site-nav__list { background: rgb(253 249 246 / 0.97); }
 }
-.about__line .tl-blue { color: #285B88; }
 .browser__bar i { font-weight: 400; }
 .crumbs ol { display: flex; flex-wrap: wrap; align-items: center; column-gap: var(--space-2); font-size: var(--step--1); color: var(--ink-soft); }
 .crumbs li { display: inline-flex; align-items: center; gap: var(--space-2); }
@@ -988,7 +1004,7 @@ html:not(.js) .kisteps, html:not(.js) .kidemo__controls, html:not(.js) .kidemo__
 .hl--anliegen { --c: var(--blue); --k: var(--blue-ink); }
 .hl--fehlt { --c: var(--pink); --k: var(--pink-ink); }
 .hl--stimmung { --c: var(--lav); --k: var(--lav-ink); }
-.hl--dringlichkeit { --c: #F7DCC8; --k: #7A4E2D; }
+.hl--dringlichkeit { --c: var(--peach); --k: var(--peach-ink); }
 .hl__tag { display: inline-block; margin-inline-start: 0.3rem; padding: 0 0.35rem; border-radius: 4px; background: var(--k); color: #fff; font-size: 0.8125rem; font-weight: 700; line-height: 1.5; vertical-align: 0.1em; white-space: nowrap; }
 .kidemo__arrow { width: 3rem; height: 1.5rem; align-self: center; justify-self: center; fill: none; stroke: var(--lav-ink); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
 @media (max-width: 859.98px) { .kidemo__arrow { transform: rotate(90deg); } }
@@ -1534,7 +1550,6 @@ html[data-motion="paused"] .ref--site .browser__view { overflow-y: auto; }
 @media (min-width: 900px) { .nf__main { grid-template-columns: minmax(0, 1fr) minmax(0, 22rem); } }
 .nf__text { display: grid; gap: var(--space-4); justify-items: start; text-align: left; }
 .nf__pic { display: grid; gap: var(--space-2); justify-items: center; }
-.hero__eyebrow { color: #8E3650; }
 .site-header[data-variant="light"] .site-nav__list { background: #FDF9F6; }
 @media (max-width: 799.98px) { .js .site-nav__list { background: #FDF9F6; } }
 .loopctl.loopctl--icon { width: var(--target); min-width: var(--target); flex: none; }

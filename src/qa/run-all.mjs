@@ -22,7 +22,9 @@ const browser = await chromium.launch();
 const sections = [];
 const run = async (title, fn) => {
   process.stdout.write(`${title}... `);
-  const results = await fn();
+  // Stage 7b: a section that throws is a FAIL with its error, and the run goes on to the next one.
+  let results;
+  try { results = await fn(); } catch (e) { results = [{ name: `${title}: the check itself broke`, pass: false, details: String(e.message || e).split('\n').slice(0, 3).join(' ') }]; }
   sections.push({ title, results });
   console.log(results.every((r) => r.pass) ? 'ok' : 'FAIL');
 };
@@ -54,7 +56,7 @@ await server.close();
 
 if (!skipLighthouse) {
   const lhServer = await startServer({ root: repoRoot, rewriteOrigin: config.site_url });
-  await run('Lighthouse (mobile)', () => lighthouseCheck(lhServer.url, ['/', '/en/', ...SERVICE_PAGES]));
+  await run('Lighthouse (mobile)', () => lighthouseCheck(lhServer.url, ['/', '/en/', '/impressum/', ...SERVICE_PAGES]));
   await lhServer.close();
 }
 
