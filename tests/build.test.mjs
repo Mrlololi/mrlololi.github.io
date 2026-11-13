@@ -141,7 +141,7 @@ test('booking button, booking privacy section and UID line are hidden while empt
   const html = pages({ ...config, booking_url: '', uid: '' }, { buildDate: fixedDate }).map((p) => p.html).join('\n');
   assert.ok(!html.includes('Termin buchen</a>'));
   assert.ok(!html.includes('Book a call</a>'));
-  assert.ok(!html.includes('<h2>Terminbuchung</h2>'));
+  assert.ok(!html.includes('<h2 data-enter="lines">Terminbuchung</h2>'));
   assert.ok(!html.includes('<dt>UID-Nummer</dt>'));
   assert.ok(!html.includes('<dt>VAT ID</dt>'));
 });
@@ -149,7 +149,7 @@ test('booking button, booking privacy section and UID line are hidden while empt
 test('booking button, booking privacy section and UID line appear when set', () => {
   const html = pages({ ...config, booking_url: 'https://example.com/book', uid: 'ATU12345678' }, { buildDate: fixedDate }).map((p) => p.html).join('\n');
   assert.ok(html.includes('href="https://example.com/book"'));
-  assert.ok(html.includes('<h2>Terminbuchung</h2>'));
+  assert.ok(html.includes('<h2 data-enter="lines">Terminbuchung</h2>'));
   assert.ok(html.includes('ATU12345678'));
 });
 

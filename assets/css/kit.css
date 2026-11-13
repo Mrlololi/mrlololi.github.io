@@ -1,0 +1,38 @@
+/* mrlololi kit CSS (Stage 7b, design system v1 sections 2 and 3). Classes only: no :root block, no
+   hex or rgb() literal (they live in the tokens of components.css), because Stage 7d vendors exactly
+   this file into Webprojekte. Inlined on every page between components.css and main.css. */
+
+/* ---------- Three card kinds (2.1, 2.2) ---------- */
+.card--row, .card--pic, .card--frame { position: relative; background: var(--card); transition: none; }
+/* the old rule a.card:hover (components.css) animates box-shadow: the three kinds switch it off */
+a.card--row:hover, a.card--pic:hover, a.card--frame:hover { box-shadow: var(--shadow-soft); }
+.card--row { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--space-1) var(--space-4); align-items: start; min-height: var(--target); padding: var(--space-4); }
+.card--row > .card__ico { grid-row: span 2; }
+.card--note { background: var(--tint, var(--peach-tint)); box-shadow: none; }
+.card--pic { display: flex; flex-direction: column; }
+/* the card itself must not clip (the hover shadow sits on ::after): the picture box rounds its own top corners */
+.card__media { aspect-ratio: var(--media-ratio, 4 / 3); display: grid; place-items: center; overflow: hidden; border-radius: calc(var(--radius-card) - 1px) calc(var(--radius-card) - 1px) 0 0; background: var(--tint, var(--lav-tint)); }
+.card--pic > :not(.card__media) { margin-inline: var(--space-4); }
+.card__title { font-family: var(--font-display); font-weight: 700; font-size: var(--step-1); line-height: 1.2; }
+.card__text { font-size: var(--step-0); color: var(--ink-soft); }
+.card__foot { margin-top: auto; padding-block: var(--space-3) var(--space-4); }
+.ico-list { display: grid; gap: var(--space-2); list-style: none; padding: 0; }
+.ico-list > li { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--space-3); align-items: start; }
+/* hover shadow on a pseudo-element: opacity fades, box-shadow never animates */
+.card--row::after, .card--pic::after, .card--frame::after { content: ""; position: absolute; inset: 0; border-radius: inherit; box-shadow: var(--shadow-hover); opacity: 0; pointer-events: none; transition: opacity var(--t-ui) ease; }
+@media (hover: hover) { a.card--row:hover::after, a.card--pic:hover::after, a.card--frame:hover::after { opacity: 1; } }
+
+/* ---------- Icons «mrlololi line» (3.2, 3.3); drawings in assets/js/kit/icons.mjs ---------- */
+.i-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+.i { display: inline-block; flex: none; width: 1.5rem; height: 1.5rem; fill: none; stroke: currentColor; stroke-width: var(--i-stroke, 1.75); stroke-linecap: round; stroke-linejoin: round; overflow: visible; }
+.i--16 { width: 1rem; height: 1rem; --i-stroke: 2.25; --i-fill: none; }
+.i--20 { width: 1.25rem; height: 1.25rem; --i-stroke: 2; --i-fill: none; }
+.i--24 { --i-stroke: 1.75; --i-fill: none; }
+.i--32 { width: 2rem; height: 2rem; --i-stroke: 1.75; --i-fill: var(--i-tone, none); }
+.i--40 { width: 2.5rem; height: 2.5rem; --i-stroke: 1.4; --i-fill: var(--i-tone, none); }
+.i--48 { width: 3rem; height: 3rem; --i-stroke: 1.15; --i-fill: var(--i-tone, none); }
+.tone-pink { --i-tone: var(--pink); } .tone-blue { --i-tone: var(--blue); } .tone-pist { --i-tone: var(--pist); } .tone-lav { --i-tone: var(--lav); } .tone-peach { --i-tone: var(--peach); }
+.i-tile { display: grid; place-items: center; flex: none; width: var(--tile-size, 2.5rem); height: var(--tile-size, 2.5rem); border-radius: var(--radius-field); background: var(--tile, var(--card)); }
+/* Stage 7b (Iva 13.11.2026, rule 3.3): a picto never stands straight on a band of its own pastel; there
+   it gets a white tile in its own box (inside a card the card is the tile). */
+:is(.bg-pink .i.tone-pink, .bg-blue .i.tone-blue, .bg-pist .i.tone-pist, .bg-lav .i.tone-lav, .bg-peach .i.tone-peach):not(.card *) { background: var(--card); border-radius: var(--radius-field); }

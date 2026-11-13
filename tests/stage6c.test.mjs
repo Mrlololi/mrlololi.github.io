@@ -66,14 +66,17 @@ test('run-log: the second tab of the video frame, a purchase in six steps, runlo
     assert.ok(!/runlog__open|runlog-tpl/.test(h), 'the separate block and its button are gone');
     assert.ok(!/runlog\.(css|js)/.test(h), 'runlog.js is not linked in the page');
   }
-  for (const x of ['Bestellformular', 'Zahlung (Stripe)', 'Rechnung (Quaderno)', 'Markierung', 'Zugang: Mitgliederbereich', 'Willkommens-Mail']) assert.ok(deHome.includes(`<span class="rl__title">${x}</span>`), x);
+  // Stage 7b: the titles are also card titles of the picture cards.
+  for (const x of ['Bestellformular', 'Zahlung (Stripe)', 'Rechnung (Quaderno)', 'Markierung', 'Zugang: Mitgliederbereich', 'Willkommens-Mail']) assert.ok(deHome.includes(`<span class="rl__title card__title">${x}</span>`), x);
   assert.match(deHome, /<input id="rl-name" name="first" type="text" value="Anna"/);
   assert.match(deHome, /Nur eine Demo, es wird nichts gesendet\./);
   assert.ok(!/type="email"[^>]*id="rl-|id="rl-[^"]*"[^>]*type="email"/.test(deHome), 'never an e-mail field');
   assert.match(deHome, /Zeitlupe\. In Wirklichkeit dauert das nach der Zahlung nur Sekunden\./);
   assert.ok(!/2,3 Sekunden|2\.3 seconds/.test(deHome + byFile['en/index.html']), 'no seconds claim');
   const r = js('runlog.js');
-  assert.match(r, /const STEP = 1000;/);
+  // Stage 7b: one beat is the kit's BEAT (1800 ms) instead of the run-log's own 1 s step.
+  assert.match(r, /import \{[^}]*\bBEAT\b[^}]*\} from '\.\/kit\/motion\.js';/);
+  assert.match(js('kit/motion.js'), /export const BEAT = 1800;/);
   assert.match(r, /const HOLD = 4000;/);
   assert.match(r, /const ROUNDS = 3;/);
   assert.match(r, /const AUTO = 4000;/);
@@ -115,6 +118,8 @@ test('references: the long screenshot scrolls in its frame; the stack opens from
 
 test('reveals: once, as soon as any part is on screen, never reversed', () => {
   const m = js('motion.js');
-  assert.match(m, /start: 'top bottom', once: true/);
+  // Stage 7b: 12 % inside the window (design system 5.2); the rest of the entrances moved to kit/enter.js.
+  assert.match(m, /start: 'top 88%', once: true/);
+  assert.match(js('kit/enter.js'), /rootMargin: '0px 0px -12% 0px'/);
   assert.ok(!/toggleActions: 'play none none reverse'/.test(m.slice(m.indexOf('function entrances'))));
 });

@@ -1,5 +1,5 @@
 {
-  "note": "Stage 7b ratchet (design system 1.1 rule 3, 1.3). Each number is the most allowed; it may only fall. Measured on the untouched Stage 7a tree (0374bf0) on 12.11.2026 (hex 147, rgb 32, radius 111, shadow 17, durations 46, mediaWidths 19, svgTemplates 19); lowered after the 7b tokens (hex 141, radius 110). Counter: src/qa/design-debt.mjs; test: tests/stage7b.test.mjs. Lower a number when the code gets lower, never raise it.",
+  "note": "Stage 7b ratchet (design system 1.1 rule 3, 1.3). Each number is the most allowed; it may only fall. Measured on the untouched Stage 7a tree (0374bf0) on 12.11.2026 (hex 147, rgb 32, radius 111, shadow 17, durations 46, mediaWidths 19, svgTemplates 19); lowered after the 7b tokens (hex 141, radius 110); 7b half 2: the radius counter now follows its written rule (a bare 0 is no radius), radius 105; after half 2 (run-log CSS on tokens, process and run-log drawn by the icon module): hex 133, rgb 30, radius 103, shadow 15, svgTemplates 17. Counter: src/qa/design-debt.mjs; test: tests/stage7b.test.mjs. Lower a number when the code gets lower, never raise it.",
   "rules": {
     "hex": "#rgb / #rrggbb / #rrggbbaa literals in assets/css/*.css, comments removed, the :root block of components.css left out (data-URIs included)",
     "rgb": "rgb( and rgba( literals, same files and same exclusions",
@@ -10,17 +10,18 @@
     "svgTemplates": "occurrences of <svg in src/templates/*.mjs"
   },
   "max": {
-    "hex": 141,
-    "rgb": 32,
-    "radius": 110,
-    "shadow": 17,
+    "hex": 133,
+    "rgb": 30,
+    "radius": 103,
+    "shadow": 15,
     "durations": 46,
     "mediaWidths": 19,
-    "svgTemplates": 19
+    "svgTemplates": 17
   },
   "weight": {
     "note": "home page ratchet (scope item 1f): built index.html gzip level 9, DOM = document.querySelectorAll('*').length after load at 1280 px",
     "homeHtmlGzKb": 50,
-    "homeDom": 1800
+    "homeDom": 1850,
+    "homeDomWhy": "Iva 13.11.2026: 1800 -> 1850 for the run-log as a picture story (7b half 2): rail of six icon nodes, six picture cards with inline 48 px pictos, Live, protocol icons and the symbol block: +99 elements (1720 -> 1819 DE, 1677 -> 1780 EN) after the checks went to CSS and the node wrappers were dropped. Raise only with such a line: what added elements and how many."
   }
 }

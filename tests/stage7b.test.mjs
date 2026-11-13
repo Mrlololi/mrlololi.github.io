@@ -5,6 +5,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { gzipSync } from 'node:zlib';
+import { fileURLToPath } from 'node:url';
 import { pairs, failing, readTokens } from '../src/qa/contrast-matrix.mjs';
 import { countDebt, baseline, risen } from '../src/qa/design-debt.mjs';
 
@@ -55,7 +56,7 @@ test('1f. weight ratchet: home HTML <= 50 KB gzip', () => {
   }
 });
 
-test('1f. weight ratchet: home DOM <= 1,800 elements', async () => {
+test('1f. weight ratchet: home DOM within the ceiling of design-debt.json (1,850 since 7b half 2)', async () => {
   const { weight } = baseline();
   const { chromium } = await import('../src/qa/browsers.mjs');
   const { startServer } = await import('../src/qa/serve.mjs');
@@ -66,6 +67,7 @@ test('1f. weight ratchet: home DOM <= 1,800 elements', async () => {
     for (const p of ['/', '/en/']) {
       await page.goto(server.url + p, { waitUntil: 'load' });
       await page.waitForTimeout(1500);
+      assert.ok(await page.locator('.hero').count(), `${p}: the home page itself, not 404.html`);
       const n = await page.evaluate(() => document.querySelectorAll('*').length);
       assert.ok(n <= weight.homeDom, `${p}: ${n} elements`);
     }
@@ -86,4 +88,100 @@ test('kit constants equal the motion tokens (FADE = --t-fade)', () => {
   assert.match(motion, /const MIN_REST = 2500;/);
 });
 
-function fileURLToPathSafe(u) { return decodeURIComponent(u.pathname.replace(/^\/([A-Za-z]:)/, '$1')).replace(/\/$/, ''); }
+// The site root as a native path (the local server compares native paths; forward slashes would serve 404.html).
+function fileURLToPathSafe(u) { return fileURLToPath(u).replace(/[\\/]$/, ''); }
+
+/* ---------- Half 2 «Zeichen» ---------- */
+import { ICONS, icon, iconSymbols } from '../assets/js/kit/icons.mjs';
+import { readdirSync } from 'node:fs';
+
+const built = () => {
+  const out = [];
+  const walk = (dir) => {
+    for (const e of readdirSync(file(dir), { withFileTypes: true })) {
+      if (['node_modules', 'src', 'tests', 'assets', '.git'].includes(e.name)) continue;
+      const p = `${dir}${e.name}`;
+      if (e.isDirectory()) walk(`${p}/`);
+      else if (e.name.endsWith('.html')) out.push([p, read(p)]);
+    }
+  };
+  walk('');
+  return out;
+};
+
+test('3. icon module: the eleven ids of 7b, drawing rules, one fill shape, at most one moving part', () => {
+  assert.deepEqual(Object.keys(ICONS).sort(), ['blocks', 'calendar', 'card', 'check', 'form', 'key', 'mail-star', 'offer', 'receipt', 'tag', 'unlock'].sort());
+  for (const [id, e] of Object.entries(ICONS)) {
+    assert.ok(!/<polygon|<polyline/.test(e.body), `${id}: no polygon (never a triangle)`);
+    assert.ok((e.body.match(/style="fill: var\(--i-fill, none\)"/g) || []).length <= 1, `${id}: at most one fill shape`);
+    assert.ok((e.body.match(/class="m"/g) || []).length <= 1, `${id}: at most one m part`);
+    assert.ok(!/class="(?!m")/.test(e.body), `${id}: no class but m`);
+    assert.ok(e.tone === null || ['pink', 'blue', 'pist', 'lav', 'peach'].includes(e.tone), id);
+  }
+  assert.match(icon('unlock', { size: 48 }), /^<svg class="i i--48 tone-pist" aria-hidden="true" focusable="false"><use href="#i-unlock"\/><\/svg>$/);
+  assert.match(icon('unlock', { size: 24 }), /^<svg class="i i--24" aria-hidden="true"/);
+  assert.match(icon('calendar', { size: 40, inline: true }), /^<svg class="i i--40 tone-pink" data-icon="calendar" viewBox="0 0 24 24" aria-hidden="true" focusable="false">/);
+  assert.throws(() => icon('nope'));
+  assert.throws(() => iconSymbols(['nope']));
+  assert.match(iconSymbols(['form']), /^<svg class="i-defs" width="0" height="0" aria-hidden="true" focusable="false"><symbol id="i-form" viewBox="0 0 24 24">/);
+});
+
+test('gate 2. icon lint: every <use> resolves on its page, no unused symbol, icons aria-hidden; templates draw no <svg> of their own', () => {
+  for (const [f, h] of built()) {
+    const used = new Set([...h.matchAll(/<use href="#i-([\w-]+)"\/>/g)].map((m) => m[1]));
+    const defined = new Set([...h.matchAll(/<symbol id="i-([\w-]+)"/g)].map((m) => m[1]));
+    assert.deepEqual([...used].filter((id) => !defined.has(id)), [], `${f}: <use> without symbol`);
+    assert.deepEqual([...defined].filter((id) => !used.has(id)), [], `${f}: symbol not used`);
+    for (const m of h.matchAll(/<svg class="(?:[\w-]+ )?i i--\d+[^"]*"[^>]*>/g)) assert.match(m[0], /aria-hidden="true" focusable="false"/, `${f}: ${m[0]}`);
+    if (defined.size) assert.match(h, /<body class="[^"]+">\n<svg class="i-defs"/, `${f}: symbols right after <body>`);
+  }
+  // runlog.mjs and the process part of sections.mjs: icons from the module or the mascot kit only.
+  assert.ok(!/<svg/.test(read('src/templates/runlog.mjs')), 'runlog.mjs: no <svg> literal');
+  const s = read('src/templates/sections.mjs');
+  const proc = s.slice(s.indexOf('export function processSteps'), s.indexOf('</ol>', s.indexOf('export function processSteps')));
+  assert.ok(!/<svg/.test(proc), 'process: no <svg> literal');
+});
+
+test('3. contact sheet /_icons/: noindex, not in the sitemap, every id at 20, 24, 48; drawn line 1.5 to 2.4 px', () => {
+  const h = read('_icons/index.html');
+  assert.match(h, /<meta name="robots" content="noindex">/);
+  assert.match(h, /<title>Icons<\/title>/);
+  assert.ok(!read('sitemap.xml').includes('_icons'));
+  for (const f of built().map(([p]) => p).filter((p) => !p.startsWith('_icons'))) assert.ok(!read(f).includes('/_icons/'), `${f} links the sheet`);
+  for (const id of Object.keys(ICONS)) for (const size of [20, 24, 48]) assert.ok(h.includes(icon(id, { size })), `${id} ${size}`);
+  const kit = read('assets/css/kit.css');
+  for (const size of [20, 24, 48]) {
+    const stroke = Number(kit.match(new RegExp(`\\.i--${size} \\{[^}]*--i-stroke: ([\\d.]+)`))[1]);
+    const px = (stroke * size) / 24;
+    assert.ok(px >= 1.5 && px <= 2.4, `${size}: ${px.toFixed(2)} px`);
+  }
+});
+
+test('4. kit.css: the card kinds and icon classes, classes only, no literal, inlined between components and main', () => {
+  const kit = read('assets/css/kit.css');
+  for (const c of ['.card--row', '.card--note', '.card--pic', '.card--frame', '.card__ico', '.card__media', '.card__title', '.card__text', '.card__foot', '.ico-list', '.i-defs', '.i-tile', '.tone-peach']) assert.ok(kit.includes(c), c);
+  assert.ok(!/:root|#[0-9a-fA-F]{3,8}\b|rgba?\(/.test(kit.replace(/\/\*[\s\S]*?\*\//g, '')), 'no :root and no colour literal');
+  assert.ok(!/transition:[^;]*box-shadow|@keyframes[^}]*box-shadow/.test(kit), 'box-shadow never animates');
+  assert.match(read('src/templates/layout.mjs'), /\['components', 'kit', 'main'\]/);
+});
+
+test('5/6. kit constants: ENTER = --t-enter, BEAT = --t-beat; motion.js imports neither enter.js nor icons.mjs', () => {
+  const t = readTokens();
+  assert.equal(`${read('assets/js/kit/enter.js').match(/export const ENTER = (\d+);/)[1]}ms`, t['t-enter']);
+  assert.equal(`${read('assets/js/kit/motion.js').match(/export const BEAT = (\d+);/)[1]}ms`, t['t-beat']);
+  const m = read('assets/js/kit/motion.js');
+  assert.ok(!/^import /m.test(m), 'kit/motion.js imports nothing (offline apps precache only it)');
+  for (const f of readdirSync(file('assets/js')).filter((x) => x.endsWith('.js'))) assert.ok(!/icons\.mjs/.test(read(`assets/js/${f}`)), `${f} must not load icons.mjs`);
+  assert.ok(!/icons\.mjs/.test(read('index.html')), 'no modulepreload of icons.mjs');
+});
+
+test('5. data-enter: never in the hero, never on paragraphs, never on a demo root', () => {
+  for (const f of ['index.html', 'en/index.html', 'launch-technik/index.html', 'impressum/index.html', 'datenschutz/index.html']) {
+    const h = read(f);
+    const hero = h.slice(h.indexOf('<section class="hero'), h.indexOf('</section>', h.indexOf('<section class="hero')));
+    if (h.includes('<section class="hero')) assert.ok(!/data-enter/.test(hero), `${f}: hero`);
+    assert.ok(!/<p data-enter/.test(h), `${f}: paragraph`);
+    assert.ok(!/class="(?:steps-wrap|pkgs-wrap|rl|vtabs|qcards)\b[^"]*"[^>]*data-enter/.test(h), `${f}: demo root`);
+  }
+  for (const f of ['impressum/index.html', 'datenschutz/index.html']) assert.ok(!/class="doc__head"[^>]*data-enter/.test(read(f)), `${f}: doc head`);
+});

@@ -45,7 +45,9 @@ export function countDebt() {
     const s = cssBody(f);
     const h = (s.match(/#[0-9a-fA-F]{3,8}\b/g) || []).filter((x) => [4, 7, 9].includes(x.length)).length;
     const r = (s.match(/\brgba?\(/g) || []).length;
-    const rad = decls(s, 'border-radius').filter((v) => /\d(px|rem|em|%)|\d\s*$|\b0\b/.test(v.replace(/var\([^)]*\)/g, '').replace(/calc\([^)]*\)/g, ''))).length;
+    // A number WITH a unit or a percentage, as the rule says (a bare 0 is no radius); var(...) first,
+    // then what is left of a calc(...) around it.
+    const rad = decls(s, 'border-radius').filter((v) => /\d(px|rem|em|%)/.test(v.replace(/var\([^)]*\)/g, '').replace(/calc\([^)]*\)/g, ''))).length;
     const sh = decls(s, 'box-shadow').filter((v) => !/^(var\([^)]*\)|none|inherit|initial)(\s*!important)?$/.test(v)).length;
     for (const m of s.matchAll(/[:,\s](\d*\.?\d+)(ms|s)\b/g)) durations.add(m[2] === 's' ? Math.round(Number(m[1]) * 1000) : Math.round(Number(m[1])));
     for (const q of s.matchAll(/@media[^{]*/g)) for (const m of q[0].matchAll(/(\d*\.?\d+)(px|rem|em)/g)) widths.add(`${m[1]}${m[2]}`);

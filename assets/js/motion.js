@@ -69,25 +69,23 @@ function dock(gsap, wide) {
 // Stage 6e (Iva: sections stayed empty when he scrolled up or not far enough): an element enters as
 // soon as its top reaches the bottom of the window, only once (no reverse, no reset on a fast
 // scroll), and anything already on screen or above when this runs is simply shown.
+// Stage 7b: everything else enters through kit/enter.js on every page; this keeps only the SplitText
+// line reveal of the headings on wide home pages, with the same trigger (12 % inside the window).
 function entrances(gsap, wide, getSplit) {
-  const st = (el) => ({ trigger: el, start: 'top bottom', once: true });
+  if (document.documentElement.dataset.motion === 'paused') return () => {}; // paused: the end frame
+  const st = (el) => ({ trigger: el, start: 'top 88%', once: true });
   const splits = [];
-  for (const el of document.querySelectorAll('[data-enter]')) {
+  for (const el of document.querySelectorAll('[data-enter="lines"]')) {
     if (el.getBoundingClientRect().top < innerHeight) continue;
-    const kind = el.dataset.enter;
-    if (kind === 'stagger') {
-      gsap.from(el.children, { y: 24, opacity: 0, duration: 0.5, ease: 'power3.out', stagger: 0.07, scrollTrigger: st(el) });
-    } else if (kind === 'lines' && getSplit) {
+    if (getSplit) {
       getSplit().then((SplitText) => {
         if (!SplitText) return;
         splits.push(SplitText.create(el, {
           // aria none: the words stay in the DOM as text (aria-label is not allowed on <p>).
           type: 'lines', mask: 'lines', autoSplit: true, aria: 'none',
-          onSplit: (self) => gsap.from(self.lines, { yPercent: 100, duration: 0.6, ease: 'power3.out', stagger: 0.07, scrollTrigger: st(el) }),
+          onSplit: (self) => gsap.from(self.lines, { yPercent: 100, duration: 0.6, ease: 'power3.out', stagger: 0.07, scrollTrigger: st(el), onStart: () => el.setAttribute('data-entered', '') }),
         }));
       });
-    } else {
-      gsap.from(el, { y: kind === 'lines' ? 16 : 32, opacity: 0, duration: 0.5, ease: 'power3.out', scrollTrigger: st(el) });
     }
   }
   return () => splits.forEach((x) => x.revert());

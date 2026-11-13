@@ -1,4 +1,5 @@
 // Datenschutz-Ergänzung 28.10.2026: section «Language Starter (Webprojekte)» on /datenschutz/ and /en/privacy/.
+// Stage 7b: the section heads of the legal pages carry data-enter="lines" (design system 5.2).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { pages, sitemap } from '../src/build.mjs';
@@ -12,21 +13,21 @@ const DE = 'Die Funktion „Anhören“ in Language Starter (mrlololi.com/Webpro
 
 test('datenschutz: the Language Starter section, word for word, before «Ihre Rechte»', () => {
   const h = html('datenschutz/index.html');
-  assert.ok(h.includes(`<section id="langstarter">\n<h2>Language Starter (Webprojekte)</h2>\n<p>${DE}</p>\n</section>`));
-  assert.ok(h.indexOf('Language Starter (Webprojekte)') > h.indexOf('<h2>Externe Links</h2>') && h.indexOf('Language Starter (Webprojekte)') < h.indexOf('<h2>Ihre Rechte</h2>'));
+  assert.ok(h.includes(`<section id="langstarter">\n<h2 data-enter="lines">Language Starter (Webprojekte)</h2>\n<p>${DE}</p>\n</section>`));
+  assert.ok(h.indexOf('Language Starter (Webprojekte)') > h.indexOf('<h2 data-enter="lines">Externe Links</h2>') && h.indexOf('Language Starter (Webprojekte)') < h.indexOf('<h2 data-enter="lines">Ihre Rechte</h2>'));
 });
 
 test('privacy (EN): the same section in English, before «Your rights»', () => {
   const h = html('en/privacy/index.html');
-  const sec = h.match(/<section id="langstarter">\n<h2>Language Starter \(Webprojekte\)<\/h2>\n<p>([^<]+)<\/p>\n<\/section>/);
+  const sec = h.match(/<section id="langstarter">\n<h2 data-enter="lines">Language Starter \(Webprojekte\)<\/h2>\n<p>([^<]+)<\/p>\n<\/section>/);
   assert.ok(sec, 'section present');
   for (const part of ['mrlololi.com/Webprojekte/language-starter', 'Google Chrome', 'localStorage', 'no cookies', 'no tracking', 'I do not transmit any data myself.']) assert.ok(sec[1].includes(part), part);
   assert.ok(!/\b[Ww]e\b/.test(sec[1]), 'first person, no «we»');
-  assert.ok(h.indexOf('Language Starter') < h.indexOf('<h2>Your rights</h2>'));
+  assert.ok(h.indexOf('Language Starter') < h.indexOf('<h2 data-enter="lines">Your rights</h2>'));
 });
 
 test('datenschutz: first person only, no «wir» in the new section', () => {
-  const sec = html('datenschutz/index.html').match(/<h2>Language Starter \(Webprojekte\)<\/h2>\n<p>([^<]+)<\/p>/)[1];
+  const sec = html('datenschutz/index.html').match(/<h2 data-enter="lines">Language Starter \(Webprojekte\)<\/h2>\n<p>([^<]+)<\/p>/)[1];
   assert.ok(!/\b[Ww]ir\b/.test(sec));
   assert.match(sec, /Ich selbst übermittle dabei keine Daten\./);
 });

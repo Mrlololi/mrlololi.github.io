@@ -19,14 +19,14 @@ const section = (h, id) => h.match(new RegExp(`<section id="${id}">[\\s\\S]*?</s
 
 test('1. Datenschutz #post (DE/EN) with all its sub-headings, the link to the e-mail section', () => {
   const d = section(byFile['datenschutz/index.html'], 'post');
-  assert.match(d, /<h2>Kontaktaufnahme mit Unternehmen per Post \(Direktwerbung\)<\/h2>/);
+  assert.match(d, /<h2 data-enter="lines">Kontaktaufnahme mit Unternehmen per Post \(Direktwerbung\)<\/h2>/);
   for (const h of ['Quelle', 'Rechtsgrundlage', 'Empfänger', 'Speicherdauer', 'Widerspruch']) assert.ok(d.includes(`<strong>${h}:</strong>`), h);
   for (const x of ['einmalig einen Brief', 'Art. 6 Abs. 1 lit. f DSGVO, Erwägungsgrund 47', 'höchstens einmal in 12 Monaten', 'Google Ireland Ltd.', 'EU-US Data Privacy Framework (Art. 45 DSGVO)', 'Sperrvermerk (Firma, Domain, Datum)', 'Art. 21 Abs. 2 DSGVO', 'Bis 4. November 2026']) assert.ok(d.includes(x), x);
   assert.match(d, /gelten die Fristen unter „<a href="#email">Kontakt per E-Mail<\/a>“/);
   assert.match(d, /per E-Mail an <a href="mailto:hello@mrlololi\.com">hello@mrlololi\.com<\/a> oder per Post/);
   assert.ok(!/Anthropic/.test(d));
   const e = section(byFile['en/privacy/index.html'], 'post');
-  assert.match(e, /<h2>Contacting businesses by post \(direct marketing\)<\/h2>/);
+  assert.match(e, /<h2 data-enter="lines">Contacting businesses by post \(direct marketing\)<\/h2>/);
   for (const h of ['Source', 'Legal basis', 'Recipients', 'Storage', 'Objection']) assert.ok(e.includes(`<strong>${h}:</strong>`), h);
   assert.match(e, /<a href="#email">Contact by email<\/a>/);
   assert.equal(config.page_dates.privacy, '2026-11-05');

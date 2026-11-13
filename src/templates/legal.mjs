@@ -37,13 +37,13 @@ ${facts(L.facts, config)}
 </dl>
 </section>
 <section aria-labelledby="disclosure">
-<h2 id="disclosure">${esc(L.disclosureTitle)}</h2>
+<h2 id="disclosure" data-enter="lines">${esc(L.disclosureTitle)}</h2>
 <dl>
 ${facts(L.disclosure, config)}
 </dl>
 </section>
 <section aria-labelledby="links">
-<h2 id="links">${esc(L.linksTitle)}</h2>
+<h2 id="links" data-enter="lines">${esc(L.linksTitle)}</h2>
 <p>${esc(L.links)}</p>
 </section>
 </article>`;
@@ -61,14 +61,14 @@ export function privacy(t, config, { date }) {
       // Stage 6h: a section in parts, each part a paragraph with its bold sub-heading («Quelle: …»).
       if (s.parts) {
         return `<section id="${s.key}">
-<h2>${esc(s.title)}</h2>
+<h2 data-enter="lines">${esc(s.title)}</h2>
 ${s.parts.map(([label, x]) => `<p>${label ? `<strong>${esc(label)}:</strong> ` : ''}${filled(x)}</p>`).join('\n')}
 </section>`;
       }
       let text = filled(s.text);
       if (s.dpf && config.github_dpf_verified) text += ` ${esc(s.dpf)}`;
       return `<section id="${s.key}">
-<h2>${esc(s.title)}</h2>
+<h2 data-enter="lines">${esc(s.title)}</h2>
 <p>${text}</p>
 </section>`;
     })

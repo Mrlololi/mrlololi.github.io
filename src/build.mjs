@@ -109,6 +109,13 @@ export async function build({ outDir = root, probe = true, quiet = false } = {})
     await writeFile(target, html, 'utf8');
     log(`page: ${file}`);
   }
+  // Stage 7b: the icon contact sheet (QA page, noindex, not in the sitemap, linked from nowhere) and the
+  // icon checks of design system 3.2 over every built page.
+  const built = pages(config, { articles, live });
+  await mkdir(path.join(outDir, '_icons'), { recursive: true });
+  await writeFile(path.join(outDir, '_icons/index.html'), await iconSheet(), 'utf8');
+  await checkIcons(built.map((p) => p.html));
+  log('page: _icons/index.html (icon contact sheet)');
   // Pages that are no longer built (a Ratgeber switched off again) must not stay online.
   const ratgeber = config.ratgeber_live && articles.length > 0;
   if (!ratgeber) await rm(path.join(outDir, 'ratgeber'), { recursive: true, force: true });
@@ -126,6 +133,53 @@ export async function build({ outDir = root, probe = true, quiet = false } = {})
     await writeFile(path.join(outDir, 'CNAME'), domain, 'utf8');
     log(`page: CNAME (${domain.trim()})`);
   }
+}
+
+/* ---------- Stage 7b: icons (design system 3.2) ---------- */
+// Every id at 20, 24 and 48 px (pictos with their tone), a mascot of the same size beside the 48 px
+// row. A QA page: title «Icons», the ids as captions, no other words.
+export async function iconSheet() {
+  const { ICONS, icon } = await import('../assets/js/kit/icons.mjs');
+  const { mascotScene } = await import('./templates/mascots.mjs');
+  const ids = Object.keys(ICONS);
+  const row = (size) => `<section class="icons-sheet__row" aria-label="${size} px">
+<p class="icons-sheet__size">${size}</p>
+<ul class="icons-sheet__list" role="list">
+${ids.map((id) => `<li>${icon(id, { size })}<span>${id}</span></li>`).join('\n')}
+${size === 48 ? `<li>${mascotScene('icons', [[0, 'idle']], 'icons-sheet__mascot', 'icons')}<span>Logik</span></li>` : ''}
+</ul>
+</section>`;
+  const main = `<article class="doc icons-sheet">
+<h1>Icons</h1>
+${[20, 24, 48].map(row).join('\n')}
+<style>.icons-sheet__list { display: flex; flex-wrap: wrap; gap: var(--space-5); list-style: none; padding: 0; align-items: flex-end; }
+.icons-sheet__list li { display: grid; justify-items: center; gap: var(--space-2); font-size: var(--step--1); }
+.icons-sheet__size { font-weight: 700; }
+.icons-sheet__mascot .mascot { display: block; width: 3rem; height: auto; overflow: visible; }</style>
+</article>`;
+  return layout({
+    t: de, other: en, config, ratgeber: false,
+    page: { key: 'icons', path: '/_icons/', altPath: en.paths.home, noindex: true, title: 'Icons', description: 'Icons' },
+    main,
+  });
+}
+
+// Unknown ids throw where they are drawn (icon(), iconSymbols()); here: every <use> and inline icon of
+// a built page is an id of the module, and every id is used: (1) a built page other than the sheet
+// carries it, or (2) a file under src/templates/, src/content/ or src/config.json names it as a string,
+// or (3) its entry has a «project» field (drawn for a Webprojekte page).
+export async function checkIcons(htmls) {
+  const { ICONS } = await import('../assets/js/kit/icons.mjs');
+  const { readdirSync, readFileSync } = await import('node:fs');
+  const onPages = new Set(htmls.flatMap((h) => [...h.matchAll(/href="#i-([\w-]+)"|data-icon="([\w-]+)"/g)].map((m) => m[1] || m[2])));
+  const unknown = [...onPages].filter((id) => !ICONS[id]);
+  if (unknown.length) throw new Error(`icons: unknown id on a page: ${unknown.join(', ')}`);
+  const src = [
+    ...['src/templates', 'src/content'].flatMap((d) => readdirSync(path.join(root, d)).filter((f) => /\.(mjs|json|md)$/.test(f)).map((f) => readFileSync(path.join(root, d, f), 'utf8'))),
+    readFileSync(path.join(root, 'src/config.json'), 'utf8'),
+  ].join('\n');
+  const unused = Object.entries(ICONS).filter(([id, e]) => !onPages.has(id) && !e.project && !new RegExp(`['"\`]${id}['"\`]`).test(src)).map(([id]) => id);
+  if (unused.length) throw new Error(`icons: id in assets/js/kit/icons.mjs but used nowhere: ${unused.join(', ')} (draw an id only in its stage)`);
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1]).href) {

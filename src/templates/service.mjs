@@ -129,7 +129,7 @@ ${calculator(t)}`;
 
 const section = (id, bg, title, body) => `<section class="svc-sec ${bg} edge" aria-labelledby="svc-${id}">
 <div class="wrap svc-sec__in">
-<h2 id="svc-${id}">${esc(title)}</h2>
+<h2 id="svc-${id}" data-enter="lines">${esc(title)}</h2>
 ${body}
 </div>
 </section>`;
@@ -168,7 +168,7 @@ ${pkgs.map(priceChip).join('\n')}
 </section>
 ${s.key === 'launch' && t.s6.video ? `<section class="svc-sec svc-video bg-pist edge" aria-labelledby="svc-video">
 <div class="wrap svc-sec__in">
-<h2 id="svc-video">${accent(t.s6.video.h2)}</h2>
+<h2 id="svc-video" data-enter="lines">${accent(t.s6.video.h2)}</h2>
 <p class="svc-text">${esc(t.s6.video.text)}</p>
 ${videoFigure(t)}
 </div>
@@ -197,7 +197,7 @@ ${faq}
 </div>`)}
 <section class="svc-sec bg-pink edge" id="svc-contact" aria-labelledby="svc-related">
 <div class="wrap svc-sec__in">
-<h2 id="svc-related">${esc(L.related)}</h2>
+<h2 id="svc-related" data-enter="lines">${esc(L.related)}</h2>
 <ul class="svc-rels" role="list">
 ${related}
 </ul>

@@ -159,7 +159,10 @@ test('process right under the prices, then the CTA strip; references with their 
 test('projects: four cards, one link each (no nested links), 4:3 screenshots, KI first', () => {
   const p = deHome.slice(deHome.indexOf('id="projects"'), deHome.indexOf('id="faq"'));
   // Stage 6h: the KI project as the main card, GeoAPP and Language Starter lighter below, no KittyCats.
-  const cards = p.match(/<(?:li|div) class="proj(?: proj--main)?">[\s\S]*?<\/(?:li|div)>/g);
+  // Stage 7b: the main card enters (data-enter).
+  const cards = p.match(/<(?:li|div) class="proj(?: proj--main)?"(?: data-enter)?>[\s\S]*?<\/(?:li|div)>/g);
+  assert.match(p, /<div class="proj proj--main" data-enter>/);
+  assert.match(p, /<ul class="projs projs--play" role="list" data-enter="stagger">/);
   assert.equal(cards.length, 3);
   for (const [i, n] of ['KI im Kundenservice', 'Language Starter', 'GeoAPP'].entries()) assert.ok(cards[i].includes(n), n);
   assert.ok(!p.includes('KittyCats'));
@@ -176,7 +179,10 @@ test('projects: four cards, one link each (no nested links), 4:3 screenshots, KI
 
 test('about: two paragraphs, photo, four-point timeline; no tool rows, no projects link', () => {
   const a = deHome.slice(deHome.indexOf('id="about"'), deHome.indexOf('id="faq"'));
-  assert.equal((a.match(/<p data-enter="lines">/g) || []).length, 2);
+  // Stage 7b: the two paragraphs without an entrance (never on paragraphs), the photo with one.
+  assert.equal((a.match(/<p>(Ich bin|Seit 2023)/g) || []).length, 2);
+  assert.equal((a.match(/<p data-enter/g) || []).length, 0);
+  assert.match(a, /<div class="about__photo" data-enter>/);
   assert.equal((a.match(/<li class="path__stop">/g) || []).length, 4);
   assert.ok(!/class="trow|about__project/.test(a));
 });

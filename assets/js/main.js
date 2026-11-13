@@ -4,6 +4,7 @@
 // Stage 6: each demo module is imported when its section comes within a viewport. Stage 6c: every
 // demo loops while visible (loops.js), each with its pause button.
 import { demo, initMotionToggle } from './kit/motion.js';
+import { initEnter } from './kit/enter.js';
 
 const root = document.documentElement;
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
@@ -18,6 +19,11 @@ initMarquee();
 initTabs();
 initMotionToggle();
 const home = Boolean(document.querySelector('.hero'));
+// Stage 7b: entrances on every page (kit/enter.js). On wide home pages the headings with
+// data-enter="lines" keep the SplitText line reveal of motion.js; if GSAP does not come, enter.js
+// takes them over.
+const splitLines = (el) => home && el.dataset.enter === 'lines' && matchMedia('(min-width: 768px)').matches && !reduceMotion.matches;
+const enter = initEnter({ skip: splitLines });
 // Mascots: their own module, so pages without mascots never load it.
 const mascots = document.querySelector('.mascot') ? import('./mascots.js').then((m) => { m.initMascots(); return m; }).catch(report) : null;
 // Resolves to { gsap, ScrollTrigger, refresh } once the animation code is there, or null.
@@ -61,10 +67,11 @@ async function loadMotion() {
     await loadScript('/assets/vendor/gsap.min.js');
     await loadScript('/assets/vendor/ScrollTrigger.min.js');
   } catch {
-    return null; // no animation library: everything stays in its final state
+    enter.adopt([...document.querySelectorAll('[data-enter="lines"]')].filter(splitLines));
+    return null; // no animation library: enter.js plays the headings, the rest is its final state
   }
   const { gsap, ScrollTrigger } = window;
-  if (!gsap || !ScrollTrigger) return null;
+  if (!gsap || !ScrollTrigger) { enter.adopt([...document.querySelectorAll('[data-enter="lines"]')].filter(splitLines)); return null; }
   gsap.registerPlugin(ScrollTrigger);
   mascots?.then((m) => m?.startMascotMotion(gsap));
   const { initMotion } = await import('./motion.js');
@@ -103,7 +110,8 @@ function initMarquee() {
   for (const box of document.querySelectorAll('.tools__in[data-demo="tools"]')) {
     // About 20 px a second, whatever the row's width (Stage 6f).
     const speed = () => { const tr = box.querySelector('.marquee__track'); if (tr) box.style.setProperty('--marquee-s', `${Math.max(20, Math.round(tr.scrollWidth / 2 / 20))}s`); };
-    demo(box, { duration: 2147483000, rest: 0, frames: 1, tap: '.marquee', state: (p) => { if (p === 'run') speed(); } });
+    // Stage 7b: ambient, so no round limit (design system 5.3).
+    demo(box, { duration: 2147483000, rest: 0, rounds: Infinity, frames: 1, tap: '.marquee', state: (p) => { if (p === 'run') speed(); } });
   }
 }
 

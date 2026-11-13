@@ -1,4 +1,6 @@
 import { esc, fill } from './util.mjs';
+import { icon } from '../../assets/js/kit/icons.mjs';
+import { mascotScene } from './mascots.mjs';
 
 // Stage 6f (4.11.2026): the run-log is the second tab of the video frame («Video | Schritt für Schritt»,
 // EN «Overview | Step by step»). One purchase in six steps: order form, payment, invoice, tag, access,
@@ -6,15 +8,25 @@ import { esc, fill } from './util.mjs';
 // starts by itself after 4 s (assets/js/runlog.js). Forward only, one step at a time with its log line.
 // The HTML is the end frame (every step done), for no JS and reduced motion. Its CSS and JS load when
 // the tab first opens (main.js). Nothing is sent, no e-mail address is asked for.
-const check = '<svg class="rl__check" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="9"/><path d="M5.6 10.3l2.9 2.9 5.9-6.4"/></svg>';
+// Stage 7b (design system 2.1, 3.6, 5.4): the run-log tells its steps as a picture story.
+// - Rail: six nodes above the stage, each a 44 px white disc with the step's icon (24 px, line only);
+//   the current node has an ink ring, a done node a small check badge; a dot («Anna») travels along it.
+//   The rail is aria-hidden: the lists carry the meaning.
+// - Stage: one picture card per step (card card--pic) in the same grid cell at every width; its
+//   .card__media holds the step's 48 px picto with its tone, inline, so its m part can move.
+// - Live (kit mascot group, 56 px box reserved) pops out on step 6.
+// - Protocol: each line leads with the step's icon (20 px); a done line shows the check glyph with it.
+export const RUNLOG_ICONS = ['form', 'card', 'receipt', 'tag', 'unlock', 'mail-star'];
 
 export function runlog(t) {
   const r = t.s6.r;
   const name = esc(r.name);
   const line = (s) => esc(s).replace(/\{name\}/g, `<span class="rl__name">${name}</span>`);
   const total = r.steps.length;
-  const steps = r.steps.map(([title, text], i) => `<li class="rl__step ${i === total - 1 ? 'is-current' : 'is-done'}" data-i="${i}"><span class="rl__n" aria-hidden="true">${i + 1}</span><span class="rl__title">${esc(title)}</span><span class="rl__line">${line(text)}</span></li>`).join('');
-  const log = r.log.map((x, i) => `<li class="rl__log is-on" data-i="${i}">${check}<span>${esc(x)}</span></li>`).join('');
+  // Iva 13.11.2026 (DOM ceiling): the disc is the node itself, the check badge and the protocol check are CSS.
+  const rail = RUNLOG_ICONS.map((id, i) => `<li class="rl__node is-done" data-i="${i}">${icon(id, { size: 24 })}</li>`).join('');
+  const steps = r.steps.map(([title, text], i) => `<li class="rl__step card card--pic ${i === total - 1 ? 'is-current' : 'is-done'}" data-i="${i}"><span class="card__media">${icon(RUNLOG_ICONS[i], { size: 48, inline: true })}</span><span class="rl__title card__title">${esc(title)}</span><span class="rl__line card__text">${line(text)}</span></li>`).join('');
+  const log = r.log.map((x, i) => `<li class="rl__log is-on" data-i="${i}">${icon(RUNLOG_ICONS[i], { size: 20 })}<span>${esc(x)}</span></li>`).join('');
   return `<div class="rl demo is-end" data-demo="runlog" data-step="${total - 1}" data-total="${total}" data-step-of="${esc(r.stepOf)}">
 <form class="rl__start" novalidate>
 <p class="rl__head">${esc(r.title)}</p>
@@ -24,7 +36,11 @@ export function runlog(t) {
 </form>
 <div class="rl__stage">
 <p class="rl__count" aria-hidden="true">${esc(fill(r.stepOf, { n: total, total }))}</p>
+<div class="rl__railbox" aria-hidden="true"><ol class="rl__rail" role="list">${rail}</ol><span class="rl__car"><span class="rl__dot"></span></span></div>
+<div class="rl__scene">
 <ol class="rl__steps" role="list">${steps}</ol>
+${mascotScene('runlog', [[2, 'joy']], 'rl__live', 'runlog')}
+</div>
 </div>
 <figure class="rl__protocol"><figcaption class="rl__bar">${esc(r.logTitle)}</figcaption><ol class="rl__logs" role="list">${log}</ol><p class="rl__summary">${esc(t.run.summary)}</p></figure>
 <div class="rl__ctl">

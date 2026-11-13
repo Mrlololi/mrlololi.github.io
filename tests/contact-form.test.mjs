@@ -68,7 +68,7 @@ test('Datenschutz: section «Kontaktformular» / «Contact form» before «Termi
     ['en/privacy/index.html', 'Contact form', ['Art. 6(1)(b) GDPR', 'Make, a service of Celonis (Celonis Inc., New York, USA, and its subsidiaries)', 'EU region', 'EU-US Data Privacy Framework', 'Google Gmail', '<a href="#email">Contact by email</a>', 'You do not have to use the form']],
   ]) {
     const h = byFile[f];
-    const sec = h.match(new RegExp(`<section id="form">\\n<h2>${title}</h2>\\n<p>([\\s\\S]*?)</p>\\n</section>`));
+    const sec = h.match(new RegExp(`<section id="form">\\n<h2 data-enter="lines">${title}</h2>\\n<p>([\\s\\S]*?)</p>\\n</section>`));
     assert.ok(sec, f);
     for (const p of parts) assert.ok(sec[1].includes(p), `${f}: ${p}`);
     assert.ok(h.includes('<section id="email">'));

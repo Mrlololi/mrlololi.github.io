@@ -101,7 +101,9 @@ test('process: «So arbeiten wir zusammen», a line and four pictograms', () => 
   const p = section(DE, 'process');
   assert.match(p, /So arbeiten wir <em class="accent">zusammen<\/em>/);
   assert.match(p, /<span class="steps__line" aria-hidden="true"><span><\/span><\/span>/);
-  assert.equal((p.match(/<svg class="step__icon step__icon--(cal|offer|blocks|key)"/g) || []).length, 4);
+  // Stage 7b: the four pictos come from the icon module, inline at 40 px with their tone.
+  assert.equal((p.match(/<svg class="step__icon i i--40 tone-(pink|blue|pist)" data-icon="(calendar|offer|blocks|key)" viewBox="0 0 24 24" aria-hidden="true" focusable="false">/g) || []).length, 4);
+  assert.ok(!/pi--/.test(p), 'no old pi-- hooks');
   assert.match(section(EN, 'process'), /How we work <em class="accent">together<\/em>/);
 });
 

@@ -3,15 +3,12 @@ import { mascotScene } from './mascots.mjs';
 import { ctaStrip } from './pricing.mjs';
 import { briefMail } from '../../assets/js/pure.js';
 import { MASCOTS, mascotSvg } from '../../assets/js/kit/mascot-art.js';
+import { icon } from '../../assets/js/kit/icons.mjs';
 
-// Small pictograms for the four steps (assets/js/sections.js animates each once the line reaches it).
-const ICONS = {
-  cal: '<rect x="5" y="8" width="30" height="26" rx="4"/><path d="M5 15h30M13 5v6M27 5v6"/><path class="pi pi--tick" d="M14 24l4 4 8-8"/>',
-  offer: '<path d="M10 5h15l7 7v23H10z"/><path d="M25 5v7h7"/><path class="pi pi--l1" d="M15 19h12"/><path class="pi pi--l2" d="M15 24h12"/><path class="pi pi--l3" d="M15 29h7"/>',
-  blocks: '<rect x="6" y="24" width="12" height="10" rx="2"/><rect x="21" y="24" width="12" height="10" rx="2"/><rect class="pi pi--drop" x="13" y="10" width="13" height="10" rx="2"/>',
-  key: '<g class="pi pi--key"><circle cx="13" cy="20" r="6"/><path d="M19 20h15M29 20v5M33 20v4"/></g>',
-};
-const ICON_KEYS = ['cal', 'offer', 'blocks', 'key'];
+// Stage 7b: the four step pictograms come from the icon module (design system 3.6), written inline at
+// 40 px with their tones so their one moving part (class m) can play once per round (main.css, process).
+const STEP_ICONS = ['calendar', 'offer', 'blocks', 'key'];
+const stepIcon = (i) => icon(STEP_ICONS[i], { size: 40, inline: true }).replace('class="i ', 'class="step__icon i '); // the step's class beside the icon classes
 
 // «So arbeiten wir zusammen» (moved up under the prices, text unchanged), closed by the «Nicht sicher,
 // was passt?» strip. Stage 6c: the line draws again, each number fills when the line reaches it and
@@ -21,7 +18,7 @@ export function processSteps(t) {
     .map(
       (s, i) => `<li class="step">
 <span class="step__n" aria-hidden="true">${i + 1}</span>
-<svg class="step__icon step__icon--${ICON_KEYS[i]}" viewBox="0 0 40 40" aria-hidden="true" focusable="false">${ICONS[ICON_KEYS[i]]}</svg>
+${stepIcon(i)}
 <h3 class="step__title">${esc(s.title)}</h3>
 <p>${esc(s.text)}</p>
 </li>`
@@ -56,7 +53,7 @@ export function about(t) {
   const s = t.s4.about;
   return `<section class="section about bg-peach edge" id="about" aria-labelledby="about-title">
 <div class="wrap about__grid">
-<div class="about__photo">
+<div class="about__photo" data-enter>
 <span class="about__blob" aria-hidden="true"></span>
 <div class="about__mask">
 <picture>
@@ -69,7 +66,7 @@ export function about(t) {
 <div class="about__text">
 <h2 id="about-title" data-enter="lines">${accent(t.about.h2)}</h2>
 <p class="about__line">${brandLine(s.line)}</p>
-${t.about.paragraphs.map((p) => `<p data-enter="lines">${esc(p)}</p>`).join('\n')}
+${t.about.paragraphs.map((p) => `<p>${esc(p)}</p>`).join('\n')}
 <div class="aboutrow demo" data-demo="about" role="group" aria-labelledby="aboutrow-label">
 <p class="aboutrow__label" id="aboutrow-label">${esc(t.s6.e.aboutLabel)}</p>
 <ul class="aboutrow__chips" role="list">${t.s6.e.aboutRow.map((x) => `<li class="trust">${esc(x)}</li>`).join('')}</ul>
@@ -105,7 +102,7 @@ export function faq(t) {
   return `<section class="section faq bg-lav edge" id="faq" aria-labelledby="faq-title">
 <div class="wrap faq__grid faqbox" data-also="${esc(s.also)}" data-related="${esc(JSON.stringify(s.related))}" data-photo="/assets/img/avatar-88.webp" data-typing="${esc(t.s6.c.faqTyping)}">
 <div class="faq__side">
-<h2 id="faq-title">${accent(t.faq.h2)}</h2>
+<h2 id="faq-title" data-enter="lines">${accent(t.faq.h2)}</h2>
 <p class="faq__intro">${esc(s.intro)}</p>
 <a class="faq__more" href="#contact">${esc(s.missing)}</a>
 </div>
@@ -213,7 +210,7 @@ export function contact(t, config) {
   return `<section class="section contact bg-pink edge" id="contact" aria-labelledby="contact-title">
 <div class="wrap contact__grid">
 <div class="contact__main">
-<h2 class="contact__title" id="contact-title">${accent(t.contact.h2)}</h2>
+<h2 class="contact__title" id="contact-title" data-enter="lines">${accent(t.contact.h2)}</h2>
 <p class="lead">${esc(t.contact.text)}</p>
 <p class="contact__free">${esc(t.contact.free)}</p>
 ${contactForm(t, config, { page: t.paths.home })}

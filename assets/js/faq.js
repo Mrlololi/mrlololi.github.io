@@ -4,6 +4,10 @@
 // chips and the way to the contact. The answers stay in the <details> (the chat is a visual copy,
 // hidden from screen readers). Phones: the accordion, with the same typing beat on the first open
 // of a question; its answer keeps its place, so nothing jumps. Reduced motion: instant.
+// Stage 7b: the typing beat claims the stage (kit/motion.js): a loop that runs fades to its end frame
+// for its length, nothing else starts meanwhile.
+import { stage } from './kit/motion.js';
+
 const TYPE = 800;
 
 export function init({ reduceMotion }) {
@@ -57,6 +61,7 @@ export function init({ reduceMotion }) {
     const typing = el('div', 'bubble bubble--typing');
     typing.append(reader());
     chat.append(typing);
+    stage.claim(box, TYPE);
     timer = setTimeout(answer, TYPE);
   };
 
@@ -69,6 +74,7 @@ export function init({ reduceMotion }) {
     const r = reader();
     a.prepend(r);
     item.classList.add('is-reading');
+    stage.claim(item, TYPE);
     setTimeout(() => { item.classList.remove('is-reading'); r.querySelector('.faq__dots')?.remove(); }, TYPE);
   };
 

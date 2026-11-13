@@ -293,6 +293,8 @@ export async function checkStage6(browser, base) {
     const seen = new Set();
     for (const chain of ['.pkgs-wrap', '.more']) {
       await page.evaluate((x) => document.querySelector(x).scrollIntoView({ block: 'center' }), chain);
+      // Stage 7b: the pointer away from the pictures (a pointer inside holds a loop, conductor v2).
+      await page.mouse.move(2, 2);
       for (let i = 0; i < 50; i += 1) {
         for (const k of await page.evaluate(() => [...document.querySelectorAll('.tariff .viz, .tariff .days')].filter((v) => v.dataset.play === 'run').map((v) => v.className))) seen.add(k);
         await page.waitForTimeout(200);
@@ -338,6 +340,8 @@ export async function checkStage6(browser, base) {
   }
   // Stage 6f: the run-log is the second tab of the video frame. Tabs by keyboard, runlog.js only on
   // the tab, auto start after about 4 s, forward only (1 s a step, 4 s hold), up to 3 rounds, then still.
+  // Stage 7b: one beat is 1800 ms (design system 5.4), a round 6 x 1.8 s + 4 s hold + 0.45 s fade; the
+  // reset goes straight to step 1 of the next round (the -1 frame lasts one frame).
   for (const w of [1440, 390]) {
     const page = await browser.newPage({ viewport: { width: w, height: 900 } });
     const files = [];
@@ -360,7 +364,7 @@ export async function checkStage6(browser, base) {
       const out = [];
       let last = null;
       const t0 = performance.now();
-      while (performance.now() - t0 < (innerWidth > 1000 ? 39000 : 16000)) {
+      while (performance.now() - t0 < (innerWidth > 1000 ? 52000 : 17000)) {
         const st = r.dataset.step;
         const lit = r.querySelectorAll('.rl__step.is-current').length;
         if (st !== last) { out.push([Number(st), Math.round(performance.now() - t0), lit]); last = st; }
@@ -370,19 +374,22 @@ export async function checkStage6(browser, base) {
     });
     const steps = seq.map((x) => x[0]);
     const firstRun = seq.find((x) => x[0] === 0)?.[1] ?? null;
-    // Forward only: each change is +1, or a reset to -1 after the last step.
-    const forward = seq.slice(1).every((x, i) => x[0] === seq[i][0] + 1 || (x[0] === -1 && seq[i][0] === 5));
+    // The clock starts after the tab was opened by keys above, so «about 4 s» reads from 3.5 s here
+    // (Stage 7b: the conductor counts real time now, it no longer runs a little late).
+    // Forward only: each change is +1, or a reset after the last step (to -1 or straight to step 1).
+    const forward = seq.slice(1).every((x, i) => x[0] === seq[i][0] + 1 || ((x[0] === -1 || x[0] === 0) && seq[i][0] === 5));
     const oneLit = seq.every((x) => x[0] < 0 || x[2] === 1);
-    check(`run-log @${w}: starts by itself after about 4 s, forward only, one step lit at a time`, firstRun != null && firstRun >= 4000 && firstRun <= 6500 && forward && oneLit, JSON.stringify({ firstRun, forward, oneLit, steps: steps.join(',') }));
+    check(`run-log @${w}: starts by itself after about 4 s, forward only, one step lit at a time`, firstRun != null && firstRun >= 3500 && firstRun <= 6500 && forward && oneLit, JSON.stringify({ firstRun, forward, oneLit, steps: steps.join(',') }));
     if (w > 1000) {
-      const rounds = steps.slice(steps.indexOf(-1)).filter((x) => x === 5).length;
+      // The rounds that reached the last step after the start (the first 5 is the end frame before it).
+      const rounds = steps.slice(1).filter((x) => x === 5).length;
       const still = await page.evaluate(() => document.querySelector('.rl').dataset.step);
       check('run-log: up to three rounds, then it stays on the end frame', rounds === 3 && still === '5', `${rounds} ${still}`);
     }
     // A visitor's own name and «Anmelden»: the story runs with it; the result is announced afterwards.
     await page.fill('#rl-name', 'Mia');
     await page.click('.rl__go');
-    await page.waitForTimeout(7600);
+    await page.waitForTimeout(11600);
     const own = await page.evaluate(() => ({ name: [...document.querySelectorAll('.rl__name')].every((n) => n.textContent === 'Mia'), status: document.querySelector('.rl__status').textContent, step: document.querySelector('.rl').dataset.step }));
     check(`run-log @${w}: «Anmelden» runs it with the typed name, the result is announced (polite)`, own.name && own.status.length > 5 && own.step === '5', JSON.stringify(own));
     // Zurück / Weiter by hand.

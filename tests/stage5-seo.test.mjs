@@ -81,8 +81,9 @@ test('Über mich starts with the full name and pronouns', () => {
   assert.match(de.about.paragraphs[0], /^Ich bin Iva Tsatskrialashvili \(er\/ihm\) und lebe in Graz\. Ich habe Informationstechnologie/);
   // Iva 29.10.2026: «Austria» stays in the English sentence.
   assert.match(en.about.paragraphs[0], /^I'm Iva Tsatskrialashvili \(he\/him\) and I live in Graz, Austria\. I studied information technology/);
-  assert.match(byFile['index.html'], /<p data-enter="lines">Ich bin Iva Tsatskrialashvili \(er\/ihm\) und lebe in Graz\./);
-  assert.match(byFile['en/index.html'], /<p data-enter="lines">I&#39;m Iva Tsatskrialashvili \(he\/him\)|<p data-enter="lines">I'm Iva Tsatskrialashvili \(he\/him\)/);
+  // Stage 7b: paragraphs never get an entrance (design system 5.2); the heading and the photo do.
+  assert.match(byFile['index.html'], /<p>Ich bin Iva Tsatskrialashvili \(er\/ihm\) und lebe in Graz\./);
+  assert.match(byFile['en/index.html'], /<p>I&#39;m Iva Tsatskrialashvili \(he\/him\)|<p>I'm Iva Tsatskrialashvili \(he\/him\)/);
 });
 
 /* ---------- 2. Ten service pages ---------- */
@@ -244,7 +245,8 @@ test('service pages: structure (problem, what I do, steps, example, 3 to 5 FAQ, 
   // Iva 29.10.2026: the anonymous launch reference also on the ActiveCampaign pages.
   for (const t of [de, en]) assert.ok(by(t, 'activecampaign').includes(`<h3>${t.refs.case2.title}</h3>`), `${t.lang} activecampaign example`);
   // Iva 29.10.2026: «Kurz erklärt» right after «Das Problem» on the spam pages, wording from Iva.
-  const explain = (h) => tag(h, /<h2 id="svc-problem">[\s\S]*?(<aside class="svc-explain"[\s\S]*?<\/aside>)\n<\/div>\n<\/section>/);
+  // Stage 7b: section heads carry data-enter="lines".
+  const explain = (h) => tag(h, /<h2 id="svc-problem" data-enter="lines">[\s\S]*?(<aside class="svc-explain"[\s\S]*?<\/aside>)\n<\/div>\n<\/section>/);
   const deBox = explain(by(de, 'spam'));
   assert.ok(deBox, 'DE box right after the problem');
   assert.ok(deBox.includes('>Kurz erklärt</h3>'));

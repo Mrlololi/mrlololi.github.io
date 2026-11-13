@@ -100,15 +100,15 @@ ${pic(it, sizes)}
   return `<section class="section projects bg-lav edge" id="projects" aria-labelledby="projects-title">
 <div class="wrap">
 <div class="projects__head">
-<div><h2 id="projects-title">${accent(p.h2)}</h2>
+<div><h2 id="projects-title" data-enter="lines">${accent(p.h2)}</h2>
 <p class="projects__line">${esc(p.line)}</p></div>
 <p class="projects__all">${extLink(config.projects_url, esc(p.all), t)}</p>
 </div>
-<div class="proj proj--main">
+<div class="proj proj--main" data-enter>
 ${link(main, 'proj__link proj__link--main', '(min-width: 760px) 24rem, 90vw')}
 </div>
 <h3 class="projects__play">${esc(p.play)}</h3>
-<ul class="projs projs--play" role="list">
+<ul class="projs projs--play" role="list" data-enter="stagger">
 ${play.map((it) => `<li class="proj">
 ${link(it, 'proj__link', '(min-width: 560px) 16rem, 90vw')}
 </li>`).join('\n')}

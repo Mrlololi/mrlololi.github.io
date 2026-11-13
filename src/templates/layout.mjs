@@ -3,10 +3,11 @@ import { esc, absUrl, join } from './util.mjs';
 import { alternatesFor, jsonLd } from './seo.mjs';
 import { lockup, wordmark, iconTight, taglineHtml, WHITE } from './brand.mjs';
 import { footerMascots } from './mascots.mjs';
+import { iconSymbols } from '../../assets/js/kit/icons.mjs';
 
-// Sources of truth: assets/css/components.css (tokens and shared components, Stage 6) and
-// assets/css/main.css; comments and indentation are stripped when inlined.
-const css = ['components', 'main'].map((f) => readFileSync(new URL(`../../assets/css/${f}.css`, import.meta.url), 'utf8')).join('\n')
+// Sources of truth: assets/css/components.css (tokens and shared components, Stage 6), kit.css (card
+// kinds and icons, Stage 7b) and main.css, inlined in this order; comments and indentation stripped.
+const css = ['components', 'kit', 'main'].map((f) => readFileSync(new URL(`../../assets/css/${f}.css`, import.meta.url), 'utf8')).join('\n')
   .replace(/\/\*[\s\S]*?\*\//g, '')
   .replace(/\n\s*/g, '\n')
   .replace(/\n{2,}/g, '\n')
@@ -68,10 +69,16 @@ export function layout({ t, other, config, page, main, ratgeber = false }) {
     // main.js in turn loads the GSAP files after load (home pages only).
     `<script type="module">requestAnimationFrame(()=>requestAnimationFrame(()=>import('/assets/js/main.js')))</script>`,
     // main.js's own imports are fetched early at low priority, so they are ready when it runs.
-    ...['kit/motion', ...(bodyMascots ? ['mascots', 'kit/mascot-react', 'kit/mascot-art'] : [])].map((m) => `<link rel="modulepreload" href="/assets/js/${m}.js" fetchpriority="low">`),
+    ...['kit/motion', 'kit/enter', ...(bodyMascots ? ['mascots', 'kit/mascot-react', 'kit/mascot-art'] : [])].map((m) => `<link rel="modulepreload" href="/assets/js/${m}.js" fetchpriority="low">`),
     // Stage 5: the business and Iva (#business, #iva) on every page, plus the page's own nodes.
     jsonLd(t, config, page.ld || []),
   ]);
+
+  // Stage 7b: the icon symbols this page uses through <use href="#i-…"> (design system 3.2), right after <body>.
+  const top = header({ t, page, isHome, variant: config.header_variant || 'light' });
+  const bottom = footer({ t, page, ratgeber });
+  const ids = [...new Set([...(top + main + bottom).matchAll(/href="#i-([\w-]+)"/g)].map((m) => m[1]))];
+  const symbols = ids.length ? `${iconSymbols(ids)}\n` : '';
 
   return `<!doctype html>
 <html lang="${t.lang}">
@@ -79,12 +86,12 @@ export function layout({ t, other, config, page, main, ratgeber = false }) {
 ${head}
 </head>
 <body class="page-${page.key}">
-<a class="skip" href="#main">${esc(t.ui.skip)}</a>
-${header({ t, page, isHome, variant: config.header_variant || 'light' })}
+${symbols}<a class="skip" href="#main">${esc(t.ui.skip)}</a>
+${top}
 <main id="main" tabindex="-1">
 ${main}
 </main>
-${footer({ t, page, ratgeber })}
+${bottom}
 <script type="application/json" id="mascot-say">${JSON.stringify({ one: t.brand.pokeOne, many: t.brand.pokeMany, and: t.brand.and, lines: t.brand.lines }).replace(/</g, '\\u003c')}</script>
 </body>
 </html>

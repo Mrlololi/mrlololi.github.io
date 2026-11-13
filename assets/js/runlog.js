@@ -1,23 +1,28 @@
 // Stage 6f (4.11.2026), the run-log in the video frame's second tab: one purchase in six steps.
-// - Forward only: about 1 s per step, one step lights at a time with its log line; nothing goes back
-//   by itself and nothing lights all at once. After the last step 4 s on the end frame, then a soft
-//   reset and again; after 3 rounds it stops on the end frame («Nochmal abspielen»).
+// Stage 7b (design system 5.4): a picture story under the conductor (kit/motion.js), one demo() with
+// idle: 'end' and no private timer loop.
+// - One beat per step, BEAT = 1800 ms: 0 to 0.4 s the dot travels to the next node, 0.4 to 1.0 s the
+//   step's picto arrives on the stage and its m part moves once (CSS), 1.0 to 1.8 s reading: the node
+//   gets its check, the log line lights. End: Live hops once, the summary shows, hold 4 s, soft reset
+//   (450 ms fade, the conductor's is-fading), 3 rounds, then the end frame.
 // - Start: «Anna» is prefilled; «Anmelden» runs the story with the typed name. Without an action it
-//   starts by itself after 4 s; focus or typing in the field cancels that.
-// - It holds while the pointer or the focus is inside, off-screen, in a hidden tab, while the visitor
-//   paused it, and with the global «Bewegung pausieren». A round the visitor started (Anmelden,
-//   Nochmal abspielen) plays even with the pointer inside; the automatic rounds after it wait. Zurück / Weiter step by hand.
-// - Reduced motion (or motion paused): the end frame, every button works, nothing plays by itself.
+//   starts by itself 4 s after the tab opens; focus or typing in the field cancels that.
+// - A round the visitor started («Anmelden», «Nochmal abspielen») claims the stage and plays even with
+//   the pointer inside; automatic rounds obey the default hold (pointer, focus or a selection inside).
+// - «Zurück» / «Weiter» step by hand and stop the loop; the run-log's own «Pause» holds it.
+// - Reduced motion, «Bewegung pausieren», no JS: the end frame; the buttons swap scenes at once.
 // - The result is announced (polite) only after a visitor's action. Nothing is sent anywhere.
-import { reduceMotion, motion } from './kit/motion.js';
+import { reduceMotion, motion, demo, stage, BEAT } from './kit/motion.js';
+import { react } from './kit/mascot-react.js';
 
-const STEP = 1000;
 const HOLD = 4000;
-const ROUNDS = 3;
 const AUTO = 4000;
+const ROUNDS = 3;
+const READ = 1000; // after the dot (0.4 s) and the picto (0.6 s): the node check and the log line
 
 export function open(root) {
   const steps = [...root.querySelectorAll('.rl__step')];
+  const nodes = [...root.querySelectorAll('.rl__node')];
   const logs = [...root.querySelectorAll('.rl__log')];
   const total = steps.length;
   const form = root.querySelector('.rl__start');
@@ -26,84 +31,107 @@ export function open(root) {
   const status = root.querySelector('.rl__status');
   const summary = root.querySelector('.rl__summary').textContent;
   const pause = root.querySelector('.rl__pause');
+  const live = root.querySelector('.rl__live svg.mascot');
   let step = total - 1;
-  let round = 0;
-  let timer = 0;
-  let auto = 0;
-  let playing = false;
-  let userPaused = false;
-  let inside = false;
-  let visible = true;
+  let clock = 0; // the beat clock of a round (it stands while the visitor paused the run-log)
+  let armed = false; // the tab is open and the 4 s are over (or the visitor started it)
   let active = false;
+  let userPaused = false;
   let announce = false;
-  let userRun = false;
+  let d = null;
   const calm = () => reduceMotion.matches || motion.paused;
+  const clear = () => { clearInterval(clock); clock = 0; };
 
-  // The frame for a step: earlier steps done, this one current, later ones waiting (-1: none yet).
-  const show = (s) => {
+  // A frame: s = current step (-1: before the first). read: its node check and log line are lit.
+  const show = (s, read = true) => {
     step = s;
     root.dataset.step = String(s);
+    root.style.setProperty('--at', String(Math.max(0, s)));
     steps.forEach((el, i) => { el.classList.toggle('is-done', i < s); el.classList.toggle('is-current', i === s); });
-    logs.forEach((el, i) => el.classList.toggle('is-on', i <= s));
-    root.classList.toggle('is-end', s === total - 1);
+    nodes.forEach((el, i) => { el.classList.toggle('is-current', i === s); el.classList.toggle('is-done', i < s || (i === s && read)); });
+    logs.forEach((el, i) => el.classList.toggle('is-on', i < s || (i === s && read)));
+    root.classList.toggle('is-end', s === total - 1 && read);
     count.textContent = root.dataset.stepOf.replace('{n}', String(Math.max(1, s + 1))).replace('{total}', String(total));
-    if (s === total - 1 && announce) { status.textContent = summary; announce = false; }
+    if (s === total - 1 && read && announce) { status.textContent = summary; announce = false; }
   };
-  const held = () => (inside && !userRun) || !visible || !active || userPaused || calm();
-  const clear = () => { clearTimeout(timer); timer = 0; };
-  // One beat: wait while held, then do fn.
-  const later = (ms, fn) => { clear(); timer = setTimeout(function go() { if (held()) { timer = setTimeout(go, 250); return; } fn(); }, ms); };
-  const tick = () => {
-    if (step < total - 1) { show(step + 1); later(step < total - 1 ? STEP : HOLD, tick); return; }
-    round += 1;
-    userRun = false;
-    if (round >= ROUNDS) { playing = false; paint(); return; }
-    root.classList.add('is-resetting');
-    later(400, () => { root.classList.remove('is-resetting'); show(-1); later(STEP, tick); });
+  // The beats of one round, on a clock that stops while the run-log is held (paused by the visitor).
+  const beats = () => {
+    clear();
+    const plan = [];
+    for (let i = 0; i < total; i++) {
+      plan.push([i * BEAT, () => show(i, false)]);
+      plan.push([i * BEAT + READ, () => show(i, true)]);
+    }
+    plan.push([(total - 1) * BEAT + READ + 100, () => { if (live) react(live, 22); }]);
+    let elapsed = 0;
+    const tick = () => {
+      while (plan.length && plan[0][0] <= elapsed) plan.shift()[1]();
+      if (!plan.length) clear();
+    };
+    tick();
+    // Real time counts (an interval runs late); the clock stands while the visitor paused the run-log.
+    let last = performance.now();
+    clock = setInterval(() => { const now = performance.now(); if (!userPaused) { elapsed += now - last; tick(); } last = now; }, 50);
+    return total * BEAT;
   };
-  const play = () => { playing = true; round = 0; userPaused = false; show(-1); later(STEP, tick); paint(); };
-  const stop = () => { clear(); playing = false; paint(); };
   const paint = () => {
-    pause.hidden = calm() || !playing;
+    pause.hidden = calm() || !d?.looping;
     pause.setAttribute('aria-pressed', String(userPaused));
     pause.firstChild.textContent = userPaused ? pause.dataset.playLabel : pause.dataset.pauseLabel;
   };
-  const names = (n) => root.querySelectorAll('.rl__name').forEach((el) => { el.textContent = n; });
 
+  d = demo(root, {
+    idle: 'end',
+    duration: total * BEAT,
+    rest: HOLD,
+    rounds: ROUNDS,
+    reset: () => { clear(); show(-1, false); },
+    play: () => { const ms = beats(); queueMicrotask(paint); return ms; },
+    finish: () => { clear(); show(total - 1, true); queueMicrotask(paint); },
+    // Waits for its tab and its 4 s; holds while the visitor paused it.
+    held: () => !armed || !active || userPaused,
+  });
+
+  // A round the visitor started: it claims the stage for its length and plays now.
+  const start = () => {
+    clearTimeout(auto);
+    announce = true;
+    if (calm()) { show(total - 1, true); return; }
+    armed = true;
+    userPaused = false;
+    stage.claim(root, total * BEAT + HOLD);
+    d.replay();
+    paint();
+  };
+  let auto = 0;
   form.addEventListener('submit', (e) => {
     e.preventDefault();
-    clearTimeout(auto);
-    names(input.value.trim() || input.defaultValue);
-    announce = true;
-    if (calm()) { show(total - 1); return; }
-    userRun = true;
-    play();
+    const name = input.value.trim() || input.defaultValue;
+    root.querySelectorAll('.rl__name').forEach((el) => { el.textContent = name; });
+    start();
   });
   const cancelAuto = () => clearTimeout(auto);
   input.addEventListener('focus', cancelAuto);
   input.addEventListener('input', cancelAuto);
-  root.querySelector('.rl__back').addEventListener('click', () => { stop(); userPaused = true; show(Math.max(0, step - 1)); });
-  root.querySelector('.rl__next').addEventListener('click', () => { stop(); userPaused = true; announce = true; show(Math.min(total - 1, step + 1)); });
-  root.querySelector('.rl__again').addEventListener('click', () => { clearTimeout(auto); announce = true; if (calm()) { show(total - 1); return; } userRun = true; play(); });
+  // By hand: the loop stops (held by the visitor), the scene changes at once.
+  const byHand = (s) => { clearTimeout(auto); clear(); userPaused = true; announce = true; show(s, true); paint(); };
+  root.querySelector('.rl__back').addEventListener('click', () => byHand(Math.max(0, step - 1)));
+  root.querySelector('.rl__next').addEventListener('click', () => byHand(Math.min(total - 1, step + 1)));
+  root.querySelector('.rl__again').addEventListener('click', start);
   pause.addEventListener('click', () => { userPaused = !userPaused; paint(); });
-  root.addEventListener('pointerenter', () => { inside = true; });
-  root.addEventListener('pointerleave', () => { inside = false; });
-  root.addEventListener('focusin', () => { inside = true; });
-  root.addEventListener('focusout', (e) => { if (!root.contains(e.relatedTarget)) inside = false; });
-  if ('IntersectionObserver' in window) new IntersectionObserver(([e]) => { visible = e.isIntersecting; }).observe(root);
-  const settle = () => { if (calm()) { stop(); clearTimeout(auto); show(total - 1); } paint(); };
+  const settle = () => { if (calm()) { clearTimeout(auto); clear(); show(total - 1, true); } paint(); };
   reduceMotion.addEventListener('change', settle);
   document.addEventListener('motion:change', settle);
+  root.addEventListener('demo:run', paint);
 
   // The tab tells the demo when it is shown or hidden.
   return {
     shown() {
       active = true;
-      if (calm()) { show(total - 1); paint(); return; }
-      if (playing) return;
-      show(-1);
+      if (calm()) { show(total - 1, true); paint(); return; }
+      if (armed) return;
       clearTimeout(auto);
-      auto = setTimeout(() => { if (document.activeElement !== input) play(); }, AUTO);
+      auto = setTimeout(() => { if (document.activeElement !== input) { armed = true; d.replay(); } }, AUTO);
     },
     hidden() { active = false; clearTimeout(auto); },
   };

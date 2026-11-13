@@ -479,7 +479,9 @@ html:not(.js) .mascot-btn { display: none; }
 .step { grid-template-columns: 2.75rem minmax(0, 1fr); column-gap: var(--space-4); background: none; border: 0; padding: 0; }
 .step > :not(.step__n) { grid-column: 2; }
 .step__n { grid-row: span 3; position: relative; z-index: 1; border: 2px solid var(--ink); transition: background-color 0.35s ease; }
-.step__icon { width: 2.5rem; height: 2.5rem; fill: none; stroke: var(--ink); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+/* Stage 7b: .step__icon is the 40 px picto of the icon module (.i .i--40 and its tone, kit.css), on a
+   white tile in its own 40 px box (design system 3.3: a white tile on a colour band; Iva 13.11.2026). */
+.step__icon { background: var(--card); border-radius: var(--radius-field); }
 @media (min-width: 768px) {
   .steps__line { left: 1.4rem; right: 1.4rem; top: 1.3rem; bottom: auto; width: auto; height: 3px; }
   .steps__line span { background: linear-gradient(90deg, var(--pink-ink), var(--blue-ink) 35%, var(--pist-ink) 70%, var(--lav-ink)); transform-origin: left; transform: scaleX(var(--draw, 1)); }
@@ -1264,11 +1266,12 @@ html:not(.js) .calc__fields { display: none; }
   .steps-wrap[data-play="run"] .step:nth-child(2) .step__n { animation-delay: 0.85s; }
   .steps-wrap[data-play="run"] .step:nth-child(3) .step__n { animation-delay: 1.7s; }
   .steps-wrap[data-play="run"] .step:nth-child(4) .step__n { animation-delay: 2.55s; }
-  .steps-wrap[data-play="run"] .pi--tick, .steps-wrap[data-play="run"] :is(.pi--l1, .pi--l2, .pi--l3) { stroke-dasharray: 20; animation: draw-path 0.45s ease both; }
-  .steps-wrap[data-play="run"] .step:nth-child(1) .pi--tick { animation-delay: 0.15s; }
-  .steps-wrap[data-play="run"] .pi--l1 { animation-delay: 0.95s; } .steps-wrap[data-play="run"] .pi--l2 { animation-delay: 1.07s; } .steps-wrap[data-play="run"] .pi--l3 { animation-delay: 1.19s; }
-  .steps-wrap[data-play="run"] .pi--drop { animation: drop 0.5s cubic-bezier(0.3, 1.12, 0.6, 1) 1.8s both; }
-  .steps-wrap[data-play="run"] .pi--key { transform-box: fill-box; animation: hand-over 0.7s var(--ease-soft) 2.6s both; }
+  /* Stage 7b: the moving parts of the icon module (class m, design system 3.1 rule 6). */
+  .steps-wrap[data-play="run"] [data-icon="calendar"] .m, .steps-wrap[data-play="run"] [data-icon="offer"] .m > * { stroke-dasharray: 1; animation: draw-path 0.45s ease both; }
+  .steps-wrap[data-play="run"] .step:nth-child(1) [data-icon="calendar"] .m { animation-delay: 0.15s; }
+  .steps-wrap[data-play="run"] [data-icon="offer"] .m > :nth-child(1) { animation-delay: 0.95s; } .steps-wrap[data-play="run"] [data-icon="offer"] .m > :nth-child(2) { animation-delay: 1.07s; } .steps-wrap[data-play="run"] [data-icon="offer"] .m > :nth-child(3) { animation-delay: 1.19s; }
+  .steps-wrap[data-play="run"] [data-icon="blocks"] .m { animation: pi-drop 0.5s cubic-bezier(0.3, 1.12, 0.6, 1) 1.8s both; }
+  .steps-wrap[data-play="run"] [data-icon="key"] .m { transform-box: fill-box; animation: hand-over 0.7s var(--ease-soft) 2.6s both; }
 }
 @media (prefers-reduced-motion: no-preference) and (min-width: 768px) {
   .steps-wrap[data-play="run"] .steps__line span { animation-name: line-x; }
@@ -1276,8 +1279,11 @@ html:not(.js) .calc__fields { display: none; }
 @keyframes line-y { from { transform: scaleY(0); } to { transform: scaleY(1); } }
 @keyframes line-x { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 @keyframes num-on { from { background: #fff; } }
-@keyframes draw-path { from { stroke-dashoffset: 20; } to { stroke-dashoffset: 0; } }
-@keyframes hand-over { from { transform: translateX(-6px) rotate(-20deg); opacity: 0; } }
+/* Stage 7b: the pictos are on the 24 grid shown at 40 px (1 unit = 1.67 px): the strokes draw over
+   pathLength 1, the block drops and the key turns over the same screen distance as before. */
+@keyframes draw-path { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes pi-drop { from { opacity: 0; transform: translateY(-9px); } }
+@keyframes hand-over { from { transform: translateX(-3.6px) rotate(-20deg); opacity: 0; } }
 
 /* References: course and shop on the left, alexandrafry.ch with its long screenshot on the right; the
    quotes in the fanned stack below. */
@@ -1518,52 +1524,70 @@ html:not(.js) .vtabs__list { display: none; }
 .js .vtabs:not(.is-ready) .vtabs__panel--rl, .vtabs__panel[hidden] { display: none; }
 .vid__frame:focus-within { outline: 3px solid var(--ink); outline-offset: 4px; }
 
-/* The run-log: one purchase, six steps, forward only. The HTML is the end frame. */
+/* The run-log: one purchase, six steps, forward only. The HTML is the end frame.
+   Stage 7b (design system 2.1, 5.4): a picture story. A rail of six nodes with a travelling dot, one
+   picture card (card--pic) on the stage at every width (the tallest sets the height), Live on step 6,
+   the protocol with the step icons. One beat 1800 ms: dot 0-0.4 s, picto 0.4-1.0 s, reading after. */
 .rl { display: grid; gap: var(--space-4); padding: var(--space-5); border-radius: var(--radius-big); background: rgb(255 255 255 / 0.72); border: 1px solid var(--line); text-align: left; }
 @media (min-width: 900px) { .rl { grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); align-items: start; } .rl__stage, .rl__ctl { grid-column: 2; } .rl__protocol { grid-column: 1; grid-row: 2 / span 2; } }
 .rl__start { display: grid; gap: var(--space-2); align-content: start; }
 .rl__head { font-family: var(--font-display); font-weight: 700; font-size: var(--step-1); }
 .rl__field { display: grid; gap: var(--space-1); }
 .rl__field label { font-size: var(--step--1); font-weight: 700; }
-.rl__field input { min-height: var(--target); padding: 0 var(--space-3); border: 1px solid var(--field); border-radius: var(--radius-field); background: #fff; font: inherit; color: var(--ink); }
+.rl__field input { min-height: var(--target); padding: 0 var(--space-3); border: 1px solid var(--field); border-radius: var(--radius-field); background: var(--card); font: inherit; color: var(--ink); }
 .rl__go { justify-self: start; }
 .rl__note { font-size: var(--step--1); color: var(--ink-soft); }
-.rl__stage { display: grid; gap: var(--space-2); }
+.rl__stage { display: grid; gap: var(--space-3); }
 .rl__count { font-size: var(--step--1); font-weight: 700; color: var(--ink-soft); }
-.rl__steps { display: grid; gap: var(--space-2); grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr)); }
-.rl__step { display: grid; grid-template-columns: 2rem minmax(0, 1fr); gap: 0.15rem var(--space-2); align-content: start; padding: var(--space-3); border-radius: 16px; background: #F4F1EE; border: 1px solid var(--line); transition: background-color 0.3s ease, border-color 0.3s ease; }
-.rl__n { grid-row: span 2; display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: 50%; background: #fff; border: 1px solid var(--field); font-weight: 700; }
-.rl__title { font-weight: 700; }
-.rl__line { font-size: var(--step--1); color: var(--ink-soft); }
-.rl__step.is-done { background: var(--pist-tint); border-color: var(--done); }
-.rl__step.is-done .rl__n { background: var(--done); border-color: var(--done); color: #fff; }
-.rl__step.is-current { background: #fff; border: 2px solid var(--ink); box-shadow: 0 8px 20px rgb(43 42 51 / 0.08); }
-.rl__step.is-current .rl__n { background: var(--ink); border-color: var(--ink); color: #fff; }
-.rl.is-end .rl__step.is-current { border-color: var(--done); }
-.rl.is-end .rl__step.is-current .rl__n { background: var(--done); border-color: var(--done); }
-.rl.is-resetting .rl__steps, .rl.is-resetting .rl__logs { opacity: 0.75; filter: grayscale(1); transition: opacity 0.4s ease, filter 0.4s ease; }
-.rl__protocol { align-self: start; align-content: start; display: grid; gap: var(--space-2); margin: 0; padding: var(--space-3) var(--space-4); border-radius: 16px; background: #fff; border: 1px solid var(--line); }
+/* The rail (aria-hidden): 44 px white discs, the current one ringed in ink, a done one with a check badge. */
+.rl__railbox { position: relative; padding-bottom: 1.25rem; }
+.rl__rail { display: flex; justify-content: space-between; gap: var(--space-1); margin: 0; padding: 0; list-style: none; }
+.rl__node { position: relative; flex: none; display: grid; place-items: center; width: var(--target); height: var(--target); border-radius: var(--radius-pill); background: var(--card); border: 1px solid var(--line); color: var(--ink); }
+.rl__node.is-current { outline: 2px solid var(--ink); outline-offset: 1px; }
+/* The check badge of a done node: a green disc (::before) with a white tick (::after), CSS only. */
+.rl__node::before, .rl__node::after { content: ""; position: absolute; visibility: hidden; }
+.rl__node::before { top: -0.25rem; right: -0.25rem; width: 1.1rem; height: 1.1rem; border-radius: var(--radius-pill); background: var(--done); }
+.rl__node::after { top: -0.07rem; right: 0.12rem; width: 0.26rem; height: 0.5rem; border: solid var(--card); border-width: 0 2px 2px 0; transform: rotate(45deg); }
+.rl__node.is-done::before, .rl__node.is-done::after { visibility: visible; }
+/* The travelling dot: a carrier one node spacing wide moves by whole spacings (transform only). */
+.rl__car { position: absolute; left: calc(var(--target) / 2); bottom: 0.45rem; width: calc((100% - var(--target)) / 5); height: 0; transform: translateX(calc(var(--at, 5) * 100%)); }
+.rl__dot { position: absolute; left: -0.45rem; top: -0.45rem; width: 0.9rem; height: 0.9rem; border-radius: var(--radius-pill); background: var(--peach); border: 2px solid var(--ink); }
+/* The stage: without JS every card shows (a grid); with JS one card at a time in one cell. */
+.rl__scene { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: var(--space-3); }
+.rl__steps { display: grid; gap: var(--space-2); margin: 0; padding: 0; list-style: none; grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr)); }
+.rl__step { --media-ratio: 5 / 2; --tint: var(--sec-paper); gap: var(--space-1); padding-bottom: var(--space-3); }
+.rl__step .card__title { margin-top: var(--space-3); }
+.js .rl__steps { grid-template-columns: minmax(0, 28rem); }
+.js .rl__step { grid-area: 1 / 1; visibility: hidden; }
+.js .rl__step.is-current, .js .rl[data-step="-1"] .rl__step:first-child { visibility: visible; }
+/* Live: its 56 px box is kept from the start; it shows on step 6 (the end frame without JS too). */
+.rl__live { flex: none; display: block; width: 3.5rem; height: 3.62rem; visibility: hidden; }
+.rl__live .mascot { display: block; width: 3.5rem; height: auto; overflow: visible; }
+.rl.is-end .rl__live { visibility: visible; }
+.rl__protocol { align-self: start; align-content: start; display: grid; gap: var(--space-2); margin: 0; padding: var(--space-3) var(--space-4); border-radius: 16px; background: var(--card); border: 1px solid var(--line); }
 .rl__bar { font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-soft); }
 .rl__logs { display: grid; gap: var(--space-1); }
-.rl__log { display: grid; grid-template-columns: 1.1rem minmax(0, 1fr); gap: var(--space-2); align-items: start; font-size: 0.875rem; line-height: 1.35; color: var(--ink-soft); }
+.rl__log { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: var(--space-2); align-items: start; font-size: 0.875rem; line-height: 1.35; color: var(--ink-soft); }
 .rl__log.is-on { color: var(--ink); }
-.rl__check { width: 1.1rem; height: 1.1rem; margin-top: 0.05rem; }
-.rl__check circle { fill: var(--wire); }
-.rl__check path { fill: none; stroke: #fff; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
-.rl__log.is-on .rl__check circle { fill: var(--done); }
+/* The check of a done line (CSS, beside the step icon): never colour alone, a tick. */
+.rl__log::after { content: ""; width: 0.32rem; height: 0.62rem; margin: 0.1rem 0.3rem 0 0.2rem; border: solid var(--done); border-width: 0 2px 2px 0; transform: rotate(45deg); visibility: hidden; }
+.rl__log.is-on::after { visibility: visible; }
 .rl__summary { font-weight: 700; color: var(--pist-ink); font-size: 0.875rem; visibility: hidden; }
 .rl.is-end .rl__summary { visibility: visible; }
+/* Motion, only while it plays (paused, reduced motion and no JS: the end frame, nothing moves). */
+@media (prefers-reduced-motion: no-preference) {
+  html:not([data-motion="paused"]) .rl[data-play="run"] .rl__car { transition: transform 0.4s var(--ease-io); }
+  html:not([data-motion="paused"]) .rl[data-play="run"] .rl__step.is-current .card__media .i { animation: rl-in 0.6s var(--ease-soft) 0.4s both; }
+  html:not([data-motion="paused"]) .rl[data-play="run"] .rl__step.is-current .m { transform-box: fill-box; transform-origin: center; animation: rl-move 0.4s var(--ease-soft) 0.6s both; }
+  .rl.is-fading .rl__scene, .rl.is-fading .rl__railbox, .rl.is-fading .rl__logs { opacity: 0; transition: opacity 0.45s ease; }
+}
+@keyframes rl-in { from { opacity: 0; transform: translateY(8px) scale(0.9); } }
+@keyframes rl-move { 40% { transform: translateY(-1px) rotate(-8deg) scale(1.08); } }
 .rl__ctl { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
 .rl__slow { flex-basis: 100%; font-size: var(--step--1); color: var(--ink-soft); }
 .rl__pause[hidden] { display: inline-flex; visibility: hidden; }
 /* Without JS: the end frame from the HTML, no buttons that need JS. */
 html:not(.js) .rl__ctl button, html:not(.js) .rl__go { display: none; }
-/* Phones: one step at a time in a fixed stage (every step in the same cell, the tallest sets the height). */
-@media (max-width: 767.98px) {
-  .js .rl__steps { grid-template-columns: minmax(0, 1fr); }
-  .js .rl__step { grid-area: 1 / 1; visibility: hidden; }
-  .js .rl__step.is-current, .js .rl[data-step="-1"] .rl__step:first-child { visibility: visible; }
-}
 
 /* Stage 6f: the pause buttons of the pictures are small round icons (44 px, the text for screen
    readers); their place is kept from the start (data-wait), so nothing shifts. */
@@ -1648,7 +1672,6 @@ html[data-motion="paused"] .ref--site .browser__view { overflow-y: auto; }
    step is marked without a thicker border (no 2 px height change); the tilted quotes never widen
    the page at 200 % text. */
 .loopctl.loopctl--icon { width: var(--target); min-width: var(--target); flex: none; }
-.rl__step.is-current { border: 1px solid var(--ink); box-shadow: inset 0 0 0 1px var(--ink), 0 8px 20px rgb(43 42 51 / 0.08); }
 #references { overflow-x: clip; }
 
 /* Stage 6g: the photo in «Was nach dem Klick passiert» (in the side column, so it never pushes the
