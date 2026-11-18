@@ -1,8 +1,8 @@
 {
   "about": "Written by src/qa/protokoll.mjs; the build renders /qualitaet/ only from this file. Never edit by hand.",
   "measured": "2026-11-18",
-  "measuredAt": "2026-11-18T02:29:09.934Z",
-  "commit": "0ca0b19",
+  "measuredAt": "2026-11-18T18:45:30.315Z",
+  "commit": "0933a3d",
   "dirty": false,
   "tools": {
     "lighthouse": "13.5.0",
@@ -13,30 +13,30 @@
   },
   "lighthouseRuns": 3,
   "tests": {
-    "total": 269,
-    "pass": 269,
+    "total": 283,
+    "pass": 283,
     "fail": 0
   },
   "gates": {
-    "total": 525,
-    "pass": 525,
+    "total": 542,
+    "pass": 542,
     "fail": 0
   },
   "summary": {
     "pages": 18,
     "perfLimit": 95,
-    "perfMin": 98,
+    "perfMin": 99,
     "perfMax": 100,
     "clsMax": 0,
     "keyboardPassed": 54,
     "keyboardTotal": 54,
-    "axeSerious": 1,
+    "axeSerious": 0,
     "cookies": 0,
     "external": 0,
-    "budget": "JS 96.3 KB gzip (limit 100)",
+    "budget": "JS 97.9 KB gzip (limit 100)",
     "budgetOk": true
   },
-  "form_live": null,
+  "form_live": "2026-11-18",
   "pages": [
     {
       "page": "/",
@@ -52,7 +52,7 @@
           "pass": true
         },
         {
-          "name": "93 tab stops with a visible focus ring",
+          "name": "94 tab stops with a visible focus ring",
           "pass": true,
           "details": ""
         },
@@ -61,12 +61,12 @@
           "pass": true
         }
       ],
-      "perf": 98,
+      "perf": 99,
       "a11y": 100,
       "best": 100,
       "seo": 100,
       "lcp": 2.18,
-      "tbt": 1,
+      "tbt": 0,
       "clsLighthouse": 0
     },
     {
@@ -83,7 +83,7 @@
           "pass": true
         },
         {
-          "name": "91 tab stops with a visible focus ring",
+          "name": "92 tab stops with a visible focus ring",
           "pass": true,
           "details": ""
         },
@@ -251,7 +251,7 @@
       "a11y": 100,
       "best": 100,
       "seo": 100,
-      "lcp": 1.65,
+      "lcp": 1.73,
       "tbt": 0,
       "clsLighthouse": 0
     },
@@ -261,10 +261,8 @@
       "cookies": 0,
       "external": 0,
       "externalUrls": [],
-      "axeSerious": 1,
-      "axeIds": [
-        "color-contrast:serious"
-      ],
+      "axeSerious": 0,
+      "axeIds": [],
       "keyboard": [
         {
           "name": "skip link first, Enter into main",
@@ -281,7 +279,7 @@
         }
       ],
       "perf": 100,
-      "a11y": 96,
+      "a11y": 100,
       "best": 100,
       "seo": 63,
       "lcp": 1.8,
@@ -501,7 +499,7 @@
       "a11y": 100,
       "best": 100,
       "seo": 100,
-      "lcp": 1.73,
+      "lcp": 1.65,
       "tbt": 0,
       "clsLighthouse": 0
     },
