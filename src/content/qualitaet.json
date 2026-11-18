@@ -1,0 +1,602 @@
+{
+  "about": "Written by src/qa/protokoll.mjs; the build renders /qualitaet/ only from this file. Never edit by hand.",
+  "measured": "2026-11-18",
+  "measuredAt": "2026-11-18T01:42:07.404Z",
+  "commit": "189f1b6",
+  "dirty": true,
+  "tools": {
+    "lighthouse": "13.5.0",
+    "playwright": "1.64.1",
+    "chromium": "156.0.8078.4",
+    "axe": "4.13.0",
+    "node": "24.20.0"
+  },
+  "lighthouseRuns": 3,
+  "tests": {
+    "total": 269,
+    "pass": 268,
+    "fail": 1
+  },
+  "gates": {
+    "total": null,
+    "pass": null,
+    "fail": null
+  },
+  "summary": {
+    "pages": 18,
+    "perfLimit": 95,
+    "perfMin": 99,
+    "perfMax": 100,
+    "clsMax": 0,
+    "keyboardPassed": 54,
+    "keyboardTotal": 54,
+    "axeSerious": 1,
+    "cookies": 0,
+    "external": 0,
+    "budget": "JS 96.3 KB gzip (limit 100)",
+    "budgetOk": true
+  },
+  "form_live": null,
+  "pages": [
+    {
+      "page": "/",
+      "cls": 0,
+      "cookies": 0,
+      "external": 0,
+      "externalUrls": [],
+      "axeSerious": 0,
+      "axeIds": [],
+      "keyboard": [
+        {
+          "name": "skip link first, Enter into main",
+          "pass": true
+        },
+        {
+          "name": "93 tab stops with a visible focus ring",
+          "pass": true,
+          "details": ""
+        },
+        {
+          "name": "no keyboard trap",
+          "pass": true
+        }
+      ],
+      "perf": 99,
+      "a11y": 100,
+      "best": 100,
+      "seo": 100,
+      "lcp": 2.18,
+      "tbt": 0,
+      "clsLighthouse": 0
+    },
+    {
+      "page": "/en/",
+      "cls": 0,
+      "cookies": 0,
+      "external": 0,
+      "externalUrls": [],
+      "axeSerious": 0,
+      "axeIds": [],
+      "keyboard": [
+        {
+          "name": "skip link first, Enter into main",
+          "pass": true
+        },
+        {
+          "name": "91 tab stops with a visible focus ring",
+          "pass": true,
+          "details": ""
+        },
+        {
+          "name": "no keyboard trap",
+          "pass": true
+        }
+      ],
+      "perf": 99,
+      "a11y": 100,
+      "best": 100,
+      "seo": 100,
+      "lcp": 2.18,
+      "tbt": 0,
+      "clsLighthouse": 0
+    },
+    {
+      "page": "/impressum/",
+      "cls": 0,
+      "cookies": 0,
+      "external": 0,
+      "externalUrls": [],
+      "axeSerious": 0,
+      "axeIds": [],
+      "keyboard": [
+        {
+          "name": "skip link first, Enter into main",
+          "pass": true
+        },
+        {
+          "name": "18 tab stops with a visible focus ring",
+          "pass": true,
+          "details": ""
+        },
+        {
+          "name": "no keyboard trap",
+          "pass": true
+        }
+      ],
+      "perf": 100,
+      "a11y": 100,
+      "best": 100,
+      "seo": 100,
+      "lcp": 1.81,
+      "tbt": 0,
+      "clsLighthouse": 0
+    },
+    {
+      "page": "/datenschutz/",
+      "cls": 0,
+      "cookies": 0,
+      "external": 0,
+      "externalUrls": [],
+      "axeSerious": 0,
+      "axeIds": [],
+      "keyboard": [
+        {
+          "name": "skip link first, Enter into main",
+          "pass": true
+        },
+        {
+          "name": "22 tab stops with a visible focus ring",
+          "pass": true,
+          "details": ""
+        },
+        {
+          "name": "no keyboard trap",
+          "pass": true
+        }
+      ],
+      "perf": 100,
+      "a11y": 100,
+      "best": 100,
+      "seo": 100,
+      "lcp": 1.81,
+      "tbt": 0,
+      "clsLighthouse": 0
+    },
+    {
+      "page": "/en/legal-notice/",
+      "cls": 0,
+      "cookies": 0,
+      "external": 0,
+      "externalUrls": [],
+      "axeSerious": 0,
+      "axeIds": [],
+      "keyboard": [
+        {
+          "name": "skip link first, Enter into main",
+          "pass": true
+        },
+        {
+          "name": "17 tab stops with a visible focus ring",
+          "pass": true,
+          "details": ""
+        },
+        {
+          "name": "no keyboard trap",
+          "pass": true
+        }
+      ],
+      "perf": 100,
+      "a11y": 100,
+      "best": 100,
+      "seo": 100,
+      "lcp": 1.81,
+      "tbt": 0,
+      "clsLighthouse": 0
+    },
+    {
+      "page": "/launch-technik/",
+      "cls": 0,
+      "cookies": 0,
+      "external": 0,
+      "externalUrls": [],
+      "axeSerious": 0,
+      "axeIds": [],
+      "keyboard": [
+        {
+          "name": "skip link first, Enter into main",
+          "pass": true
+        },
+        {
+          "name": "44 tab stops with a visible focus ring",
+          "pass": true,
+          "details": ""
+        },
+        {
+          "name": "no keyboard trap",
+          "pass": true
+        }
+      ],
+      "perf": 100,
+      "a11y": 100,
+      "best": 100,
+      "seo": 100,
+      "lcp": 1.73,
+      "tbt": 0,
+      "clsLighthouse": 0
+    },
+    {
+      "page": "/en/course-launch-tech/",
+      "cls": 0,
+      "cookies": 0,
+      "external": 0,
+      "externalUrls": [],
+      "axeSerious": 0,
+      "axeIds": [],
+      "keyboard": [
+        {
+          "name": "skip link first, Enter into main",
+          "pass": true
+        },
+        {
+          "name": "41 tab stops with a visible focus ring",
+          "pass": true,
+          "details": ""
+        },
+        {
+          "name": "no keyboard trap",
+          "pass": true
+        }
+      ],
+      "perf": 100,
+      "a11y": 100,
+      "best": 100,
+      "seo": 100,
+      "lcp": 1.65,
+      "tbt": 0,
+      "clsLighthouse": 0
+    },
+    {
+      "page": "/404.html",
+      "cls": 0,
+      "cookies": 0,
+      "external": 0,
+      "externalUrls": [],
+      "axeSerious": 1,
+      "axeIds": [
+        "color-contrast:serious"
+      ],
+      "keyboard": [
+        {
+          "name": "skip link first, Enter into main",
+          "pass": true
+        },
+        {
+          "name": "32 tab stops with a visible focus ring",
+          "pass": true,
+          "details": ""
+        },
+        {
+          "name": "no keyboard trap",
+          "pass": true
+        }
+      ],
+      "perf": 100,
+      "a11y": 96,
+      "best": 100,
+      "seo": 63,
+      "lcp": 1.81,
+      "tbt": 0,
+      "clsLighthouse": 0
+    },
+    {
+      "page": "/danke/",
+      "cls": 0,
+      "cookies": 0,
+      "external": 0,
+      "externalUrls": [],
+      "axeSerious": 0,
+      "axeIds": [],
+      "keyboard": [
+        {
+          "name": "skip link first, Enter into main",
+          "pass": true
+        },
+        {
+          "name": "17 tab stops with a visible focus ring",
+          "pass": true,
+          "details": ""
+        },
+        {
+          "name": "no keyboard trap",
+          "pass": true
+        }
+      ],
+      "perf": 100,
+      "a11y": 100,
+      "best": 100,
+      "seo": 63,
+      "lcp": 1.8,
+      "tbt": 0,
+      "clsLighthouse": 0
+    },
+    {
+      "page": "/qualitaet/",
+      "cls": 0,
+      "cookies": 0,
+      "external": 0,
+      "externalUrls": [],
+      "axeSerious": 0,
+      "axeIds": [],
+      "keyboard": [
+        {
+          "name": "skip link first, Enter into main",
+          "pass": true
+        },
+        {
+          "name": "16 tab stops with a visible focus ring",
+          "pass": true,
+          "details": ""
+        },
+        {
+          "name": "no keyboard trap",
+          "pass": true
+        }
+      ],
+      "perf": 100,
+      "a11y": 100,
+      "best": 100,
+      "seo": 100,
+      "lcp": 1.65,
+      "tbt": 0,
+      "clsLighthouse": 0
+    },
+    {
+      "page": "/e-mails-landen-im-spam/",
+      "cls": 0,
+      "cookies": 0,
+      "external": 0,
+      "externalUrls": [],
+      "axeSerious": 0,
+      "axeIds": [],
+      "keyboard": [
+        {
+          "name": "skip link first, Enter into main",
+          "pass": true
+        },
+        {
+          "name": "41 tab stops with a visible focus ring",
+          "pass": true,
+          "details": ""
+        },
+        {
+          "name": "no keyboard trap",
+          "pass": true
+        }
+      ],
+      "perf": 100,
+      "a11y": 100,
+      "best": 100,
+      "seo": 100,
+      "lcp": 1.65,
+      "tbt": 0,
+      "clsLighthouse": 0
+    },
+    {
+      "page": "/activecampaign-einrichten/",
+      "cls": 0,
+      "cookies": 0,
+      "external": 0,
+      "externalUrls": [],
+      "axeSerious": 0,
+      "axeIds": [],
+      "keyboard": [
+        {
+          "name": "skip link first, Enter into main",
+          "pass": true
+        },
+        {
+          "name": "43 tab stops with a visible focus ring",
+          "pass": true,
+          "details": ""
+        },
+        {
+          "name": "no keyboard trap",
+          "pass": true
+        }
+      ],
+      "perf": 100,
+      "a11y": 100,
+      "best": 100,
+      "seo": 100,
+      "lcp": 1.65,
+      "tbt": 0,
+      "clsLighthouse": 0
+    },
+    {
+      "page": "/ki-antwortentwuerfe/",
+      "cls": 0,
+      "cookies": 0,
+      "external": 0,
+      "externalUrls": [],
+      "axeSerious": 0,
+      "axeIds": [],
+      "keyboard": [
+        {
+          "name": "skip link first, Enter into main",
+          "pass": true
+        },
+        {
+          "name": "55 tab stops with a visible focus ring",
+          "pass": true,
+          "details": ""
+        },
+        {
+          "name": "no keyboard trap",
+          "pass": true
+        }
+      ],
+      "perf": 100,
+      "a11y": 100,
+      "best": 100,
+      "seo": 100,
+      "lcp": 1.65,
+      "tbt": 0,
+      "clsLighthouse": 0
+    },
+    {
+      "page": "/website-one-pager/",
+      "cls": 0,
+      "cookies": 0,
+      "external": 0,
+      "externalUrls": [],
+      "axeSerious": 0,
+      "axeIds": [],
+      "keyboard": [
+        {
+          "name": "skip link first, Enter into main",
+          "pass": true
+        },
+        {
+          "name": "43 tab stops with a visible focus ring",
+          "pass": true,
+          "details": ""
+        },
+        {
+          "name": "no keyboard trap",
+          "pass": true
+        }
+      ],
+      "perf": 100,
+      "a11y": 100,
+      "best": 100,
+      "seo": 100,
+      "lcp": 1.88,
+      "tbt": 0,
+      "clsLighthouse": 0
+    },
+    {
+      "page": "/en/emails-going-to-spam/",
+      "cls": 0,
+      "cookies": 0,
+      "external": 0,
+      "externalUrls": [],
+      "axeSerious": 0,
+      "axeIds": [],
+      "keyboard": [
+        {
+          "name": "skip link first, Enter into main",
+          "pass": true
+        },
+        {
+          "name": "40 tab stops with a visible focus ring",
+          "pass": true,
+          "details": ""
+        },
+        {
+          "name": "no keyboard trap",
+          "pass": true
+        }
+      ],
+      "perf": 100,
+      "a11y": 100,
+      "best": 100,
+      "seo": 100,
+      "lcp": 1.65,
+      "tbt": 0,
+      "clsLighthouse": 0
+    },
+    {
+      "page": "/en/activecampaign-setup/",
+      "cls": 0,
+      "cookies": 0,
+      "external": 0,
+      "externalUrls": [],
+      "axeSerious": 0,
+      "axeIds": [],
+      "keyboard": [
+        {
+          "name": "skip link first, Enter into main",
+          "pass": true
+        },
+        {
+          "name": "42 tab stops with a visible focus ring",
+          "pass": true,
+          "details": ""
+        },
+        {
+          "name": "no keyboard trap",
+          "pass": true
+        }
+      ],
+      "perf": 100,
+      "a11y": 100,
+      "best": 100,
+      "seo": 100,
+      "lcp": 1.65,
+      "tbt": 0,
+      "clsLighthouse": 0
+    },
+    {
+      "page": "/en/ai-reply-drafts/",
+      "cls": 0,
+      "cookies": 0,
+      "external": 0,
+      "externalUrls": [],
+      "axeSerious": 0,
+      "axeIds": [],
+      "keyboard": [
+        {
+          "name": "skip link first, Enter into main",
+          "pass": true
+        },
+        {
+          "name": "54 tab stops with a visible focus ring",
+          "pass": true,
+          "details": ""
+        },
+        {
+          "name": "no keyboard trap",
+          "pass": true
+        }
+      ],
+      "perf": 100,
+      "a11y": 100,
+      "best": 100,
+      "seo": 100,
+      "lcp": 1.65,
+      "tbt": 0,
+      "clsLighthouse": 0
+    },
+    {
+      "page": "/en/one-page-website/",
+      "cls": 0,
+      "cookies": 0,
+      "external": 0,
+      "externalUrls": [],
+      "axeSerious": 0,
+      "axeIds": [],
+      "keyboard": [
+        {
+          "name": "skip link first, Enter into main",
+          "pass": true
+        },
+        {
+          "name": "41 tab stops with a visible focus ring",
+          "pass": true,
+          "details": ""
+        },
+        {
+          "name": "no keyboard trap",
+          "pass": true
+        }
+      ],
+      "perf": 100,
+      "a11y": 100,
+      "best": 100,
+      "seo": 100,
+      "lcp": 1.88,
+      "tbt": 0,
+      "clsLighthouse": 0
+    }
+  ]
+}

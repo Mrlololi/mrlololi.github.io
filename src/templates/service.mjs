@@ -190,7 +190,8 @@ ${cards}
 </aside>` : ''}`)}
 ${section('steps', 'bg-pist', L.steps, `<ol class="svc-steps" role="list">
 ${steps}
-</ol>`)}
+</ol>${s.testLink && t.qualitaet && live.qualitaet ? `
+<p class="svc-testlink"><a class="text-link" href="${t.qualitaet.path}">${esc(s.testLink)}</a></p>` : ''}`)}
 ${ex ? section('example', 'bg-lav', L.example, ex) : ''}
 ${section('faq', 'bg-peach', L.faq, `<div class="svc-faq">
 ${faq}

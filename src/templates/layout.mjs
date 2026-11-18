@@ -16,7 +16,9 @@ const css = ['components', 'kit', 'main'].map((f) => readFileSync(new URL(`../..
 // page: { key, path, altPath, title, description, noindex?, ogImage?, ld? }. Every indexable page has a
 // canonical; hreflang only where a DE/EN pair exists (the Ratgeber is German only).
 // ratgeber: true once the Ratgeber is live (config.ratgeber_live and at least one article).
-export function layout({ t, other, config, page, main, ratgeber = false }) {
+// qualitaet (17.11.2026): true when /qualitaet/ is built (src/content/qualitaet.json exists): the German
+// footer then links «Prüfprotokoll» next to the legal links.
+export function layout({ t, other, config, page, main, ratgeber = false, qualitaet = false }) {
   const isHome = page.key === 'home';
   // Stage 7a: the footer three are on every page; the mascot modules are preloaded only where the
   // page itself shows mascots (service pages load them later, for the footer).
@@ -61,7 +63,9 @@ export function layout({ t, other, config, page, main, ratgeber = false }) {
     // The h1 accent words: without this they fall back to Georgia on a cold cache (font-display: optional).
     '<link rel="preload" href="/assets/fonts/eb-garamond-italic-500.woff2" as="font" type="font/woff2" crossorigin>',
     // The stylesheet is inlined at build time (saves a render-blocking request on slow phones).
-    `<style>${css}</style>`,
+    // page.css: page-only rules (e.g. /qualitaet/), appended for that page alone.
+    `<style>${css}${page.css ? `
+${page.css}` : ''}</style>`,
     // Runs before first paint: marks JS as available (the CSS lays out the JS versions of the demos).
     `<script>document.documentElement.classList.add('js')</script>`,
     // main.js is fetched only after the first frame is on screen, so the headline (LCP) never
@@ -76,7 +80,7 @@ export function layout({ t, other, config, page, main, ratgeber = false }) {
 
   // Stage 7b: the icon symbols this page uses through <use href="#i-…"> (design system 3.2), right after <body>.
   const top = header({ t, page, isHome, variant: config.header_variant || 'light' });
-  const bottom = footer({ t, page, ratgeber });
+  const bottom = footer({ t, page, ratgeber, qualitaet });
   const ids = [...new Set([...(top + main + bottom).matchAll(/href="#i-([\w-]+)"/g)].map((m) => m[1]))];
   const symbols = ids.length ? `${iconSymbols(ids)}\n` : '';
 
@@ -150,7 +154,7 @@ ${links.join('\n')}
 
 // The footer repeats the section links: it is also where the phone "Menü" link leads
 // when main.js has not (yet) loaded.
-function footer({ t, page, ratgeber }) {
+function footer({ t, page, ratgeber, qualitaet }) {
   const base = page.key === 'home' ? '' : t.paths.home;
   const sections = t.nav.map((n) => `<li><a href="${base}${n.href}">${esc(n.label)}</a></li>`).join('\n');
   return `<footer class="site-footer bg-ink edge">
@@ -163,7 +167,8 @@ ${page.key === 'home' ? footerBrand(t) : `<div class="site-footer__trio">${foote
 ${sections}
 <li><a href="${t.paths.legal}">${esc(t.footer.legal)}</a></li>
 <li><a href="${t.paths.privacy}">${esc(t.footer.privacy)}</a></li>
-<li><a href="${page.altPath}" hreflang="${t.ui.langCode}" lang="${t.ui.langCode}">${esc(t.ui.langName)}</a></li>
+${qualitaet && t.footer.protokoll && t.qualitaet ? `<li><a href="${t.qualitaet.path}">${esc(t.footer.protokoll)}</a></li>
+` : ''}<li><a href="${page.altPath}" hreflang="${t.ui.langCode}" lang="${t.ui.langCode}">${esc(t.ui.langName)}</a></li>
 </ul>
 </nav>
 </div>

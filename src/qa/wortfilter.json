@@ -1,0 +1,150 @@
+{
+  "about": "Wortfilter (docs/PROMPT_Qualitaet_und_Wortfilter_2026-11-17.md, part A). ONE data file for the word rules; src/qa/wortfilter.mjs applies it to the visible text of every built page, tests/wortfilter.test.mjs runs it in npm test. Lists are Entwurf until Iva approves them. Matching: whole word, case-insensitive; a German compound counts only when it is listed itself. Page patterns: an exact path, or a path ending in * (prefix).",
+  "global": {
+    "pages": [
+      "*"
+    ],
+    "words": [
+      "bestanden",
+      "geprüft von mrlololi",
+      "launch-sicher",
+      "fehlerfrei",
+      "rechtssicher",
+      "DSGVO-konform",
+      "BFSG-konform",
+      "WCAG-konform",
+      "barrierefrei",
+      "garantiert",
+      "Garantie",
+      "risikolos",
+      "zertifiziert",
+      "Sie verlieren Umsatz",
+      "spart",
+      "100 %",
+      "100%",
+      "Siegel",
+      "Gütesiegel",
+      "Prüfsiegel",
+      "Testsieger"
+    ]
+  },
+  "groups": [
+    {
+      "name": "tools and cards",
+      "pages": [
+        "/werkzeuge/*",
+        "/qualitaet/",
+        "/brief/"
+      ],
+      "words": [
+        "oft",
+        "häufig",
+        "die meisten",
+        "meistens",
+        "kostenlose Analyse"
+      ]
+    },
+    {
+      "name": "brief",
+      "pages": [
+        "/brief/",
+        "/brief/eingegangen/"
+      ],
+      "words": [
+        "Sie haben eingewilligt",
+        "berechtigtes Interesse",
+        "persönlich für Sie",
+        "ausgetragen",
+        "abgemeldet"
+      ],
+      "noPrice": true
+    },
+    {
+      "name": "ein-kauf",
+      "pages": [
+        "/werkzeuge/ein-kauf/"
+      ],
+      "words": [
+        "oft",
+        "häufig",
+        "die meisten",
+        "garantiert",
+        "fehlerfrei",
+        "launch-sicher",
+        "Sie verlieren",
+        "Widerruf",
+        "Widerrufsrecht",
+        "Erstattung",
+        "Rückerstattung",
+        "Geld zurück"
+      ],
+      "patterns": [
+        "\\d\\s?%"
+      ]
+    },
+    {
+      "name": "qualitaet",
+      "pages": [
+        "/qualitaet/"
+      ],
+      "words": [
+        "100 %",
+        "100%",
+        "barrierefrei",
+        "BFSG",
+        "WCAG-konform",
+        "Pflicht",
+        "verpflichtet",
+        "Verpflichtung",
+        "gesetzlich",
+        "Gesetz",
+        "vorgeschrieben",
+        "Barrierefreiheitsstärkungsgesetz"
+      ]
+    }
+  ],
+  "allow": [
+    {
+      "pages": [
+        "/datenschutz/"
+      ],
+      "phrase": "Data Privacy Framework zertifiziert",
+      "reason": "GitHub sentence: a fact about the provider's certification, not a claim about this site"
+    },
+    {
+      "pages": [
+        "/datenschutz/"
+      ],
+      "phrase": "Celonis Inc. ist danach zertifiziert",
+      "reason": "Make/Celonis sentence: a fact about the provider's certification"
+    },
+    {
+      "pages": [
+        "*"
+      ],
+      "phrase": "keine Garantie",
+      "reason": "negated: says that something is NOT guaranteed (brief part A)"
+    }
+  ],
+  "prices": {
+    "about": "Every «… €» amount in visible text must equal a price of the package data (pricing.groups[*].items[*].price and .extra.label) or the hourly 45 €.",
+    "hourly": 45,
+    "allow": [
+      {
+        "pages": [
+          "/ki-antwortentwuerfe/",
+          "/en/ai-reply-drafts/"
+        ],
+        "reason": "calculator inputs and outputs (user assumptions)"
+      }
+    ]
+  },
+  "labels": {
+    "about": "A content entry with beispiel: true renders «fiktives Beispiel» or «Vereinfachtes Beispiel» inside its element (data-entry=\"<id>\"); an entry with drittanbieter: true renders «Stand: <date>».",
+    "beispiel": [
+      "fiktives Beispiel",
+      "Vereinfachtes Beispiel"
+    ],
+    "drittanbieter": "Stand: \\d{1,2}\\.\\s?\\d{1,2}\\.\\s?\\d{4}"
+  }
+}

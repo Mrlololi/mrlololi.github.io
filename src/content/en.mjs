@@ -274,7 +274,7 @@ export default {
       { id: 'rate', label: "Your team's hourly rate in €", value: 25, min: 0, max: 300, step: 1 },
     ],
     sentence: 'Standard replies cost your team about {h} hours a month. With draft replies you save about {saved_h} hours, roughly €{saved_eur} a month.',
-    note: 'Estimate. Assumption: a reviewed draft saves 70% of the time per standard reply.',
+    note: 'Estimate. Assumption: with a reviewed draft you need 30% of the previous time per standard reply.',
   },
 
   finder: {
@@ -430,10 +430,10 @@ export default {
       { q: 'Do I need specific tools?', a: 'No. I work with what you already have and only suggest a switch when it pays off.' },
       { q: 'How do you handle data?', a: 'I get my own user access instead of your password. When the project ends, you remove my access and I delete the copies of your data that I hold.' },
       { q: 'Do you also do customer support?', a: 'No. I build the tech that takes load off your support, for example draft replies for recurring questions.' },
-      { q: 'Are you available on launch day?', a: 'Yes, by phone and chat in a time window we agree beforehand: for example two hours from the start of sales and the last two hours before cart close. I bill this window by effort (€45 per hour). Outside it I reply by 3 pm the next day. We catch most problems beforehand: with test contacts, test purchases and an emergency card with ready answers for your customers. I support at most one launch per week, so that I am really there.' },
+      { q: 'Are you available on launch day?', a: 'Yes, by phone and chat in a time window we agree beforehand: for example two hours from the start of sales and the last two hours before cart close. I bill this window by effort (€45 per hour). Outside it I reply by 3 pm the next day. We catch problems beforehand wherever possible: with test contacts, test purchases and an emergency card with ready answers for your customers. I support at most one launch per week, so that I am really there.' },
       { q: "What if my problem doesn't fit a package?", a: "Send me a short note on what isn't working. You get the price before I start." },
       // Stage 6f (4.11.2026): two new questions.
-      { q: 'I use a different tool. Does that work?', a: 'Most course platforms connect via ActiveCampaign, Zapier or Make, for example Digistore24, CopeCart, ablefy, Kajabi or Memberspot. In the tech check I look at your tool first and tell you honestly whether I can help.' },
+      { q: 'I use a different tool. Does that work?', a: 'Many course platforms connect via ActiveCampaign, Zapier or Make, for example Digistore24, CopeCart, ablefy, Kajabi or Memberspot. In the tech check I look at your tool first and tell you honestly whether I can help.' },
       { q: 'Is there a data processing agreement?', a: 'Yes. Before the project starts we sign a data processing agreement under Art. 28 GDPR (the WKO template), including the sub-processors.' },
       { q: 'And what if you are ill?', a: 'Then I still help: almost everything can be solved remotely from my laptop. Also, all accesses belong to you, and every flow is documented.' },
       { q: "My setup already exists, but it's messy. Do you clean up too?", a: 'Yes. I check tags, automations and Zaps, clean them up and document what happens where. The best start is the tech check.' },
@@ -836,7 +836,7 @@ export default {
         description: 'Launch emails landing in spam? I set up SPF, DKIM and DMARC correctly and test delivery. A quick fix with up to 4 hours of work, €190 fixed.',
         promise: 'I set up SPF, DKIM and DMARC correctly and test delivery.',
         packages: ['quick'],
-        problem: ['Launch emails land in spam.', 'I often see this failure at launches, and it costs sign-ups, revenue or nerves.'],
+        problem: ['Launch emails land in spam.', 'At a launch, this failure costs sign-ups, revenue or nerves.'],
         // Iva 29.10.2026 (German original in de.mjs).
         explain: { title: 'In short', text: 'SPF sets which servers may send email on behalf of your domain. DKIM signs every email, so the recipient can see it was not changed on the way. DMARC tells the recipient what to do with emails that fail the check, and sends you reports. Since 2024 Gmail and Yahoo require all three records from senders of large volumes of email, and since 2025 Microsoft does too for Outlook and Hotmail.' },
         does: ['Set up SPF, DKIM and DMARC correctly', 'Test delivery'],

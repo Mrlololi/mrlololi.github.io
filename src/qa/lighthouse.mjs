@@ -51,6 +51,7 @@ export async function lighthouseCheck(base, pages = ['/', '/en/'], runs = 3) {
         .map((id) => `${id}: ${lhr.audits[id].displayValue || ''}`);
       failing.push(...shifts, ...lcpInfo, ...opportunities);
       results.push({
+        page: p,
         name: `lighthouse ${p} (median of ${runs}): perf ${scores.performance}, a11y ${scores.accessibility}, best ${scores['best-practices']}, seo ${scores.seo}; LCP ${lcp.toFixed(2)} s, TBT ${Math.round(tbt)} ms, CLS ${cls.toFixed(3)}`,
         // Stage 7b: performance >= 95 on every page (the home pages had 90 since Stage 4); the other
         // categories >= 95; TBT <= 100 ms; LCP in Google's «good» range; CLS exactly 0.
@@ -62,5 +63,8 @@ export async function lighthouseCheck(base, pages = ['/', '/en/'], runs = 3) {
   } finally {
     await chrome.kill();
   }
+  // Qualität 17.11.2026: the medians also as JSON (qa/lighthouse/lighthouse.json), read by src/qa/protokoll.mjs.
+  await writeFile(path.join(out, 'lighthouse.json'), `${JSON.stringify(results.map(({ page, scores, lcp, cls, tbt, runs: r, pass }) => ({ page, scores, lcp, cls, tbt, runs: r, pass })), null, 2)}
+`);
   return results;
 }

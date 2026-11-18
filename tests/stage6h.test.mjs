@@ -42,7 +42,8 @@ test('2. honest numbers: «vereinfachtes Beispiel» at the counters, assumptions
   const ki = byFile['ki-antwortentwuerfe/index.html'];
   assert.match(ki, /Anteil Standardfragen in % \(Ihre Annahme\)/);
   assert.match(ki, /Stundensatz Ihres Teams in € \(Ihre Annahme\)/);
-  assert.match(ki, /Annahme, anpassbar: Ein geprüfter Entwurf spart 70\s?% der Zeit/);
+  // Wortfilter 17.11.2026: same assumption, without «spart».
+  assert.match(ki, /Annahme, anpassbar: Mit einem geprüften Entwurf brauchen Sie pro Standardantwort 30\s?% der bisherigen Zeit/);
   const root = fileURLToPath(new URL('..', import.meta.url));
   const hits = [];
   const walk = (d) => { for (const n of readdirSync(d)) { if (['node_modules', '.git', '_alt', 'stage6h.test.mjs'].includes(n)) continue; const p = path.join(d, n); if (statSync(p).isDirectory()) walk(p); else if (/\.(mjs|js|html|json|md)$/.test(n) && /AVV mit allen Anbietern/i.test(readFileSync(p, 'utf8'))) hits.push(p); } };
@@ -77,7 +78,7 @@ test('4. Technik-Check card: badge, own button, call line, dated availability, r
 
 test('4. launch day: the new FAQ answer (DE/EN) and «Gut zu wissen» on /launch-technik/', () => {
   const a = de.faq.items.find((x) => x.q === 'Sind Sie am Launch-Tag erreichbar?').a;
-  assert.equal(a, 'Ja, telefonisch und per Chat in einem Zeitfenster, das wir vorher festlegen: zum Beispiel zwei Stunden ab Verkaufsstart und die letzten zwei Stunden vor Cart Close. Dieses Fenster rechne ich nach Aufwand ab (45 € pro Stunde). Außerhalb antworte ich bis 15 Uhr am nächsten Tag. Die meisten Pannen fangen wir vorher ab: mit Testkontakten, Testkäufen und einer Notfallkarte mit fertigen Antworten für Ihre Kundinnen. Ich begleite höchstens einen Launch pro Woche, damit ich wirklich da bin.');
+  assert.equal(a, 'Ja, telefonisch und per Chat in einem Zeitfenster, das wir vorher festlegen: zum Beispiel zwei Stunden ab Verkaufsstart und die letzten zwei Stunden vor Cart Close. Dieses Fenster rechne ich nach Aufwand ab (45 € pro Stunde). Außerhalb antworte ich bis 15 Uhr am nächsten Tag. Pannen fangen wir möglichst vorher ab: mit Testkontakten, Testkäufen und einer Notfallkarte mit fertigen Antworten für Ihre Kundinnen. Ich begleite höchstens einen Launch pro Woche, damit ich wirklich da bin.');
   assert.ok(deHome.includes('Notfallkarte mit fertigen Antworten'));
   assert.match(en.faq.items.find((x) => x.q === 'Are you available on launch day?').a, /cart close[\s\S]*€45 per hour[\s\S]*at most one launch per week/);
   assert.match(byFile['launch-technik/index.html'], /Gut zu wissen[\s\S]*?Im Februar 2027 plane ich keine Launches ein\./);

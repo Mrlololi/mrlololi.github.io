@@ -355,7 +355,7 @@ display: flex; flex-direction: column; align-items: flex-start; gap: var(--space
 .site-footer__links { display: flex; flex-wrap: wrap; gap: 0 var(--space-4); list-style: none; margin: 0; padding: 0; }
 @media (min-width: 80rem) {
 .site-footer__in { flex-direction: row; justify-content: space-between; align-items: center; }
-.site-footer__links { flex-wrap: nowrap; white-space: nowrap; }
+.site-footer__links { white-space: nowrap; }
 }
 .site-footer__links a { display: inline-flex; align-items: center; min-height: 2.75rem; color: var(--ink-soft); }
 .site-footer__links a:hover { color: var(--ink); }
@@ -1723,7 +1723,7 @@ html:not(.js) .faq__cats { display: none; }
 <section class="svc-sec bg-pink edge" aria-labelledby="svc-problem">
 <div class="wrap svc-sec__in">
 <h2 id="svc-problem" data-enter="lines">The problem</h2>
-<p class="svc-text">Launch emails land in spam. I often see this failure at launches, and it costs sign-ups, revenue or nerves.</p>
+<p class="svc-text">Launch emails land in spam. At a launch, this failure costs sign-ups, revenue or nerves.</p>
 <aside class="svc-explain" aria-labelledby="svc-explain">
 <h3 id="svc-explain">In short</h3>
 <p>SPF sets which servers may send email on behalf of your domain. DKIM signs every email, so the recipient can see it was not changed on the way. DMARC tells the recipient what to do with emails that fail the check, and sends you reports. Since 2024 Gmail and Yahoo require all three records from senders of large volumes of email, and since 2025 Microsoft does too for Outlook and Hotmail.</p>

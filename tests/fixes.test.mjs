@@ -77,7 +77,8 @@ test('external links open in a new tab and say so', () => {
 test('footers: same structure and the agreed copyright lines', () => {
   const foot = (p) => p.match(/<footer[\s\S]*?<\/footer>/)[0];
   const shape = (f) => f.replace(/>[^<]*</g, '><').replace(/ (href|hreflang|lang|aria-label|data-pause-label|data-play-label)="[^"]*"/g, '');
-  assert.equal(shape(foot(deHome)), shape(foot(enHome)));
+  // Qualität 17.11.2026: the German footer has one more legal link, «Prüfprotokoll» (/qualitaet/).
+  assert.equal(shape(foot(deHome).replace(/<li><a href="\/qualitaet\/">Prüfprotokoll<\/a><\/li>\s*/, '')), shape(foot(enHome)));
   // Stage 6f: «Werbeagentur» only in the Impressum.
   assert.match(foot(deHome), /© 2026 Iva Tsatskrialashvili · Graz, Österreich/);
   assert.match(foot(enHome), /© 2026 Iva Tsatskrialashvili · Graz, Austria/);

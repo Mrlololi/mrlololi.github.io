@@ -278,7 +278,7 @@ export default {
       { id: 'rate', label: 'Stundensatz Ihres Teams in € (Ihre Annahme)', value: 25, min: 0, max: 300, step: 1 },
     ],
     sentence: 'Standardantworten kosten Ihr Team rund {h} Stunden im Monat. Mit Antwortentwürfen sparen Sie etwa {saved_h} Stunden, das sind rund {saved_eur} € pro Monat.',
-    note: 'Schätzung. Annahme, anpassbar: Ein geprüfter Entwurf spart 70 % der Zeit pro Standardantwort.',
+    note: 'Schätzung. Annahme, anpassbar: Mit einem geprüften Entwurf brauchen Sie pro Standardantwort 30 % der bisherigen Zeit.',
   },
 
   finder: {
@@ -434,10 +434,10 @@ export default {
       { q: 'Wie gehen Sie mit Daten um?', a: 'Ich bekomme einen eigenen Benutzerzugang statt Ihres Passworts. Nach Projektende entfernen Sie meinen Zugang, und ich lösche die Kopien Ihrer Daten, die bei mir liegen.' },
       { q: 'Übernehmen Sie auch den Kundensupport?', a: 'Nein. Ich baue die Technik, die Ihren Support entlastet, zum Beispiel Antwortentwürfe für wiederkehrende Fragen.' },
       // Stage 6h (5.11.2026): the launch-day window.
-      { q: 'Sind Sie am Launch-Tag erreichbar?', a: 'Ja, telefonisch und per Chat in einem Zeitfenster, das wir vorher festlegen: zum Beispiel zwei Stunden ab Verkaufsstart und die letzten zwei Stunden vor Cart Close. Dieses Fenster rechne ich nach Aufwand ab (45 € pro Stunde). Außerhalb antworte ich bis 15 Uhr am nächsten Tag. Die meisten Pannen fangen wir vorher ab: mit Testkontakten, Testkäufen und einer Notfallkarte mit fertigen Antworten für Ihre Kundinnen. Ich begleite höchstens einen Launch pro Woche, damit ich wirklich da bin.' },
+      { q: 'Sind Sie am Launch-Tag erreichbar?', a: 'Ja, telefonisch und per Chat in einem Zeitfenster, das wir vorher festlegen: zum Beispiel zwei Stunden ab Verkaufsstart und die letzten zwei Stunden vor Cart Close. Dieses Fenster rechne ich nach Aufwand ab (45 € pro Stunde). Außerhalb antworte ich bis 15 Uhr am nächsten Tag. Pannen fangen wir möglichst vorher ab: mit Testkontakten, Testkäufen und einer Notfallkarte mit fertigen Antworten für Ihre Kundinnen. Ich begleite höchstens einen Launch pro Woche, damit ich wirklich da bin.' },
       { q: 'Was, wenn mein Problem in kein Paket passt?', a: 'Schreiben Sie mir kurz, was nicht funktioniert. Sie erfahren den Preis, bevor ich anfange.' },
       // Stage 6f (4.11.2026): two new questions.
-      { q: 'Ich nutze ein anderes Tool. Geht das?', a: 'Die meisten Kursplattformen lassen sich über ActiveCampaign, Zapier oder Make anbinden, z. B. Digistore24, CopeCart, ablefy, Kajabi oder Memberspot. Im Technik-Check schaue ich mir Ihr Tool zuerst an und sage Ihnen ehrlich, ob ich helfen kann.' },
+      { q: 'Ich nutze ein anderes Tool. Geht das?', a: 'Viele Kursplattformen lassen sich über ActiveCampaign, Zapier oder Make anbinden, z. B. Digistore24, CopeCart, ablefy, Kajabi oder Memberspot. Im Technik-Check schaue ich mir Ihr Tool zuerst an und sage Ihnen ehrlich, ob ich helfen kann.' },
       { q: 'Gibt es einen Auftragsverarbeitungsvertrag?', a: 'Ja. Vor Projektstart schließen wir einen AVV nach Art. 28 DSGVO (Muster der WKO), inklusive der Unterauftragsverarbeiter.' },
       { q: 'Und wenn Sie krank sind?', a: 'Dann helfe ich trotzdem: Fast alles lässt sich remote vom Laptop aus lösen. Außerdem gehören alle Zugänge Ihnen, und jeder Ablauf ist dokumentiert.' },
       { q: 'Mein Setup ist schon da, aber unübersichtlich. Räumen Sie auch auf?', a: 'Ja. Ich prüfe Tags, Automationen und Zaps, räume auf und dokumentiere, was wo passiert. Am besten starten wir mit dem Technik-Check.' },
@@ -885,7 +885,7 @@ export default {
         description: 'Launch-Mails landen im Spam? Ich richte SPF, DKIM und DMARC richtig ein und teste die Zustellung. Quick-Fix mit bis zu 4 Stunden Aufwand, 190 € fix.',
         promise: 'Ich richte SPF, DKIM und DMARC richtig ein und teste die Zustellung.',
         packages: ['quick'],
-        problem: ['Launch-Mails landen im Spam.', 'Diesen Fehler sehe ich bei Launches oft, und er kostet Anmeldungen, Umsatz oder Nerven.'],
+        problem: ['Launch-Mails landen im Spam.', 'Dieser Fehler kostet bei einem Launch Anmeldungen, Umsatz oder Nerven.'],
         // Iva 29.10.2026, wörtlich.
         explain: { title: 'Kurz erklärt', text: 'SPF legt fest, welche Server im Namen Ihrer Domain senden dürfen. DKIM signiert jede Mail, damit der Empfänger sieht, dass sie unterwegs nicht verändert wurde. DMARC sagt dem Empfänger, was mit Mails passieren soll, die die Prüfung nicht bestehen, und schickt Ihnen Berichte. Seit 2024 verlangen Gmail und Yahoo von Absendern mit vielen Mails alle drei Einträge, seit 2025 auch Microsoft für Outlook und Hotmail.' },
         does: ['SPF, DKIM und DMARC richtig einrichten', 'Die Zustellung testen'],
@@ -963,6 +963,8 @@ export default {
         path: '/website-one-pager/',
         short: 'Website als One-Pager',
         moreLabel: 'Mehr zur Website als One-Pager',
+        // Qualität 17.11.2026: one text link to /qualitaet/ at the end of «So läuft es ab». Entwurf.
+        testLink: 'So prüfe ich diese Website',
         h1: 'Website als One-Pager mit Leadpages oder Wix',
         description: 'Website als One-Pager mit Leadpages, Wix oder eigenem HTML: responsiv, mit Terminbuchung, Domain und Ihren Rechtstexten eingebunden. Ab 990 €.',
         promise: 'Ein One-Pager mit Leadpages, Wix oder eigenem HTML, fertig veröffentlicht.',
@@ -1011,6 +1013,8 @@ export default {
     copyright: '© 2026 Iva Tsatskrialashvili · Graz, Österreich',
     legal: 'Impressum',
     privacy: 'Datenschutz',
+    // Qualität 17.11.2026: the link to /qualitaet/ next to the legal links (German pages only). Entwurf.
+    protokoll: 'Prüfprotokoll',
   },
 
   notFound: {
@@ -1043,6 +1047,46 @@ export default {
     ],
     linksTitle: 'Haftung für Links',
     links: 'Für Inhalte verlinkter externer Seiten sind ausschließlich deren Betreiber verantwortlich.',
+  },
+
+  // Qualität 17.11.2026 (docs/PROMPT_Qualitaet_und_Wortfilter_2026-11-17.md, part B): /qualitaet/, DE only.
+  // Every number comes from src/content/qualitaet.json (written by src/qa/protokoll.mjs); {name} marks it.
+  // All texts are Entwurf (Iva approves them with his «да»).
+  qualitaet: {
+    path: '/qualitaet/',
+    title: 'Prüfprotokoll dieser Website | mrlololi',
+    description: 'So teste ich mrlololi.com vor jeder Veröffentlichung: Ladezeit, Tastatur, Barrieren, Cookies und automatische Prüfungen, vom Prüfprogramm gemessen.',
+    h1: 'Prüfprotokoll dieser Website',
+    lead: 'So teste ich mrlololi.com vor jeder Veröffentlichung. Die Zahlen schreibt das Prüfprogramm, nicht ich.',
+    label: 'Gemessen am {measured} mit {tools}. Stand: Commit {commit}.',
+    labelDirty: 'Gemessen am {measured} mit {tools}. Stand: Commit {commit} mit lokalen Änderungen (noch nicht veröffentlicht).',
+    tableTitle: 'Was das Prüfprogramm misst',
+    cols: ['Was ich prüfe', 'Ergebnis', 'Womit'],
+    met: 'erfüllt',
+    notMet: 'nicht erfüllt',
+    rows: {
+      speed: ['Lädt schnell auf dem Handy', 'Leistung {min} bis {max} von 100 auf {pages} Seiten', 'Lighthouse, Handy-Profil, Median aus {runs} Läufen'],
+      cls: ['Nichts springt beim Laden und Scrollen', 'Verschiebung (CLS) {cls} auf allen Seiten', 'Lighthouse und eigener Test'],
+      keyboard: ['Mit der Tastatur bedienbar', '{passed} von {total} Tastatur-Prüfungen ohne Befund', 'eigene Tests'],
+      axe: ['Keine schweren Barrieren gefunden', '{axe} schwere oder kritische Befunde', 'axe-core'],
+      privacy: ['Keine Cookies, keine Anfragen an fremde Server beim Laden', '{cookies} Cookies, {external} fremde Anfragen', 'Playwright'],
+      form: ['Kontaktformular echt getestet', 'zuletzt am {date}', 'Testanfrage bis ins Postfach'],
+      formNone: 'noch nicht gemessen',
+      checks: ['Automatische Prüfungen vor jeder Veröffentlichung', '{tests} Tests und {gates} Prüfschritte, alle ohne Befund', 'node:test, Playwright'],
+      checksFailed: '{tests} Tests und {gates} Prüfschritte, davon {failed} mit Befund',
+    },
+    gapsTitle: 'Bekannte Lücken',
+    // Entwurf: Iva confirms that each line is true. The last one goes after stage 7e.
+    gaps: [
+      'Automatisch geprüft wird nur in Chromium (Chrome, Edge). Safari und Firefox prüfe ich nicht automatisch.',
+      'Die Werte gelten für den Tag der Messung und für diese Website, nicht automatisch für Websites, die ich für Kundinnen baue.',
+      'Einen Test mit Menschen, die einen Screenreader im Alltag nutzen, gab es noch nicht.',
+      'Das dunkle Farbschema ist noch nicht fertig.',
+    ],
+    exitLead: 'Ihre Website, genauso geprüft:',
+    // The package name and price come from pricing (id «website»), never typed here.
+    exitPackage: 'website',
+    exitHref: '/?paket=website&quelle=qualitaet#contact',
   },
 
   // Datenschutzerklärung (CONTENT.md section 4).

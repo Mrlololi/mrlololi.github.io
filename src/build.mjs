@@ -14,6 +14,7 @@ import { videoLd } from './templates/video.mjs';
 import { servicePage, serviceLd, serviceTitle } from './templates/service.mjs';
 import { ratgeberIndex, ratgeberArticle, blogPostingLd } from './templates/ratgeber.mjs';
 import { loadArticles } from './ratgeber.mjs';
+import { qualitaetPage, qualitaetCss, loadProtokoll } from './templates/qualitaet.mjs';
 
 export { sitemap, cname };
 
@@ -23,11 +24,13 @@ const fileFor = (p) => (p.endsWith('/') ? `${p.slice(1)}index.html` : p.slice(1)
 // Dates come from config.page_dates (change them only with the page's content), never from the build day.
 // articles: the Ratgeber Markdown files (src/content/ratgeber/), built only with cfg.ratgeber_live.
 // live: what answered 200 at build time (see probe() below); tests pass it explicitly.
-export function pages(cfg = config, { articles = loadArticles(), live = {} } = {}) {
+// protokoll: src/content/qualitaet.json (Qualität 17.11.2026); /qualitaet/ and its footer link exist only with it.
+export function pages(cfg = config, { articles = loadArticles(), live = {}, protokoll = loadProtokoll() } = {}) {
   const out = [];
   const ratgeber = Boolean(cfg.ratgeber_live) && articles.length > 0;
+  const qualitaet = Boolean(protokoll);
   for (const [t, other] of [[de, en], [en, de]]) {
-    const ctx = { t, other, config: cfg, ratgeber };
+    const ctx = { t, other, config: cfg, ratgeber, qualitaet };
     out.push({
       file: fileFor(t.paths.home),
       html: layout({ ...ctx, page: { key: 'home', path: t.paths.home, altPath: other.paths.home, ...t.meta, ld: t.s6.video ? [videoLd(t, cfg)] : [] }, main: home(t, cfg) }),
@@ -53,7 +56,7 @@ export function pages(cfg = config, { articles = loadArticles(), live = {} } = {
         html: layout({
           ...ctx,
           page: { key: 'service', path: s.path, altPath: twin.path, title: serviceTitle(s), description: s.description, ogImage: `/assets/og/${t.lang}-${s.key}.png`, ld: serviceLd(t, cfg, s) },
-          main: servicePage(t, cfg, s, { live }),
+          main: servicePage(t, cfg, s, { live: { ...live, qualitaet } }),
         }),
       });
     }
@@ -73,10 +76,18 @@ export function pages(cfg = config, { articles = loadArticles(), live = {} } = {
       });
     }
   }
+  // Qualität 17.11.2026: /qualitaet/ «Prüfprotokoll dieser Website» (DE only, indexable, in the sitemap without
+  // alternates), rendered only from src/content/qualitaet.json.
+  if (qualitaet) {
+    out.push({
+      file: fileFor(de.qualitaet.path),
+      html: layout({ t: de, other: en, config: cfg, ratgeber, qualitaet, page: { key: 'qualitaet', path: de.qualitaet.path, altPath: en.paths.home, title: de.qualitaet.title, description: de.qualitaet.description, css: qualitaetCss }, main: qualitaetPage(de, protokoll) }),
+    });
+  }
   out.push({
     file: '404.html',
     html: layout({
-      t: de, other: en, config: cfg, ratgeber,
+      t: de, other: en, config: cfg, ratgeber, qualitaet,
       page: { key: '404', path: '/404.html', altPath: en.paths.home, noindex: true, ...de.notFoundMeta },
       main: notFound(de, en, { ratgeber }),
     }),

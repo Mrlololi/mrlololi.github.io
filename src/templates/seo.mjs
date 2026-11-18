@@ -1,6 +1,7 @@
 import { absUrl } from './util.mjs';
 import de from '../content/de.mjs';
 import en from '../content/en.mjs';
+import { loadProtokoll } from './qualitaet.mjs';
 
 // The page pairs; DE is x-default. The key names the pair's date in config.page_dates.
 // Stage 5: the five service pages follow the three original pairs.
@@ -102,7 +103,8 @@ export const manifest = () => `${JSON.stringify({
 
 // lastmod is the date of each page's last real content change (config.page_dates), not the build day.
 // Ratgeber pages (DE only, no alternates) appear only with config.ratgeber_live.
-export function sitemap(config, articles = []) {
+// Qualität 17.11.2026: /qualitaet/ (DE only, no alternates) once src/content/qualitaet.json exists.
+export function sitemap(config, articles = [], { qualitaet = Boolean(loadProtokoll()) } = {}) {
   const urls = PAIRS.flatMap(([de, en, key]) =>
     [de, en].map(
       (loc) => `  <url>
@@ -122,6 +124,12 @@ export function sitemap(config, articles = []) {
     const newest = articles.map((a) => a.dateModified).sort().at(-1);
     if (newest) urls.push(one(de.ratgeber.path, newest));
     for (const a of articles) urls.push(one(`${de.ratgeber.path}${a.slug}/`, a.dateModified));
+  }
+  if (qualitaet) {
+    urls.push(`  <url>
+    <loc>${absUrl(config, de.qualitaet.path)}</loc>
+    <lastmod>${config.page_dates.qualitaet}</lastmod>
+  </url>`);
   }
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">

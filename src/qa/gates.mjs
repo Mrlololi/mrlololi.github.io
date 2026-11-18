@@ -22,7 +22,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { chromium } from './browsers.mjs';
 import { startBoth } from './serve-both.mjs';
 
-export const MAIN_PAGES = ['/', '/en/', '/impressum/', '/datenschutz/', '/en/legal-notice/', '/launch-technik/', '/en/course-launch-tech/', '/404.html', '/danke/'];
+export const MAIN_PAGES = ['/', '/en/', '/impressum/', '/datenschutz/', '/en/legal-notice/', '/launch-technik/', '/en/course-launch-tech/', '/404.html', '/danke/', '/qualitaet/'];
 export const WP_PAGES = ['/Webprojekte/?lang=de', '/Webprojekte/?lang=en', '/Webprojekte/404.html', '/Webprojekte/geoapp/?lang=de', '/Webprojekte/language-starter/?ui=de', '/Webprojekte/language-starter/trainer/', '/Webprojekte/ki-kundenservice/'];
 const SIZES = [{ w: 390, h: 800 }, { w: 1280, h: 900 }];
 const SCHEMES = ['light', 'dark'];

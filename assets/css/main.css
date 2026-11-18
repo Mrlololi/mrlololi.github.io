@@ -228,7 +228,8 @@ main:focus { outline: none; }
 .site-footer__links { display: flex; flex-wrap: wrap; gap: 0 var(--space-4); list-style: none; margin: 0; padding: 0; }
 @media (min-width: 80rem) {
   .site-footer__in { flex-direction: row; justify-content: space-between; align-items: center; }
-  .site-footer__links { flex-wrap: nowrap; white-space: nowrap; }
+  /* Qualität 17.11.2026: one row while it fits; with 200 % text (and the German «Prüfprotokoll» link) whole links wrap. */
+  .site-footer__links { white-space: nowrap; }
 }
 .site-footer__links a { display: inline-flex; align-items: center; min-height: 2.75rem; color: var(--ink-soft); }
 .site-footer__links a:hover { color: var(--ink); }
