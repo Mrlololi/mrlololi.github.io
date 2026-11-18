@@ -1533,7 +1533,8 @@ html:not(.js) .rl__ctl button, html:not(.js) .rl__go { display: none; }
 .hero__flow, .fixdemo, .steps-wrap { position: relative; }
 .hero__flow > .loopctl--icon, .fixdemo > .loopctl--icon, .steps-wrap > .loopctl--icon { position: absolute; top: var(--space-2); right: var(--space-2); z-index: 2; margin: 0; }
 .tariff__ctl .loopctl--icon, .pcs__ctl .loopctl--icon, .more__head .loopctl--icon, .nf__ctl .loopctl--icon { margin: 0; }
-.demo.is-fading, [data-demo].is-fading { filter: grayscale(1); opacity: 0.8; transition: filter 0.4s ease, opacity 0.4s ease; }
+.demo, [data-demo] { transition: filter 0.4s ease, opacity 0.4s ease; }
+.demo.is-fading, [data-demo].is-fading { filter: grayscale(1); opacity: 0; }
 .site-footer__motion { margin-top: var(--space-3); }
 .motion-toggle[hidden] { display: none; }
 .viz--flow { align-content: center; }
@@ -1576,7 +1577,7 @@ html:not(.js) .rl__ctl button, html:not(.js) .rl__go { display: none; }
 .qcard--lav .quote { background: #EEEAF8; }
 @media (prefers-reduced-motion: reduce) { .ref--site .browser__view { overflow-y: auto; } }
 html[data-motion="paused"] .ref--site .browser__view { overflow-y: auto; }
-.browser.is-fading { filter: grayscale(1); opacity: 0.8; transition: filter 0.4s ease, opacity 0.4s ease; }
+.browser.is-fading { filter: grayscale(1); opacity: 0; transition: filter 0.4s ease, opacity 0.4s ease; } 
 .services__audience { max-width: var(--measure); font-weight: 700; }
 .nf { display: flex; flex-direction: column; }
 .nf-en .nf__alt { order: -1; }
@@ -1688,6 +1689,8 @@ html:not(.js) .faq__cats { display: none; }
 .ek-switch__nr { display: inline-grid; place-items: center; flex: none; width: 1.5rem; height: 1.5rem; border-radius: var(--radius-pill); background: var(--pist-tint); font-weight: 700; }
 .ek-switch[aria-pressed="true"] { background: var(--ink); color: var(--card); border-color: var(--ink); }
 .ek-switch[aria-pressed="true"] .ek-switch__nr { background: var(--card); color: var(--ink); }
+.rl--kauf { grid-template-columns: minmax(0, 1fr); }
+.rl--kauf .rl__stage, .rl--kauf .rl__protocol { grid-column: auto; grid-row: auto; }
 .rl--kauf .rl__fehlt, .rl--kauf .rl__kommt, .rl--kauf .rl__log .i[data-icon="cross"] { display: none; }
 .rl--kauf .rl__log.is-off .rl__fehlt, .rl--kauf .rl__log.is-missing .rl__kommt { display: inline; margin-left: auto; font-weight: 700; }
 .rl--kauf .rl__log.is-off .rl__fehlt { color: var(--error); }
@@ -1731,7 +1734,9 @@ html:not([data-motion="paused"]) .rl--kauf .rl__log.is-off .i[data-icon="cross"]
 .ek-exit__lead { font-family: var(--font-display); font-weight: 700; font-size: var(--step-1); }
 @media (min-width: 900px) {
 .ek-grid { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); }
-.ek-ready .ek-switches { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+}
+@media (max-width: 599.98px) {
+.ek-ready .ek-switches { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }</style>
 <script>document.documentElement.classList.add('js')</script>
 <script type="module">requestAnimationFrame(()=>requestAnimationFrame(()=>import('/assets/js/main.js')))</script>

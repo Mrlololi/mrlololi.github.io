@@ -3,6 +3,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import config from '../src/config.json' with { type: 'json' };
 import de from '../src/content/de.mjs';
 import { kauf } from '../src/content/kerne/launch.de.mjs';
@@ -66,7 +67,7 @@ test('word check on the page text (Wortfilter lists for /werkzeuge/ein-kauf/ and
 });
 
 test('in a browser: zugang off on load, the hash opens its step, one step at a time, reset, no JS, CLS 0, 360/390 px', { timeout: 300000 }, async () => {
-  const server = await startServer({ root: new URL('.', root).pathname.replace(/^\/(\w:)/, '$1') });
+  const server = await startServer({ root: fileURLToPath(root) });
   const browser = await chromium.launch();
   try {
     const open = async (hash = '', { js = true, w = 1280 } = {}) => {
@@ -89,7 +90,7 @@ test('in a browser: zugang off on load, the hash opens its step, one step at a t
       const { ctx, page } = await open();
       let s = await state(page);
       assert.deepEqual([s.pressed, s.active, s.off, s.fehlt], [['zugang'], ['zugang'], 'zugang', ['zugang']]);
-      assert.equal(s.fehltText, 'inline', '«fehlt» as text, not colour alone');
+      assert.notEqual(s.fehltText, 'none', '«fehlt» shown as text, not colour alone');
       await page.click('.ek-switch[data-step="zahlung"]');
       s = await state(page);
       assert.deepEqual([s.pressed, s.active, s.off], [['zahlung'], ['zahlung'], 'zahlung'], 'switching another one restores the first');

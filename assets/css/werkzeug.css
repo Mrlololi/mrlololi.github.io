@@ -17,6 +17,10 @@
 .ek-switch[aria-pressed="true"] { background: var(--ink); color: var(--card); border-color: var(--ink); }
 .ek-switch[aria-pressed="true"] .ek-switch__nr { background: var(--card); color: var(--ink); }
 
+/* The run-log without its start form: one column (stage above the protocol). */
+.rl--kauf { grid-template-columns: minmax(0, 1fr); }
+.rl--kauf .rl__stage, .rl--kauf .rl__protocol { grid-column: auto; grid-row: auto; }
+
 /* The run-log in its break states. */
 .rl--kauf .rl__fehlt, .rl--kauf .rl__kommt, .rl--kauf .rl__log .i[data-icon="cross"] { display: none; }
 .rl--kauf .rl__log.is-off .rl__fehlt, .rl--kauf .rl__log.is-missing .rl__kommt { display: inline; margin-left: auto; font-weight: 700; }
@@ -64,5 +68,7 @@
 
 @media (min-width: 900px) {
   .ek-grid { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); }
-  .ek-ready .ek-switches { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+}
+@media (max-width: 599.98px) {
+  .ek-ready .ek-switches { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }

@@ -44,6 +44,8 @@ function init() {
     const cur = i >= 0 ? i : total - 1;
     steps.forEach((s, k) => { s.classList.toggle('is-current', k === cur); s.classList.toggle('is-done', k < cur); });
     root.dataset.step = String(cur);
+    const count = root.querySelector('.rl__count');
+    if (count) count.textContent = root.dataset.stepOf.replace('{n}', String(cur + 1)).replace('{total}', String(total));
     if (id) root.dataset.off = id; else delete root.dataset.off;
     root.classList.toggle('is-broken', Boolean(id));
     summary.textContent = id ? summary.dataset.off : summary.dataset.intact;
