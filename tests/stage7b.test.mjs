@@ -113,7 +113,8 @@ const built = () => {
 };
 
 test('3. icon module: the eleven ids of 7b, drawing rules, one fill shape, at most one moving part', () => {
-  assert.deepEqual(Object.keys(ICONS).sort(), ['blocks', 'calendar', 'card', 'check', 'form', 'key', 'mail-star', 'offer', 'receipt', 'tag', 'unlock'].sort());
+  // + cross (Werkzeug «Ein Kauf», design system 3.6 row updated).
+  assert.deepEqual(Object.keys(ICONS).sort(), ['blocks', 'calendar', 'card', 'check', 'cross', 'form', 'key', 'mail-star', 'offer', 'receipt', 'tag', 'unlock'].sort());
   for (const [id, e] of Object.entries(ICONS)) {
     assert.ok(!/<polygon|<polyline/.test(e.body), `${id}: no polygon (never a triangle)`);
     assert.ok((e.body.match(/style="fill: var\(--i-fill, none\)"/g) || []).length <= 1, `${id}: at most one fill shape`);

@@ -128,7 +128,7 @@ test('canonical and reciprocal hreflang pairs, checked over a real build output'
     await build({ outDir: dir, probe: false, quiet: true });
     const r = await checkSeo(dir, SITE);
     assert.deepEqual(r.problems, []);
-    assert.equal(r.indexable, 17, '6 earlier pages + 10 service pages + /qualitaet/ (17.11.2026)');
+    assert.equal(r.indexable, 18, '6 earlier pages + 10 service pages + /qualitaet/ + /werkzeuge/ein-kauf/');
     assert.ok(!existsSync(path.join(dir, 'ratgeber')), 'no /ratgeber/ in the output while the flag is false');
   } finally {
     rmSync(dir, { recursive: true, force: true });
@@ -362,7 +362,7 @@ test('sitemap contains exactly the live pages, with lastmod from page_dates', ()
     .map((p) => tag(p.html, /<link rel="canonical" href="([^"]+)">/))
     .sort();
   assert.deepEqual(locs, live);
-  assert.equal(locs.length, 17); // Qualität 17.11.2026: + /qualitaet/ (DE only)
+  assert.equal(locs.length, 18); // + /qualitaet/ and /werkzeuge/ein-kauf/ (DE only)
   assert.equal(config.page_dates.website, '2026-10-28');
   // Stage 6 (29.10.2026): the KI demo and calculator moved to the KI page, the video to the launch page.
   assert.equal(config.page_dates.ki, '2026-11-18'); // 18.11.2026: the calculator note (Wortfilter)

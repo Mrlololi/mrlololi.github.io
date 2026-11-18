@@ -59,7 +59,7 @@ test('head: title, description 120-160, WebApplication and BreadcrumbList; the h
   assert.match(html, /"@type":"WebApplication","name":"Ein Kauf: Was, wenn ein Teil fehlt\?","url":"https:\/\/mrlololi.com\/werkzeuge\/ein-kauf\/","applicationCategory":"BusinessApplication"/);
   assert.match(html, /"isAccessibleForFree":true,"inLanguage":"de","author":\{"@id":"https:\/\/mrlololi.com\/#iva"\}/);
   assert.match(html, /"@type":"BreadcrumbList"/);
-  assert.ok(by['index.html'].includes(`<p class="rl-toollink"><a class="text-link" href="${P}">Was passiert, wenn ein Schritt fehlt? Selbst ausprobieren</a></p>`));
+  assert.ok(by['index.html'].includes(`<a class="text-link rl-toollink" href="${P}">Was passiert, wenn ein Schritt fehlt? Selbst ausprobieren</a>`));
 });
 
 test('word check on the page text (Wortfilter lists for /werkzeuge/ein-kauf/ and the tool scope)', () => {

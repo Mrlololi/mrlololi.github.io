@@ -92,6 +92,8 @@ test('header lockup (outlined SVG) on every page, footer dark lockup only on the
     assert.ok(!h.includes('<div class="site-footer__brand">'), `${f}: no footer lockup`);
     assert.match(h, /<div class="site-footer__trio"><span class="footer-mascots" data-say="footer" aria-hidden="true">/, `${f}: footer three`);
     if (legal.includes(f)) assert.match(main, /<div class="doc__head">\n<h1>[^<]+<\/h1>\n<span class="mscene mscene--legal" data-scene="legal" data-say="(legal|privacy)" aria-hidden="true"><svg [^>]*data-mascot="0" data-emo="think"/, `${f}: Logik`);
+    // Werkzeug «Ein Kauf»: its brief puts Logik next to the panel (one «Prüfblick» on a switch) and Live in the run-log.
+    else if (f === 'werkzeuge/ein-kauf/index.html') assert.match(main, /<span class="mscene mscene--kauf ek-logik" data-scene="kauf" aria-hidden="true"><svg [^>]*data-mascot="0" data-emo="think"/, `${f}: Logik`);
     else assert.ok(!/<(svg|span|button)[^>]*class="mascot/.test(main), `${f}: no mascots in the body`);
   }
 });

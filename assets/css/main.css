@@ -1123,6 +1123,8 @@ html:not(.js) .calc__fields { display: none; }
 .vid__lines p { margin: 0; }
 .vid__lines p:first-child { color: var(--ink); font-weight: 600; }
 .vid__scene { font-size: var(--step--1); color: var(--ink-soft); }
+/* Werkzeug «Ein Kauf»: the link under the run-log; ink on the band (design system 1.1 rule 1). */
+.rl-toollink { display: flex; width: fit-content; margin: var(--space-3) auto 0; text-align: center; color: var(--ink); }
 .vid__cta { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: var(--space-2) var(--space-4); margin-top: var(--space-6); color: var(--ink); }
 /* Prices: «Empfohlener Start» sits on the top border, so names and prices share one line. */
 .item--check .item__badge { position: absolute; top: 0; left: var(--space-5); transform: translateY(-50%); margin: 0; background: #EEEAF8; border: 1px solid var(--lav-ink); }

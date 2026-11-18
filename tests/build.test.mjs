@@ -35,13 +35,15 @@ const expected = {
   'en/thanks/index.html': { lang: 'en', url: null },
   // Qualität 17.11.2026: DE only, no hreflang (canonical checked in tests/qualitaet.test.mjs).
   'qualitaet/index.html': { lang: 'de', url: null },
+  // Werkzeug «Ein Kauf» (DE only; canonical checked in tests/werkzeug-ein-kauf.test.mjs).
+  'werkzeuge/ein-kauf/index.html': { lang: 'de', url: null },
 };
 
 // Stage 5 added the ten service pages (tests/stage5-seo.test.mjs checks them).
 test('builds the seven original pages, the two thank-you pages, the ten service pages and /qualitaet/', () => {
   const SERVICE = /^(en\/)?(launch-technik|e-mails-landen-im-spam|activecampaign-einrichten|ki-antwortentwuerfe|website-one-pager|course-launch-tech|emails-going-to-spam|activecampaign-setup|ai-reply-drafts|one-page-website)\/index\.html$/;
   assert.deepEqual(all.map((p) => p.file).filter((f) => !SERVICE.test(f)).sort(), Object.keys(expected).sort());
-  assert.equal(all.length, 20);
+  assert.equal(all.length, 21); // + /werkzeuge/ein-kauf/
 });
 
 for (const [file, { lang, url }] of Object.entries(expected)) {
@@ -157,7 +159,7 @@ test('booking button, booking privacy section and UID line appear when set', () 
 
 test('sitemap lists the sixteen indexable pages with alternates (Stage 5: plus ten service pages)', () => {
   const xml = sitemap(config, fixedDate);
-  assert.equal(count(xml, /<url>/g), 17); // Qualität 17.11.2026: + /qualitaet/ (DE only, no alternates)
+  assert.equal(count(xml, /<url>/g), 18); // + /qualitaet/ and /werkzeuge/ein-kauf/ (DE only, no alternates)
   assert.equal(count(xml, /<xhtml:link rel="alternate"/g), 48);
   assert.ok(xml.includes(`<loc>${SITE}/en/privacy/</loc>`));
 });
