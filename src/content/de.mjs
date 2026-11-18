@@ -392,9 +392,9 @@ export default {
       },
     },
     case2: {
-      // Stage 7b-S section 8 (Iva 17.11.2026: both clients may be named). Entwurf.
-      domain: 'claudiawitticke.com',
-      title: 'Launch-Technik für die Online-Nähkurse von Claudia Witticke',
+      // Stage 7b-S section 8, UPDATE 19.11.2026: neutral until the client says ok (no name, no link); the named
+      // version waits in the branch zitat-claudia.
+      title: 'Launch-Technik für eine Online-Kursanbieterin, 2026',
       text: 'ActiveCampaign- und Zapier-Abläufe für Anmeldung, Launch, Onboarding und Zahlungserinnerungen, Landingpages in Leadpages, Rechnungen, Ratenzahlungen und Kurszugänge mit Quaderno und dem Mitgliederbereich, Live-Termine mit Zoom und Ecamm.',
     },
     case3: {
@@ -420,7 +420,7 @@ export default {
     // Stage 6: two short paragraphs (shortened from the three before, nothing new).
     paragraphs: [
       'Ich bin Iva Tsatskrialashvili (er/ihm) und lebe in Graz. Ich habe Informationstechnologie studiert und studiere jetzt berufsbegleitend Marketing & Sales an der FH CAMPUS 02. So verstehe ich beides: den Funnel und die API dahinter.',
-      'Seit 2023 arbeite ich für Kund:innen in Deutschland, der Schweiz und Österreich, zuerst für Onlineshops, seit 2026 auch für die Online-Kursanbieterin Claudia Witticke. Mein Gewerbe ist in Österreich angemeldet: ordentliche Rechnungen, ein fester Ansprechpartner.',
+      'Seit 2023 arbeite ich für Kund:innen in Deutschland, der Schweiz und Österreich, zuerst für Onlineshops, 2026 auch für eine Online-Kursanbieterin. Mein Gewerbe ist in Österreich angemeldet: ordentliche Rechnungen, ein fester Ansprechpartner.',
     ],
     tools: 'ActiveCampaign, Zapier, Make, Google Apps Script, Leadpages, WordPress, Wix, Shopware, Stripe, Quaderno, GrooveHQ, Canva, HTML, CSS, JavaScript, Python, SQL',
     path: ['Tbilisi', 'DACH-Vertrieb ab 2020', 'Erasmus+ in 11 Ländern', 'Graz seit 2025'],
@@ -710,7 +710,7 @@ export default {
       refs: {
         tools: ['ActiveCampaign', 'Zapier', 'Leadpages', 'Quaderno', 'Zoom'],
         video: 'Ablauf im Video ansehen',
-        honest: 'Laufende Zusammenarbeit seit April 2026.',
+        honest: 'Zusammenarbeit 2026.',
         earlierLine: 'Daher kenne ich Support-Teams von innen, die Grundlage für die KI-Antwortentwürfe.',
       },
       projects: { also: 'Außerdem:', and: 'und' },

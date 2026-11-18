@@ -388,9 +388,8 @@ export default {
       },
     },
     case2: {
-      // Stage 7b-S section 8 (Entwurf).
-      domain: 'claudiawitticke.com',
-      title: "Launch tech for Claudia Witticke's online sewing courses",
+      // Stage 7b-S section 8, UPDATE 19.11.2026: neutral (see de.mjs).
+      title: 'Launch tech for an online course creator, 2026',
       text: 'ActiveCampaign and Zapier flows for sign-up, launch, onboarding and payment reminders, landing pages in Leadpages, invoices, instalments and course access with Quaderno and the members area, live sessions with Zoom and Ecamm.',
     },
     case3: {
@@ -416,7 +415,7 @@ export default {
     // Stage 6: two short paragraphs (shortened from the three before, nothing new).
     paragraphs: [
       "I'm Iva Tsatskrialashvili (he/him) and I live in Graz, Austria. I studied information technology and now study marketing and sales part-time at FH CAMPUS 02. So I understand both: the funnel and the API behind it.",
-      'Since 2023 I have worked for clients in Germany, Switzerland and Austria, first for online shops, since 2026 also for the online course creator Claudia Witticke. My business is registered in Austria: proper invoices and one person who is responsible.',
+      'Since 2023 I have worked for clients in Germany, Switzerland and Austria, first for online shops, in 2026 also for an online course creator. My business is registered in Austria: proper invoices and one person who is responsible.',
     ],
     tools: 'ActiveCampaign, Zapier, Make, Google Apps Script, Leadpages, WordPress, Wix, Shopware, Stripe, Quaderno, GrooveHQ, Canva, HTML, CSS, JavaScript, Python, SQL',
     path: ['Tbilisi', 'Sales for German-speaking markets since 2020', 'Erasmus+ in 11 countries', 'Graz since 2025'],
@@ -683,7 +682,7 @@ export default {
       refs: {
         tools: ['ActiveCampaign', 'Zapier', 'Leadpages', 'Quaderno', 'Zoom'],
         video: 'See the flow in four steps',
-        honest: 'Ongoing work since April 2026.',
+        honest: 'Work in 2026.',
         earlierLine: 'That is how I know support teams from the inside, the basis for the AI reply drafts.',
       },
       projects: { also: 'Also:', and: 'and' },
