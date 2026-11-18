@@ -131,7 +131,7 @@ const PAYLOAD = { what: 'was', via: 'plattform', issue: 'problem', start: 'start
 // Stage 6h: ?quelle=<code> (e.g. the QR code in a letter: ?quelle=brief-nov#contact) goes into the hidden
 // field, only [a-z0-9-], at most 40 characters; «brief…» preselects «Brief per Post». It runs inline,
 // so it works before contact.js has loaded; without JS the field stays empty. No cookies, no storage.
-const QUELLE = `<script>(function(){var q=(new URLSearchParams(location.search).get('quelle')||'').toLowerCase();if(!/^[a-z0-9-]{1,40}$/.test(q))return;var f=document.getElementById('contact-form');f.elements.quelle.value=q;if(q.indexOf('brief')===0){var o=[].find.call(f.elements.gefunden.options,function(x){return x.dataset.letter});if(o)o.selected=true;}})();</script>`;
+const QUELLE = `<script>(function(){var q=(new URLSearchParams(location.search).get('quelle')||'').toLowerCase();if(!/^[a-z0-9-]{1,40}$/.test(q))return;var f=document.getElementById('contact-form');f.elements.quelle.value=q;if(q.indexOf('brief')===0){var o=[].find.call(f.elements.gefunden.options,function(x){return x.hasAttribute('data-letter')});if(o)o.selected=true;}})();</script>`;
 
 export function contactForm(t, config, { page, paket = '', compact = false } = {}) {
   const c = t.s4.contact;

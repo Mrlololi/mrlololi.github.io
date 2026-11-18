@@ -1846,7 +1846,7 @@ html:not(.js) .faq__cats { display: none; }
 <label class="contact__manual" hidden><span class="small">Your text to copy</span><textarea readonly rows="6"></textarea></label>
 </div>
 </div>
-<script>(function(){var q=(new URLSearchParams(location.search).get('quelle')||'').toLowerCase();if(!/^[a-z0-9-]{1,40}$/.test(q))return;var f=document.getElementById('contact-form');f.elements.quelle.value=q;if(q.indexOf('brief')===0){var o=[].find.call(f.elements.gefunden.options,function(x){return x.dataset.letter});if(o)o.selected=true;}})();</script>
+<script>(function(){var q=(new URLSearchParams(location.search).get('quelle')||'').toLowerCase();if(!/^[a-z0-9-]{1,40}$/.test(q))return;var f=document.getElementById('contact-form');f.elements.quelle.value=q;if(q.indexOf('brief')===0){var o=[].find.call(f.elements.gefunden.options,function(x){return x.hasAttribute('data-letter')});if(o)o.selected=true;}})();</script>
 </form>
 <div class="contact__done" role="status" tabindex="-1" hidden data-text="Thank you, {name}! You'll get a confirmation by email shortly. I'll reply within two working days."><p class="contact__done-text"></p></div>
 <div class="contact__thanks" role="status"></div>

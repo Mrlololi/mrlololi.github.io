@@ -75,7 +75,7 @@ test('4. form sources in the new order (DE and EN), the letter option still pres
   assert.deepEqual(de.s4.contact.form.gefundenOptions, ['Google-Suche', 'KI-Assistent (ChatGPT, Perplexity, Gemini)', 'LinkedIn', 'Malt', 'Empfehlung', 'Instagram', 'Brief per Post', 'Google Maps', 'Sonstiges']);
   assert.deepEqual(en.s4.contact.form.gefundenOptions, ['Google search', 'AI assistant (ChatGPT, Perplexity, Gemini)', 'LinkedIn', 'Malt', 'Referral', 'Instagram', 'Letter by post', 'Google Maps', 'Other']);
   assert.ok(by['index.html'].includes('<option data-letter>Brief per Post</option>'));
-  assert.ok(by['index.html'].includes("if(q.indexOf('brief')===0){var o=[].find.call(f.elements.gefunden.options,function(x){return x.dataset.letter});if(o)o.selected=true;}"));
+  assert.ok(by['index.html'].includes("if(q.indexOf('brief')===0){var o=[].find.call(f.elements.gefunden.options,function(x){return x.hasAttribute('data-letter')});if(o)o.selected=true;}"));
 });
 
 test('5. referral line under the Technik-Check (home and /activecampaign-einrichten/), estimate before hourly work', () => {
