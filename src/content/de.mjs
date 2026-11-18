@@ -8,9 +8,13 @@ export default {
   ogLocale: 'de_AT',
   paths: { home: '/', legal: '/impressum/', privacy: '/datenschutz/' },
 
+  // Stage 7b-S (13.11.2026): one identity, word for word (Iva). Footer line and Person.description.
+  identity: 'Iva Tsatskrialashvili (er/ihm), online als mrlololi, ist selbstständiger Techniker für Marketing-Automation in Graz. Er richtet für Anbieterinnen und Anbieter von Online-Kursen im DACH-Raum die Technik hinter dem Launch ein und testet sie, bevor die Kundschaft kommt.',
+
   meta: {
-    title: 'Marketing-Automation & Launch-Technik aus Graz | mrlololi',
-    description: 'Ich teste Ihren Launch, bevor es Ihre Kundschaft tut. Technik hinter Online-Kursen: ActiveCampaign, Zapier, Landingpages, Zahlungen. Aus Graz.',
+    // Stage 7b-S (13.11.2026): the full name in title and description (Entwurf).
+    title: 'Launch-Technik für Online-Kurse | Iva Tsatskrialashvili, Graz',
+    description: 'Ich teste Ihren Launch, bevor es Ihre Kundschaft tut. Technik hinter Online-Kursen: ActiveCampaign, Zapier, Zahlungen. Aus Graz. Iva Tsatskrialashvili (er/ihm).',
   },
   legalMeta: {
     title: 'Impressum - Iva Tsatskrialashvili',
@@ -206,14 +210,14 @@ export default {
             "id": "support",
             "name": "Betreuung nach Stunden",
             "price": "45 € pro Stunde",
-            "summary": "45 € pro Stunde für Pflege und alles außerhalb der Pakete, abgerechnet nach Aufwand in 15-Minuten-Schritten. Zum Beispiel Pflege Ihrer Automationen, kleine Landingpages, Fehlerbehebung. Abrechnung am Monatsende."
+            "summary": "45 € pro Stunde für Pflege und alles außerhalb der Pakete, abgerechnet nach Aufwand in 15-Minuten-Schritten. Zum Beispiel Pflege Ihrer Automationen, kleine Landingpages, Fehlerbehebung. Abrechnung am Monatsende. Arbeit nach Stunden beginne ich erst, wenn Sie meine Schätzung der Stundenzahl kennen; wird es mehr, frage ich vorher."
           }
         ]
       }
     ],
     cta: "Anfragen",
     subjectPrefix: "Anfrage: ",
-    hourly: "45 € pro Stunde für Pflege und alles außerhalb der Pakete, abgerechnet nach Aufwand in 15-Minuten-Schritten.",
+    hourly: "45 € pro Stunde für Pflege und alles außerhalb der Pakete, abgerechnet nach Aufwand in 15-Minuten-Schritten. Arbeit nach Stunden beginne ich erst, wenn Sie meine Schätzung der Stundenzahl kennen.",
     promise: "Zusätzlich zur gesetzlichen Gewährleistung: Läuft ein von mir gebauter Ablauf in den ersten 30 Tagen nicht wie vereinbart, behebe ich das ohne Berechnung. Das gilt für meine Arbeit, nicht für Ausfälle der Tools selbst.",
     smallPrint: 'Alle Preise sind Endpreise. Als Kleinunternehmer gemäß § 6 Abs. 1 Z 27 UStG weise ich keine Umsatzsteuer aus. Bei Unternehmen mit gültiger UID in einem anderen EU-Mitgliedstaat geht die Steuerschuld auf den Leistungsempfänger über (Reverse Charge).',
   },
@@ -387,7 +391,9 @@ export default {
       },
     },
     case2: {
-      title: 'Launch-Technik für eine Online-Kursanbieterin, seit April 2026',
+      // Stage 7b-S section 8 (Iva 17.11.2026: both clients may be named). Entwurf.
+      domain: 'claudiawitticke.com',
+      titleRest: ', Launch-Technik für die Online-Nähkurse von Claudia Witticke, seit April 2026',
       text: 'ActiveCampaign- und Zapier-Abläufe für Anmeldung, Launch, Onboarding und Zahlungserinnerungen, Landingpages in Leadpages, Rechnungen, Ratenzahlungen und Kurszugänge mit Quaderno und dem Mitgliederbereich, Live-Termine mit Zoom und Ecamm.',
     },
     case3: {
@@ -413,7 +419,7 @@ export default {
     // Stage 6: two short paragraphs (shortened from the three before, nothing new).
     paragraphs: [
       'Ich bin Iva Tsatskrialashvili (er/ihm) und lebe in Graz. Ich habe Informationstechnologie studiert und studiere jetzt berufsbegleitend Marketing & Sales an der FH CAMPUS 02. So verstehe ich beides: den Funnel und die API dahinter.',
-      'Seit 2023 arbeite ich für Kund:innen in Deutschland, der Schweiz und Österreich, zuerst für Onlineshops, seit 2026 auch für eine Online-Kursanbieterin. Mein Gewerbe ist in Österreich angemeldet: ordentliche Rechnungen, ein fester Ansprechpartner.',
+      'Seit 2023 arbeite ich für Kund:innen in Deutschland, der Schweiz und Österreich, zuerst für Onlineshops, seit 2026 auch für die Online-Kursanbieterin Claudia Witticke. Mein Gewerbe ist in Österreich angemeldet: ordentliche Rechnungen, ein fester Ansprechpartner.',
     ],
     tools: 'ActiveCampaign, Zapier, Make, Google Apps Script, Leadpages, WordPress, Wix, Shopware, Stripe, Quaderno, GrooveHQ, Canva, HTML, CSS, JavaScript, Python, SQL',
     path: ['Tbilisi', 'DACH-Vertrieb ab 2020', 'Erasmus+ in 11 Ländern', 'Graz seit 2025'],
@@ -584,7 +590,8 @@ export default {
         // Stage 6h: where people come from (no cookies; ?quelle= from a link, e.g. a letter's QR code).
         gefunden: 'Wie sind Sie auf mich aufmerksam geworden? (optional)',
         gefundenPick: 'Bitte wählen',
-        gefundenOptions: ['Google-Suche', 'LinkedIn', 'Brief per Post', 'Empfehlung', 'Instagram', 'Sonstiges'],
+        // Stage 7b-S: new order, AI assistants, Malt and Google Maps added (free text in the Make payload).
+        gefundenOptions: ['Google-Suche', 'KI-Assistent (ChatGPT, Perplexity, Gemini)', 'LinkedIn', 'Malt', 'Empfehlung', 'Instagram', 'Brief per Post', 'Google Maps', 'Sonstiges'],
         gefundenLine: 'Aufmerksam geworden über',
         next: 'In meiner Antwort bekommen Sie zwei, drei Terminvorschläge, per Zoom oder Telefon.',
         summaryOne: 'Bitte prüfen Sie diese Angabe:',
@@ -622,6 +629,8 @@ export default {
       // Stage 6h: the Technik-Check card's own button and its small line.
       checkAsk: 'Technik-Check anfragen',
       checkCall: 'Auf Wunsch mit 20-Minuten-Gespräch.',
+      // Stage 7b-S: approved by Iva 13.11.2026; the same line under every Technik-Check card.
+      checkReferral: 'Auf Empfehlung einer Kundin: Der Technik-Check wird 60 statt 30 Tage voll auf Ihr Projekt angerechnet.',
       checkReport: 'Beispielbericht ansehen',
     },
   },
@@ -700,7 +709,7 @@ export default {
       refs: {
         tools: ['ActiveCampaign', 'Zapier', 'Leadpages', 'Quaderno', 'Zoom'],
         video: 'Ablauf im Video ansehen',
-        honest: 'Laufende Zusammenarbeit seit April 2026, Name nicht genannt.',
+        honest: 'Laufende Zusammenarbeit mit Claudia Witticke (claudiawitticke.com) seit April 2026.',
         earlierLine: 'Daher kenne ich Support-Teams von innen, die Grundlage für die KI-Antwortentwürfe.',
       },
       projects: { also: 'Außerdem:', and: 'und' },
@@ -745,7 +754,7 @@ export default {
       rows: {
         website: 'Ein One-Pager, fertig veröffentlicht.',
         ki: 'Antwortentwürfe, die Ihr Team nur noch prüft. Pflege optional 90 € pro Monat.',
-        support: '45 € pro Stunde für Pflege und alles außerhalb der Pakete, abgerechnet nach Aufwand in 15-Minuten-Schritten.',
+        support: '45 € pro Stunde für Pflege und alles außerhalb der Pakete, abgerechnet nach Aufwand in 15-Minuten-Schritten. Arbeit nach Stunden beginne ich erst, wenn Sie meine Schätzung der Stundenzahl kennen.',
       },
     },
     cta: { text: 'Nicht sicher, was passt? 20 Minuten, kostenlos. Ich sage ehrlich, ob ich helfen kann.', button: 'Kostenloses Erstgespräch anfragen' },
@@ -924,7 +933,7 @@ export default {
         example: 'case2',
         faq: [
           ['Was bekomme ich beim Technik-Check?', 'Sie bekommen eine Liste mit Prioritäten, Aufwand und Preisen und ein Gespräch von 45 Minuten. Beauftragen Sie innerhalb von 30 Tagen ein Projekt, rechne ich die 290 € voll an.'],
-          ['Wie wird die Betreuung abgerechnet?', '45 € pro Stunde für Pflege und alles außerhalb der Pakete, abgerechnet nach Aufwand in 15-Minuten-Schritten. Die Rechnung kommt am Monatsende.'],
+          ['Wie wird die Betreuung abgerechnet?', '45 € pro Stunde für Pflege und alles außerhalb der Pakete, abgerechnet nach Aufwand in 15-Minuten-Schritten. Die Rechnung kommt am Monatsende. Arbeit nach Stunden beginne ich erst, wenn Sie meine Schätzung der Stundenzahl kennen.'],
           ['Arbeiten Sie auch remote?', 'Ja. Fast alle Projekte laufen remote im DACH-Raum. In Graz komme ich gern persönlich vorbei.'],
           ['Brauche ich bestimmte Tools?', 'Nein. Ich arbeite mit dem, was Sie schon haben, und schlage einen Wechsel nur vor, wenn er sich rechnet.'],
           ['Wie gehen Sie mit Daten um?', 'Ich bekomme einen eigenen Benutzerzugang statt Ihres Passworts. Nach Projektende entfernen Sie meinen Zugang, und ich lösche die Kopien Ihrer Daten, die bei mir liegen.'],
@@ -1028,6 +1037,8 @@ export default {
   legalPage: {
     h1: 'Impressum',
     address: ['Iva Tsatskrialashvili', 'Herbersteinstraße 4/4181', '8020 Graz, Österreich'],
+    // Stage 7b-S: right under the address block.
+    owner: 'Inhaber: Iva Tsatskrialashvili (er/ihm)',
     emailLabel: 'E-Mail',
     phoneLabel: 'Telefon',
     facts: [

@@ -70,7 +70,7 @@ test('external links open in a new tab and say so', () => {
     assert.ok(ext.length >= 4, `${ext.length} external links`);
     for (const [a] of ext) {
       assert.match(a, /target="_blank"/, a);
-      assert.match(a, /rel="noopener"/, a);
+      assert.match(a, /rel="(me )?noopener"/, a); // Stage 7b-S: rel="me" on Iva's own profiles
       assert.ok(a.includes(`<span class="sr-only"> ${hint}</span>`), a);
     }
   }

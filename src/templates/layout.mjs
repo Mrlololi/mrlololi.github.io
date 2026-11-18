@@ -160,6 +160,7 @@ function footer({ t, page, ratgeber, qualitaet }) {
   return `<footer class="site-footer bg-ink edge">
 <div class="site-footer__in">
 ${page.key === 'home' ? footerBrand(t) : `<div class="site-footer__trio">${footerMascots()}</div>`}${footerServices(t, ratgeber)}
+<p class="site-footer__who">${esc(t.identity)}</p>
 <p class="site-footer__copy">${esc(t.footer.copyright)}</p>
 <p class="site-footer__motion">${motionToggle(t)}</p>
 <nav id="footer-nav" aria-label="${esc(t.ui.footerNavLabel)}">

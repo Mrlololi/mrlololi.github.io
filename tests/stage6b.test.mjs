@@ -39,7 +39,7 @@ test('references: the course card with tools, the honest line and the video link
   const h = byFile['index.html'];
   const course = h.match(/<li class="ref card ref--course">[\s\S]*?<\/li>\n<li/)[0];
   for (const tool of de.s6.b.refs.tools) assert.ok(course.includes(`<li>${tool}</li>`), tool);
-  assert.match(course, /Laufende Zusammenarbeit seit April 2026, Name nicht genannt\./);
+  assert.match(course, /Laufende Zusammenarbeit mit Claudia Witticke \(claudiawitticke\.com\) seit April 2026\./); // 7b-S section 8
   assert.match(course, /<a class="text-link" href="#video">Ablauf im Video ansehen<\/a>/);
   assert.match(h, /Daher kenne ich Support-Teams von innen, die Grundlage für die KI-Antwortentwürfe\./);
   assert.match(h, /<h2 id="refs-title" data-enter="lines">Arbeit und <em class="accent">Referenzen<\/em><\/h2>/);
@@ -53,7 +53,8 @@ test('prices: chooser rows with an arrow, rows with a small outline «Anfragen»
   // Stage 6e: a visible secondary button with a small mail icon.
   assert.match(h, /<a class="btn btn--secondary btn--sm row__example" href="\/ki-antwortentwuerfe\/#ki-demo"><svg class="row__icon"[^>]*>[\s\S]*?<\/svg>Beispiel ansehen<\/a>/);
   const support = h.match(/<li class="row card[^"]*" id="pkg-support">[\s\S]*?<\/li>/)[0];
-  assert.ok(!/row__more/.test(support), 'Betreuung without «Mehr …»');
+  // Stage 7b-S: the Betreuung row links its page, so the home body links all five service pages.
+  assert.match(support, /<a class="row__more" href="\/activecampaign-einrichten\/">/, 'Betreuung with its «Mehr …» link');
 });
 
 test('video: flat posters from the film, a quiet CTA line under the block', () => {

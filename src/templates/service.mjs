@@ -143,7 +143,8 @@ export function servicePage(t, config, s, { live = {} } = {}) {
   const cards = pkgs.map((it) => `<li class="svc-pkg">
 <h3 class="svc-pkg__name">${esc(it.name)}</h3>
 <p class="svc-pkg__price">${esc(it.price)}</p>
-${it.extra ? `<p class="item__extra"><strong>${esc(it.extra.label)}</strong>, ${esc(it.extra.text)}</p>` : ''}
+${it.extra ? `<p class="item__extra"><strong>${esc(it.extra.label)}</strong>, ${esc(it.extra.text)}</p>` : ''}${it.id === 'check' ? `
+<p class="item__referral small">${esc(t.s4.starter.checkReferral)}</p>` : ''}
 <a class="btn btn--sm btn--primary" href="${esc(ask(t, it))}">${esc(t.pricing.cta)}<span class="sr-only">: ${esc(it.name)}</span></a>
 </li>`).join('\n');
   const steps = s.steps.map(([title, line], i) => `<li class="svc-step"><span class="svc-step__n" aria-hidden="true">${i + 1}</span><h3>${esc(title)}</h3><p>${esc(line)}</p></li>`).join('\n');
@@ -210,8 +211,8 @@ ${contactForm(t, config, { page: s.path, paket: pkgs[0].id, compact: true })}
 </div>
 <ul class="svc-links" role="list">
 <li><a class="text-link" href="${esc(subjectOnly)}">${esc(config.contact_email)}</a></li>
-<li>${extLink(config.linkedin, esc(t.contact.linkedin), t)}</li>
-<li>${extLink(config.malt, esc(t.contact.malt), t)}</li>
+<li>${extLink(config.linkedin, esc(t.contact.linkedin), t, { me: true })}</li>
+<li>${extLink(config.malt, esc(t.contact.malt), t, { me: true })}</li>
 </ul>
 </div>
 </div>

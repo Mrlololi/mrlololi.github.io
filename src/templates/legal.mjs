@@ -29,7 +29,8 @@ export function impressum(t, config) {
 ${docHead(L.h1, 'legal')}
 <section>
 <address>${L.address.map(esc).join('<br>')}<br>
-${esc(L.emailLabel)}: ${mail(config)}${phone(L, config)}</address>
+${esc(L.emailLabel)}: ${mail(config)}${phone(L, config)}</address>${L.owner ? `
+<p class="doc__owner">${esc(L.owner)}</p>` : ''}
 </section>
 <section>
 <dl>

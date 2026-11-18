@@ -88,11 +88,11 @@ test('4. launch day: the new FAQ answer (DE/EN) and «Gut zu wissen» on /launch
 test('5. contact form: «Wie sind Sie auf mich aufmerksam geworden?», hidden quelle, the inline script, no storage', () => {
   for (const h of [deHome, byFile['launch-technik/index.html']]) {
     assert.match(h, /<input type="hidden" name="quelle" value="">/);
-    assert.match(h, /<label for="cf-gefunden">Wie sind Sie auf mich aufmerksam geworden\? \(optional\)<\/label><select class="field__select" id="cf-gefunden" name="gefunden"><option value="">Bitte wählen<\/option><option>Google-Suche<\/option><option>LinkedIn<\/option><option>Brief per Post<\/option><option>Empfehlung<\/option><option>Instagram<\/option><option>Sonstiges<\/option><\/select>/);
+    assert.match(h, /<label for="cf-gefunden">Wie sind Sie auf mich aufmerksam geworden\? \(optional\)<\/label><select class="field__select" id="cf-gefunden" name="gefunden"><option value="">Bitte wählen<\/option><option>Google-Suche<\/option><option>KI-Assistent \(ChatGPT, Perplexity, Gemini\)<\/option><option>LinkedIn<\/option><option>Malt<\/option><option>Empfehlung<\/option><option>Instagram<\/option><option data-letter>Brief per Post<\/option><option>Google Maps<\/option><option>Sonstiges<\/option><\/select>/); // 7b-S order
     assert.match(h, /<script>\(function\(\)\{var q=\(new URLSearchParams\(location\.search\)\.get\('quelle'\)\|\|''\)\.toLowerCase\(\);if\(!\/\^\[a-z0-9-\]\{1,40\}\$\/\.test\(q\)\)return;/);
   }
   assert.ok(deHome.indexOf('id="cf-termin"') < deHome.indexOf('id="cf-gefunden"'));
-  assert.match(enHome, /How did you hear about me\? \(optional\)[\s\S]*?<option>Letter by post<\/option>/);
+  assert.match(enHome, /How did you hear about me\? \(optional\)[\s\S]*?<option data-letter>Letter by post<\/option>/);
   const js = readFileSync(new URL('../assets/js/contact.js', import.meta.url), 'utf8');
   assert.match(js, /gefunden: f\.elements\.gefunden\?\.value \|\| '',/);
   assert.ok(!/document\.cookie|localStorage|sessionStorage/.test(js));
@@ -131,7 +131,7 @@ test('7. launch facts on /launch-technik/ after the package, «krank» FAQ, the 
   }
   assert.ok(deHome.includes('Und wenn Sie krank sind?') && enHome.includes('And what if you are ill?'));
   for (const h of Object.values(byFile)) assert.ok(!/ab 5 Stunden|from 5 hours/i.test(h));
-  assert.equal(de.s6.pricing.rows.support, '45 € pro Stunde für Pflege und alles außerhalb der Pakete, abgerechnet nach Aufwand in 15-Minuten-Schritten.');
-  assert.equal(en.pricing.hourly, '€45 per hour for care and anything outside the packages, billed by effort in 15-minute steps.');
+  assert.equal(de.s6.pricing.rows.support, '45 € pro Stunde für Pflege und alles außerhalb der Pakete, abgerechnet nach Aufwand in 15-Minuten-Schritten. Arbeit nach Stunden beginne ich erst, wenn Sie meine Schätzung der Stundenzahl kennen.');
+  assert.equal(en.pricing.hourly, '€45 per hour for care and anything outside the packages, billed by effort in 15-minute steps. I only start hourly work once you know my estimate of the hours.');
   assert.ok(deHome.includes('in 15-Minuten-Schritten') && enHome.includes('in 15-minute steps'));
 });

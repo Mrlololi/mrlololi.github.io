@@ -136,6 +136,8 @@ export async function build({ outDir = root, probe = true, quiet = false } = {})
   await writeFile(path.join(outDir, 'robots.txt'), robots(config, { webprojekteSitemap: live.webprojekteSitemap }), 'utf8');
   await writeFile(path.join(outDir, 'sitemap.xml'), sitemap(config, ratgeber ? articles : []), 'utf8');
   await writeFile(path.join(outDir, 'site.webmanifest'), manifest(), 'utf8');
+  // Stage 7b-S: the IndexNow key file at the site root (src/tools/indexnow.mjs uses it after a publish).
+  if (config.indexnow_key) await writeFile(path.join(outDir, `${config.indexnow_key}.txt`), config.indexnow_key, 'utf8');
   // Browsers ask for /favicon.ico at the root no matter what the page links.
   await copyFile(path.join(root, 'assets/brand/favicon.ico'), path.join(outDir, 'favicon.ico'));
   log('page: robots.txt, sitemap.xml, site.webmanifest, favicon.ico');

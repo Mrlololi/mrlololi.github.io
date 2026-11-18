@@ -13,6 +13,7 @@
   "ki_portfolio_url": "https://mrlololi.com/Webprojekte/ki-kundenservice/",
   "webprojekte_sitemap": "https://mrlololi.com/Webprojekte/sitemap.xml",
   "case1_url": "https://alexandrafry.ch",
+  "case2_url": "https://claudiawitticke.com/",
   "case_study": null,
   "header_variant": "light",
   "ratgeber_live": false,
@@ -43,5 +44,6 @@
       "en": "I am not planning any launches in February 2027. Launch setups with a project start from 22 February 2027."
     }
   },
-  "check_report_url": ""
+  "check_report_url": "",
+  "indexnow_key": "98d92c1046417ab4f69a33651b7744c9"
 }

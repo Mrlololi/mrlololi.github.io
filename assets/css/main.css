@@ -226,6 +226,8 @@ main:focus { outline: none; }
   display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-4) var(--space-6);
 }
 .site-footer__links { display: flex; flex-wrap: wrap; gap: 0 var(--space-4); list-style: none; margin: 0; padding: 0; }
+/* Stage 7b-S: the identity sentence, its own line above the copyright and the legal links. */
+.site-footer__who { flex-basis: 100%; max-width: var(--measure); margin: 0; }
 @media (min-width: 80rem) {
   .site-footer__in { flex-direction: row; justify-content: space-between; align-items: center; }
   /* Qualität 17.11.2026: one row while it fits; with 200 % text (and the German «Prüfprotokoll» link) whole links wrap. */

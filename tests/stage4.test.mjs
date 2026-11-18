@@ -74,7 +74,7 @@ test('every external link opens in a new tab and says so', () => {
   for (const { file: f, html: h } of all) {
     for (const [a, href] of h.matchAll(/<a [^>]*href="(https?:\/\/[^"]+)"[^>]*>[\s\S]*?<\/a>/g)) {
       if (href.startsWith(config.site_url + '/') && !href.includes('/Webprojekte/')) continue;
-      assert.match(a, /target="_blank" rel="noopener"/, `${f}: ${href}`);
+      assert.match(a, /target="_blank" rel="(me )?noopener"/, `${f}: ${href}`); // Stage 7b-S: rel="me" on Iva's profiles
       assert.match(a, /<span class="sr-only"> \((öffnet in neuem Tab|opens in a new tab)\)<\/span>/, `${f}: ${href}`);
     }
   }

@@ -7,9 +7,13 @@ export default {
   ogLocale: 'en_GB',
   paths: { home: '/en/', legal: '/en/legal-notice/', privacy: '/en/privacy/' },
 
+  // Stage 7b-S: the identity sentence (EN: Entwurf, the faithful translation).
+  identity: 'Iva Tsatskrialashvili (he/him), known online as mrlololi, is a freelance marketing automation technician in Graz, Austria. He sets up and tests the technology behind online course launches for course creators across the German-speaking market.',
+
   meta: {
-    title: 'Marketing automation & launch tech from Graz | mrlololi',
-    description: 'I test your launch before your customers do. The tech behind online courses: ActiveCampaign, Zapier, landing pages, payments. From Graz.',
+    // Stage 7b-S: the full name in title and description (Entwurf).
+    title: 'Launch tech for online courses | Iva Tsatskrialashvili, Graz',
+    description: 'I test your launch before your customers do. The tech behind online courses: ActiveCampaign, Zapier, payments. From Graz. Iva Tsatskrialashvili (he/him).',
   },
   legalMeta: {
     title: 'Legal notice - Iva Tsatskrialashvili',
@@ -203,14 +207,14 @@ export default {
             "id": "support",
             "name": "Support by the hour",
             "price": "€45 per hour",
-            "summary": "€45 per hour for care and anything outside the packages, billed by effort in 15-minute steps. For example care for your automations, small landing pages, troubleshooting. Billed at the end of the month."
+            "summary": "€45 per hour for care and anything outside the packages, billed by effort in 15-minute steps. For example care for your automations, small landing pages, troubleshooting. Billed at the end of the month. I only start hourly work once you know my estimate of the hours; if it turns out to be more, I ask you first."
           }
         ]
       }
     ],
     cta: "Enquire",
     subjectPrefix: "Enquiry: ",
-    hourly: "€45 per hour for care and anything outside the packages, billed by effort in 15-minute steps.",
+    hourly: "€45 per hour for care and anything outside the packages, billed by effort in 15-minute steps. I only start hourly work once you know my estimate of the hours.",
     promise: "On top of statutory warranty rights: if a flow I built does not work as agreed within the first 30 days, I fix it free of charge. This covers my work, not outages of the tools themselves.",
     smallPrint: 'All prices are final. As a small business under Austrian VAT law (§ 6 (1) Z 27 UStG) I do not charge VAT. For businesses with a valid VAT ID in another EU member state, the reverse charge applies.',
   },
@@ -384,7 +388,9 @@ export default {
       },
     },
     case2: {
-      title: 'Launch tech for an online course creator, since April 2026',
+      // Stage 7b-S section 8 (Entwurf).
+      domain: 'claudiawitticke.com',
+      titleRest: ", launch tech for Claudia Witticke's online sewing courses, since April 2026",
       text: 'ActiveCampaign and Zapier flows for sign-up, launch, onboarding and payment reminders, landing pages in Leadpages, invoices, instalments and course access with Quaderno and the members area, live sessions with Zoom and Ecamm.',
     },
     case3: {
@@ -410,7 +416,7 @@ export default {
     // Stage 6: two short paragraphs (shortened from the three before, nothing new).
     paragraphs: [
       "I'm Iva Tsatskrialashvili (he/him) and I live in Graz, Austria. I studied information technology and now study marketing and sales part-time at FH CAMPUS 02. So I understand both: the funnel and the API behind it.",
-      'Since 2023 I have worked for clients in Germany, Switzerland and Austria, first for online shops, since 2026 also for an online course creator. My business is registered in Austria: proper invoices and one person who is responsible.',
+      'Since 2023 I have worked for clients in Germany, Switzerland and Austria, first for online shops, since 2026 also for the online course creator Claudia Witticke. My business is registered in Austria: proper invoices and one person who is responsible.',
     ],
     tools: 'ActiveCampaign, Zapier, Make, Google Apps Script, Leadpages, WordPress, Wix, Shopware, Stripe, Quaderno, GrooveHQ, Canva, HTML, CSS, JavaScript, Python, SQL',
     path: ['Tbilisi', 'Sales for German-speaking markets since 2020', 'Erasmus+ in 11 countries', 'Graz since 2025'],
@@ -575,7 +581,7 @@ export default {
         terminLine: 'Best time',
         gefunden: 'How did you hear about me? (optional)',
         gefundenPick: 'Please choose',
-        gefundenOptions: ['Google search', 'LinkedIn', 'Letter by post', 'Recommendation', 'Instagram', 'Other'],
+        gefundenOptions: ['Google search', 'AI assistant (ChatGPT, Perplexity, Gemini)', 'LinkedIn', 'Malt', 'Referral', 'Instagram', 'Letter by post', 'Google Maps', 'Other'],
         gefundenLine: 'Heard about me via',
         next: 'In my reply you get two or three time slots, via Zoom or phone.',
         summaryOne: 'Please check this entry:',
@@ -611,6 +617,8 @@ export default {
       recommended: 'Before your next launch',
       checkAsk: 'Request a tech check',
       checkCall: 'With a 20-minute call if you like.',
+      // Stage 7b-S (Entwurf).
+      checkReferral: 'Referred by a client: the Technik-Check is credited in full against your project for 60 instead of 30 days.',
       checkReport: 'See a sample report',
     },
   },
@@ -675,7 +683,7 @@ export default {
       refs: {
         tools: ['ActiveCampaign', 'Zapier', 'Leadpages', 'Quaderno', 'Zoom'],
         video: 'See the flow in four steps',
-        honest: 'Ongoing work since April 2026, name not disclosed.',
+        honest: 'Ongoing work with Claudia Witticke (claudiawitticke.com) since April 2026.',
         earlierLine: 'That is how I know support teams from the inside, the basis for the AI reply drafts.',
       },
       projects: { also: 'Also:', and: 'and' },
@@ -704,7 +712,7 @@ export default {
       rows: {
         website: 'A one-pager, published and handed over.',
         ki: 'Draft replies your team only has to check. Optional care €90 a month.',
-        support: '€45 per hour for care and anything outside the packages, billed by effort in 15-minute steps.',
+        support: '€45 per hour for care and anything outside the packages, billed by effort in 15-minute steps. I only start hourly work once you know my estimate of the hours.',
       },
     },
     cta: { text: "Not sure what fits? 20 minutes, free. I'll tell you honestly whether I can help.", button: 'Request a free call' },
@@ -875,7 +883,7 @@ export default {
         example: 'case2',
         faq: [
           ['What do I get from the tech check?', 'You get a list with priorities, effort and prices and a 45-minute call. If you book a project within 30 days, the €290 is fully credited.'],
-          ['How is support billed?', '€45 per hour for care and anything outside the packages, billed by effort in 15-minute steps. The invoice comes at the end of the month.'],
+          ['How is support billed?', '€45 per hour for care and anything outside the packages, billed by effort in 15-minute steps. The invoice comes at the end of the month. I only start hourly work once you know my estimate of the hours.'],
           ['Do you work remotely?', 'Yes. Almost all projects run remotely across Europe. In Graz I am happy to meet in person.'],
           ['Do I need specific tools?', 'No. I work with what you already have and only suggest a switch when it pays off.'],
           ['How do you handle data?', 'I get my own user access instead of your password. When the project ends, you remove my access and I delete the copies of your data that I hold.'],

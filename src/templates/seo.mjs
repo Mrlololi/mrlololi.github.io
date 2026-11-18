@@ -18,13 +18,19 @@ export function alternatesFor(path) {
 }
 
 // Stage 5: Iva as a Person. The same node on every page (and with the same @id in the Webprojekte repo),
-// so search engines stop guessing who runs the business.
-export function person(config) {
+// so search engines stop guessing who runs the business. Stage 7b-S: language-aware (gender, pronouns,
+// job title and the identity sentence in the page language).
+export function person(config, lang = 'de') {
+  const en_ = lang === 'en';
   return {
     '@type': 'Person',
     '@id': absUrl(config, '/#iva'),
     name: 'Iva Tsatskrialashvili',
-    jobTitle: 'Marketing Automation Engineer',
+    alternateName: 'mrlololi',
+    gender: 'Male',
+    pronouns: en_ ? 'he/him' : 'er/ihm',
+    jobTitle: en_ ? 'Marketing Automation Technician' : 'Techniker für Marketing-Automation',
+    description: (en_ ? en : de).identity,
     knowsAbout: ['ActiveCampaign', 'Zapier', 'Make', 'Leadpages', 'Stripe', 'E-Mail-Zustellbarkeit', 'Marketing-Automation'],
     address: { '@type': 'PostalAddress', addressLocality: 'Graz', addressCountry: 'AT' },
     image: absUrl(config, '/assets/img/about-680.jpg'),
@@ -59,7 +65,7 @@ export function jsonLd(t, config, extra = []) {
     '@context': 'https://schema.org',
     '@graph': [
       business(config),
-      person(config),
+      person(config, t.lang),
       {
         '@type': 'WebSite',
         '@id': absUrl(config, '/#website'),

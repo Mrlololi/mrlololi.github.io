@@ -131,7 +131,7 @@ const PAYLOAD = { what: 'was', via: 'plattform', issue: 'problem', start: 'start
 // Stage 6h: ?quelle=<code> (e.g. the QR code in a letter: ?quelle=brief-nov#contact) goes into the hidden
 // field, only [a-z0-9-], at most 40 characters; «brief…» preselects «Brief per Post». It runs inline,
 // so it works before contact.js has loaded; without JS the field stays empty. No cookies, no storage.
-const QUELLE = `<script>(function(){var q=(new URLSearchParams(location.search).get('quelle')||'').toLowerCase();if(!/^[a-z0-9-]{1,40}$/.test(q))return;var f=document.getElementById('contact-form');f.elements.quelle.value=q;if(q.indexOf('brief')===0)f.elements.gefunden.selectedIndex=3;})();</script>`;
+const QUELLE = `<script>(function(){var q=(new URLSearchParams(location.search).get('quelle')||'').toLowerCase();if(!/^[a-z0-9-]{1,40}$/.test(q))return;var f=document.getElementById('contact-form');f.elements.quelle.value=q;if(q.indexOf('brief')===0){var o=[].find.call(f.elements.gefunden.options,function(x){return x.dataset.letter});if(o)o.selected=true;}})();</script>`;
 
 export function contactForm(t, config, { page, paket = '', compact = false } = {}) {
   const c = t.s4.contact;
@@ -172,7 +172,7 @@ ${preview}
 ${field('name', 'text', 'autocomplete="name" maxlength="120" required')}
 ${field('email', 'email', 'autocomplete="email" maxlength="160" spellcheck="false" required')}
 <div class="field field--wide"><label for="cf-termin">${esc(f.termin)}</label><input id="cf-termin" name="termin" type="text" maxlength="160" autocomplete="off" placeholder="${esc(f.terminPlaceholder)}"></div>
-<div class="field field--wide"><label for="cf-gefunden">${esc(f.gefunden)}</label><select class="field__select" id="cf-gefunden" name="gefunden"><option value="">${esc(f.gefundenPick)}</option>${f.gefundenOptions.map((o) => `<option>${esc(o)}</option>`).join('')}</select></div>
+<div class="field field--wide"><label for="cf-gefunden">${esc(f.gefunden)}</label><select class="field__select" id="cf-gefunden" name="gefunden"><option value="">${esc(f.gefundenPick)}</option>${f.gefundenOptions.map((o) => `<option${/^(Brief per Post|Letter by post)$/.test(o) ? ' data-letter' : ''}>${esc(o)}</option>`).join('')}</select></div>
 <div class="field field--wide"><label for="cf-text">${esc(f.text)}</label><textarea id="cf-text" name="text" rows="4" maxlength="3000"></textarea></div>
 <div class="field field--check"><input id="cf-consent" name="consent" type="checkbox" value="true" required aria-describedby="cf-consent-err"><label for="cf-consent">${fill(esc(f.consent), { link: `<a href="${t.paths.privacy}#form">${esc(f.consentLink)}</a>` })}</label><p class="field__err" id="cf-consent-err" hidden></p></div>
 <div class="hp" aria-hidden="true"><label for="cf-website">${esc(f.honeypot)}</label><input id="cf-website" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true"></div>
@@ -222,8 +222,8 @@ ${contactForm(t, config, { page: t.paths.home })}
 <p class="contact__time-row"><time class="contact__time" hidden data-label="${esc(c.time)}" data-locale="${t.locale}"></time></p>
 <ul class="contact__links" role="list">
 <li><a href="${esc(subjectOnly)}">${esc(email)}</a></li>
-<li>${extLink(config.linkedin, esc(t.contact.linkedin), t)}</li>
-<li>${extLink(config.malt, esc(t.contact.malt), t)}</li>
+<li>${extLink(config.linkedin, esc(t.contact.linkedin), t, { me: true })}</li>
+<li>${extLink(config.malt, esc(t.contact.malt), t, { me: true })}</li>
 </ul>
 </div>
 <div class="contact__after card">

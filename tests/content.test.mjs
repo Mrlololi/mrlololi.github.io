@@ -83,7 +83,7 @@ test('prices as decided by Iva (16.10.2026)', () => {
   assert.deepEqual(prices(de), ['190 € fix', '290 € fix', 'ab 1.190 €', 'ab 990 €', 'ab 590 €', '45 € pro Stunde']);
   assert.deepEqual(prices(en), ['€190 fixed', '€290 fixed', 'from €1,190', 'from €990', 'from €590', '€45 per hour']);
   assert.equal(de.pricing.groups[1].note, 'Festpreis nach dem Briefing.');
-  assert.equal(de.pricing.hourly, '45 € pro Stunde für Pflege und alles außerhalb der Pakete, abgerechnet nach Aufwand in 15-Minuten-Schritten.'); // Stage 6h
+  assert.equal(de.pricing.hourly, '45 € pro Stunde für Pflege und alles außerhalb der Pakete, abgerechnet nach Aufwand in 15-Minuten-Schritten. Arbeit nach Stunden beginne ich erst, wenn Sie meine Schätzung der Stundenzahl kennen.'); // Stage 6h; 7b-S: the estimate
   assert.equal(de.pricing.groups[1].items[2].extra.label, 'Optional: Pflege 90 € pro Monat');
   assert.equal(de.faq.items[0].q, 'Muss ich mich mit Technik auskennen?');
   // Stage 6b: softer, without absolute promises.

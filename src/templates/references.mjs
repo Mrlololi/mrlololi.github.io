@@ -43,7 +43,7 @@ export function references(t, config) {
 </div>`;
   const cards = [
     `<li class="ref card ref--course"><span class="label label--lav">${esc(L.course)}</span>
-<h3>${esc(r.case2.title)}</h3>
+<h3>${extLink(config.case2_url, esc(r.case2.domain), t)}${esc(r.case2.titleRest)}</h3>
 <p>${esc(r.case2.text)}</p>
 <ul class="ref__tools" role="list">${B.tools.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>
 <p class="ref__honest">${esc(B.honest)}</p>

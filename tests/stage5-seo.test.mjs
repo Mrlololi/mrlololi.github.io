@@ -54,6 +54,7 @@ Platzhalter für den ersten Abschnitt mit **fettem** Wort und einem [Link](/laun
 /* ---------- 1. Entity: Iva as a Person node on every page ---------- */
 test('every page carries #business and #iva, identical on all pages', () => {
   let first;
+  const byLang = {};
   for (const { file, html } of all) {
     const graph = ld(html);
     const biz = graph.find((n) => n['@id'] === `${SITE}/#business`);
@@ -61,14 +62,18 @@ test('every page carries #business and #iva, identical on all pages', () => {
     assert.ok(biz && iva, `${file}: #business or #iva missing`);
     assert.equal(biz['@type'], 'ProfessionalService');
     assert.deepEqual(biz.founder, { '@id': `${SITE}/#iva` });
+    // Stage 7b-S: #iva speaks the page language (pronouns, job title, description); identical within a language.
+    const lang = html.match(/<html lang="([a-z]+)"/)[1];
     first ??= { biz, iva };
+    byLang[lang] ??= iva;
     assert.deepEqual(biz, first.biz, `${file}: #business differs`);
-    assert.deepEqual(iva, first.iva, `${file}: #iva differs`);
+    assert.deepEqual(iva, byLang[lang], `${file}: #iva differs within ${lang}`);
+    assert.deepEqual({ ...iva, pronouns: 0, jobTitle: 0, description: 0 }, { ...first.iva, pronouns: 0, jobTitle: 0, description: 0 }, `${file}: #iva differs beyond its language`);
   }
   const iva = first.iva;
   assert.equal(iva['@type'], 'Person');
   assert.equal(iva.name, 'Iva Tsatskrialashvili');
-  assert.equal(iva.jobTitle, 'Marketing Automation Engineer');
+  assert.equal(iva.jobTitle, 'Techniker für Marketing-Automation'); // Stage 7b-S (German pages; EN: Marketing Automation Technician)
   assert.deepEqual(iva.knowsAbout, ['ActiveCampaign', 'Zapier', 'Make', 'Leadpages', 'Stripe', 'E-Mail-Zustellbarkeit', 'Marketing-Automation']);
   assert.deepEqual(iva.address, { '@type': 'PostalAddress', addressLocality: 'Graz', addressCountry: 'AT' });
   assert.equal(iva.image, `${SITE}/assets/img/about-680.jpg`); // Stage 6g 1a: unchanged
