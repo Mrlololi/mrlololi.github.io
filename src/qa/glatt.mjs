@@ -2,7 +2,7 @@
 // Every animation frame the transform and opacity of every mascot part, the run-log dot and every entering
 // element are sampled during: an idle loop restart, each mascot reaction, a double click within 150 ms,
 // hover in and out within 100 ms, and scrolling away mid-entrance. A frame-to-frame step above 8 px
-// translate, 6° rotate, 0.04 scale or 0.25 opacity fails. Motion paused and reduced motion are not
+// translate, 6° rotate, 0.04 scale or 0.25 opacity fails (per frame at 60 fps). Motion paused and reduced motion are not
 // exercised (their instant switch to the end frame is allowed, rule 3).
 // Run by src/qa/gates.mjs (all pages of the chosen site(s), at 1280); alone:
 //   node src/qa/glatt.mjs [main|wp|all] [--frames <dir>]   (--frames: a strip of frames per failing scenario)
@@ -31,6 +31,9 @@ export const GLATT_PROBE = ({ sel, limits }) => {
     }
     return ids.get(el);
   };
+  // What the visitor sees: the element's opacity times that of every ancestor (a picture that fades out
+  // as a whole hides its parts too).
+  const seenOpacity = (el, cs) => { let o = Number(cs.opacity); for (let p = el.parentElement; p && o > 0.001; p = p.parentElement) o *= Number(getComputedStyle(p).opacity); return o; };
   const read = (el) => {
     const cs = getComputedStyle(el);
     let m = cs.transform && cs.transform !== 'none' ? new DOMMatrixReadOnly(cs.transform) : null;
@@ -41,11 +44,16 @@ export const GLATT_PROBE = ({ sel, limits }) => {
     m ??= new DOMMatrixReadOnly();
     const r = el.getBoundingClientRect();
     const inView = r.width > 0 && r.height > 0 && r.bottom > 0 && r.top < innerHeight && r.right > 0 && r.left < innerWidth;
-    return { tx: m.e, ty: m.f, rot: Math.atan2(m.b, m.a) * 180 / Math.PI, sx: Math.hypot(m.a, m.b), sy: Math.hypot(m.c, m.d), op: Number(cs.opacity), shown: inView && cs.display !== 'none' && cs.visibility !== 'hidden' };
+    return { tx: m.e, ty: m.f, rot: Math.atan2(m.b, m.a) * 180 / Math.PI, sx: Math.hypot(m.a, m.b), sy: Math.hypot(m.c, m.d), op: seenOpacity(el, cs), shown: inView && cs.display !== 'none' && cs.visibility !== 'hidden' };
   };
   let list = [];
-  const frame = () => {
+  let lastT = 0;
+  const frame = (t) => {
     const g = window.__glatt;
+    // Limits are per frame at 60 fps: a frame the browser dropped (dt above 1.5 frames, e.g. while the test
+    // jumps the scroll position) is judged by its speed, not by the size of one long step.
+    const per = lastT ? Math.max(1, (t - lastT) / (1000 / 60) / 1.5) : 1;
+    lastT = t;
     if (g.on) {
       if (g.frames % 15 === 0) list = [...document.querySelectorAll(sel)];
       g.frames += 1;
@@ -56,11 +64,13 @@ export const GLATT_PROBE = ({ sel, limits }) => {
         prev.set(el, now);
         if (!was || !now.shown || !was.shown) continue;
         if (now.op < 0.05 && was.op < 0.05) continue; // invisible in both frames
+        const seen = Math.min(now.op, was.op) >= 0.05; // a move is only seen when the element is visible in both frames
         let rot = Math.abs(now.rot - was.rot);
         if (rot > 180) rot = 360 - rot;
         const steps = { translate: Math.hypot(now.tx - was.tx, now.ty - was.ty), rotate: rot, scale: Math.max(Math.abs(now.sx - was.sx), Math.abs(now.sy - was.sy)), opacity: Math.abs(now.op - was.op) };
+        if (!seen) { steps.translate = 0; steps.rotate = 0; steps.scale = 0; }
         for (const [k, v] of Object.entries(steps)) {
-          if (v > limits[k] && g.fails.length < 300) g.fails.push({ scenario: g.scenario, el: name(el), kind: k, step: Number(v.toFixed(3)), t: Math.round(performance.now()) });
+          if (v / per > limits[k] && g.fails.length < 300) g.fails.push({ scenario: g.scenario, el: name(el), kind: k, step: Number(v.toFixed(3)), t: Math.round(performance.now()) });
         }
       }
     } else prev.clear();
@@ -113,8 +123,9 @@ export async function glattGate(browser, base, pages, { log = () => {}, width = 
       await page.waitForTimeout(1200);
       await off();
     }
-    // 5. Scrolling away mid-entrance (a fresh load, so nothing below the first screen has entered yet).
-    await page.evaluate(() => { window.__glatt.on = false; });
+    // 5. Scrolling away mid-entrance (a fresh load, so nothing below the first screen has entered yet). The
+    // reload starts a new probe: keep what scenarios 1 to 4 found first.
+    const first = await page.evaluate(() => ({ fails: window.__glatt.fails, frames: window.__glatt.frames }));
     await page.goto(base + p, { waitUntil: 'load' });
     await page.waitForTimeout(1200);
     const targets = await page.evaluate(() => [...document.querySelectorAll('[data-enter]')].filter((el) => el.getBoundingClientRect().top > innerHeight).slice(0, 4).map((el) => Math.round(el.getBoundingClientRect().top + scrollY)));
@@ -126,7 +137,8 @@ export async function glattGate(browser, base, pages, { log = () => {}, width = 
       await page.waitForTimeout(700);
     }
     await off();
-    const r = await page.evaluate(() => window.__glatt);
+    const last = await page.evaluate(() => window.__glatt);
+    const r = { fails: [...first.fails, ...last.fails], frames: first.frames + last.frames };
     const by = new Map();
     for (const f of r.fails) {
       const k = `${f.scenario}: ${f.el.replace(/#\d+$/, '')} ${f.kind}`;
@@ -153,7 +165,11 @@ async function strip(page, dir, tag, box) {
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const { chromium } = await import('./browsers.mjs');
   const { startBoth } = await import('./serve-both.mjs');
-  const { MAIN_PAGES, WP_PAGES } = await import('./gates.mjs');
+  // The page lists of gates.mjs, read as text (gates.mjs imports this file, so no import back).
+  const src = (await import('node:fs')).readFileSync(new URL('./gates.mjs', import.meta.url), 'utf8');
+  const list_ = (name) => JSON.parse(src.slice(src.indexOf(`export const ${name} = `)).match(/^[^=]*= (\[[^\]]*\]);/)[1].replace(/'/g, '"'));
+  const MAIN_PAGES = list_('MAIN_PAGES');
+  const WP_PAGES = list_('WP_PAGES');
   const w = ['main', 'wp', 'all'].find((x) => process.argv.includes(x)) || 'all';
   const fi = process.argv.indexOf('--frames');
   const frames = fi > 0 ? path.resolve(process.argv[fi + 1]) : null;

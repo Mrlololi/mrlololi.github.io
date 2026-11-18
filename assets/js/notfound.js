@@ -7,7 +7,8 @@ import { demo } from './kit/motion.js';
 export function init({ reduceMotion }) {
   const scene = document.querySelector('.nf__scene');
   if (!scene) return;
-  demo(scene, { duration: 2800, rest: 3000, loadMs: Math.max(0, 2800 - performance.now()), tap: false });
+  // Rule 7 (18.11.2026): the round lasts until Live's wave has ended (1.9 s + 2 x 0.5 s), so it is never cut off.
+  demo(scene, { duration: 3000, rest: 3000, loadMs: Math.max(0, 3000 - performance.now()), tap: false });
   if (reduceMotion.matches) return;
   const pulse = scene.querySelector('.nf__pulse');
   let last = 0;

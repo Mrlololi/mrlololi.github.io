@@ -1532,7 +1532,8 @@ html:not(.js) .rl__ctl button, html:not(.js) .rl__go { display: none; }
 .hero__flow, .fixdemo, .steps-wrap { position: relative; }
 .hero__flow > .loopctl--icon, .fixdemo > .loopctl--icon, .steps-wrap > .loopctl--icon { position: absolute; top: var(--space-2); right: var(--space-2); z-index: 2; margin: 0; }
 .tariff__ctl .loopctl--icon, .pcs__ctl .loopctl--icon, .more__head .loopctl--icon, .nf__ctl .loopctl--icon { margin: 0; }
-.demo.is-fading, [data-demo].is-fading { filter: grayscale(1); opacity: 0.8; transition: filter 0.4s ease, opacity 0.4s ease; }
+.demo, [data-demo] { transition: filter 0.4s ease, opacity 0.4s ease; }
+.demo.is-fading, [data-demo].is-fading { filter: grayscale(1); opacity: 0; }
 .site-footer__motion { margin-top: var(--space-3); }
 .motion-toggle[hidden] { display: none; }
 .viz--flow { align-content: center; }
@@ -1575,7 +1576,7 @@ html:not(.js) .rl__ctl button, html:not(.js) .rl__go { display: none; }
 .qcard--lav .quote { background: #EEEAF8; }
 @media (prefers-reduced-motion: reduce) { .ref--site .browser__view { overflow-y: auto; } }
 html[data-motion="paused"] .ref--site .browser__view { overflow-y: auto; }
-.browser.is-fading { filter: grayscale(1); opacity: 0.8; transition: filter 0.4s ease, opacity 0.4s ease; }
+.browser.is-fading { filter: grayscale(1); opacity: 0; transition: filter 0.4s ease, opacity 0.4s ease; } 
 .services__audience { max-width: var(--measure); font-weight: 700; }
 .nf { display: flex; flex-direction: column; }
 .nf-en .nf__alt { order: -1; }

@@ -24,20 +24,26 @@ export function setPose(svg, emo) {
   const soft = !still() && Boolean(svg.animate);
   for (const [name, html] of Object.entries(p)) {
     const el = svg.querySelector(`[data-part="${name}"]`);
-    if (!el || el.innerHTML === html) continue;
+    if (!el || el.innerHTML === html || el.firstElementChild?.matches?.('[data-pose-in]') && el.firstElementChild.innerHTML === html) continue;
     if (soft) {
-      // The old drawing as a copy without data-part (nobody animates or finds it), fading out.
+      // The old drawing as a copy without data-part (nobody animates or finds it), fading out on top. Every
+      // element of the copy keeps the pose its original shows right now (a waving arm, a turning wrench);
+      // the originals are not touched, so their running animations end where they were going to.
       svg.querySelectorAll(`[data-fading="${name}"]`).forEach((x) => x.remove());
-      // A part that is moving right now (a waving arm) keeps its current angle in the fading copy.
-      el.getAnimations?.({ subtree: true }).forEach((a) => { try { a.commitStyles(); } catch { /* not rendered */ } });
       const old = el.cloneNode(true);
+      const src = [el, ...el.querySelectorAll('*')];
+      [old, ...old.querySelectorAll('*')].forEach((x, k) => {
+        const t = getComputedStyle(src[k]).transform;
+        if (t && t !== 'none') x.style.transform = t;
+      });
       old.removeAttribute('data-part');
       old.setAttribute('data-fading', name);
       old.querySelectorAll('[class]').forEach((x) => x.classList.remove('m-wave', 'm-eye'));
       el.after(old);
       old.animate([{ opacity: 1 }, { opacity: 0 }], { duration: FADE, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => old.remove();
-      el.innerHTML = html;
-      el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: FADE, easing: 'ease-in-out' });
+      // The new drawing fades in inside the part (the part itself never jumps: it stays at full opacity).
+      el.innerHTML = `<g data-pose-in>${html}</g>`;
+      el.firstElementChild.animate([{ opacity: 0 }, { opacity: 1 }], { duration: FADE, easing: 'ease-in-out' });
     } else el.innerHTML = html;
   }
   svg.dataset.emo = emo;
@@ -68,7 +74,10 @@ function settle(f, el, ms = 260) {
   if (!el?.style.transform) return;
   const t = from(el);
   if (t === 'none') return;
-  const a = el.animate([{ transform: t }, { transform: 'rotate(0deg)' }], { duration: ms, easing: 'ease-out' });
+  // Back by the angle (a matrix would be interpolated as a matrix and shrink the part on the way).
+  const m = new DOMMatrixReadOnly(t);
+  const deg = Math.atan2(m.b, m.a) * 180 / Math.PI;
+  const a = el.animate([{ transform: `rotate(${deg}deg)` }, { transform: 'rotate(0deg)' }], { duration: ms, easing: 'ease-out' });
   f.anims.push(a);
 }
 function flight(svg) {
@@ -86,6 +95,8 @@ export function jump(svg, height = 30, { end = null, f = flight(svg) } = {}) {
   svg.dataset.jumping = 'true';
   setPose(svg, 'joy');
   if (still() || !svg.animate) { svg.style.transform = ''; later(f, 1200, () => done(svg)); return f; }
+  // A wrench or star that an interrupted reaction left turned eases back to rest (never stays frozen).
+  settle(f, svg.querySelector('[data-part="accessory"]'));
   // Rule 7: the hop starts from the current pose (a hop that was interrupted, a tilt) and squashes softly
   // (no instant squash in the first frame); it ends in the rest pose.
   const a = svg.animate([
@@ -105,8 +116,10 @@ export function jump(svg, height = 30, { end = null, f = flight(svg) } = {}) {
 }
 
 // An SVG group turning around a point of the 100 grid (view-box units).
+// Rule 7: a part that already moves (a CSS picture animates the same star) is not taken over; the mascot
+// only hops then, the part goes on with its own movement.
 function turnPart(f, el, origin, frames, opts) {
-  if (!el?.animate) return;
+  if (!el?.animate || el.getAnimations().some((x) => x.playState === 'running')) return;
   el.style.transformBox = 'view-box';
   el.style.transformOrigin = origin;
   const a = el.animate(frames, opts);
