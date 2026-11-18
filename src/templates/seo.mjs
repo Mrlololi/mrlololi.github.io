@@ -131,6 +131,13 @@ export function sitemap(config, articles = [], { qualitaet = Boolean(loadProtoko
     if (newest) urls.push(one(de.ratgeber.path, newest));
     for (const a of articles) urls.push(one(`${de.ratgeber.path}${a.slug}/`, a.dateModified));
   }
+  // Werkzeug «Ein Kauf» (DE only, no alternates).
+  if (config.werkzeug_ein_kauf_path) {
+    urls.push(`  <url>
+    <loc>${absUrl(config, config.werkzeug_ein_kauf_path)}</loc>
+    <lastmod>${config.page_dates.ein_kauf}</lastmod>
+  </url>`);
+  }
   if (qualitaet) {
     urls.push(`  <url>
     <loc>${absUrl(config, de.qualitaet.path)}</loc>

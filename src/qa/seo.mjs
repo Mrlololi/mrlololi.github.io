@@ -41,7 +41,7 @@ export async function checkSeo(dir = repoRoot, site = config.site_url) {
     if (p.canonical !== url) problems.push(`${p.file}: canonical ${p.canonical} is not ${url}`);
     if (!p.de && !p.en && !p.xdefault) {
       // German-only pages without a twin: the Ratgeber and (Qualität 17.11.2026) /qualitaet/.
-      if (!p.file.startsWith('ratgeber/') && !p.file.startsWith('qualitaet/')) problems.push(`${p.file}: no hreflang alternates`);
+      if (!p.file.startsWith('ratgeber/') && !p.file.startsWith('qualitaet/') && !p.file.startsWith('werkzeuge/')) problems.push(`${p.file}: no hreflang alternates`);
       continue;
     }
     if (!p.de || !p.en || !p.xdefault) { problems.push(`${p.file}: hreflang de/en/x-default incomplete`); continue; }

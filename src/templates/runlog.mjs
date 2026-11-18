@@ -18,23 +18,28 @@ import { mascotScene } from './mascots.mjs';
 // - Protocol: each line leads with the step's icon (20 px); a done line shows the check glyph with it.
 export const RUNLOG_ICONS = ['form', 'card', 'receipt', 'tag', 'unlock', 'mail-star'];
 
-export function runlog(t) {
+// Werkzeug «Ein Kauf» (variant 'kauf'): the same run-log in its end frame, without the start form, the
+// controls and the conductor (no loop on that page); each protocol line carries its break states («fehlt»,
+// «kommt nicht an») and the break icon (cross, drawn once), shown by assets/js/werkzeug-ein-kauf.js.
+export function runlog(t, { variant = '', ids = [], kauf = null } = {}) {
+  const k = variant === 'kauf';
   const r = t.s6.r;
   const name = esc(r.name);
   const line = (s) => esc(s).replace(/\{name\}/g, `<span class="rl__name">${name}</span>`);
   const total = r.steps.length;
   // Iva 13.11.2026 (DOM ceiling): the disc is the node itself, the check badge and the protocol check are CSS.
-  const rail = RUNLOG_ICONS.map((id, i) => `<li class="rl__node is-done" data-i="${i}">${icon(id, { size: 24 })}</li>`).join('');
+  const rail = RUNLOG_ICONS.map((id, i) => `<li class="rl__node is-done" data-i="${i}"${k ? ` data-id="${ids[i]}"` : ''}>${icon(id, { size: 24 })}</li>`).join('');
   const steps = r.steps.map(([title, text], i) => `<li class="rl__step card card--pic ${i === total - 1 ? 'is-current' : 'is-done'}" data-i="${i}"><span class="card__media">${icon(RUNLOG_ICONS[i], { size: 48, inline: true })}</span><span class="rl__title card__title">${esc(title)}</span><span class="rl__line card__text">${line(text)}</span></li>`).join('');
-  const log = r.log.map((x, i) => `<li class="rl__log is-on" data-i="${i}">${icon(RUNLOG_ICONS[i], { size: 20 })}<span>${esc(x)}</span></li>`).join('');
-  return `<div class="rl demo is-end" data-demo="runlog" data-step="${total - 1}" data-total="${total}" data-step-of="${esc(r.stepOf)}">
-<form class="rl__start" novalidate>
+  const log = r.log.map((x, i) => `<li class="rl__log is-on" data-i="${i}"${k ? ` data-id="${ids[i]}"` : ''}>${icon(RUNLOG_ICONS[i], { size: 20 })}${k ? icon('cross', { size: 20, inline: true }) : ''}<span>${esc(x)}</span>${k ? `<span class="rl__fehlt">${esc(kauf.fehlt)}</span><span class="rl__kommt">${esc(kauf.kommtNicht)}</span>` : ''}</li>`).join('');
+  const start = k ? '' : `<form class="rl__start" novalidate>
 <p class="rl__head">${esc(r.title)}</p>
 <div class="rl__field"><label for="rl-name">${esc(r.nameLabel)}</label><input id="rl-name" name="first" type="text" value="${name}" maxlength="40" autocomplete="off"></div>
 <button class="btn btn--primary btn--sm rl__go" type="submit">${esc(r.start)}</button>
 <p class="rl__note">${esc(r.note)}</p>
 </form>
-<div class="rl__stage">
+`;
+  return `<div class="rl${k ? ' rl--kauf' : ' demo'} is-end"${k ? '' : ' data-demo="runlog"'} data-step="${total - 1}" data-total="${total}" data-step-of="${esc(r.stepOf)}">
+${start}<div class="rl__stage">
 <p class="rl__count" aria-hidden="true">${esc(fill(r.stepOf, { n: total, total }))}</p>
 <div class="rl__railbox" aria-hidden="true"><ol class="rl__rail" role="list">${rail}</ol><span class="rl__car"><span class="rl__dot"></span></span></div>
 <div class="rl__scene">
@@ -42,8 +47,8 @@ export function runlog(t) {
 ${mascotScene('runlog', [[2, 'joy']], 'rl__live', 'runlog')}
 </div>
 </div>
-<figure class="rl__protocol"><figcaption class="rl__bar">${esc(r.logTitle)}</figcaption><ol class="rl__logs" role="list">${log}</ol><p class="rl__summary">${esc(t.run.summary)}</p></figure>
-<div class="rl__ctl">
+<figure class="rl__protocol"><figcaption class="rl__bar">${esc(r.logTitle)}</figcaption><ol class="rl__logs" role="list">${log}</ol><p class="rl__summary"${k ? ` data-intact="${esc(t.run.summary)}" data-off="${esc(kauf.summaryOff)}"` : ''}>${esc(t.run.summary)}</p></figure>
+${k ? '' : `<div class="rl__ctl">
 <p class="rl__slow">${esc(t.s6.e.slow)}</p>
 <button class="btn btn--secondary btn--sm rl__back" type="button">${esc(r.back)}</button>
 <button class="btn btn--secondary btn--sm rl__next" type="button">${esc(r.next)}</button>
@@ -51,7 +56,7 @@ ${mascotScene('runlog', [[2, 'joy']], 'rl__live', 'runlog')}
 <button class="btn btn--secondary btn--sm rl__pause" type="button" aria-pressed="false" data-pause-label="${esc(t.s6.c.pause)}" data-play-label="${esc(t.s6.c.play)}" hidden>${esc(t.s6.c.pause)}<span class="sr-only">: ${esc(t.s6.c.names.runlog)}</span></button>
 </div>
 <p class="sr-only rl__status" role="status" aria-live="polite"></p>
-</div>`;
+`}</div>`;
 }
 
 // The frame with its two tabs. first: the video figure (DE) or the four-step strip (EN).

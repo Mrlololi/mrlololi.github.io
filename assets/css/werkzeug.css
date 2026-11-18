@@ -1,0 +1,68 @@
+/* Werkzeug «Ein Kauf» (18.11.2026): /werkzeuge/ein-kauf/ only (inlined through page.css). Tokens only.
+   Without JS (no .ek-ready): the intact run-log and the six panels one under the other, no switches.
+   With JS: one panel visible at a time; all panels share one grid cell (height = the tallest, CLS 0). */
+.ek-head { padding-block: var(--space-8) var(--space-9); }
+.ek-wrap { display: grid; gap: var(--space-4); }
+.ek-head h1 { font-size: var(--step-3); line-height: 1.08; }
+.ek-label { margin: 0; font-size: var(--step--1); color: var(--ink-soft); }
+.ek-tool { padding-block: var(--section); }
+.ek-tool h2, .ek-text h2 { font-size: var(--step-2); }
+.ek-grid { display: grid; gap: var(--space-6); align-items: start; }
+.ek-log { display: grid; gap: var(--space-3); min-width: 0; }
+
+.ek-switches { display: none; }
+.ek-ready .ek-switches { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
+.ek-switch { width: 100%; min-height: var(--target); padding: var(--space-2); gap: var(--space-2); justify-content: flex-start; text-align: left; font-size: var(--step--1); line-height: 1.2; }
+.ek-switch__nr { display: inline-grid; place-items: center; flex: none; width: 1.5rem; height: 1.5rem; border-radius: var(--radius-pill); background: var(--pist-tint); font-weight: 700; }
+.ek-switch[aria-pressed="true"] { background: var(--ink); color: var(--card); border-color: var(--ink); }
+.ek-switch[aria-pressed="true"] .ek-switch__nr { background: var(--card); color: var(--ink); }
+
+/* The run-log in its break states. */
+.rl--kauf .rl__fehlt, .rl--kauf .rl__kommt, .rl--kauf .rl__log .i[data-icon="cross"] { display: none; }
+.rl--kauf .rl__log.is-off .rl__fehlt, .rl--kauf .rl__log.is-missing .rl__kommt { display: inline; margin-left: auto; font-weight: 700; }
+.rl--kauf .rl__log.is-off .rl__fehlt { color: var(--error); }
+.rl--kauf .rl__log.is-missing .rl__kommt { color: var(--ink-soft); }
+.rl--kauf .rl__log.is-off .i[data-icon="cross"] { display: inline-block; color: var(--error); }
+.rl--kauf .rl__log.is-off > .i:not([data-icon]) { display: none; }
+.rl--kauf .rl__log.is-missing > span:first-of-type { color: var(--ink-soft); text-decoration: line-through; }
+.rl--kauf .rl__node.is-off { outline: 2px dashed var(--error); outline-offset: 2px; }
+.rl--kauf .rl__node.is-missing { opacity: 0.5; }
+@media (prefers-reduced-motion: no-preference) {
+  html:not([data-motion="paused"]) .rl--kauf .rl__log.is-off .i[data-icon="cross"] .m { stroke-dasharray: 1; animation: ek-draw var(--t-enter) var(--ease-soft) both; }
+}
+@keyframes ek-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+
+.ek-side { display: grid; gap: var(--space-3); min-width: 0; }
+.ek-logik { justify-self: end; display: block; width: 3.5rem; height: 3.62rem; }
+.ek-logik .mascot { display: block; width: 3.5rem; height: auto; overflow: visible; }
+.ek-panels { display: grid; gap: var(--space-4); }
+.ek-panel { display: grid; gap: var(--space-2); align-content: start; padding: var(--space-5); background: var(--card); border: var(--surface-line); border-radius: var(--radius-card); box-shadow: var(--shadow-soft); }
+.ek-ready .ek-panel { grid-area: 1 / 1; visibility: hidden; }
+.ek-ready .ek-panel.is-active { visibility: visible; }
+.ek-panel h3 { font-size: var(--step-1); line-height: 1.25; }
+.ek-panel p, .ek-panel dl { margin: 0; }
+.ek-panel__step { font-size: var(--step--1); font-weight: 700; color: var(--ink-soft); }
+.ek-panel__nr { display: inline-grid; place-items: center; width: 1.5rem; height: 1.5rem; border-radius: var(--radius-pill); background: var(--pist-tint); color: var(--ink); }
+.ek-panel__label { font-size: var(--step--1); color: var(--muted); }
+.ek-panel__rows { display: grid; gap: var(--space-1); }
+.ek-panel__rows dt { font-weight: 700; margin-top: var(--space-2); }
+.ek-panel__rows dd { margin: 0; }
+.ek-mail { display: grid; gap: var(--space-2); padding: var(--space-4); --tint: var(--peach-tint); }
+.ek-mail figcaption { justify-self: start; }
+.ek-mail blockquote { margin: 0; font-family: var(--font-accent); font-style: italic; font-size: var(--step-1); }
+.ek-panel--intact { display: none; }
+.ek-ready .ek-panel--intact { display: grid; }
+.ek-actions { margin: 0; }
+.ek-reset { display: none; }
+.ek-ready .ek-reset { display: inline-flex; }
+
+.ek-sec { padding-block: var(--section); background: var(--sec-paper); }
+.ek-text { max-width: var(--measure); }
+.ek-text p { margin: 0; }
+.ek-exit { display: grid; justify-items: start; gap: var(--space-3); margin-top: var(--space-6); }
+.ek-exit__lead { font-family: var(--font-display); font-weight: 700; font-size: var(--step-1); }
+
+@media (min-width: 900px) {
+  .ek-grid { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); }
+  .ek-ready .ek-switches { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+}

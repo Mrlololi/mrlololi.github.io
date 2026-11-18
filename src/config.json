@@ -25,7 +25,8 @@
     "activecampaign": "2026-10-29",
     "ki": "2026-11-18",
     "website": "2026-10-28",
-    "qualitaet": "2026-11-18"
+    "qualitaet": "2026-11-18",
+    "ein_kauf": "2026-11-18"
   },
   "github_dpf_verified": true,
   "github_dpf_checked": "2026-10-15: dataprivacyframework.gov/list shows GitHub (San Francisco, CA) Active for the EU-U.S. DPF, Non-HR data",
@@ -44,5 +45,6 @@
     }
   },
   "check_report_url": "",
+  "werkzeug_ein_kauf_path": "/werkzeuge/ein-kauf/",
   "indexnow_key": "98d92c1046417ab4f69a33651b7744c9"
 }

@@ -1,3 +1,4 @@
+import config from '../config.json' with { type: 'json' };
 import { esc, accent, absUrl, fill } from './util.mjs';
 import { viewTabs } from './runlog.mjs';
 
@@ -60,7 +61,8 @@ export function videoBlock(t) {
 <h2 id="video-title" data-enter="lines">${accent(v.h2)}</h2>
 <p class="lead">${esc(v.text)}</p>
 </div>
-${viewTabs(t, videoFigure(t))}
+${viewTabs(t, videoFigure(t))}${t.s6.r.toolLink ? `
+<p class="rl-toollink"><a class="text-link" href="${config.werkzeug_ein_kauf_path}">${esc(t.s6.r.toolLink)}</a></p>` : ''}
 <p class="vid__cta"><span>${esc(t.s6.b.ctaLine)}</span> <a class="btn btn--secondary btn--sm" href="#contact">${esc(t.s6.b.cta)}</a></p>
 </div>
 </section>`;

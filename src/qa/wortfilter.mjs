@@ -7,6 +7,8 @@ import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
+import * as kerne from '../content/kerne/launch.de.mjs';
+
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 export const RULES = JSON.parse(readFileSync(path.join(root, 'src/qa/wortfilter.json'), 'utf8'));
 
@@ -94,10 +96,12 @@ export function priceHits(page, text, prices, rules = RULES) {
 /* ---------- labels ---------- */
 // Content entries flagged beispiel / drittanbieter (anywhere in the content modules) and the element that
 // renders them (data-entry="<id>"): the label must be inside that element.
+// A flag as a property (beispiel: true) or in a flags list (flags: ['beispiel'], the data cores).
+const isFlag = (o, f) => Boolean(o[f]) || (Array.isArray(o.flags) && o.flags.includes(f));
 export function flaggedEntries(obj, out = []) {
   if (Array.isArray(obj)) obj.forEach((x) => flaggedEntries(x, out));
   else if (obj && typeof obj === 'object') {
-    if (obj.beispiel || obj.drittanbieter) out.push(obj);
+    if (isFlag(obj, 'beispiel') || isFlag(obj, 'drittanbieter')) out.push(obj);
     Object.values(obj).forEach((x) => flaggedEntries(x, out));
   }
   return out;
@@ -125,8 +129,8 @@ export function labelHits(pagesHtml, entries, rules = RULES) {
     const where = pagesHtml.map(({ page, html }) => ({ page, part: entryHtml(html, e.id) })).filter((x) => x.part);
     for (const { page, part } of where) {
       const text = visibleText(part);
-      if (e.beispiel && !rules.labels.beispiel.some((l) => wordRe(l).test(text))) hits.push({ page, kind: 'label', list: 'labels', word: 'Beispiel', context: `${e.id}: no «${rules.labels.beispiel.join('» or «')}»` });
-      if (e.drittanbieter && !new RegExp(rules.labels.drittanbieter, 'u').test(text)) hits.push({ page, kind: 'label', list: 'labels', word: 'Stand', context: `${e.id}: no «Stand: <Datum>»` });
+      if (isFlag(e, 'beispiel') && !rules.labels.beispiel.some((l) => wordRe(l).test(text))) hits.push({ page, kind: 'label', list: 'labels', word: 'Beispiel', context: `${e.id}: no «${rules.labels.beispiel.join('» or «')}»` });
+      if (isFlag(e, 'drittanbieter') && !new RegExp(rules.labels.drittanbieter, 'u').test(text)) hits.push({ page, kind: 'label', list: 'labels', word: 'Stand', context: `${e.id}: no «Stand: <Datum>»` });
     }
   }
   return hits;
@@ -159,7 +163,8 @@ export function builtPages({ wp = path.resolve(root, '../../webprojekte/site') }
 export const hitKey = (h) => `${h.page} | ${h.kind} | ${h.word} | ${h.context}`;
 
 // Every hit over the given pages. de: the German content module (package data, flagged entries).
-export function scan(pagesHtml, de, { rules = RULES, entries = flaggedEntries(de) } = {}) {
+// entries: the flagged entries of the German content and of the data cores (src/content/kerne/).
+export function scan(pagesHtml, de, { rules = RULES, entries = [...flaggedEntries(de), ...flaggedEntries(kerne)] } = {}) {
   const prices = packagePrices(de, rules);
   const hits = [];
   for (const { page, html } of pagesHtml) {

@@ -676,6 +676,8 @@ export default {
       back: 'Zurück',
       next: 'Weiter',
       again: 'Nochmal abspielen',
+      // Werkzeug «Ein Kauf»: one text link under the run-log section (Entwurf).
+      toolLink: 'Was passiert, wenn ein Schritt fehlt? Selbst ausprobieren',
     },
     // Stage 6c (29.10.2026): every looping demo has one pause button; its name says which demo.
     c: {
@@ -1099,6 +1101,45 @@ export default {
     // The package name and price come from pricing (id «website»), never typed here.
     exitPackage: 'website',
     exitHref: '/?paket=website&quelle=qualitaet#contact',
+  },
+
+  // Werkzeug «Ein Kauf» (docs/PROMPT_Werkzeug_Ein_Kauf_2026-11-13.md): the page texts; the six steps live in
+  // src/content/kerne/launch.de.mjs. Path: config.werkzeug_ein_kauf_path. All texts are Entwurf.
+  einKauf: {
+    title: 'Ein Kauf: Was, wenn ein Teil fehlt? | mrlololi',
+    description: 'Schalten Sie einen Schritt eines Online-Kurs-Kaufs aus und sehen Sie, was Ihre Käuferin dann erlebt. Mit Hinweis, wie ein Testkauf den Fehler vorher findet.',
+    crumbs: ['Start', 'Werkzeuge', 'Ein Kauf'],
+    h1: 'Ein Kauf: Was, wenn ein Teil fehlt?',
+    lead: 'Schalten Sie einen Schritt aus und sehen Sie, was Ihre Käuferin dann erlebt.',
+    label: 'Vereinfachtes Beispiel mit Beispieldaten. Keine Aussage über einen bestimmten Anbieter.',
+    toolTitle: 'Die sechs Schritte eines Kaufs',
+    switchOff: 'Schritt ausschalten',
+    fehlt: 'fehlt',
+    kommtNicht: 'kommt nicht an',
+    summaryOff: 'Ein Schritt fehlt (vereinfachtes Beispiel)',
+    intactTitle: 'Alle sechs Schritte laufen durch.',
+    intactText: 'Schalten Sie oben einen Schritt aus, dann sehen Sie hier, was Ihre Käuferin erlebt.',
+    rows: { sieht: 'Was Ihre Käuferin sieht', sie: 'Was Sie sehen', wer: 'Wer merkt es zuerst?', test: 'So fängt es ein Testkauf ab', notfall: 'Was Sie in dem Moment tun' },
+    mailLabel: 'erfundene Nachricht',
+    mailLink: 'So sortiert eine KI solche Mails vor',
+    mailHref: '/Webprojekte/ki-kundenservice/',
+    reset: 'Zurücksetzen',
+    exitLead: 'So fange ich das ab:',
+    exitPackage: 'check',
+    exitHref: '/?paket=check&quelle=ein-kauf#contact',
+    // Static explanation (about 250 words): [heading, paragraphs].
+    text: [
+      ['Warum ein Testkauf vor dem Launch?', [
+        'Ein Kauf in einem Online-Kurs läuft durch sechs Stationen: Bestellformular, Zahlung, Rechnung, Markierung in Ihrem E-Mail-Programm, Zugang zum Kurs und Willkommens-Mail. Jede Station hängt an der vorherigen. Fällt eine aus, sieht Ihre Käuferin etwas anderes als Sie: Sie sehen eine eingegangene Zahlung, sie sieht einen Kurs, der nicht aufgeht.',
+        'Einige dieser Brüche fallen erst auf, wenn eine Kundin schreibt. Manche gar nicht, weil sie still aufgibt. Ein Testkauf vor dem Start geht alle sechs Stationen einmal so durch, wie es Ihre Käuferin tun wird: mit einer echten Adresse, im Testmodus der Zahlung und bis in den Kurs hinein. Erst wenn der Testkontakt im Kurs ist und die Willkommens-Mail im Posteingang liegt, ist der Ablauf durch.',
+      ]],
+      ['So nutzen Sie diese Seite', [
+        'Schalten Sie oben einen Schritt aus. Rechts sehen Sie, was Ihre Käuferin in diesem Fall erlebt, was Sie davon mitbekommen und wie ein Testkauf den Fehler vorher findet. Das Beispiel ist vereinfacht und gilt für keinen bestimmten Anbieter.',
+      ]],
+      ['Wenn Sie das nicht selbst prüfen möchten', [
+        'Im Technik-Check gehe ich Ihren Ablauf einen Tag lang mit Lesezugriff durch und gebe Ihnen eine Liste mit Prioritäten, Aufwand und Preisen.',
+      ]],
+    ],
   },
 
   // Datenschutzerklärung (CONTENT.md section 4).
