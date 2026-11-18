@@ -31,6 +31,10 @@
 .rl--kauf .rl__log.is-missing > span:first-of-type { color: var(--ink-soft); text-decoration: line-through; }
 .rl--kauf .rl__node.is-off { outline: 2px dashed var(--error); outline-offset: 2px; }
 .rl--kauf .rl__node.is-missing { opacity: 0.5; }
+/* A step that is off: the picture card of the intact run would contradict the break, so the stage keeps its
+   place but shows no card; the summary is not green («done»). */
+.ek-ready .rl--kauf.is-broken .rl__step { visibility: hidden; }
+.rl--kauf.is-broken .rl__summary { color: var(--ink); }
 @media (prefers-reduced-motion: no-preference) {
   html:not([data-motion="paused"]) .rl--kauf .rl__log.is-off .i[data-icon="cross"] .m { stroke-dasharray: 1; animation: ek-draw var(--t-enter) var(--ease-soft) both; }
 }
