@@ -1,8 +1,8 @@
 {
   "about": "Written by src/qa/protokoll.mjs; the build renders /qualitaet/ only from this file. Never edit by hand.",
   "measured": "2026-11-18",
-  "measuredAt": "2026-11-18T18:45:30.315Z",
-  "commit": "0933a3d",
+  "measuredAt": "2026-11-18T22:04:27.721Z",
+  "commit": "e9177a3",
   "dirty": false,
   "tools": {
     "lighthouse": "13.5.0",
@@ -13,27 +13,27 @@
   },
   "lighthouseRuns": 3,
   "tests": {
-    "total": 283,
-    "pass": 283,
+    "total": 292,
+    "pass": 292,
     "fail": 0
   },
   "gates": {
-    "total": 542,
-    "pass": 542,
+    "total": 573,
+    "pass": 573,
     "fail": 0
   },
   "summary": {
-    "pages": 18,
+    "pages": 19,
     "perfLimit": 95,
-    "perfMin": 99,
+    "perfMin": 98,
     "perfMax": 100,
     "clsMax": 0,
-    "keyboardPassed": 54,
-    "keyboardTotal": 54,
+    "keyboardPassed": 57,
+    "keyboardTotal": 57,
     "axeSerious": 0,
     "cookies": 0,
     "external": 0,
-    "budget": "JS 97.9 KB gzip (limit 100)",
+    "budget": "JS 99.3 KB gzip (limit 100)",
     "budgetOk": true
   },
   "form_live": "2026-11-18",
@@ -52,7 +52,7 @@
           "pass": true
         },
         {
-          "name": "94 tab stops with a visible focus ring",
+          "name": "99 tab stops with a visible focus ring",
           "pass": true,
           "details": ""
         },
@@ -61,7 +61,7 @@
           "pass": true
         }
       ],
-      "perf": 99,
+      "perf": 98,
       "a11y": 100,
       "best": 100,
       "seo": 100,
@@ -92,7 +92,7 @@
           "pass": true
         }
       ],
-      "perf": 99,
+      "perf": 98,
       "a11y": 100,
       "best": 100,
       "seo": 100,
@@ -127,7 +127,7 @@
       "a11y": 100,
       "best": 100,
       "seo": 100,
-      "lcp": 1.8,
+      "lcp": 1.81,
       "tbt": 0,
       "clsLighthouse": 0
     },
@@ -158,7 +158,7 @@
       "a11y": 100,
       "best": 100,
       "seo": 100,
-      "lcp": 1.8,
+      "lcp": 1.81,
       "tbt": 0,
       "clsLighthouse": 0
     },
@@ -189,7 +189,7 @@
       "a11y": 100,
       "best": 100,
       "seo": 100,
-      "lcp": 1.8,
+      "lcp": 1.81,
       "tbt": 0,
       "clsLighthouse": 0
     },
@@ -251,7 +251,7 @@
       "a11y": 100,
       "best": 100,
       "seo": 100,
-      "lcp": 1.73,
+      "lcp": 1.66,
       "tbt": 0,
       "clsLighthouse": 0
     },
@@ -282,7 +282,7 @@
       "a11y": 100,
       "best": 100,
       "seo": 63,
-      "lcp": 1.8,
+      "lcp": 1.81,
       "tbt": 0,
       "clsLighthouse": 0
     },
@@ -313,7 +313,7 @@
       "a11y": 100,
       "best": 100,
       "seo": 63,
-      "lcp": 1.8,
+      "lcp": 1.81,
       "tbt": 0,
       "clsLighthouse": 0
     },
@@ -344,7 +344,38 @@
       "a11y": 100,
       "best": 100,
       "seo": 100,
-      "lcp": 1.65,
+      "lcp": 1.66,
+      "tbt": 0,
+      "clsLighthouse": 0
+    },
+    {
+      "page": "/werkzeuge/ein-kauf/",
+      "cls": 0,
+      "cookies": 0,
+      "external": 0,
+      "externalUrls": [],
+      "axeSerious": 0,
+      "axeIds": [],
+      "keyboard": [
+        {
+          "name": "skip link first, Enter into main",
+          "pass": true
+        },
+        {
+          "name": "25 tab stops with a visible focus ring",
+          "pass": true,
+          "details": ""
+        },
+        {
+          "name": "no keyboard trap",
+          "pass": true
+        }
+      ],
+      "perf": 99,
+      "a11y": 100,
+      "best": 100,
+      "seo": 100,
+      "lcp": 1.96,
       "tbt": 0,
       "clsLighthouse": 0
     },
@@ -375,7 +406,7 @@
       "a11y": 100,
       "best": 100,
       "seo": 100,
-      "lcp": 1.65,
+      "lcp": 1.66,
       "tbt": 0,
       "clsLighthouse": 0
     },
@@ -437,8 +468,8 @@
       "a11y": 100,
       "best": 100,
       "seo": 100,
-      "lcp": 1.65,
-      "tbt": 0,
+      "lcp": 1.66,
+      "tbt": 10,
       "clsLighthouse": 0
     },
     {
@@ -499,7 +530,7 @@
       "a11y": 100,
       "best": 100,
       "seo": 100,
-      "lcp": 1.65,
+      "lcp": 1.66,
       "tbt": 0,
       "clsLighthouse": 0
     },
@@ -530,8 +561,8 @@
       "a11y": 100,
       "best": 100,
       "seo": 100,
-      "lcp": 1.65,
-      "tbt": 0,
+      "lcp": 1.66,
+      "tbt": 2,
       "clsLighthouse": 0
     },
     {
@@ -561,8 +592,8 @@
       "a11y": 100,
       "best": 100,
       "seo": 100,
-      "lcp": 1.65,
-      "tbt": 0,
+      "lcp": 1.73,
+      "tbt": 8,
       "clsLighthouse": 0
     },
     {
