@@ -128,7 +128,9 @@ export async function runGates({ which = 'all', quick = false, log = console.log
           check(`nothing focusable in aria-hidden: ${tag}`, m.hiddenFocus.length === 0, m.hiddenFocus.join(' | '));
           check(`no button inside a link: ${tag}`, m.btnInLink === 0, String(m.btnInLink));
           // Click and Enter on the footer group (every page has it) and the first other group.
-          const groups = page.locator('[data-poke][role="button"]');
+          // Visible groups only: on /werkzeuge/ein-kauf/ the scene with Live folds away (display: none) while a
+          // step is off (Iva 18.11.2026, no empty hole); a hidden group can be neither clicked nor focused.
+          const groups = page.locator('[data-poke][role="button"]:visible');
           const n = await groups.count();
           for (const i of [...new Set([0, n - 1])].filter((x) => x >= 0 && x < n)) {
             for (const how of ['click', 'Enter']) {

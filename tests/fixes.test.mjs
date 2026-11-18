@@ -61,7 +61,7 @@ test('dates come from the content, not from the build day', () => {
   // 18.11.2026 (Wortfilter, four texts): home, ki and spam moved; /qualitaet/ is new.
   assert.equal((sitemap(config).match(/<lastmod>2026-10-29<\/lastmod>/g) || []).length, 4, 'ActiveCampaign (Iva), Impressum and legal notice (Legal)');
   assert.equal((sitemap(config).match(/<lastmod>2026-11-05<\/lastmod>/g) || []).length, 4, 'privacy and launch (Stage 6h, 5.11.2026)');
-  assert.equal((sitemap(config).match(/<lastmod>2026-11-18<\/lastmod>/g) || []).length, 7, 'home, ki, spam (DE and EN) and /qualitaet/');
+  assert.equal((sitemap(config).match(/<lastmod>2026-11-18<\/lastmod>/g) || []).length, 8, 'home, ki, spam (DE and EN), /qualitaet/ and /werkzeuge/ein-kauf/ (new 18.11.2026)');
 });
 
 test('external links open in a new tab and say so', () => {

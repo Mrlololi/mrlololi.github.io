@@ -492,7 +492,8 @@ export async function checkStage6(browser, base) {
       const req = route.request();
       if (req.method() === 'POST') posts.push({ body: JSON.parse(req.postData()), type: req.headers()['content-type'] });
       const headers = { 'access-control-allow-origin': '*', 'access-control-allow-headers': 'content-type' };
-      if (mode === 'fail') return route.fulfill({ status: 500, body: 'error', headers });
+      // 0.5 s like a real server, so «Wird gesendet…» can be read before the answer (an instant 500 raced it).
+      if (mode === 'fail') { await new Promise((r) => setTimeout(r, 500)); return route.fulfill({ status: 500, body: 'error', headers }); }
       if (mode === 'slow') { await new Promise((r) => setTimeout(r, 11500)); return route.fulfill({ status: 200, body: 'Accepted', headers }).catch(() => {}); }
       return route.fulfill({ status: 200, body: 'Accepted', headers });
     });
