@@ -39,7 +39,7 @@ test('references: the course card with tools, the honest line and the video link
   const h = byFile['index.html'];
   const course = h.match(/<li class="ref card ref--course">[\s\S]*?<\/li>\n<li/)[0];
   for (const tool of de.s6.b.refs.tools) assert.ok(course.includes(`<li>${tool}</li>`), tool);
-  assert.match(course, /Laufende Zusammenarbeit mit Claudia Witticke \(claudiawitticke\.com\) seit April 2026\./); // 7b-S section 8
+  assert.match(course, /Laufende Zusammenarbeit seit April 2026\./); // Iva 18.11.2026: the name is in the title
   assert.match(course, /<a class="text-link" href="#video">Ablauf im Video ansehen<\/a>/);
   assert.match(h, /Daher kenne ich Support-Teams von innen, die Grundlage für die KI-Antwortentwürfe\./);
   assert.match(h, /<h2 id="refs-title" data-enter="lines">Arbeit und <em class="accent">Referenzen<\/em><\/h2>/);

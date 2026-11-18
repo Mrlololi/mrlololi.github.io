@@ -43,13 +43,15 @@ export function references(t, config) {
 </div>`;
   const cards = [
     `<li class="ref card ref--course"><span class="label label--lav">${esc(L.course)}</span>
-<h3>${extLink(config.case2_url, esc(r.case2.domain), t)}${esc(r.case2.titleRest)}</h3>
+<h3>${esc(r.case2.title)}</h3>
+${extLink(config.case2_url, esc(r.case2.domain), t, { cls: 'ref__site' })}
 <p>${esc(r.case2.text)}</p>
 <ul class="ref__tools" role="list">${B.tools.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>
 <p class="ref__honest">${esc(B.honest)}</p>
 <a class="text-link" href="${t.s6.video ? '#video' : '#path'}">${esc(B.video)}</a></li>`,
     `<li class="ref card ref--site"><span class="label label--pink">${esc(L.site)}</span>
-<h3>${extLink(config.case1_url, esc(r.case1.domain), t)}${esc(r.case1.titleRest)}</h3>
+<h3>${esc(r.case1.title)}</h3>
+${extLink(config.case1_url, esc(r.case1.domain), t, { cls: 'ref__site' })}
 ${shot}
 <p>${esc(r.case1.text)}</p></li>`,
     `<li class="ref card ref--shop"><span class="label label--blue">${esc(L.shop)}</span>

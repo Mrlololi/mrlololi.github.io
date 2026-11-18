@@ -111,8 +111,11 @@ test('8. client names: no anonymous wording left outside the hidden study title'
   for (const [f, h] of Object.entries(by)) {
     for (const w of ['Name nicht genannt', 'name not disclosed', 'eine Online-Kursanbieterin', 'an online course creator']) assert.ok(!h.includes(w), `${f}: ${w}`);
   }
-  assert.ok(by['index.html'].includes(`<h3><a class="ext" href="${config.case2_url}" target="_blank" rel="noopener">claudiawitticke.com`));
-  assert.ok(by['index.html'].includes(', Launch-Technik für die Online-Nähkurse von Claudia Witticke, seit April 2026</h3>'));
+  // Iva 18.11.2026: title, then the site link on its own line, then «Laufende Zusammenarbeit seit April 2026.»
+  assert.ok(by['index.html'].includes(`<h3>Launch-Technik für die Online-Nähkurse von Claudia Witticke</h3>\n<a class="ext ref__site" href="${config.case2_url}" target="_blank" rel="noopener">claudiawitticke.com`));
+  assert.ok(by['index.html'].includes('<h3>Website für eine Executive-Coachin in Bern</h3>\n<a class="ext ref__site" href='));
+  assert.ok(by['index.html'].includes('<p class="ref__honest">Laufende Zusammenarbeit seit April 2026.</p>'));
+  assert.ok(!Object.values(by).some((h) => h.includes('<h3>undefined</h3>')), 'every case title is there');
   assert.ok(by['index.html'].includes('seit 2026 auch für die Online-Kursanbieterin Claudia Witticke.'));
   assert.equal(de.refs.study.title, 'Fallbeispiel: Online-Kursanbieterin');
 });

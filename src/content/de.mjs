@@ -18,7 +18,7 @@ export default {
   },
   legalMeta: {
     title: 'Impressum - Iva Tsatskrialashvili',
-    description: 'Impressum und Offenlegung gemäß § 25 Mediengesetz von Iva Tsatskrialashvili, Werbeagentur in Graz.',
+    description: 'Impressum und Offenlegung gemäß § 25 Mediengesetz von Iva Tsatskrialashvili, Techniker für Marketing-Automation in Graz.',
   },
   privacyMeta: {
     title: 'Datenschutzerklärung - Iva Tsatskrialashvili',
@@ -382,7 +382,8 @@ export default {
     h2: 'Arbeit und *Referenzen*',
     case1: {
       domain: 'alexandrafry.ch',
-      titleRest: ', Website für eine Executive-Coachin in Bern',
+      // Iva 18.11.2026: the title without the domain; the site link stands on its own line under it.
+      title: 'Website für eine Executive-Coachin in Bern',
       text: 'One-Pager mit Leadpages: responsives Design, Terminbuchung über Calendly, Cookie-Hinweis, SEO-Grundeinstellungen, Rechtsseiten, Domain und Übergabe-Gespräch.',
       quote: {
         lang: 'de',
@@ -393,7 +394,7 @@ export default {
     case2: {
       // Stage 7b-S section 8 (Iva 17.11.2026: both clients may be named). Entwurf.
       domain: 'claudiawitticke.com',
-      titleRest: ', Launch-Technik für die Online-Nähkurse von Claudia Witticke, seit April 2026',
+      title: 'Launch-Technik für die Online-Nähkurse von Claudia Witticke',
       text: 'ActiveCampaign- und Zapier-Abläufe für Anmeldung, Launch, Onboarding und Zahlungserinnerungen, Landingpages in Leadpages, Rechnungen, Ratenzahlungen und Kurszugänge mit Quaderno und dem Mitgliederbereich, Live-Termine mit Zoom und Ecamm.',
     },
     case3: {
@@ -709,7 +710,7 @@ export default {
       refs: {
         tools: ['ActiveCampaign', 'Zapier', 'Leadpages', 'Quaderno', 'Zoom'],
         video: 'Ablauf im Video ansehen',
-        honest: 'Laufende Zusammenarbeit mit Claudia Witticke (claudiawitticke.com) seit April 2026.',
+        honest: 'Laufende Zusammenarbeit seit April 2026.',
         earlierLine: 'Daher kenne ich Support-Teams von innen, die Grundlage für die KI-Antwortentwürfe.',
       },
       projects: { also: 'Außerdem:', and: 'und' },

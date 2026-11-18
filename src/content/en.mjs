@@ -378,7 +378,7 @@ export default {
     h2: 'Work and *references*',
     case1: {
       domain: 'alexandrafry.ch',
-      titleRest: ', website for an executive coach in Bern',
+      title: 'Website for an executive coach in Bern',
       text: 'One-pager built in Leadpages: responsive design, booking via Calendly, cookie notice, SEO basics, legal pages, domain and handover call.',
       quote: {
         lang: 'de',
@@ -390,7 +390,7 @@ export default {
     case2: {
       // Stage 7b-S section 8 (Entwurf).
       domain: 'claudiawitticke.com',
-      titleRest: ", launch tech for Claudia Witticke's online sewing courses, since April 2026",
+      title: "Launch tech for Claudia Witticke's online sewing courses",
       text: 'ActiveCampaign and Zapier flows for sign-up, launch, onboarding and payment reminders, landing pages in Leadpages, invoices, instalments and course access with Quaderno and the members area, live sessions with Zoom and Ecamm.',
     },
     case3: {
@@ -683,7 +683,7 @@ export default {
       refs: {
         tools: ['ActiveCampaign', 'Zapier', 'Leadpages', 'Quaderno', 'Zoom'],
         video: 'See the flow in four steps',
-        honest: 'Ongoing work with Claudia Witticke (claudiawitticke.com) since April 2026.',
+        honest: 'Ongoing work since April 2026.',
         earlierLine: 'That is how I know support teams from the inside, the basis for the AI reply drafts.',
       },
       projects: { also: 'Also:', and: 'and' },

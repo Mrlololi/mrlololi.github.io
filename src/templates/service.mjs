@@ -116,7 +116,8 @@ function example(t, config, s, live) {
 <img src="/assets/img/case-alexandrafry-640.jpg" srcset="/assets/img/case-alexandrafry-640.jpg 640w, /assets/img/case-alexandrafry-1280.jpg 1280w" sizes="(min-width: 800px) 40rem, 100vw" width="640" height="400" loading="lazy" decoding="async" alt="${esc(t.ui.caseImageAlt)}">
 </picture>
 </div>
-<h3>${extLink(config.case1_url, esc(c1.domain), t)}${esc(c1.titleRest)}</h3>
+<h3>${esc(c1.title)}</h3>
+${extLink(config.case1_url, esc(c1.domain), t, { cls: 'ref__site' })}
 <p>${esc(c1.text)}</p>
 ${quote(t, c1.quote)}
 </article>`;
