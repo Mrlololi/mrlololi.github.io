@@ -83,7 +83,7 @@ export function pages(cfg = config, { articles = loadArticles(), live = {}, prot
   if (cfg.werkzeug_ein_kauf_path) {
     out.push({
       file: fileFor(cfg.werkzeug_ein_kauf_path),
-      html: layout({ t: de, other: en, config: cfg, ratgeber, qualitaet, page: { key: 'werkzeug', path: cfg.werkzeug_ein_kauf_path, altPath: en.paths.home, title: de.einKauf.title, description: de.einKauf.description, css: einKaufCss, ld: einKaufLd(de, cfg) }, main: einKaufPage(de) }),
+      html: layout({ t: de, other: en, config: cfg, ratgeber, qualitaet, page: { key: 'werkzeug', path: cfg.werkzeug_ein_kauf_path, altPath: en.paths.home, title: de.einKauf.title, description: de.einKauf.description, ogImage: '/assets/og/de-ein-kauf.png', css: einKaufCss, ld: einKaufLd(de, cfg) }, main: einKaufPage(de) }),
     });
   }
   if (qualitaet) {

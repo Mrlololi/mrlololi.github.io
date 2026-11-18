@@ -48,6 +48,7 @@ function init() {
     if (count) count.textContent = root.dataset.stepOf.replace('{n}', String(cur + 1)).replace('{total}', String(total));
     if (id) root.dataset.off = id; else delete root.dataset.off;
     root.classList.toggle('is-broken', Boolean(id));
+    root.classList.toggle('is-intact', !id);
     summary.textContent = id ? summary.dataset.off : summary.dataset.intact;
     panels.forEach((p, key) => p.classList.toggle('is-active', id ? key === id : p.classList.contains('ek-panel--intact')));
     if (moved) history.replaceState(null, '', id ? `#${id}` : location.pathname + location.search);

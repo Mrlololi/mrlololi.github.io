@@ -12,7 +12,7 @@
 <meta property="og:title" content="Ein Kauf: Was, wenn ein Teil fehlt? | mrlololi">
 <meta property="og:description" content="Schalten Sie einen Schritt eines Online-Kurs-Kaufs aus und sehen Sie, was Ihre Käuferin dann erlebt. Mit Hinweis, wie ein Testkauf den Fehler vorher findet.">
 <meta property="og:url" content="https://mrlololi.com/werkzeuge/ein-kauf/">
-<meta property="og:image" content="https://mrlololi.com/og-image-de.png">
+<meta property="og:image" content="https://mrlololi.com/assets/og/de-ein-kauf.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="de_AT">
@@ -20,7 +20,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Ein Kauf: Was, wenn ein Teil fehlt? | mrlololi">
 <meta name="twitter:description" content="Schalten Sie einen Schritt eines Online-Kurs-Kaufs aus und sehen Sie, was Ihre Käuferin dann erlebt. Mit Hinweis, wie ein Testkauf den Fehler vorher findet.">
-<meta name="twitter:image" content="https://mrlololi.com/og-image-de.png">
+<meta name="twitter:image" content="https://mrlololi.com/assets/og/de-ein-kauf.png">
 <meta name="theme-color" content="#F4C9D3">
 <link rel="icon" href="/assets/brand/favicon.ico" sizes="16x16 32x32 48x48">
 <link rel="icon" href="/assets/brand/favicon.svg" type="image/svg+xml">
@@ -1113,7 +1113,8 @@ html:not(.js) .calc__fields { display: none; }
 .hf__btn { height: max(11.76%, 2.75rem); margin-top: calc((11.76% - max(11.76%, 2.75rem)) / 2); }
 .site-nav__list a, .crumbs a, .site-footer__links a, .path__btn { min-width: 2.75rem; justify-content: center; }
 .site-nav__lang a { min-height: 2.75rem; }
-.ref h3 .ext, .contact__fallback a, .svc-links a { display: inline-flex; align-items: center; min-height: 2.75rem; }
+.contact__fallback a, .svc-links a { display: inline-flex; align-items: center; min-height: 2.75rem; }
+.ref__site { display: flex; align-items: center; width: fit-content; min-height: 2.75rem; } 
 .contact__main { grid-template-columns: minmax(0, 1fr); }
 @media (min-width: 800px) { .about__grid { grid-template-columns: min(21rem, 38%) minmax(0, 1fr); gap: min(var(--space-9), 6vw); } }
 .vid__icon { flex: none; }
@@ -1162,7 +1163,7 @@ html:not(.js) .calc__fields { display: none; }
 .kisteps li { min-width: 0; }
 .kisteps__btn { padding-inline: var(--space-1); font-size: var(--step--1); }
 }
-.nf__caption { font-weight: 700; color: var(--pist-ink); margin-top: calc(-1 * var(--space-2)); }
+.nf__caption { font-weight: 700; color: var(--ink); margin-top: calc(-1 * var(--space-2)); } 
 .nf__scene[data-play="start"] + .nf__caption { visibility: hidden; }
 @media (prefers-reduced-motion: no-preference) {
 .js .nf__scene:not([data-play]) + .nf__caption, .nf__scene[data-play="run"] + .nf__caption { animation: fade-in 0.4s ease 1.7s both; }
@@ -1701,7 +1702,7 @@ html:not(.js) .faq__cats { display: none; }
 .rl--kauf .rl__log.is-missing > span:first-of-type { color: var(--ink-soft); text-decoration: line-through; }
 .rl--kauf .rl__node.is-off { outline: 2px dashed var(--error); outline-offset: 2px; }
 .rl--kauf .rl__node.is-missing { opacity: 0.5; }
-.ek-ready .rl--kauf.is-broken .rl__step { visibility: hidden; }
+.js .rl--kauf:not(.is-intact) .rl__scene { display: none; }
 .rl--kauf.is-broken .rl__summary { color: var(--ink); }
 @media (prefers-reduced-motion: no-preference) {
 html:not([data-motion="paused"]) .rl--kauf .rl__log.is-off .i[data-icon="cross"] .m { stroke-dasharray: 1; animation: ek-draw var(--t-enter) var(--ease-soft) both; }

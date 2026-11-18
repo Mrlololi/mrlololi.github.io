@@ -57,3 +57,29 @@ ${lockup({ kind: 'full', lang: t.lang, class: 'mark' })}
 <div class="foot"><span>Iva Tsatskrialashvili · mrlololi.com</span><span class="price">${esc(price)}</span></div>
 </div></body></html>`;
 }
+
+// Werkzeug «Ein Kauf» (18.11.2026): the 1200x630 card of a tool page: the lockup, the title and the run-log
+// rail with its six step icons; the step that is off (offIndex) has a dashed ring and the break icon.
+export function ogToolHtml(t, title, ids, offIndex, iconFn) {
+  const rail = ids.map((id, i) => `<li class="${i === offIndex ? 'off' : 'on'}">${iconFn(i === offIndex ? 'cross' : id, { size: 48, inline: true, tone: null })}</li>`).join('');
+  return `<!doctype html>
+<html lang="${t.lang}"><head><meta charset="utf-8"><link rel="stylesheet" href="/assets/css/components.css"><link rel="stylesheet" href="/assets/css/kit.css"><link rel="stylesheet" href="/assets/css/main.css">
+<style>
+  html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; background: linear-gradient(135deg, #F4C9D3, #DCD3F0); }
+  .og { box-sizing: border-box; width: 1200px; height: 630px; padding: 64px 80px; display: grid; grid-template-rows: auto 1fr auto auto; gap: 28px; }
+  .mark { display: block; height: 84px; width: auto; }
+  .title { align-self: center; max-width: 1040px; font-family: var(--font-display); font-weight: 680; font-size: 70px; line-height: 1.04; letter-spacing: -0.025em; color: #2B2A33; }
+  .rail { position: relative; display: flex; justify-content: space-between; margin: 0; padding: 0 8px; list-style: none; }
+  .rail::before { content: ""; position: absolute; left: 60px; right: 60px; top: 50%; height: 4px; background: #E3DBE2; }
+  .rail li { position: relative; display: grid; place-items: center; width: 104px; height: 104px; border-radius: 50%; background: #fff; border: 2px solid rgb(43 42 51 / 0.12); color: #2B2A33; }
+  .rail li.off { border: 4px dashed #8A2F45; color: #8A2F45; }
+  .rail .i { width: 48px; height: 48px; }
+  .foot { font-family: var(--font-body); font-size: 26px; color: #4A4753; }
+</style></head>
+<body><div class="og">
+${lockup({ kind: 'full', lang: t.lang, class: 'mark' })}
+<div class="title">${esc(title)}</div>
+<ol class="rail">${rail}</ol>
+<div class="foot">Iva Tsatskrialashvili · mrlololi.com</div>
+</div></body></html>`;
+}
