@@ -28,7 +28,8 @@ test('1. Webprojekte sitemap: five clean URLs, no «?» in any <loc> of either s
 
 test('1. Webprojekte: no JavaScript sets canonical, title, description, og:url or hreflang', () => {
   for (const f of ['assets/js/landing.js', 'geoapp/js/app.js', 'language-starter/js/app.js', 'index.html', 'language-starter/trainer/index.html', '404.html']) {
-    const s = wp(f).replace(/<link [^>]*>|<meta [^>]*>/g, '');
+    // Code only: tags and comments out (a comment may name what the code must not do).
+    const s = wp(f).replace(/<link [^>]*>|<meta [^>]*>/g, '').replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
     assert.ok(!/document\.title\s*=|link\[rel="canonical"\]|meta\[name="description"\]|og:url|setAttribute\('hreflang'/.test(s), f);
   }
   // Without ?lang and without a stored choice the hub and the trainer stay German.
