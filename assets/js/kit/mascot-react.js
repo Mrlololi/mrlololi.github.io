@@ -15,24 +15,61 @@ import { reduceMotion, motion } from './motion.js';
 export const KEYS = MASCOTS.map((m) => m.key);
 const still = () => reduceMotion.matches || motion.paused;
 
+// Design system 5.1 rule 7 (Iva 18.11.2026): smooth, never abrupt. A pose change crossfades (220 ms): the
+// old drawing of a part fades out on top while the new one fades in; still (reduced motion, paused): at once.
+const FADE = 220;
 export function setPose(svg, emo) {
   if (svg.dataset.emo === emo) return;
   const p = parts(Number(svg.dataset.mascot), emo);
+  const soft = !still() && Boolean(svg.animate);
   for (const [name, html] of Object.entries(p)) {
     const el = svg.querySelector(`[data-part="${name}"]`);
-    if (el) el.innerHTML = html;
+    if (!el || el.innerHTML === html) continue;
+    if (soft) {
+      // The old drawing as a copy without data-part (nobody animates or finds it), fading out.
+      svg.querySelectorAll(`[data-fading="${name}"]`).forEach((x) => x.remove());
+      // A part that is moving right now (a waving arm) keeps its current angle in the fading copy.
+      el.getAnimations?.({ subtree: true }).forEach((a) => { try { a.commitStyles(); } catch { /* not rendered */ } });
+      const old = el.cloneNode(true);
+      old.removeAttribute('data-part');
+      old.setAttribute('data-fading', name);
+      old.querySelectorAll('[class]').forEach((x) => x.classList.remove('m-wave', 'm-eye'));
+      el.after(old);
+      old.animate([{ opacity: 1 }, { opacity: 0 }], { duration: FADE, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => old.remove();
+      el.innerHTML = html;
+      el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: FADE, easing: 'ease-in-out' });
+    } else el.innerHTML = html;
   }
   svg.dataset.emo = emo;
 }
 
-// Every running reaction of one mascot (animations and timers), so a new click starts it again cleanly.
+// Every running reaction of one mascot (animations and timers). A new click does not reset the mascot:
+// the running animations keep their current pose (commitStyles) and the next movement starts from there.
 const flights = new WeakMap();
 function clear(svg) {
   const f = flights.get(svg);
   if (!f) return;
-  f.anims.forEach((a) => a.cancel?.());
+  f.anims.forEach((a) => {
+    try { if (a.playState === 'running' && a.effect?.target?.isConnected) a.commitStyles(); } catch { /* not rendered */ }
+    a.cancel?.();
+  });
   f.timers.forEach(clearTimeout);
   flights.delete(svg);
+}
+// The pose a new movement starts from: the committed inline transform (after clear), else none. The inline
+// value is dropped, the animation takes over from exactly there.
+function from(el) {
+  const t = el.style.transform || 'none';
+  el.style.transform = '';
+  return t;
+}
+// A part that was turned (wrench, star) and interrupted: eases back to rest from where it stands.
+function settle(f, el, ms = 260) {
+  if (!el?.style.transform) return;
+  const t = from(el);
+  if (t === 'none') return;
+  const a = el.animate([{ transform: t }, { transform: 'rotate(0deg)' }], { duration: ms, easing: 'ease-out' });
+  f.anims.push(a);
 }
 function flight(svg) {
   clear(svg);
@@ -41,20 +78,23 @@ function flight(svg) {
   return f;
 }
 const later = (f, ms, fn) => f.timers.push(setTimeout(fn, ms));
-const done = (svg) => { flights.delete(svg); delete svg.dataset.jumping; setPose(svg, svg.dataset.base || 'idle'); };
+const done = (svg) => { flights.delete(svg); delete svg.dataset.jumping; svg.style.transformOrigin = ''; setPose(svg, svg.dataset.base || 'idle'); };
 
 // The shared hop (Web Animations): happy face while in the air; then (end) a pose for a moment.
 // height: % of the mascot's height. Without motion: the happy face for 1.2 s, nothing moves.
 export function jump(svg, height = 30, { end = null, f = flight(svg) } = {}) {
   svg.dataset.jumping = 'true';
   setPose(svg, 'joy');
-  if (still() || !svg.animate) { later(f, 1200, () => done(svg)); return f; }
+  if (still() || !svg.animate) { svg.style.transform = ''; later(f, 1200, () => done(svg)); return f; }
+  // Rule 7: the hop starts from the current pose (a hop that was interrupted, a tilt) and squashes softly
+  // (no instant squash in the first frame); it ends in the rest pose.
   const a = svg.animate([
-    { transform: 'translateY(0) scale(1.1, 0.9)', easing: 'ease-out' },
-    { transform: `translateY(-${height}%) scale(0.94, 1.06)`, offset: 0.45, easing: 'ease-in' },
-    { transform: 'translateY(0) scale(1.08, 0.92)', offset: 0.82, easing: 'ease-out' },
+    { transform: from(svg), easing: 'ease-in-out' },
+    { transform: 'translateY(0) scale(1.08, 0.92)', offset: 0.16, easing: 'ease-out' },
+    { transform: `translateY(-${height}%) scale(0.95, 1.05)`, offset: 0.5, easing: 'ease-in' },
+    { transform: 'translateY(0) scale(1.06, 0.94)', offset: 0.82, easing: 'ease-out' },
     { transform: 'none' },
-  ], { duration: 650 });
+  ], { duration: 760 });
   f.anims.push(a);
   a.onfinish = () => {
     if (!end) { done(svg); return; }
@@ -79,6 +119,13 @@ export function react(svg, height = 26) {
   const i = Number(svg.dataset.mascot);
   const f = flight(svg);
   if (still() || !svg.animate) return jump(svg, height, { f });
+  // Rule 7: clicked again while it still moves: no new signature from the start, the hop continues from
+  // the current pose and a turned part eases back to rest.
+  const acc = svg.querySelector('[data-part="accessory"]');
+  if (svg.style.transform || acc?.style.transform) {
+    settle(f, acc);
+    return jump(svg, height, { f, end: i === 2 ? { pose: 'wave', ms: 900 } : null });
+  }
   if (i === 0) {
     // Logik «Prüfblick»: a look with the head tilted, thinking, then the happy hop.
     setPose(svg, 'think');
@@ -95,14 +142,14 @@ export function react(svg, height = 26) {
     return f;
   }
   jump(svg, height, { f, end: i === 2 ? { pose: 'wave', ms: 900 } : null });
-  const acc = svg.querySelector('[data-part="accessory"]');
   if (i === 1) {
-    // Lösung «Schraubdreh»: the wrench turns once around the hand that holds it.
+    // Lösung «Schraubdreh»: the wrench turns once around the hand that holds it (rule 7: slow enough that
+    // no frame turns it more than 6°).
     const m = acc?.firstElementChild?.getAttribute('transform')?.match(/translate\(([-\d.]+)[ ,]+([-\d.]+)\)/);
-    if (m) turnPart(f, acc, `${m[1]}px ${m[2]}px`, [{ transform: 'rotate(0deg)' }, { transform: 'rotate(360deg)' }], { duration: 500, easing: 'ease-in-out' });
+    if (m) turnPart(f, acc, `${m[1]}px ${m[2]}px`, [{ transform: 'rotate(0deg)' }, { transform: 'rotate(360deg)' }], { duration: 1800, easing: 'ease-in-out' });
   } else if (i === 2) {
-    // Live «Sternfunkeln»: the star antenna wiggles three times.
-    turnPart(f, acc, '50px 18px', [{ transform: 'rotate(0deg)' }, { transform: 'rotate(-14deg)' }, { transform: 'rotate(12deg)' }, { transform: 'rotate(0deg)' }], { duration: 220, iterations: 3, easing: 'ease-in-out' });
+    // Live «Sternfunkeln»: the star antenna wiggles three times (each swing at least 120 ms, rule 7).
+    turnPart(f, acc, '50px 18px', [{ transform: 'rotate(0deg)' }, { transform: 'rotate(-14deg)' }, { transform: 'rotate(12deg)' }, { transform: 'rotate(0deg)' }], { duration: 400, iterations: 3, easing: 'ease-in-out' });
   }
   return f;
 }

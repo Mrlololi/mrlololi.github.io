@@ -14,6 +14,8 @@
 //  5. The pause carries over: set on mrlololi.com, open /Webprojekte/, still paused (and back).
 //  6. Hub links to GeoAPP and Language Starter carry the language (DE and EN).
 //  7. The vendored kit in Webprojekte equals the main site's (tools/sync-mrl-kit.mjs --check).
+//  8. «glatt» (rule 7 of design system 5.1): no frame-to-frame jump of a mascot, the run-log dot or an
+//     entering element (src/qa/glatt.mjs).
 // Usage: node src/qa/gates.mjs [main|wp|all] [--quick]   (--quick: 390 light + 1280 light only)
 import { execFileSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
@@ -21,6 +23,7 @@ import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { chromium } from './browsers.mjs';
 import { startBoth } from './serve-both.mjs';
+import { glattGate } from './glatt.mjs';
 
 export const MAIN_PAGES = ['/', '/en/', '/impressum/', '/datenschutz/', '/en/legal-notice/', '/launch-technik/', '/en/course-launch-tech/', '/404.html', '/danke/', '/qualitaet/'];
 export const WP_PAGES = ['/Webprojekte/?lang=de', '/Webprojekte/?lang=en', '/Webprojekte/404.html', '/Webprojekte/geoapp/?lang=de', '/Webprojekte/language-starter/?ui=de', '/Webprojekte/language-starter/trainer/', '/Webprojekte/ki-kundenservice/'];
@@ -186,6 +189,8 @@ export async function runGates({ which = 'all', quick = false, log = console.log
       for (const r of await visualRegression(browser, server.url, { update: baselineMode })) check(r.name, r.pass, r.details);
       for (const r of await stage7bGates(browser, server.url, { quick })) check(r.name, r.pass, r.details);
     }
+    // Gate «glatt» (design system 5.1 rule 7, 18.11.2026): every page of the chosen site(s) at 1280 (src/qa/glatt.mjs).
+    if (!quick) for (const r of await glattGate(browser, server.url, pages)) check(r.name, r.pass, r.details);
   } finally {
     await browser.close();
     await server.close();

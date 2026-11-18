@@ -79,7 +79,8 @@ function blinker(gsap, svg) {
   let call = null;
   const blink = () => {
     const eyes = svg.querySelectorAll('.m-eye');
-    if (eyes.length) gsap.to(eyes, { scaleY: 0.1, transformOrigin: '50% 50%', duration: 0.07, yoyo: true, repeat: 1, ease: 'power1.in' });
+    // Rule 7 (18.11.2026): no movement shorter than 200 ms, so a blink takes 2 x 110 ms, eased both ways.
+    if (eyes.length) gsap.to(eyes, { scaleY: 0.1, transformOrigin: '50% 50%', duration: 0.11, yoyo: true, repeat: 1, ease: 'sine.inOut' });
     call = gsap.delayedCall(gsap.utils.random(4, 6), blink);
   };
   return {
