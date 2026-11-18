@@ -34,7 +34,8 @@ test('process: numbered list of four steps', () => {
 });
 
 test('references: case link opens in a new tab with noopener (Fixes 21.10.2026); quotes typographic', () => {
-  assert.match(de, /<a class="ext" href="https:\/\/alexandrafry\.ch" target="_blank" rel="noopener">alexandrafry\.ch<span class="sr-only"> \(öffnet in neuem Tab\)<\/span><\/a>/);
+  // Stage 7b-S (Iva 18.11.2026): the site link is its own line under the case title.
+  assert.match(de, /<a class="ext ref__site" href="https:\/\/alexandrafry\.ch" target="_blank" rel="noopener">alexandrafry\.ch<span class="sr-only"> \(öffnet in neuem Tab\)<\/span><\/a>/);
   assert.match(de, /„Sehr gerne bestätige ich/);
   assert.match(de, /übertroffen hat\.“/);
   assert.match(en, /<blockquote lang="de">/);
