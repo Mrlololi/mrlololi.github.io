@@ -200,12 +200,8 @@ export async function pixelProbe(page, selector) {
   return { selector, ratio: worst, fg: info.fg ? `#${info.fg.map(hex2).join('')}` : null, hidden: info.hidden, covered: info.covered, clear: info.clear, moving: info.moving, empty: info.empty };
 }
 
-// The 404 caption «repariert» is --pist-ink on the pink body (4.21:1, a «not allowed» pair of design
-// system 7.1). It predates Stage 7b and 404 must stay unchanged in 7b; Iva 13.11.2026: leave it until
-// 7e (the band and phone pass). Remove this entry when the caption is fixed.
-export const KNOWN_A11Y = [
-  { rule: 'color-contrast', target: '.nf__caption', note: 'Iva 13.11.2026: fix in 7e, --pist-ink on pink 4.21:1' },
-];
+// Known accessibility exceptions (none since 18.11.2026: the 404 caption «repariert» is ink now, Iva).
+export const KNOWN_A11Y = [];
 
 async function axeRun(page, label, results, probes) {
   if (process.env.AXE_TRACE) console.log(`axe: ${label}`);

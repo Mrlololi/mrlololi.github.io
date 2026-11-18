@@ -20,7 +20,7 @@ test('built site: no hit outside the baseline, and the baseline only shrinks', (
   assert.deepEqual(fresh, [], `new Wortfilter hits (fix the text or report to the chat via Iva):\n${fresh.join('\n')}`);
   const gone = baseline.hits.filter((k) => !keys.includes(k));
   assert.deepEqual(gone, [], `baseline entries that no longer occur: remove them from src/qa/wortfilter-baseline.json\n${gone.join('\n')}`);
-  assert.ok(baseline.hits.length <= baseline.max && baseline.max <= 7, 'the ratchet may only shrink (7 on 18.11.2026)');
+  assert.ok(baseline.hits.length <= baseline.max && baseline.max === 0, 'the ratchet may only shrink (empty since 18.11.2026)');
   // The main site itself is clean since the four changes of 17.11.
   assert.deepEqual(keys.filter((k) => !k.startsWith('/Webprojekte/')), []);
 });

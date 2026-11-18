@@ -1,15 +1,7 @@
 {
   "about": "Ratchet of the Wortfilter: hits found that the chat «Сайты и контент» has not decided yet. It may only shrink: a new hit fails the test, and an entry that no longer occurs must be removed. Never add an entry to make a test pass; report the hit to the chat via Iva.",
   "recorded": "2026-11-18",
-  "max": 7,
-  "note": "All 7 entries are on /Webprojekte/ki-kundenservice/ (other repo, not part of the 17.11 scan): invented customer mails and the calculator. Reported to Iva 18.11.2026, waiting for the chat.",
-  "hits": [
-    "/Webprojekte/ki-kundenservice/ | word | Garantie | ückerstattung nach 2 Monaten (außerhalb Garantie), Kunde verärgert, persönlich antworten",
-    "/Webprojekte/ki-kundenservice/ | word | spart | ht automatisch hinaus. Was spart das pro Monat? Eine Schätzung für Ihr",
-    "/Webprojekte/ki-kundenservice/ | word | spart | Wochen pro Monat, ein geprüfter Entwurf spart 70 % der Zeit einer Standardantwort, Ih",
-    "/Webprojekte/ki-kundenservice/ | price | 199 € | aufdatum prüfen, Rückzahlung Grundkurs (199 €) auslösen, Zugang beenden Mai",
-    "/Webprojekte/ki-kundenservice/ | price | 199 € | barem Wert. Für den Grundkurs wären das 199 €. Der Gutschein ist 3 Jahre gültig, dein",
-    "/Webprojekte/ki-kundenservice/ | price | 25 € | einer Standardantwort, Ihr Team kostet 25 € pro Stunde. Mails pro Woche",
-    "/Webprojekte/ki-kundenservice/ | price | 546 € | s. 21,8 Stunden pro Monat gespart 546 € pro Monat Standardantworten kosten Ih"
-  ]
+  "max": 0,
+  "note": "Empty since 18.11.2026: the two KI texts on /Webprojekte/ki-kundenservice/ changed, the invented mails and the calculator are in the allow-list (Iva).",
+  "hits": []
 }

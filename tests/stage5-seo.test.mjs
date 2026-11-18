@@ -360,10 +360,11 @@ test('sitemap contains exactly the live pages, with lastmod from page_dates', ()
   assert.equal(locs.length, 17); // Qualität 17.11.2026: + /qualitaet/ (DE only)
   assert.equal(config.page_dates.website, '2026-10-28');
   // Stage 6 (29.10.2026): the KI demo and calculator moved to the KI page, the video to the launch page.
-  assert.equal(config.page_dates.ki, '2026-10-29');
+  assert.equal(config.page_dates.ki, '2026-11-18'); // 18.11.2026: the calculator note (Wortfilter)
   assert.equal(config.page_dates.launch, '2026-11-05'); // Stage 6h: «Gut zu wissen»
   // Iva's corrections of 29.10.2026 changed these two pages.
-  for (const k of ['spam', 'activecampaign']) assert.equal(config.page_dates[k], '2026-10-29', k);
+  assert.equal(config.page_dates.activecampaign, '2026-10-29');
+  assert.equal(config.page_dates.spam, '2026-11-18'); // 18.11.2026: the problem line (Wortfilter)
   assert.match(xml, new RegExp(`<loc>${SITE}/en/course-launch-tech/</loc>\\s*<lastmod>2026-11-05</lastmod>\\s*<xhtml:link rel="alternate" hreflang="de" href="${SITE}/launch-technik/"/>`));
 });
 

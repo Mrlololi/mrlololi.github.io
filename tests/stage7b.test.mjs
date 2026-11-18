@@ -67,6 +67,9 @@ test('1f. weight ratchet: home DOM within the ceiling of design-debt.json (1,850
     for (const p of ['/', '/en/']) {
       await page.goto(server.url + p, { waitUntil: 'load' });
       await page.waitForTimeout(1500);
+      // The count is taken with every mascot at rest: a hop on load (joy has more arm and mouth shapes) or a
+      // pose crossfade copy is not page weight. The hero rests 3 s in each 7.3 s round (wait at most 10 s).
+      await page.waitForFunction(() => !document.querySelector('[data-fading], svg.mascot[data-jumping]') && [...document.querySelectorAll('svg.mascot[data-base]')].every((m) => m.dataset.emo === m.dataset.base), null, { timeout: 10000, polling: 50 }).catch(() => {});
       assert.ok(await page.locator('.hero').count(), `${p}: the home page itself, not 404.html`);
       const n = await page.evaluate(() => document.querySelectorAll('*').length);
       assert.ok(n <= weight.homeDom, `${p}: ${n} elements`);

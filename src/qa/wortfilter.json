@@ -124,6 +124,13 @@
       ],
       "phrase": "keine Garantie",
       "reason": "negated: says that something is NOT guaranteed (brief part A)"
+    },
+    {
+      "pages": [
+        "/Webprojekte/ki-kundenservice/"
+      ],
+      "phrase": "außerhalb Garantie",
+      "reason": "an invented customer mail of the demo school (Iva 18.11.2026)"
     }
   ],
   "prices": {
@@ -136,6 +143,12 @@
           "/en/ai-reply-drafts/"
         ],
         "reason": "calculator inputs and outputs (user assumptions)"
+      },
+      {
+        "pages": [
+          "/Webprojekte/ki-kundenservice/"
+        ],
+        "reason": "invented customer mails (Grundkurs 199 €) and the calculator: assumptions and results (25 € per hour, 546 € per month), Iva 18.11.2026"
       }
     ]
   },
