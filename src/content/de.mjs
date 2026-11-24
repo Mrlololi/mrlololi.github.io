@@ -397,7 +397,7 @@ export default {
       // Stage 7b-S section 8, UPDATE 19.11.2026: neutral until the client says ok (no name, no link); the named
       // version waits in the branch zitat-claudia.
       title: 'Launch-Technik für eine Online-Kursanbieterin, 2026',
-      text: 'ActiveCampaign- und Zapier-Abläufe für Anmeldung, Launch, Onboarding und Zahlungserinnerungen, Landingpages in Leadpages, Rechnungen, Ratenzahlungen und Kurszugänge mit Quaderno und dem Mitgliederbereich, Live-Termine mit Zoom und Ecamm.',
+      text: 'Anmeldung, E-Mail-Abläufe, Zahlung und Kurszugang.',
     },
     case3: {
       title: 'E-Commerce für zwei deutsche Onlineshops, zweieinhalb Jahre',
@@ -680,6 +680,8 @@ export default {
       again: 'Nochmal abspielen',
       // Werkzeug «Ein Kauf»: one text link under the run-log section (Entwurf).
       toolLink: 'Was passiert, wenn ein Schritt fehlt? Selbst ausprobieren',
+      // R3 (December release): the teaser card instead of the embedded run-log.
+      reportLink: 'So sieht ein Technik-Bericht aus',
     },
     // Stage 6c (29.10.2026): every looping demo has one pause button; its name says which demo.
     c: {
@@ -775,13 +777,13 @@ export default {
       line: 'Selbst gebaut, keine Kundenarbeit.',
       shows: 'Was es zeigt:',
       play: 'Spielwiese und Lernprojekte',
-      all: 'Alle Webprojekte',
+      all: 'Weitere Projekte', // R3: Language Starter and GeoAPP are reached from there
       // Shortened from the «Was es zeigt» lines on mrlololi.com/Webprojekte/.
       items: [
         { key: 'ki', name: 'KI im Kundenservice', path: 'ki-kundenservice/', shows: 'KI-Entwürfe für Kundenmails. Ein Mensch gibt frei, nichts geht automatisch raus.' },
-        { key: 'langstarter', name: 'Language Starter', path: 'language-starter/?ui=de', shows: '66 erste Sätze in 42 Sprachen, mit Gruppenmodus, Plakat und Beamer.' },
+        { key: 'langstarter', name: 'Language Starter', path: 'language-starter/?ui=de', shows: '66 erste Sätze in 42 Sprachen, mit Gruppenmodus, Plakat und Beamer.', home: false },
         // Stage 6f: GeoAPP as a card too (line from its page).
-        { key: 'geoapp', name: 'GeoAPP', path: 'geoapp/?lang=de', shows: 'Eine kleine Lern-App für georgische Zahlen, mit Antwort zur Auswahl oder zum Eintippen.' },
+        { key: 'geoapp', name: 'GeoAPP', path: 'geoapp/?lang=de', shows: 'Eine kleine Lern-App für georgische Zahlen, mit Antwort zur Auswahl oder zum Eintippen.', home: false },
       ],
     },
     contact: { fallback: 'Öffnet sich nichts? Schreiben Sie an {email}', copy: 'Text kopieren', copied: 'Text kopiert', manual: 'Ihr Text zum Kopieren' },
@@ -924,6 +926,9 @@ export default {
           ['Übergabe.', 'Eine schriftliche Anleitung, damit Ihr Team weiß, was eingerichtet ist.'],
         ],
         example: 'spam',
+        // R3 (December release).
+        exampleText: 'Erfundenes Beispiel aus dem Musterbericht: Die Bestätigungsmail landete bei GMX im Spam, bei Gmail im Posteingang. Ursache: zwei SPF-Einträge und kein DMARC.',
+        need: ['Was ich von Ihnen brauche:', 'Zugang zu Ihrem Domain-Anbieter und die Absenderadresse.'],
         faq: [
           ['Wie schnell können Sie starten?', 'Einen Quick-Fix plane ich innerhalb einer Woche nach Ihrer Zusage ein.'],
           ['Was, wenn 4 Stunden nicht reichen?', '45 € pro Stunde für Pflege und alles außerhalb der Pakete, abgerechnet nach Aufwand in 15-Minuten-Schritten. Sie erfahren den Preis, bevor ich anfange.'],
@@ -1126,12 +1131,16 @@ export default {
   // Werkzeug «Ein Kauf» (docs/PROMPT_Werkzeug_Ein_Kauf_2026-11-13.md): the page texts; the six steps live in
   // src/content/kerne/launch.de.mjs. Path: config.werkzeug_ein_kauf_path. All texts are Entwurf.
   einKauf: {
-    title: 'Ein Kauf: Was, wenn ein Teil fehlt? | mrlololi',
-    description: 'Schalten Sie einen Schritt eines Online-Kurs-Kaufs aus und sehen Sie, was Ihre Käuferin dann erlebt. Mit Hinweis, wie ein Testkauf den Fehler vorher findet.',
+    // R3 (December release): title and meta; the H1 stays.
+    title: 'Testkauf vor dem Launch: Was passiert, wenn ein Schritt fehlt? | mrlololi',
+    description: 'Sechs Schritte eines Online-Kurs-Kaufs: Bestellung, Zahlung, Rechnung, Markierung, Zugang, Willkommens-Mail. Schalten Sie einen aus und sehen Sie, was Ihre Käuferin erlebt.',
     crumbs: ['Start', 'Werkzeuge', 'Ein Kauf'],
     h1: 'Ein Kauf: Was, wenn ein Teil fehlt?',
     lead: 'Schalten Sie einen Schritt aus und sehen Sie, was Ihre Käuferin dann erlebt.',
     label: 'Vereinfachtes Beispiel mit Beispieldaten. Keine Aussage über einen bestimmten Anbieter.',
+    // R3: once on top and once at the end; each panel only the short tag.
+    tag: 'Beispiel',
+    switchOn: 'aus',
     toolTitle: 'Die sechs Schritte eines Kaufs',
     switchOff: 'Schritt ausschalten',
     fehlt: 'fehlt',

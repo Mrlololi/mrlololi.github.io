@@ -162,11 +162,11 @@ test('projects: four cards, one link each (no nested links), 4:3 screenshots, KI
   // Stage 7b: the main card enters (data-enter).
   const cards = p.match(/<(?:li|div) class="proj(?: proj--main)?"(?: data-enter)?>[\s\S]*?<\/(?:li|div)>/g);
   assert.match(p, /<div class="proj proj--main" data-enter>/);
-  assert.match(p, /<ul class="projs projs--play" role="list" data-enter="stagger">/);
-  assert.equal(cards.length, 3);
-  for (const [i, n] of ['KI im Kundenservice', 'Language Starter', 'GeoAPP'].entries()) assert.ok(cards[i].includes(n), n);
-  assert.ok(!p.includes('KittyCats'));
-  assert.match(p, /<h3 class="projects__play">Spielwiese und Lernprojekte<\/h3>/);
+  // R3 (December release): Language Starter and GeoAPP left home; «Weitere Projekte» leads to /Webprojekte/.
+  assert.ok(!p.includes('projs--play') && !p.includes('Spielwiese und Lernprojekte'));
+  assert.equal(cards.length, 1);
+  assert.ok(!/KittyCats|Language Starter|GeoAPP/.test(p));
+  assert.ok(p.includes('>Weitere Projekte<'));
   assert.match(cards[0], /KI im Kundenservice/);
   for (const c of cards) {
     assert.equal((c.match(/<a /g) || []).length, 1, 'one link per card');
@@ -174,7 +174,7 @@ test('projects: four cards, one link each (no nested links), 4:3 screenshots, KI
     assert.match(c, /Was es zeigt:/);
   }
   assert.match(p, /Selbst gebaut, keine Kundenarbeit\./);
-  assert.match(p, /Alle Webprojekte/);
+  assert.match(p, /Weitere Projekte/); // R3
 });
 
 test('about: two paragraphs, photo, four-point timeline; no tool rows, no projects link', () => {

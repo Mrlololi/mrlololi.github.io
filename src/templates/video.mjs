@@ -1,6 +1,5 @@
 import config from '../config.json' with { type: 'json' };
 import { esc, accent, absUrl, fill } from './util.mjs';
-import { viewTabs } from './runlog.mjs';
 
 // Stage 6: the video «Der Weg einer Anmeldung» (50 s, German, no sound, text in the picture).
 // Stage 6g (4.11.2026): one <video> element. Phones held upright get the 9:16 file, everything else
@@ -52,6 +51,16 @@ ${videoEl(`${v.label}, ${t.s6.b.simplified}`)}
 </figure>`;
 }
 
+// R3 (December release): one teaser card instead of the embedded run-log (viewTabs stays in runlog.mjs, unused
+// on home): the tool page and the sample report.
+function teaser(t) {
+  const r = t.s6.r;
+  return `<div class="rl-teaser card">
+<p><a class="text-link" href="${config.werkzeug_ein_kauf_path}">${esc(r.toolLink)}</a></p>
+<p><a class="text-link" href="${config.check_report_url}">${esc(r.reportLink)}</a></p>
+</div>`;
+}
+
 // Home block 3 (DE).
 export function videoBlock(t) {
   const v = t.s6.video;
@@ -61,8 +70,8 @@ export function videoBlock(t) {
 <h2 id="video-title" data-enter="lines">${accent(v.h2)}</h2>
 <p class="lead">${esc(v.text)}</p>
 </div>
-${viewTabs(t, videoFigure(t))}${t.s6.r.toolLink ? `
-<a class="text-link rl-toollink" href="${config.werkzeug_ein_kauf_path}">${esc(t.s6.r.toolLink)}</a>` : ''}
+${videoFigure(t)}
+${teaser(t)}
 <p class="vid__cta"><span>${esc(t.s6.b.ctaLine)}</span> <a class="btn btn--secondary btn--sm" href="#contact">${esc(t.s6.b.cta)}</a></p>
 </div>
 </section>`;
@@ -78,9 +87,10 @@ export function stepStrip(t) {
 <h2 id="path-title" data-enter="lines">${accent(s.h2)}</h2>
 <p class="lead">${esc(s.text)}</p>
 </div>
-${viewTabs(t, `<ol class="strip" role="list">
+<ol class="strip" role="list">
 ${f.nodes.map((n, i) => `<li class="strip__step card strip__step--${i + 1}"><span class="strip__node">${esc(n)}</span><p>${esc(f.lines[i])}</p></li>`).join('\n')}
-</ol>`)}
+</ol>
+${teaser(t)}
 <p class="vid__cta"><span>${esc(t.s6.b.ctaLine)}</span> <a class="btn btn--secondary btn--sm" href="#contact">${esc(t.s6.b.cta)}</a></p>
 </div>
 </section>`;

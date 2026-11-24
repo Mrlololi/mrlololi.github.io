@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light">
-<title>Ein Kauf: Was, wenn ein Teil fehlt? | mrlololi</title>
-<meta name="description" content="Schalten Sie einen Schritt eines Online-Kurs-Kaufs aus und sehen Sie, was Ihre Käuferin dann erlebt. Mit Hinweis, wie ein Testkauf den Fehler vorher findet.">
+<title>Testkauf vor dem Launch: Was passiert, wenn ein Schritt fehlt? | mrlololi</title>
+<meta name="description" content="Sechs Schritte eines Online-Kurs-Kaufs: Bestellung, Zahlung, Rechnung, Markierung, Zugang, Willkommens-Mail. Schalten Sie einen aus und sehen Sie, was Ihre Käuferin erlebt.">
 <link rel="canonical" href="https://mrlololi.com/werkzeuge/ein-kauf/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="mrlololi">
-<meta property="og:title" content="Ein Kauf: Was, wenn ein Teil fehlt? | mrlololi">
-<meta property="og:description" content="Schalten Sie einen Schritt eines Online-Kurs-Kaufs aus und sehen Sie, was Ihre Käuferin dann erlebt. Mit Hinweis, wie ein Testkauf den Fehler vorher findet.">
+<meta property="og:title" content="Testkauf vor dem Launch: Was passiert, wenn ein Schritt fehlt? | mrlololi">
+<meta property="og:description" content="Sechs Schritte eines Online-Kurs-Kaufs: Bestellung, Zahlung, Rechnung, Markierung, Zugang, Willkommens-Mail. Schalten Sie einen aus und sehen Sie, was Ihre Käuferin erlebt.">
 <meta property="og:url" content="https://mrlololi.com/werkzeuge/ein-kauf/">
 <meta property="og:image" content="https://mrlololi.com/assets/og/de-ein-kauf.png">
 <meta property="og:image:width" content="1200">
@@ -18,8 +18,8 @@
 <meta property="og:locale" content="de_AT">
 <meta property="og:locale:alternate" content="en_GB">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Ein Kauf: Was, wenn ein Teil fehlt? | mrlololi">
-<meta name="twitter:description" content="Schalten Sie einen Schritt eines Online-Kurs-Kaufs aus und sehen Sie, was Ihre Käuferin dann erlebt. Mit Hinweis, wie ein Testkauf den Fehler vorher findet.">
+<meta name="twitter:title" content="Testkauf vor dem Launch: Was passiert, wenn ein Schritt fehlt? | mrlololi">
+<meta name="twitter:description" content="Sechs Schritte eines Online-Kurs-Kaufs: Bestellung, Zahlung, Rechnung, Markierung, Zugang, Willkommens-Mail. Schalten Sie einen aus und sehen Sie, was Ihre Käuferin erlebt.">
 <meta name="twitter:image" content="https://mrlololi.com/assets/og/de-ein-kauf.png">
 <meta name="theme-color" content="#F4C9D3">
 <link rel="icon" href="/assets/brand/favicon.ico" sizes="16x16 32x32 48x48">
@@ -910,6 +910,7 @@ html:not(.js) .brief__preview { display: none; }
 .svc-door__links { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4); }
 .svc-door--link { background: none; padding: 0; }
 .q-claim { margin-top: var(--space-2); font-weight: 700; }
+.rl-teaser { display: grid; gap: var(--space-2); max-width: 46rem; margin: var(--space-5) auto 0; padding: var(--space-4); }
 .item__actions { display: grid; justify-items: start; align-content: end; gap: var(--space-1); }
 .item__more { position: relative; z-index: 1; display: inline-flex; align-items: center; min-height: 2.75rem; font-size: var(--step--1); font-weight: 700; }
 .item__cta { margin: 0; }
@@ -1703,6 +1704,8 @@ html:not(.js) .faq__cats { display: none; }
 .ek-switch__nr { display: inline-grid; place-items: center; flex: none; width: 1.5rem; height: 1.5rem; border-radius: var(--radius-pill); background: var(--pist-tint); font-weight: 700; }
 .ek-switch[aria-pressed="true"] { background: var(--ink); color: var(--card); border-color: var(--ink); }
 .ek-switch[aria-pressed="true"] .ek-switch__nr { background: var(--card); color: var(--ink); }
+.ek-switch__off { display: none; margin-left: auto; font-weight: 700; }
+.ek-switch[aria-pressed="true"] .ek-switch__off { display: inline; }
 .rl--kauf { grid-template-columns: minmax(0, 1fr); }
 .rl--kauf .rl__stage, .rl--kauf .rl__protocol { grid-column: auto; grid-row: auto; }
 .rl--kauf .rl__fehlt, .rl--kauf .rl__kommt, .rl--kauf .rl__log .i[data-icon="cross"] { display: none; }
@@ -1797,12 +1800,12 @@ html:not([data-motion="paused"]) .rl--kauf .rl__log.is-off .i[data-icon="cross"]
 <div class="ek-grid">
 <div class="ek-log">
 <ol class="ek-switches" role="list">
-<li><button class="ek-switch btn btn--secondary btn--sm" type="button" aria-pressed="false" data-step="bestellung" data-missing="zahlung rechnung markierung zugang willkommen"><span class="ek-switch__nr" aria-hidden="true">1</span><span class="ek-switch__text">Schritt ausschalten</span><span class="sr-only">: Bestellformular</span></button></li>
-<li><button class="ek-switch btn btn--secondary btn--sm" type="button" aria-pressed="false" data-step="zahlung" data-missing="rechnung markierung zugang willkommen"><span class="ek-switch__nr" aria-hidden="true">2</span><span class="ek-switch__text">Schritt ausschalten</span><span class="sr-only">: Zahlung</span></button></li>
-<li><button class="ek-switch btn btn--secondary btn--sm" type="button" aria-pressed="false" data-step="rechnung" data-missing=""><span class="ek-switch__nr" aria-hidden="true">3</span><span class="ek-switch__text">Schritt ausschalten</span><span class="sr-only">: Rechnung</span></button></li>
-<li><button class="ek-switch btn btn--secondary btn--sm" type="button" aria-pressed="false" data-step="markierung" data-missing=""><span class="ek-switch__nr" aria-hidden="true">4</span><span class="ek-switch__text">Schritt ausschalten</span><span class="sr-only">: Markierung</span></button></li>
-<li><button class="ek-switch btn btn--secondary btn--sm" type="button" aria-pressed="false" data-step="zugang" data-missing=""><span class="ek-switch__nr" aria-hidden="true">5</span><span class="ek-switch__text">Schritt ausschalten</span><span class="sr-only">: Zugang</span></button></li>
-<li><button class="ek-switch btn btn--secondary btn--sm" type="button" aria-pressed="false" data-step="willkommen" data-missing=""><span class="ek-switch__nr" aria-hidden="true">6</span><span class="ek-switch__text">Schritt ausschalten</span><span class="sr-only">: Willkommens-Mail</span></button></li>
+<li><button class="ek-switch btn btn--secondary btn--sm" type="button" aria-pressed="false" data-step="bestellung" data-missing="zahlung rechnung markierung zugang willkommen"><span class="ek-switch__nr" aria-hidden="true">1</span><span class="sr-only">Schritt ausschalten: </span><span class="ek-switch__text">Bestellformular</span><span class="ek-switch__off" aria-hidden="true">aus</span></button></li>
+<li><button class="ek-switch btn btn--secondary btn--sm" type="button" aria-pressed="false" data-step="zahlung" data-missing="rechnung markierung zugang willkommen"><span class="ek-switch__nr" aria-hidden="true">2</span><span class="sr-only">Schritt ausschalten: </span><span class="ek-switch__text">Zahlung</span><span class="ek-switch__off" aria-hidden="true">aus</span></button></li>
+<li><button class="ek-switch btn btn--secondary btn--sm" type="button" aria-pressed="false" data-step="rechnung" data-missing=""><span class="ek-switch__nr" aria-hidden="true">3</span><span class="sr-only">Schritt ausschalten: </span><span class="ek-switch__text">Rechnung</span><span class="ek-switch__off" aria-hidden="true">aus</span></button></li>
+<li><button class="ek-switch btn btn--secondary btn--sm" type="button" aria-pressed="false" data-step="markierung" data-missing=""><span class="ek-switch__nr" aria-hidden="true">4</span><span class="sr-only">Schritt ausschalten: </span><span class="ek-switch__text">Markierung</span><span class="ek-switch__off" aria-hidden="true">aus</span></button></li>
+<li><button class="ek-switch btn btn--secondary btn--sm" type="button" aria-pressed="false" data-step="zugang" data-missing=""><span class="ek-switch__nr" aria-hidden="true">5</span><span class="sr-only">Schritt ausschalten: </span><span class="ek-switch__text">Zugang</span><span class="ek-switch__off" aria-hidden="true">aus</span></button></li>
+<li><button class="ek-switch btn btn--secondary btn--sm" type="button" aria-pressed="false" data-step="willkommen" data-missing=""><span class="ek-switch__nr" aria-hidden="true">6</span><span class="sr-only">Schritt ausschalten: </span><span class="ek-switch__text">Willkommens-Mail</span><span class="ek-switch__off" aria-hidden="true">aus</span></button></li>
 </ol>
 <div class="rl rl--kauf is-end" data-step="5" data-total="6" data-step-of="Schritt {n} von {total}">
 <div class="rl__stage">
@@ -1826,7 +1829,7 @@ html:not([data-motion="paused"]) .rl--kauf .rl__log.is-off .i[data-icon="cross"]
 <section class="ek-panel" id="bestellung" data-entry="bestellung" aria-labelledby="ek-bestellung-h">
 <p class="ek-panel__step"><span class="ek-panel__nr">1</span> Bestellformular</p>
 <h3 id="ek-bestellung-h">«Ich habe auf Kaufen geklickt, und nichts ist passiert.»</h3>
-<p class="ek-panel__label">Vereinfachtes Beispiel mit Beispieldaten. Keine Aussage über einen bestimmten Anbieter.</p>
+<p class="ek-panel__label"><span class="label label--lav">Beispiel</span></p>
 <dl class="ek-panel__rows">
 <dt>Was Ihre Käuferin sieht</dt><dd>Das Formular lädt neu oder zeigt einen Fehler. Eine Bestätigung kommt nicht.</dd>
 <dt>Was Sie sehen</dt><dd>Keine neue Bestellung. Keine Meldung.</dd>
@@ -1843,7 +1846,7 @@ html:not([data-motion="paused"]) .rl--kauf .rl__log.is-off .i[data-icon="cross"]
 <section class="ek-panel" id="zahlung" data-entry="zahlung" aria-labelledby="ek-zahlung-h">
 <p class="ek-panel__step"><span class="ek-panel__nr">2</span> Zahlung</p>
 <h3 id="ek-zahlung-h">«Die Zahlung ist nicht durchgegangen.»</h3>
-<p class="ek-panel__label">Vereinfachtes Beispiel mit Beispieldaten. Keine Aussage über einen bestimmten Anbieter.</p>
+<p class="ek-panel__label"><span class="label label--lav">Beispiel</span></p>
 <dl class="ek-panel__rows">
 <dt>Was Ihre Käuferin sieht</dt><dd>Beim Bezahlen erscheint eine Fehlermeldung, oder die Seite bleibt hängen.</dd>
 <dt>Was Sie sehen</dt><dd>Keine Zahlung. Höchstens ein abgebrochener Versuch.</dd>
@@ -1860,7 +1863,7 @@ html:not([data-motion="paused"]) .rl--kauf .rl__log.is-off .i[data-icon="cross"]
 <section class="ek-panel" id="rechnung" data-entry="rechnung" aria-labelledby="ek-rechnung-h">
 <p class="ek-panel__step"><span class="ek-panel__nr">3</span> Rechnung</p>
 <h3 id="ek-rechnung-h">«Ich brauche eine Rechnung, aber ich habe keine bekommen.»</h3>
-<p class="ek-panel__label">Vereinfachtes Beispiel mit Beispieldaten. Keine Aussage über einen bestimmten Anbieter.</p>
+<p class="ek-panel__label"><span class="label label--lav">Beispiel</span></p>
 <dl class="ek-panel__rows">
 <dt>Was Ihre Käuferin sieht</dt><dd>Die Zahlungsbestätigung ist da, die Rechnung nicht.</dd>
 <dt>Was Sie sehen</dt><dd>Nichts. Die Zahlung ist ja eingegangen.</dd>
@@ -1877,7 +1880,7 @@ html:not([data-motion="paused"]) .rl--kauf .rl__log.is-off .i[data-icon="cross"]
 <section class="ek-panel" id="markierung" data-entry="markierung" aria-labelledby="ek-markierung-h">
 <p class="ek-panel__step"><span class="ek-panel__nr">4</span> Markierung</p>
 <h3 id="ek-markierung-h">«Ich habe schon gekauft. Warum bekomme ich noch Angebote?»</h3>
-<p class="ek-panel__label">Vereinfachtes Beispiel mit Beispieldaten. Keine Aussage über einen bestimmten Anbieter.</p>
+<p class="ek-panel__label"><span class="label label--lav">Beispiel</span></p>
 <dl class="ek-panel__rows">
 <dt>Was Ihre Käuferin sieht</dt><dd>Sie bekommt weiter die Verkaufsmails, die für Interessentinnen gedacht sind.</dd>
 <dt>Was Sie sehen</dt><dd>Nichts. In der Liste fehlt bei ihr nur die Markierung.</dd>
@@ -1894,7 +1897,7 @@ html:not([data-motion="paused"]) .rl--kauf .rl__log.is-off .i[data-icon="cross"]
 <section class="ek-panel" id="zugang" data-entry="zugang" aria-labelledby="ek-zugang-h">
 <p class="ek-panel__step"><span class="ek-panel__nr">5</span> Zugang</p>
 <h3 id="ek-zugang-h">«Bezahlt, aber kein Zugang.»</h3>
-<p class="ek-panel__label">Vereinfachtes Beispiel mit Beispieldaten. Keine Aussage über einen bestimmten Anbieter.</p>
+<p class="ek-panel__label"><span class="label label--lav">Beispiel</span></p>
 <dl class="ek-panel__rows">
 <dt>Was Ihre Käuferin sieht</dt><dd>Die Zahlung ist bestätigt, aber der Kurs ist nicht freigeschaltet oder das Login geht nicht.</dd>
 <dt>Was Sie sehen</dt><dd>Die Zahlung ist da, der Zugang fehlt. Das sehen Sie erst, wenn sie schreibt.</dd>
@@ -1911,7 +1914,7 @@ html:not([data-motion="paused"]) .rl--kauf .rl__log.is-off .i[data-icon="cross"]
 <section class="ek-panel" id="willkommen" data-entry="willkommen" aria-labelledby="ek-willkommen-h">
 <p class="ek-panel__step"><span class="ek-panel__nr">6</span> Willkommens-Mail</p>
 <h3 id="ek-willkommen-h">«Ich weiß nicht, wie ich in den Kurs komme.»</h3>
-<p class="ek-panel__label">Vereinfachtes Beispiel mit Beispieldaten. Keine Aussage über einen bestimmten Anbieter.</p>
+<p class="ek-panel__label"><span class="label label--lav">Beispiel</span></p>
 <dl class="ek-panel__rows">
 <dt>Was Ihre Käuferin sieht</dt><dd>Keine Willkommens-Mail im Posteingang. Vielleicht liegt sie im Spam.</dd>
 <dt>Was Sie sehen</dt><dd>Die Mail steht als gesendet da.</dd>
@@ -1941,6 +1944,7 @@ html:not([data-motion="paused"]) .rl--kauf .rl__log.is-off .i[data-icon="cross"]
 <h2>Wenn Sie das nicht selbst prüfen möchten</h2>
 <p>Im Technik-Check gehe ich Ihren Ablauf einen Tag lang wie eine Käuferin durch und gebe Ihnen eine Liste mit Prioritäten, Aufwand und Preisen.</p>
 <p><a class="text-link" href="/musterbericht/technik-check/">So sieht ein Bericht aus</a></p>
+<p class="ek-label ek-label--end">Vereinfachtes Beispiel mit Beispieldaten. Keine Aussage über einen bestimmten Anbieter.</p>
 <div class="ek-exit">
 <p class="ek-exit__lead">So fange ich das ab:</p>
 <a class="btn btn--primary" href="/?paket=check&amp;quelle=ein-kauf#contact">Technik-Check, 290 €</a>

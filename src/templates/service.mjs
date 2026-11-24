@@ -122,7 +122,7 @@ ${extLink(config.case1_url, esc(c1.domain), t, { cls: 'ref__site' })}
 ${quote(t, c1.quote)}
 </article>`;
   }
-  if (s.example === 'spam') return `<figure class="svc-figure">${spamSvg(t)}</figure>`;
+  if (s.example === 'spam') return `${s.exampleText ? `<p class="svc-text">${esc(s.exampleText)}</p>\n` : ''}<figure class="svc-figure">${spamSvg(t)}</figure>`;
   if (s.example === 'ki') return `${kiDemo(t, config, { live })}
 ${calculator(t)}`;
   return '';
@@ -202,7 +202,7 @@ ${section('problem', 'bg-pink', L.problem, `<p class="svc-text">${s.problem.map(
 <p>${esc(s.explain.text)}${s.explain.note ? ` ${esc(note(config, s.explain.note, t.lang))}` : ''}</p>
 </aside>` : ''}`)}
 ${section('does', 'bg-blue', L.does, `<ul class="svc-list">${list.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>
-${text.map((p) => `<p class="svc-text">${esc(p)}</p>`).join('\n')}
+${text.map((p) => `<p class="svc-text">${esc(p)}</p>`).join('\n')}${s.need ? `\n<p class="svc-text svc-need"><strong>${esc(s.need[0])}</strong> ${esc(s.need[1])}</p>` : ''}
 <ul class="svc-pkgs" role="list">
 ${cards}
 </ul>${s.explain?.place === 'does' ? `

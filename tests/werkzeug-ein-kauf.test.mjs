@@ -33,7 +33,8 @@ test('the page: DE, one config value for the path, the six permanent anchors, si
 test('every panel: the label line, the buyer sentence as title, the invented mail with its label and the KI link', () => {
   for (const k of kauf) {
     const s = html.split(`<section class="ek-panel" id="${k.id}"`)[1].split('</section>')[0];
-    assert.ok(s.includes(`<p class="ek-panel__label">${de.einKauf.label}</p>`), k.id);
+    // R3 (December release): the short tag per panel; the full label once on top and once at the end.
+    assert.ok(s.includes('<p class="ek-panel__label"><span class="label label--lav">Beispiel</span></p>') && !s.includes(de.einKauf.label), k.id);
     assert.ok(s.includes(`«${k.kaeuferinSatz}»`), k.id);
     assert.ok(s.includes('<figcaption class="label label--peach">erfundene Nachricht</figcaption>'), k.id);
     assert.ok(s.includes('href="/Webprojekte/ki-kundenservice/">So sortiert eine KI solche Mails vor</a>'), k.id);
@@ -53,13 +54,14 @@ test('exit: one priced exit from the package data, paket=check and quelle=ein-ka
 });
 
 test('head: title, description 120-160, WebApplication and BreadcrumbList; the home links the page under the run-log', () => {
-  assert.match(html, /<title>Ein Kauf: Was, wenn ein Teil fehlt\? \| mrlololi<\/title>/);
-  const d = de.einKauf.description.length;
-  assert.ok(d >= 120 && d <= 160, d);
+  // R3 (December release): title and description from the brief, word for word (172 characters, named in the report).
+  assert.match(html, /<title>Testkauf vor dem Launch: Was passiert, wenn ein Schritt fehlt\? \| mrlololi<\/title>/);
+  assert.ok(html.includes('<meta name="description" content="Sechs Schritte eines Online-Kurs-Kaufs: Bestellung, Zahlung, Rechnung, Markierung, Zugang, Willkommens-Mail. Schalten Sie einen aus und sehen Sie, was Ihre Käuferin erlebt.">'));
+  assert.equal((html.match(new RegExp(de.einKauf.label.replace(/[.]/g, '\\.'), 'g')) || []).length, 2, 'label on top and at the end');
   assert.match(html, /"@type":"WebApplication","name":"Ein Kauf: Was, wenn ein Teil fehlt\?","url":"https:\/\/mrlololi.com\/werkzeuge\/ein-kauf\/","applicationCategory":"BusinessApplication"/);
   assert.match(html, /"isAccessibleForFree":true,"inLanguage":"de","author":\{"@id":"https:\/\/mrlololi.com\/#iva"\}/);
   assert.match(html, /"@type":"BreadcrumbList"/);
-  assert.ok(by['index.html'].includes(`<a class="text-link rl-toollink" href="${P}">Was passiert, wenn ein Schritt fehlt? Selbst ausprobieren</a>`));
+  assert.ok(by['index.html'].includes(`<p><a class="text-link" href="${P}">Was passiert, wenn ein Schritt fehlt? Selbst ausprobieren</a></p>`)); // R3 teaser card
 });
 
 test('word check on the page text (Wortfilter lists for /werkzeuge/ein-kauf/ and the tool scope)', () => {

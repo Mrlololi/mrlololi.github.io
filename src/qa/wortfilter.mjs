@@ -128,10 +128,13 @@ export function labelHits(pagesHtml, entries, rules = RULES) {
   const hits = [];
   for (const e of entries) {
     if (!e.id) { hits.push({ page: '(content)', kind: 'label', list: 'labels', word: 'id', context: `flagged entry without id: ${JSON.stringify(e).slice(0, 80)}` }); continue; }
-    const where = pagesHtml.map(({ page, html }) => ({ page, part: entryHtml(html, e.id) })).filter((x) => x.part);
-    for (const { page, part } of where) {
+    const where = pagesHtml.map(({ page, html }) => ({ page, html, part: entryHtml(html, e.id) })).filter((x) => x.part);
+    for (const { page, html, part } of where) {
       const text = visibleText(part);
-      if (isFlag(e, 'beispiel') && !rules.labels.beispiel.some((l) => wordRe(l).test(text))) hits.push({ page, kind: 'label', list: 'labels', word: 'Beispiel', context: `${e.id}: no «${rules.labels.beispiel.join('» or «')}»` });
+      const full = (s) => rules.labels.beispiel.some((l) => wordRe(l).test(s));
+      // R3: the short tag inside the element counts when the page shows the full label.
+      const tagged = rules.labels.beispielTag && wordRe(rules.labels.beispielTag).test(text) && full(visibleText(html));
+      if (isFlag(e, 'beispiel') && !full(text) && !tagged) hits.push({ page, kind: 'label', list: 'labels', word: 'Beispiel', context: `${e.id}: no «${rules.labels.beispiel.join('» or «')}»` });
       if (isFlag(e, 'drittanbieter') && !new RegExp(rules.labels.drittanbieter, 'u').test(text)) hits.push({ page, kind: 'label', list: 'labels', word: 'Stand', context: `${e.id}: no «Stand: <Datum>»` });
     }
   }

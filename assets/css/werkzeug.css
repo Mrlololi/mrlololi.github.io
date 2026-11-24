@@ -16,6 +16,9 @@
 .ek-switch__nr { display: inline-grid; place-items: center; flex: none; width: 1.5rem; height: 1.5rem; border-radius: var(--radius-pill); background: var(--pist-tint); font-weight: 700; }
 .ek-switch[aria-pressed="true"] { background: var(--ink); color: var(--card); border-color: var(--ink); }
 .ek-switch[aria-pressed="true"] .ek-switch__nr { background: var(--card); color: var(--ink); }
+/* R3 (December release): the step name on the switch; «aus» shows while it is pressed. */
+.ek-switch__off { display: none; margin-left: auto; font-weight: 700; }
+.ek-switch[aria-pressed="true"] .ek-switch__off { display: inline; }
 
 /* The run-log without its start form: one column (stage above the protocol). */
 .rl--kauf { grid-template-columns: minmax(0, 1fr); }

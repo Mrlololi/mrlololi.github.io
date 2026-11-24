@@ -23,7 +23,7 @@ test('pause: no button on the pictures, the global toggle in header and footer, 
   for (const f of ['index.html', 'en/index.html', 'impressum/index.html', '404.html']) assert.equal((byFile[f].match(/<button class="motion-toggle/g) || []).length, 2, f);
   assert.match(deHome, /<button class="motion-toggle btn btn--secondary btn--sm motion-toggle--head" type="button" aria-pressed="false"/);
   assert.match(byFile['ki-antwortentwuerfe/index.html'], /class="loopctl btn btn--secondary btn--sm" type="button"/);
-  assert.match(deHome, /<div class="rl__ctl">/);
+  assert.ok(!deHome.includes('class="rl__ctl"'), 'R3: the run-log left home (teaser card)');
   assert.ok(!/class="replay\b/.test(deHome), 'no «Nochmal ansehen» button while it loops');
   for (const f of ['main.js', 'prices.js', 'fixdemos.js', 'sections.js']) assert.match(js(f), /tap: /, f);
 });
@@ -58,29 +58,19 @@ test('slider «Chaos / Geordnet» is back as the opener of the problem cards, co
   assert.match(p, /<figure class="ba">[\s\S]*viewBox="0 0 440 180"[\s\S]*<input class="ba__range" type="range"/);
 });
 
-test('run-log: the second tab of the video frame, a purchase in six steps, runlog.js only on the tab (Stage 6f)', () => {
-  for (const [h, tabs] of [[deHome, ['Video', 'Schritt für Schritt']], [byFile['en/index.html'], ['Overview', 'Step by step']]]) {
-    assert.match(h, /<div class="vtabs__list" role="tablist" aria-label="[^"]+">/);
-    assert.ok(h.includes(`aria-selected="true">${tabs[0]}</button>`) && h.includes(`aria-selected="false" tabindex="-1" aria-describedby="vtab-2-desc">${tabs[1]}</button>`));
-    assert.equal((h.match(/<li class="rl__step/g) || []).length, 6);
-    assert.ok(!/runlog__open|runlog-tpl/.test(h), 'the separate block and its button are gone');
+// R3 (December release): the embedded run-log became one teaser card (the tool page and the sample report);
+// runlog.js stays for /werkzeuge/ein-kauf/.
+test('run-log: home shows the teaser card instead of the embedded run-log (R3)', () => {
+  for (const [h, tool, report] of [[deHome, 'Was passiert, wenn ein Schritt fehlt? Selbst ausprobieren', 'So sieht ein Technik-Bericht aus'], [byFile['en/index.html'], 'What happens when a step is missing? Try it yourself (in German)', 'Sample report (in German)']]) {
+    assert.ok(!h.includes('class="vtabs') && !h.includes('<li class="rl__step'), 'no tabs, no run-log');
+    assert.ok(h.includes(`<div class="rl-teaser card">\n<p><a class="text-link" href="/werkzeuge/ein-kauf/">${tool}</a></p>\n<p><a class="text-link" href="/musterbericht/technik-check/">${report}</a></p>\n</div>`));
     assert.ok(!/runlog\.(css|js)/.test(h), 'runlog.js is not linked in the page');
   }
-  // Stage 7b: the titles are also card titles of the picture cards.
-  for (const x of ['Bestellformular', 'Zahlung (Stripe)', 'Rechnung (Quaderno)', 'Markierung', 'Zugang: Mitgliederbereich', 'Willkommens-Mail']) assert.ok(deHome.includes(`<span class="rl__title card__title">${x}</span>`), x);
-  assert.match(deHome, /<input id="rl-name" name="first" type="text" value="Anna"/);
-  assert.match(deHome, /Nur eine Demo, es wird nichts gesendet\./);
-  assert.ok(!/type="email"[^>]*id="rl-|id="rl-[^"]*"[^>]*type="email"/.test(deHome), 'never an e-mail field');
-  assert.match(deHome, /Zeitlupe\. In Wirklichkeit dauert das nach der Zahlung nur Sekunden\./);
-  assert.ok(!/2,3 Sekunden|2\.3 seconds/.test(deHome + byFile['en/index.html']), 'no seconds claim');
   const r = js('runlog.js');
   // Stage 7b: one beat is the kit's BEAT (1800 ms) instead of the run-log's own 1 s step.
   assert.match(r, /import \{[^}]*\bBEAT\b[^}]*\} from '\.\/kit\/motion\.js';/);
   assert.match(js('kit/motion.js'), /export const BEAT = 1800;/);
   assert.match(r, /const HOLD = 4000;/);
-  assert.match(r, /const ROUNDS = 3;/);
-  assert.match(r, /const AUTO = 4000;/);
-  assert.match(js('main.js'), /import\('\.\/runlog\.js'\)/);
 });
 
 test('old run-log behind «Ablauf selbst ausprobieren» (Stage 6e): kept in src/_alt only', () => {

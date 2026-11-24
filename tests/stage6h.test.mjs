@@ -55,10 +55,10 @@ test('2. honest numbers: «vereinfachtes Beispiel» at the counters, assumptions
 
 test('3. showcase: the KI card first, «Spielwiese und Lernprojekte» with GeoAPP and Language Starter, no KittyCats on home', () => {
   const p = deHome.slice(deHome.indexOf('id="projects"'), deHome.indexOf('id="faq"'));
-  assert.ok(p.indexOf('KI im Kundenservice') < p.indexOf('Spielwiese und Lernprojekte'));
-  assert.ok(p.indexOf('Spielwiese und Lernprojekte') < p.indexOf('Language Starter') && p.indexOf('Spielwiese und Lernprojekte') < p.indexOf('GeoAPP'));
-  assert.ok(!/KittyCats|kittycats/.test(p));
-  assert.match(enHome, /Playground and learning projects/);
+  // R3 (December release): only the KI card on home; the others stay on /Webprojekte/ («Weitere Projekte»).
+  assert.ok(p.includes('KI im Kundenservice') && !/Spielwiese|Language Starter|GeoAPP|KittyCats|kittycats/.test(p));
+  assert.ok(!/Playground and learning projects/.test(enHome) && enHome.includes('>More projects<'));
+  assert.ok(de.s6.projects.items.some((x) => x.key === 'geoapp' && x.home === false), 'kept in the sources');
   assert.ok(!de.s6.projects.items.some((x) => x.key === 'kittycats'), 'Stage 7a: KittyCats gone from the sources');
 });
 

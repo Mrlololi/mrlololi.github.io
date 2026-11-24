@@ -391,7 +391,7 @@ export default {
     case2: {
       // Stage 7b-S section 8, UPDATE 19.11.2026: neutral (see de.mjs).
       title: 'Launch tech for an online course creator, 2026',
-      text: 'ActiveCampaign and Zapier flows for sign-up, launch, onboarding and payment reminders, landing pages in Leadpages, invoices, instalments and course access with Quaderno and the members area, live sessions with Zoom and Ecamm.',
+      text: 'Sign-up, email flows, payment and course access.',
     },
     case3: {
       title: 'E-commerce for two German online shops, two and a half years',
@@ -650,6 +650,9 @@ export default {
       tabsLabel: 'View',
       tabs: ['Overview', 'Step by step'],
       describe: 'Try the flow yourself',
+      // R3 (December release): the teaser card (the tool and the report are German).
+      toolLink: 'What happens when a step is missing? Try it yourself (in German)',
+      reportLink: 'Sample report (in German)',
       title: 'One purchase, step by step',
       nameLabel: 'First name',
       name: 'Anna',
@@ -726,12 +729,12 @@ export default {
       line: 'Built by me, not client work.',
       shows: 'What it shows:',
       play: 'Playground and learning projects',
-      all: 'All web projects',
+      all: 'More projects', // R3
       // Shortened from the «What it shows» lines on mrlololi.com/Webprojekte/.
       items: [
         { key: 'ki', name: 'AI in customer service (in German)', path: 'ki-kundenservice/', shows: 'AI drafts for customer emails. A person approves, nothing is sent automatically.' },
-        { key: 'langstarter', name: 'Language Starter', path: 'language-starter/', shows: '66 first phrases in 42 languages, with group mode, poster and projector.' },
-        { key: 'geoapp', name: 'GeoAPP', path: 'geoapp/?lang=en', shows: 'A small app for learning Georgian numbers, answering by choice or by typing.' },
+        { key: 'langstarter', name: 'Language Starter', path: 'language-starter/', shows: '66 first phrases in 42 languages, with group mode, poster and projector.', home: false },
+        { key: 'geoapp', name: 'GeoAPP', path: 'geoapp/?lang=en', shows: 'A small app for learning Georgian numbers, answering by choice or by typing.', home: false },
       ],
     },
     contact: { fallback: 'Nothing opens? Write to {email}', copy: 'Copy text', copied: 'Text copied', manual: 'Your text to copy' },
@@ -867,6 +870,8 @@ export default {
           ['Handover.', 'Written instructions, so your team knows what is set up.'],
         ],
         example: 'spam',
+        exampleText: 'Invented example from the sample report: the confirmation email landed in spam at GMX and in the inbox at Gmail. Cause: two SPF records and no DMARC.',
+        need: ['What I need from you:', 'access to your domain provider and the sender address.'],
         faq: [
           ['How soon can you start?', 'I schedule a quick fix within one week of your go-ahead.'],
           ['What if 4 hours are not enough?', '€45 per hour for care and anything outside the packages, billed by effort in 15-minute steps. You get the price before I start.'],

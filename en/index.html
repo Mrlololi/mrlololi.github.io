@@ -913,6 +913,7 @@ html:not(.js) .brief__preview { display: none; }
 .svc-door__links { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4); }
 .svc-door--link { background: none; padding: 0; }
 .q-claim { margin-top: var(--space-2); font-weight: 700; }
+.rl-teaser { display: grid; gap: var(--space-2); max-width: 46rem; margin: var(--space-5) auto 0; padding: var(--space-4); }
 .item__actions { display: grid; justify-items: start; align-content: end; gap: var(--space-1); }
 .item__more { position: relative; z-index: 1; display: inline-flex; align-items: center; min-height: 2.75rem; font-size: var(--step--1); font-weight: 700; }
 .item__cta { margin: 0; }
@@ -1702,7 +1703,6 @@ html:not(.js) .faq__cats { display: none; }
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"ProfessionalService","@id":"https://mrlololi.com/#business","name":"mrlololi","alternateName":"Iva Tsatskrialashvili","description":"Ich teste Ihren Launch, bevor es Ihre Kundschaft tut. Technik hinter Online-Kursen: ActiveCampaign, Zapier, Zahlungen. Aus Graz. Iva Tsatskrialashvili (er/ihm).","url":"https://mrlololi.com/","email":"hello@mrlololi.com","image":"https://mrlololi.com/og-image-de.png","logo":"https://mrlololi.com/assets/brand/apple-touch-icon.png","sameAs":["https://www.linkedin.com/in/tsatskrialashvili-iva","https://www.malt.de/profile/ivatsatskrialashvili"],"areaServed":["AT","DE","CH","IT"],"address":{"@type":"PostalAddress","streetAddress":"Herbersteinstraße 4/4181","addressLocality":"Graz","postalCode":"8020","addressCountry":"AT"},"founder":{"@id":"https://mrlololi.com/#iva"},"priceRange":"€€"},{"@type":"Person","@id":"https://mrlololi.com/#iva","name":"Iva Tsatskrialashvili","alternateName":"mrlololi","gender":"Male","pronouns":"he/him","jobTitle":"Marketing Automation Technician","description":"Iva Tsatskrialashvili (he/him), known online as mrlololi, is a freelance marketing automation technician in Graz, Austria. He sets up and tests the technology behind online course launches for course creators across the German-speaking market.","knowsAbout":["ActiveCampaign","Zapier","Make","Leadpages","Stripe","E-Mail-Zustellbarkeit","Marketing-Automation"],"address":{"@type":"PostalAddress","addressLocality":"Graz","addressCountry":"AT"},"image":"https://mrlololi.com/assets/img/about-680.jpg","url":"https://mrlololi.com/","sameAs":["https://www.linkedin.com/in/tsatskrialashvili-iva","https://www.malt.de/profile/ivatsatskrialashvili","https://github.com/Mrlololi","https://www.instagram.com/mrlololi/"]},{"@type":"WebSite","@id":"https://mrlololi.com/#website","url":"https://mrlololi.com/","name":"mrlololi","inLanguage":"en","publisher":{"@id":"https://mrlololi.com/#business"}}]}</script>
 </head>
 <body class="page-home">
-<svg class="i-defs" width="0" height="0" aria-hidden="true" focusable="false"><symbol id="i-form" viewBox="0 0 24 24"><rect x="4" y="2.5" width="16" height="19" rx="2.5" style="fill: var(--i-fill, none)"/><path d="M7.5 6.5h6"/><rect x="7.5" y="9.5" width="9" height="3" rx="1.5"/><rect class="m" x="7.5" y="15.5" width="5.5" height="3" rx="1.5"/></symbol><symbol id="i-card" viewBox="0 0 24 24"><rect x="2.5" y="5.5" width="19" height="13" rx="2.5" style="fill: var(--i-fill, none)"/><path d="M2.5 9.75h19"/><path class="m" d="M6 14.75h4.5"/></symbol><symbol id="i-receipt" viewBox="0 0 24 24"><path d="M6 3.5A1.5 1.5 0 0 1 7.5 2h9A1.5 1.5 0 0 1 18 3.5v16.5a1.5 1.5 0 0 1-3 0a1.5 1.5 0 0 1-3 0a1.5 1.5 0 0 1-3 0a1.5 1.5 0 0 1-3 0z" style="fill: var(--i-fill, none)"/><g class="m"><path d="M9 7h6"/><path d="M9 10.5h6"/></g><path d="M9 14h3.5"/></symbol><symbol id="i-tag" viewBox="0 0 24 24"><g class="m"><rect x="3.5" y="7.5" width="16" height="9" rx="3" transform="rotate(-45 11.5 12)" style="fill: var(--i-fill, none)"/><circle cx="15.6" cy="7.9" r="1.4"/></g></symbol><symbol id="i-unlock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2.5" style="fill: var(--i-fill, none)"/><path class="m" d="M8.5 11V7.5a3.5 3.5 0 0 1 7 0"/><path d="M12 15v2"/></symbol><symbol id="i-mail-star" viewBox="0 0 24 24"><rect x="2.5" y="9.5" width="13.5" height="10.5" rx="2" style="fill: var(--i-fill, none)"/><path d="M3 10.5l6.25 4.75L15.5 10.5"/><path class="m" d="M18.5 2.34L19.58 4.86 22.28 5.1 20.24 6.84 20.84 9.48 18.5 8.1 16.16 9.48 16.76 6.84 14.72 5.1 17.42 4.86z"/></symbol></svg>
 <a class="skip" href="#main">Skip to content</a>
 <header class="site-header" data-header data-variant="light">
 <div class="site-header__in">
@@ -1851,47 +1851,15 @@ html:not(.js) .faq__cats { display: none; }
 <h2 id="path-title" data-enter="lines">The path of a <em class="accent">sign-up</em></h2>
 <p class="lead">What happens between sign-up and course access, in four steps.</p>
 </div>
-<div class="vtabs">
-<div class="vtabs__list" role="tablist" aria-label="View">
-<button class="vtabs__tab" type="button" role="tab" id="vtab-1" aria-controls="vpanel-1" aria-selected="true">Overview</button>
-<button class="vtabs__tab" type="button" role="tab" id="vtab-2" aria-controls="vpanel-2" aria-selected="false" tabindex="-1" aria-describedby="vtab-2-desc">Step by step</button>
-<span class="sr-only" id="vtab-2-desc">Try the flow yourself</span>
-</div>
-<div class="vtabs__panel" role="tabpanel" id="vpanel-1" aria-labelledby="vtab-1">
 <ol class="strip" role="list">
 <li class="strip__step card strip__step--1"><span class="strip__node">Form</span><p>The sign-up comes in and is checked.</p></li>
 <li class="strip__step card strip__step--2"><span class="strip__node">ActiveCampaign</span><p>Contact and tag are set, the welcome email is sent.</p></li>
 <li class="strip__step card strip__step--3"><span class="strip__node">Payment</span><p>Payment or instalment is recognised, the invoice goes out.</p></li>
 <li class="strip__step card strip__step--4"><span class="strip__node">Course open</span><p>Access is granted, with no manual work.</p></li>
 </ol>
-</div>
-<div class="vtabs__panel vtabs__panel--rl" role="tabpanel" id="vpanel-2" aria-labelledby="vtab-2">
-<div class="rl demo is-end" data-demo="runlog" data-step="5" data-total="6" data-step-of="Step {n} of {total}">
-<form class="rl__start" novalidate>
-<p class="rl__head">One purchase, step by step</p>
-<div class="rl__field"><label for="rl-name">First name</label><input id="rl-name" name="first" type="text" value="Anna" maxlength="40" autocomplete="off"></div>
-<button class="btn btn--primary btn--sm rl__go" type="submit">Sign up</button>
-<p class="rl__note">Just a demo, nothing is sent.</p>
-</form>
-<div class="rl__stage">
-<p class="rl__count" aria-hidden="true">Step 6 of 6</p>
-<div class="rl__railbox" aria-hidden="true"><ol class="rl__rail" role="list"><li class="rl__node is-done" data-i="0"><svg class="i i--24" aria-hidden="true" focusable="false"><use href="#i-form"/></svg></li><li class="rl__node is-done" data-i="1"><svg class="i i--24" aria-hidden="true" focusable="false"><use href="#i-card"/></svg></li><li class="rl__node is-done" data-i="2"><svg class="i i--24" aria-hidden="true" focusable="false"><use href="#i-receipt"/></svg></li><li class="rl__node is-done" data-i="3"><svg class="i i--24" aria-hidden="true" focusable="false"><use href="#i-tag"/></svg></li><li class="rl__node is-done" data-i="4"><svg class="i i--24" aria-hidden="true" focusable="false"><use href="#i-unlock"/></svg></li><li class="rl__node is-done" data-i="5"><svg class="i i--24" aria-hidden="true" focusable="false"><use href="#i-mail-star"/></svg></li></ol><span class="rl__car"><span class="rl__dot"></span></span></div>
-<div class="rl__scene">
-<ol class="rl__steps" role="list"><li class="rl__step card card--pic is-done" data-i="0"><span class="card__media"><svg class="i i--48 tone-pink" data-icon="form" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="4" y="2.5" width="16" height="19" rx="2.5" style="fill: var(--i-fill, none)"/><path d="M7.5 6.5h6"/><rect x="7.5" y="9.5" width="9" height="3" rx="1.5"/><rect class="m" x="7.5" y="15.5" width="5.5" height="3" rx="1.5"/></svg></span><span class="rl__title card__title">Order form</span><span class="rl__line card__text"><span class="rl__name">Anna</span> orders the autumn course.</span></li><li class="rl__step card card--pic is-done" data-i="1"><span class="card__media"><svg class="i i--48 tone-blue" data-icon="card" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="2.5" y="5.5" width="19" height="13" rx="2.5" style="fill: var(--i-fill, none)"/><path d="M2.5 9.75h19"/><path class="m" d="M6 14.75h4.5"/></svg></span><span class="rl__title card__title">Payment (Stripe)</span><span class="rl__line card__text">The payment comes in.</span></li><li class="rl__step card card--pic is-done" data-i="2"><span class="card__media"><svg class="i i--48 tone-blue" data-icon="receipt" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 3.5A1.5 1.5 0 0 1 7.5 2h9A1.5 1.5 0 0 1 18 3.5v16.5a1.5 1.5 0 0 1-3 0a1.5 1.5 0 0 1-3 0a1.5 1.5 0 0 1-3 0a1.5 1.5 0 0 1-3 0z" style="fill: var(--i-fill, none)"/><g class="m"><path d="M9 7h6"/><path d="M9 10.5h6"/></g><path d="M9 14h3.5"/></svg></span><span class="rl__title card__title">Invoice (Quaderno)</span><span class="rl__line card__text">The invoice is created and sent.</span></li><li class="rl__step card card--pic is-done" data-i="3"><span class="card__media"><svg class="i i--48 tone-pink" data-icon="tag" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g class="m"><rect x="3.5" y="7.5" width="16" height="9" rx="3" transform="rotate(-45 11.5 12)" style="fill: var(--i-fill, none)"/><circle cx="15.6" cy="7.9" r="1.4"/></g></svg></span><span class="rl__title card__title">Tag</span><span class="rl__line card__text">Tag “Customer autumn course” is added.</span></li><li class="rl__step card card--pic is-done" data-i="4"><span class="card__media"><svg class="i i--48 tone-pist" data-icon="unlock" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="5" y="11" width="14" height="10" rx="2.5" style="fill: var(--i-fill, none)"/><path class="m" d="M8.5 11V7.5a3.5 3.5 0 0 1 7 0"/><path d="M12 15v2"/></svg></span><span class="rl__title card__title">Access: members area</span><span class="rl__line card__text">The course is unlocked.</span></li><li class="rl__step card card--pic is-current" data-i="5"><span class="card__media"><svg class="i i--48 tone-pist" data-icon="mail-star" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="2.5" y="9.5" width="13.5" height="10.5" rx="2" style="fill: var(--i-fill, none)"/><path d="M3 10.5l6.25 4.75L15.5 10.5"/><path class="m" d="M18.5 2.34L19.58 4.86 22.28 5.1 20.24 6.84 20.84 9.48 18.5 8.1 16.16 9.48 16.76 6.84 14.72 5.1 17.42 4.86z"/></svg></span><span class="rl__title card__title">Welcome email</span><span class="rl__line card__text">“Welcome, <span class="rl__name">Anna</span>!” arrives.</span></li></ol>
-<span class="mscene mscene--runlog rl__live" data-scene="runlog" aria-hidden="true"><svg viewBox="-8 -8 120 124" data-mascot="2" data-emo="joy" class="mascot mascot--live" data-base="joy" focusable="false"><ellipse data-part="shadow" class="m-shadow" cx="50" cy="109" rx="23" ry="3.6" fill="#2B2A33" opacity=".13"/><g data-part="rig"><g data-part="legs"><path class="o" d="M41 92v12M59 92v12" fill="none" stroke="#2B2A33" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><path class="o" d="M36 105h9M55 105h9" fill="none" stroke="#2B2A33" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g><g data-part="body"><clipPath id="mb-live-joy-runlog"><path d="M50 17C55 17 82 40 82 66A32 32 0 0 1 18 66C18 40 45 17 50 17z"/></clipPath><path d="M50 17C55 17 82 40 82 66A32 32 0 0 1 18 66C18 40 45 17 50 17z" fill="#CFE3C2"/><g data-part="belly"><ellipse clip-path="url(#mb-live-joy-runlog)" cx="50" cy="109" rx="36" ry="26" fill="#EAF4E3"/></g><circle cx="30" cy="72" r="4.6" fill="#3F6B31" opacity=".22"/><circle cx="70" cy="72" r="4.6" fill="#3F6B31" opacity=".22"/><ellipse cx="36" cy="44" rx="8" ry="4.8" fill="#fff" opacity=".6" transform="rotate(-48 36 44)"/><path class="o" d="M50 17C55 17 82 40 82 66A32 32 0 0 1 18 66C18 40 45 17 50 17z" fill="none" stroke="#2B2A33" stroke-width="3.5" stroke-linejoin="round"/></g><g data-part="eyes"><path d="M33 63.5q6-8 12 0M55 63.5q6-8 12 0" fill="none" stroke="#2B2A33" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></g><g data-part="mouth"><path d="M42 76q8 13 16 0z" fill="#2B2A33" stroke="#2B2A33" stroke-width="1.6" stroke-linejoin="round"/><path d="M46 82q4 3 8 0q-4-2-8 0z" fill="#E8838F"/></g><g data-part="accessory"><path class="o" d="M50 18V6" fill="none" stroke="#2B2A33" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path class="o" d="M50-5.6l1.8 4.2 4.5.4-3.4 2.9 1 4.4L50 4l-3.9 2.3 1-4.4-3.4-2.9 4.5-.4z" fill="#F7DCC8" stroke="#2B2A33" stroke-width="2" stroke-linejoin="round"/><path class="o" d="M39 2l-5-3M61 2l5-3" fill="none" stroke="#2B2A33" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></g><g data-part="arms"><path class="o" d="M19 74q-9 -6 -6 -20" fill="none" stroke="#2B2A33" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><circle class="o" cx="13" cy="54" r="4.4" fill="#CFE3C2" stroke="#2B2A33" stroke-width="2.4"/><path class="o" d="M81 74q9 -6 6 -20" fill="none" stroke="#2B2A33" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><circle class="o" cx="87" cy="54" r="4.4" fill="#CFE3C2" stroke="#2B2A33" stroke-width="2.4"/></g></g></svg></span>
-</div>
-</div>
-<figure class="rl__protocol"><figcaption class="rl__bar">Log</figcaption><ol class="rl__logs" role="list"><li class="rl__log is-on" data-i="0"><svg class="i i--20" aria-hidden="true" focusable="false"><use href="#i-form"/></svg><span>Order received</span></li><li class="rl__log is-on" data-i="1"><svg class="i i--20" aria-hidden="true" focusable="false"><use href="#i-card"/></svg><span>Payment received (Stripe)</span></li><li class="rl__log is-on" data-i="2"><svg class="i i--20" aria-hidden="true" focusable="false"><use href="#i-receipt"/></svg><span>Invoice created (Quaderno)</span></li><li class="rl__log is-on" data-i="3"><svg class="i i--20" aria-hidden="true" focusable="false"><use href="#i-tag"/></svg><span>Tag “Customer autumn course” added</span></li><li class="rl__log is-on" data-i="4"><svg class="i i--20" aria-hidden="true" focusable="false"><use href="#i-unlock"/></svg><span>Access in the members area granted</span></li><li class="rl__log is-on" data-i="5"><svg class="i i--20" aria-hidden="true" focusable="false"><use href="#i-mail-star"/></svg><span>Welcome email arrived</span></li></ol><p class="rl__summary">6 steps, 0 errors (simplified example)</p></figure>
-<div class="rl__ctl">
-<p class="rl__slow">Slow motion. In reality this takes only seconds after the payment.</p>
-<button class="btn btn--secondary btn--sm rl__back" type="button">Back</button>
-<button class="btn btn--secondary btn--sm rl__next" type="button">Next</button>
-<button class="btn btn--secondary btn--sm rl__again" type="button">Play again</button>
-<button class="btn btn--secondary btn--sm rl__pause" type="button" aria-pressed="false" data-pause-label="Pause" data-play-label="Play" hidden>Pause<span class="sr-only">: Flow demo</span></button>
-</div>
-<p class="sr-only rl__status" role="status" aria-live="polite"></p>
-</div>
-</div>
+<div class="rl-teaser card">
+<p><a class="text-link" href="/werkzeuge/ein-kauf/">What happens when a step is missing? Try it yourself (in German)</a></p>
+<p><a class="text-link" href="/musterbericht/technik-check/">Sample report (in German)</a></p>
 </div>
 <p class="vid__cta"><span>Questions about your flow? 20 minutes, free.</span> <a class="btn btn--secondary btn--sm" href="#contact">Request a free call</a></p>
 </div>
@@ -2045,10 +2013,8 @@ html:not(.js) .faq__cats { display: none; }
 <ul class="refs__list" role="list" data-enter="stagger">
 <li class="ref card ref--course"><span class="label label--lav">Online courses</span>
 <h3>Launch tech for an online course creator, 2026</h3>
-<p>ActiveCampaign and Zapier flows for sign-up, launch, onboarding and payment reminders, landing pages in Leadpages, invoices, instalments and course access with Quaderno and the members area, live sessions with Zoom and Ecamm.</p>
-<ul class="ref__tools" role="list"><li>ActiveCampaign</li><li>Zapier</li><li>Leadpages</li><li>Quaderno</li><li>Zoom</li></ul>
-<p class="ref__honest">Work in 2026.</p>
-<a class="text-link" href="#path">See the flow in four steps</a></li>
+<p>Sign-up, email flows, payment and course access.</p>
+<p class="ref__honest">Work in 2026.</p></li>
 <li class="ref card ref--site"><span class="label label--pink">Website</span>
 <h3>Website for an executive coach in Bern</h3>
 <a class="ext ref__site" href="https://alexandrafry.ch" target="_blank" rel="noopener">alexandrafry.ch<span class="sr-only"> (opens in a new tab)</span></a>
@@ -2120,7 +2086,7 @@ html:not(.js) .faq__cats { display: none; }
 <div class="projects__head">
 <div><h2 id="projects-title" data-enter="lines">Side <em class="accent">projects</em></h2>
 <p class="projects__line">Built by me, not client work.</p></div>
-<p class="projects__all"><a class="ext" href="https://mrlololi.com/Webprojekte/" target="_blank" rel="noopener">All web projects<span class="sr-only"> (opens in a new tab)</span></a></p>
+<p class="projects__all"><a class="ext" href="https://mrlololi.com/Webprojekte/" target="_blank" rel="noopener">More projects<span class="sr-only"> (opens in a new tab)</span></a></p>
 </div>
 <div class="proj proj--main" data-enter>
 <a class="proj__link proj__link--main card" href="https://mrlololi.com/Webprojekte/ki-kundenservice/" target="_blank" rel="noopener">
@@ -2129,23 +2095,7 @@ html:not(.js) .faq__cats { display: none; }
 <span class="proj__shows"><span class="proj__label">What it shows:</span> AI drafts for customer emails. A person approves, nothing is sent automatically.</span><span class="sr-only"> (opens in a new tab)</span>
 </a>
 </div>
-<h3 class="projects__play">Playground and learning projects</h3>
-<ul class="projs projs--play" role="list" data-enter="stagger">
-<li class="proj">
-<a class="proj__link card" href="https://mrlololi.com/Webprojekte/language-starter/" target="_blank" rel="noopener">
-<picture><source type="image/avif" srcset="/assets/img/project-langstarter-400.avif 400w, /assets/img/project-langstarter-800.avif 800w" sizes="(min-width: 560px) 16rem, 90vw"><source type="image/webp" srcset="/assets/img/project-langstarter-400.webp 400w, /assets/img/project-langstarter-800.webp 800w" sizes="(min-width: 560px) 16rem, 90vw"><img src="/assets/img/project-langstarter-400.jpg" srcset="/assets/img/project-langstarter-400.jpg 400w, /assets/img/project-langstarter-800.jpg 800w" sizes="(min-width: 560px) 16rem, 90vw" width="400" height="300" loading="lazy" decoding="async" alt=""></picture>
-<span class="proj__name">Language Starter</span>
-<span class="proj__shows"><span class="proj__label">What it shows:</span> 66 first phrases in 42 languages, with group mode, poster and projector.</span><span class="sr-only"> (opens in a new tab)</span>
-</a>
-</li>
-<li class="proj">
-<a class="proj__link card" href="https://mrlololi.com/Webprojekte/geoapp/?lang=en" target="_blank" rel="noopener">
-<picture><source type="image/avif" srcset="/assets/img/project-geoapp-400.avif 400w, /assets/img/project-geoapp-800.avif 800w" sizes="(min-width: 560px) 16rem, 90vw"><source type="image/webp" srcset="/assets/img/project-geoapp-400.webp 400w, /assets/img/project-geoapp-800.webp 800w" sizes="(min-width: 560px) 16rem, 90vw"><img src="/assets/img/project-geoapp-400.jpg" srcset="/assets/img/project-geoapp-400.jpg 400w, /assets/img/project-geoapp-800.jpg 800w" sizes="(min-width: 560px) 16rem, 90vw" width="400" height="300" loading="lazy" decoding="async" alt=""></picture>
-<span class="proj__name">GeoAPP</span>
-<span class="proj__shows"><span class="proj__label">What it shows:</span> A small app for learning Georgian numbers, answering by choice or by typing.</span><span class="sr-only"> (opens in a new tab)</span>
-</a>
-</li>
-</ul>
+
 </div>
 </section>
 <section class="section faq bg-lav edge" id="faq" aria-labelledby="faq-title">

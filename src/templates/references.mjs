@@ -45,9 +45,7 @@ export function references(t, config) {
     `<li class="ref card ref--course"><span class="label label--lav">${esc(L.course)}</span>
 <h3>${esc(r.case2.title)}</h3>
 <p>${esc(r.case2.text)}</p>
-<ul class="ref__tools" role="list">${B.tools.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>
-<p class="ref__honest">${esc(B.honest)}</p>
-<a class="text-link" href="${t.s6.video ? '#video' : '#path'}">${esc(B.video)}</a></li>`,
+<p class="ref__honest">${esc(B.honest)}</p></li>`,
     `<li class="ref card ref--site"><span class="label label--pink">${esc(L.site)}</span>
 <h3>${esc(r.case1.title)}</h3>
 ${extLink(config.case1_url, esc(r.case1.domain), t, { cls: 'ref__site' })}
@@ -108,12 +106,12 @@ ${pic(it, sizes)}
 <div class="proj proj--main" data-enter>
 ${link(main, 'proj__link proj__link--main', '(min-width: 760px) 24rem, 90vw')}
 </div>
-<h3 class="projects__play">${esc(p.play)}</h3>
+${play.length ? `<h3 class="projects__play">${esc(p.play)}</h3>
 <ul class="projs projs--play" role="list" data-enter="stagger">
 ${play.map((it) => `<li class="proj">
 ${link(it, 'proj__link', '(min-width: 560px) 16rem, 90vw')}
 </li>`).join('\n')}
-</ul>
+</ul>` : ''}
 </div>
 </section>`;
 }

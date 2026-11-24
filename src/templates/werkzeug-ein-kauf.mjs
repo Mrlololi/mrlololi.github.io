@@ -25,7 +25,7 @@ function panel(E, k) {
   return `<section class="ek-panel" id="${k.id}" data-entry="${k.id}" aria-labelledby="ek-${k.id}-h">
 <p class="ek-panel__step"><span class="ek-panel__nr">${k.nr}</span> ${esc(k.titel)}</p>
 <h3 id="ek-${k.id}-h">«${esc(k.kaeuferinSatz)}»</h3>
-<p class="ek-panel__label">${esc(E.label)}</p>
+<p class="ek-panel__label"><span class="label label--lav">${esc(E.tag)}</span></p>
 <dl class="ek-panel__rows">
 <dt>${esc(R.sieht)}</dt><dd>${esc(k.kaeuferinSieht)}</dd>
 <dt>${esc(R.sie)}</dt><dd>${esc(k.sieSehen)}</dd>
@@ -44,7 +44,7 @@ ${k.notfallId ? `<dt>${esc(R.notfall)}</dt><dd data-notfall="${esc(k.notfallId)}
 export function einKaufPage(t, config = {}) {
   const E = t.einKauf;
   const pkg = t.pricing.groups.flatMap((g) => g.items).find((it) => it.id === E.exitPackage);
-  const switches = kauf.map((k) => `<li><button class="ek-switch btn btn--secondary btn--sm" type="button" aria-pressed="false" data-step="${k.id}" data-missing="${k.kommtNichtAn.join(' ')}"><span class="ek-switch__nr" aria-hidden="true">${k.nr}</span><span class="ek-switch__text">${esc(E.switchOff)}</span><span class="sr-only">: ${esc(k.titel)}</span></button></li>`).join('\n');
+  const switches = kauf.map((k) => `<li><button class="ek-switch btn btn--secondary btn--sm" type="button" aria-pressed="false" data-step="${k.id}" data-missing="${k.kommtNichtAn.join(' ')}"><span class="ek-switch__nr" aria-hidden="true">${k.nr}</span><span class="sr-only">${esc(E.switchOff)}: </span><span class="ek-switch__text">${esc(k.titel)}</span><span class="ek-switch__off" aria-hidden="true">${esc(E.switchOn)}</span></button></li>`).join('\n');
   return `<section class="ek-head bg-hero" aria-labelledby="ek-h">
 <div class="wrap ek-wrap">
 <h1 id="ek-h">${esc(E.h1)}</h1>
@@ -79,6 +79,7 @@ ${kauf.map((k) => panel(E, k)).join('\n')}
 <section class="ek-sec bg-paper" aria-labelledby="ek-text-h">
 <div class="wrap ek-wrap ek-text">
 ${E.text.map(([h, ps, report], i) => `<h2${i === 0 ? ' id="ek-text-h"' : ''}>${esc(h)}</h2>\n${ps.map((p) => `<p>${esc(p)}</p>`).join('\n')}${report && config.check_report_url ? `\n<p><a class="text-link" href="${esc(config.check_report_url)}">${esc(t.musterbericht.linkText)}</a></p>` : ''}`).join('\n')}
+<p class="ek-label ek-label--end">${esc(E.label)}</p>
 <div class="ek-exit">
 <p class="ek-exit__lead">${esc(E.exitLead)}</p>
 <a class="btn btn--primary" href="${esc(E.exitHref)}">${esc(pkg.name)}, ${esc(pkg.price.replace(/\s*fix$/, ''))}</a>${E.talk ? `

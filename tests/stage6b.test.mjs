@@ -40,9 +40,11 @@ test('softer claims: no «nichts bricht», no «nie Ihr Passwort», no course cl
 test('references: the course card with tools, the honest line and the video link; CMX with its support line; the H2 like the others', () => {
   const h = byFile['index.html'];
   const course = h.match(/<li class="ref card ref--course">[\s\S]*?<\/li>\n<li/)[0];
-  for (const tool of de.s6.b.refs.tools) assert.ok(course.includes(`<li>${tool}</li>`), tool);
+  // R3 (December release): no tool names and no video link in this card until Claudia answers.
+  for (const tool of de.s6.b.refs.tools) assert.ok(!course.includes(tool), tool);
+  assert.ok(course.includes('<p>Anmeldung, E-Mail-Abläufe, Zahlung und Kurszugang.</p>'));
   assert.ok(course.includes('<p class="ref__honest">Zusammenarbeit 2026.</p>')); // 7b-S section 8, UPDATE 19.11.2026: neutral
-  assert.match(course, /<a class="text-link" href="#video">Ablauf im Video ansehen<\/a>/);
+  assert.ok(!course.includes('Ablauf im Video ansehen') && !course.includes('href="#video"'));
   assert.match(h, /Daher kenne ich Support-Teams von innen, die Grundlage für die KI-Antwortentwürfe\./);
   assert.match(h, /<h2 id="refs-title" data-enter="lines">Arbeit und <em class="accent">Referenzen<\/em><\/h2>/);
   assert.ok(!/\d+ ?%|Workflows, 0/.test(course), 'no invented numbers');

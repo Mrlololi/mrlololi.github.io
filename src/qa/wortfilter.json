@@ -198,11 +198,12 @@
     ]
   },
   "labels": {
-    "about": "A content entry with beispiel: true renders «fiktives Beispiel» or «Vereinfachtes Beispiel» inside its element (data-entry=\"<id>\"); an entry with drittanbieter: true renders «Stand: <date>».",
+    "about": "A content entry with beispiel: true renders «fiktives Beispiel» or «Vereinfachtes Beispiel» inside its element (data-entry=\"<id>\"); an entry with drittanbieter: true renders «Stand: <date>». R3 (December release): or the short tag «Beispiel» inside the element when the page itself shows one of the full labels.",
     "beispiel": [
       "fiktives Beispiel",
       "Vereinfachtes Beispiel"
     ],
-    "drittanbieter": "Stand: \\d{1,2}\\.\\s?\\d{1,2}\\.\\s?\\d{4}"
+    "drittanbieter": "Stand: \\d{1,2}\\.\\s?\\d{1,2}\\.\\s?\\d{4}",
+    "beispielTag": "Beispiel"
   }
 }
