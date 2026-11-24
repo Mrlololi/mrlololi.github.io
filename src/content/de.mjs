@@ -72,6 +72,8 @@ export default {
     secondary: 'Preise ansehen',
     micro: '20 Minuten · Antwort in 2 Werktagen',
     trust: 'Aus Graz, remote im DACH-Raum · Online-Marketing seit 2023 · Gewerbe in Österreich',
+    // R2: under the trust line.
+    report: 'So sieht ein Technik-Bericht aus (Beispiel)',
     ribbon: 'Anmeldung eingegangen · E-Mail bestätigt · Tag gesetzt · Zahlung erhalten · Zugang frei · Willkommens-Mail angekommen ·',
     flow: {"label":"Ablauf: Formular, ActiveCampaign, Zahlung, Kurs offen","nodes":["Formular","ActiveCampaign","Zahlung","Kurs offen"],"lines":["Die Anmeldung kommt herein und wird geprüft.","Kontakt und Tag werden gesetzt, die Willkommens-Mail wird verschickt.","Zahlung oder Rate wird erkannt, die Rechnung geht raus.","Der Zugang wird freigeschaltet, ohne Handarbeit."],"chip":"Hallo, ich bin Iva"},
   },
@@ -168,7 +170,7 @@ export default {
             "id": "check",
             "name": "Technik-Check",
             "price": "290 € fix",
-            "summary": "Ein Tag Analyse mit Lesezugriff: ActiveCampaign, Zapier oder Make, Zahlung, Landingpages, Double-Opt-In und Einwilligungen.",
+            "summary": "Ein Tag Analyse im Testmodus: ActiveCampaign, Zapier oder Make, Zahlung, Landingpages, Double-Opt-In und Einwilligungen.",
             "details": "Sie bekommen eine Liste mit Prioritäten, Aufwand und Preisen und ein 45-Minuten-Auswertungsgespräch. Beauftragen Sie innerhalb von 30 Tagen ein Projekt, rechne ich die 290 € voll an."
           }
         ]
@@ -749,7 +751,7 @@ export default {
       chooser: 'Welches Paket passt?',
       cards: {
         quick: { line: 'Ein klar umrissener Fehler: behoben, getestet und dokumentiert. Festpreis, ohne laufende Uhr.', scope: 'Eine konkrete Aufgabe, Aufwand bis zu 4 Stunden.', bullets: ['E-Mail-Zustellung (SPF, DKIM, DMARC)', 'Defekte Links oder Formulare', 'Termine oder eine Automation'] },
-        check: { line: 'Ich teste Ihren Launch, bevor es Ihre Kundschaft tut.', bullets: ['Ein Analysetag mit Lesezugriff auf Ihre Tools', 'Liste mit Prioritäten, Aufwand und Preisen', '45-Minuten-Auswertungsgespräch', 'Bei Auftrag innerhalb von 30 Tagen voll angerechnet, auf Empfehlung einer Kundin 60 Tage.'] },
+        check: { line: 'Ich teste Ihren Launch, bevor es Ihre Kundschaft tut.', note: 'Ich bitte Sie nie um Ihr Passwort. Wo ein Tool keinen eigenen Zugang kennt, arbeiten wir gemeinsam per Bildschirmfreigabe.', bullets: ['Ich gehe Ihren Kauf wie eine Käuferin durch: im Testmodus, bis in den Kurs hinein.', 'Liste mit Prioritäten, Aufwand und Preisen', '45-Minuten-Auswertungsgespräch', 'Bei Auftrag innerhalb von 30 Tagen voll angerechnet, auf Empfehlung einer Kundin 60 Tage.'] },
         launch: { line: 'Zum Verkaufsstart ist alles startklar. Festpreis nach dem Briefing.', bullets: ['Landingpages und Checkout', 'ActiveCampaign-Abläufe von der Anmeldung bis zum Zahlungsausfall', 'Formulare mit Double-Opt-In und Tags', 'Kurszugang in Ihrem Mitgliederbereich'] },
       },
       promise: '30-Tage-Zusage: Läuft ein von mir gebauter Ablauf in den ersten 30 Tagen nach Übergabe nicht wie vereinbart, behebe ich das ohne Berechnung. Zusätzlich zur gesetzlichen Gewährleistung.',
@@ -838,6 +840,15 @@ export default {
       problem: 'Das Problem',
       does: 'Was ich mache',
       steps: 'So läuft es ab',
+      // R2 (December release): the door to the Technik-Check before «So läuft es ab», by page (s.door).
+      door: {
+        check: ['Noch nicht sicher, was fehlt?', 'Im Technik-Check gehe ich Ihren Ablauf einen Tag lang wie eine Käuferin durch, im Testmodus bis in den Kurs. 290 € fix, bei Auftrag angerechnet.'],
+        checkAsk: 'Technik-Check anfragen',
+        quick: 'Ein klares Problem? Quick-Fix, 190 € fix.',
+        several: 'Hakt es an mehreren Stellen? Technik-Check, 290 €',
+        report: 'So sieht ein Bericht aus',
+        reportShort: 'So sieht ein Technik-Bericht aus',
+      },
       example: 'Beispiel',
       faq: 'Häufige Fragen',
       related: 'Passt auch',
@@ -853,6 +864,7 @@ export default {
     pages: [
       {
         key: 'launch',
+        door: 'check',
         path: '/launch-technik/',
         short: 'Launch-Technik',
         moreLabel: 'Mehr zur Launch-Technik',
@@ -893,6 +905,7 @@ export default {
       },
       {
         key: 'spam',
+        door: 'quickcheck',
         path: '/e-mails-landen-im-spam/',
         short: 'E-Mails im Spam',
         h1: 'E-Mails landen im Spam? SPF, DKIM und DMARC einrichten',
@@ -921,6 +934,7 @@ export default {
       },
       {
         key: 'activecampaign',
+        door: 'quickcheck',
         path: '/activecampaign-einrichten/',
         short: 'ActiveCampaign einrichten',
         h1: 'ActiveCampaign einrichten und betreuen',
@@ -928,7 +942,7 @@ export default {
         promise: 'Ich prüfe Ihr ActiveCampaign-Konto, richte Abläufe ein und betreue sie danach, remote für Kund:innen in Österreich, Deutschland und der Schweiz.',
         packages: ['check', 'support'],
         problem: ['Anmeldungen verschwinden zwischen Formular und CRM.', 'Und niemand weiß genau, wo das Problem liegt.', 'Jeder dieser Fehler fällt erst auf, wenn eine Kundin schreibt.'],
-        does: ['Ein Tag Analyse mit Lesezugriff: ActiveCampaign, Zapier oder Make, Zahlung, Landingpages, Double-Opt-In und Einwilligungen', 'Abläufe, die jede Anmeldung prüfen und bei Fehlern automatisch neu senden, auch wenn viele gleichzeitig kommen', 'Laufende Pflege Ihrer Automationen, kleine Landingpages, Fehlerbehebung'],
+        does: ['Ein Tag Analyse im Testmodus: ActiveCampaign, Zapier oder Make, Zahlung, Landingpages, Double-Opt-In und Einwilligungen', 'Abläufe, die jede Anmeldung prüfen und bei Fehlern automatisch neu senden, auch wenn viele gleichzeitig kommen', 'Laufende Pflege Ihrer Automationen, kleine Landingpages, Fehlerbehebung'],
         steps: [
           ['Erstgespräch, 20 Minuten, kostenlos.', 'Sie erzählen, was in ActiveCampaign hakt. Ich sage ehrlich, ob ich helfen kann.'],
           ['Technik-Check oder Angebot.', 'Sie bekommen eine Liste mit Prioritäten, Aufwand und Preisen.'],
@@ -947,6 +961,7 @@ export default {
       },
       {
         key: 'ki',
+        door: 'link',
         path: '/ki-antwortentwuerfe/',
         short: 'KI-Antwortentwürfe',
         moreLabel: 'Mehr zu KI-Antwortentwürfen',
@@ -974,6 +989,7 @@ export default {
       },
       {
         key: 'website',
+        door: 'link',
         path: '/website-one-pager/',
         short: 'Website als One-Pager',
         moreLabel: 'Mehr zur Website als One-Pager',
@@ -1073,6 +1089,8 @@ export default {
     title: 'Prüfprotokoll dieser Website | mrlololi',
     description: 'So teste ich mrlololi.com vor jeder Veröffentlichung: Ladezeit, Tastatur, Barrieren, Cookies und automatische Prüfungen, vom Prüfprogramm gemessen.',
     h1: 'Prüfprotokoll dieser Website',
+    // R2 (December release): one line under the H1.
+    claim: 'So arbeite ich auch in Ihren Konten: erst prüfen, dann veröffentlichen.',
     lead: 'So teste ich mrlololi.com vor jeder Veröffentlichung. Die Zahlen schreibt das Prüfprogramm, nicht ich.',
     label: 'Gemessen am {measured} mit {tools}. Stand: Commit {commit}.',
     labelDirty: 'Gemessen am {measured} mit {tools}. Stand: Commit {commit} mit lokalen Änderungen (noch nicht veröffentlicht).',
@@ -1099,10 +1117,10 @@ export default {
       'Einen Test mit Menschen, die einen Screenreader im Alltag nutzen, gab es noch nicht.',
       'Das dunkle Farbschema ist noch nicht fertig.',
     ],
-    exitLead: 'Ihre Website, genauso geprüft:',
-    // The package name and price come from pricing (id «website»), never typed here.
-    exitPackage: 'website',
-    exitHref: '/?paket=website&quelle=qualitaet#contact',
+    // R2 (December release): the exit is the Technik-Check (name and price from pricing, never typed here).
+    exitLead: 'Ihren Launch vor dem Start prüfen lassen:',
+    exitPackage: 'check',
+    exitHref: '/?paket=check&quelle=qualitaet#contact',
   },
 
   // Werkzeug «Ein Kauf» (docs/PROMPT_Werkzeug_Ein_Kauf_2026-11-13.md): the page texts; the six steps live in
@@ -1127,6 +1145,9 @@ export default {
     mailHref: '/Webprojekte/ki-kundenservice/',
     reset: 'Zurücksetzen',
     exitLead: 'So fange ich das ab:',
+    // R2: the quiet text link under the priced exit.
+    talk: 'Lieber erst reden? 20 Minuten, kostenlos',
+    talkHref: '/?quelle=ein-kauf#contact',
     exitPackage: 'check',
     exitHref: '/?paket=check&quelle=ein-kauf#contact',
     // Static explanation (about 250 words): [heading, paragraphs].
@@ -1139,7 +1160,7 @@ export default {
         'Schalten Sie oben einen Schritt aus. Rechts sehen Sie, was Ihre Käuferin in diesem Fall erlebt, was Sie davon mitbekommen und wie ein Testkauf den Fehler vorher findet. Das Beispiel ist vereinfacht und gilt für keinen bestimmten Anbieter.',
       ]],
       ['Wenn Sie das nicht selbst prüfen möchten', [
-        'Im Technik-Check gehe ich Ihren Ablauf einen Tag lang mit Lesezugriff durch und gebe Ihnen eine Liste mit Prioritäten, Aufwand und Preisen.',
+        'Im Technik-Check gehe ich Ihren Ablauf einen Tag lang wie eine Käuferin durch und gebe Ihnen eine Liste mit Prioritäten, Aufwand und Preisen.',
       ], 'report'], // Musterbericht 24.11.2026: «So sieht ein Bericht aus» (config.check_report_url)
     ],
   },
@@ -1224,6 +1245,11 @@ export default {
     pdfFooter: 'Technik-Check vor dem Launch · Beispielbericht · mrlololi.com',
     pdfPage: 'Seite {page} von {pages}',
     exitLead: 'Ihren Launch so prüfen lassen:',
+    // R2 (December release): the booking block on top and the quiet text link under the priced exit.
+    book: ['Technik-Check, 290 € fix. Ein Tag, eigener Zugang, bei Auftrag angerechnet.', 'Technik-Check anfragen'],
+    bookHref: '/?paket=check&quelle=musterbericht#contact',
+    talk: 'Lieber erst reden? 20 Minuten, kostenlos',
+    talkHref: '/?quelle=musterbericht#contact',
     exitPackage: 'check',
     exitHref: '/?paket=check&quelle=musterbericht#contact',
   },

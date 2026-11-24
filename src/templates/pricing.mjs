@@ -56,14 +56,14 @@ function card(t, it, email, config) {
   const when = isCheck ? note(config, 'availability', t.lang) : '';
   const winter = isCheck ? note(config, 'credit_winter', t.lang) : '';
   const bullets = c.bullets.map((b, i) => (winter && i === c.bullets.length - 1 ? `${b} ${winter}` : b));
-  const extra = isCheck ? `${when ? `<p class="item__when">${esc(when)}</p>` : ''}${config.check_report_url && t.lang === 'de' ? `\n<a class="item__report text-link" href="${esc(config.check_report_url)}">${esc(s.checkReport)}</a>` : ''}` : '';
+  const extra = isCheck ? `${c.note ? `<p class="item__note small">${esc(c.note)}</p>\n` : ''}${when ? `<p class="item__when">${esc(when)}</p>` : ''}${config.check_report_url && t.lang === 'de' ? `\n<a class="item__report text-link" href="${esc(config.check_report_url)}">${esc(s.checkReport)}</a>` : ''}` : '';
   const badge = it.id === 'check' ? `<span class="label label--lav item__badge">${esc(t.s4.starter.recommended)}</span>` : '';
   return `<li class="item item--${it.id} card card--lift" id="pkg-${it.id}">
 <div class="item__head">${badge}<h3 class="item__name">${esc(it.name)}</h3>
 <p class="item__price">${esc(it.price)}</p></div>
 ${VIZ[it.id](t)}
 <p class="item__line">${esc(c.line)}${c.scope ? `<span class="item__scope">${esc(c.scope)}</span>` : ''}</p>
-<ul class="item__bullets" role="list">${bullets.map((b) => `<li>${check}<span>${esc(b)}</span></li>`).join('')}</ul>
+<ul class="item__bullets" role="list">${bullets.map((b) => `<li><span>${esc(b)}</span></li>`).join('')}</ul>
 <div class="item__actions">
 ${moreLink(t, it.id, 'item__more')}
 ${isCheck ? `<a class="btn btn--sm btn--primary item__cta" href="${ask(t, email, it)}">${esc(s.checkAsk)}</a>` : `<a class="btn btn--sm btn--primary item__cta" href="${ask(t, email, it)}">${esc(t.pricing.cta)}<span class="sr-only">: ${esc(it.name)}</span></a>`}

@@ -10,7 +10,7 @@ import { processSteps, about, faq, contact } from './sections.mjs';
 // Stage 6f (4.11.2026): «Über mich» before «Eigene Projekte»; the second CTA band is gone.
 export function home(t, config) {
   return [
-    hero(t),
+    hero(t, config),
     tools(t),
     problems(t),
     t.s6.video ? videoBlock(t) : stepStrip(t),

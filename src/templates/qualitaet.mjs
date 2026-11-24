@@ -54,7 +54,8 @@ export function qualitaetPage(t, d) {
 </tr>`).join('\n');
   return `<section class="q-head bg-hero" aria-labelledby="q-h">
 <div class="wrap q-wrap">
-<h1 id="q-h">${esc(Q.h1)}</h1>
+<h1 id="q-h">${esc(Q.h1)}</h1>${Q.claim ? `
+<p class="q-claim">${esc(Q.claim)}</p>` : ''}
 <p class="lead">${esc(Q.lead)}</p>
 <p class="q-label">${label}</p>
 </div>
@@ -78,7 +79,7 @@ ${Q.gaps.map((g) => `<li class="card card--row card--note q-gap"><span class="ca
 </ul>
 <div class="q-exit">
 <p class="q-exit__lead">${esc(Q.exitLead)}</p>
-<a class="btn btn--primary" href="${esc(Q.exitHref)}">${esc(pkg.name)}, ${esc(pkg.price)}</a>
+<a class="btn btn--primary" href="${esc(Q.exitHref)}">${esc(pkg.name)}, ${esc(pkg.price.replace(/\s*fix$/, ''))}</a>
 </div>
 </div>
 </section>`;

@@ -81,7 +81,8 @@ ${kauf.map((k) => panel(E, k)).join('\n')}
 ${E.text.map(([h, ps, report], i) => `<h2${i === 0 ? ' id="ek-text-h"' : ''}>${esc(h)}</h2>\n${ps.map((p) => `<p>${esc(p)}</p>`).join('\n')}${report && config.check_report_url ? `\n<p><a class="text-link" href="${esc(config.check_report_url)}">${esc(t.musterbericht.linkText)}</a></p>` : ''}`).join('\n')}
 <div class="ek-exit">
 <p class="ek-exit__lead">${esc(E.exitLead)}</p>
-<a class="btn btn--primary" href="${esc(E.exitHref)}">${esc(pkg.name)}, ${esc(pkg.price.replace(/\s*fix$/, ''))}</a>
+<a class="btn btn--primary" href="${esc(E.exitHref)}">${esc(pkg.name)}, ${esc(pkg.price.replace(/\s*fix$/, ''))}</a>${E.talk ? `
+<p class="ek-talk"><a class="text-link" href="${esc(E.talkHref)}">${esc(E.talk)}</a></p>` : ''}
 </div>
 </div>
 </section>

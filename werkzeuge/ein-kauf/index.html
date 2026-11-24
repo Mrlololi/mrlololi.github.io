@@ -901,6 +901,15 @@ html:not(.js) .brief__preview { display: none; }
 .item__bullets { display: grid; gap: var(--space-2); align-content: start; font-size: var(--step--1); line-height: 1.45; }
 .item__bullets li { display: flex; gap: 0.5rem; }
 .item__bullets .viz-check { margin-top: 0.2em; }
+.item__bullets li::before { content: ''; flex: none; width: 0.9rem; height: 0.9rem; margin-top: 0.2em; border-radius: var(--radius-pill); background: var(--done) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.6 8.3l2.2 2.2 4.6-5' fill='none' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% no-repeat; }
+.item__note { margin-top: var(--space-1); }
+.hero__report { margin-top: var(--space-2); }
+.svc-door-sec { padding-block: 0 calc(var(--space-6) + var(--dock-r)); }
+.svc-door { padding: var(--space-4); border-radius: var(--radius-card); background: var(--card); max-width: 46rem; }
+.svc-door p + p { margin-top: var(--space-2); }
+.svc-door__links { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4); }
+.svc-door--link { background: none; padding: 0; }
+.q-claim { margin-top: var(--space-2); font-weight: 700; }
 .item__actions { display: grid; justify-items: start; align-content: end; gap: var(--space-1); }
 .item__more { position: relative; z-index: 1; display: inline-flex; align-items: center; min-height: 2.75rem; font-size: var(--step--1); font-weight: 700; }
 .item__cta { margin: 0; }
@@ -1930,11 +1939,12 @@ html:not([data-motion="paused"]) .rl--kauf .rl__log.is-off .i[data-icon="cross"]
 <h2>So nutzen Sie diese Seite</h2>
 <p>Schalten Sie oben einen Schritt aus. Rechts sehen Sie, was Ihre Käuferin in diesem Fall erlebt, was Sie davon mitbekommen und wie ein Testkauf den Fehler vorher findet. Das Beispiel ist vereinfacht und gilt für keinen bestimmten Anbieter.</p>
 <h2>Wenn Sie das nicht selbst prüfen möchten</h2>
-<p>Im Technik-Check gehe ich Ihren Ablauf einen Tag lang mit Lesezugriff durch und gebe Ihnen eine Liste mit Prioritäten, Aufwand und Preisen.</p>
+<p>Im Technik-Check gehe ich Ihren Ablauf einen Tag lang wie eine Käuferin durch und gebe Ihnen eine Liste mit Prioritäten, Aufwand und Preisen.</p>
 <p><a class="text-link" href="/musterbericht/technik-check/">So sieht ein Bericht aus</a></p>
 <div class="ek-exit">
 <p class="ek-exit__lead">So fange ich das ab:</p>
 <a class="btn btn--primary" href="/?paket=check&amp;quelle=ein-kauf#contact">Technik-Check, 290 €</a>
+<p class="ek-talk"><a class="text-link" href="/?quelle=ein-kauf#contact">Lieber erst reden? 20 Minuten, kostenlos</a></p>
 </div>
 </div>
 </section>

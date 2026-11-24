@@ -904,6 +904,15 @@ html:not(.js) .brief__preview { display: none; }
 .item__bullets { display: grid; gap: var(--space-2); align-content: start; font-size: var(--step--1); line-height: 1.45; }
 .item__bullets li { display: flex; gap: 0.5rem; }
 .item__bullets .viz-check { margin-top: 0.2em; }
+.item__bullets li::before { content: ''; flex: none; width: 0.9rem; height: 0.9rem; margin-top: 0.2em; border-radius: var(--radius-pill); background: var(--done) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.6 8.3l2.2 2.2 4.6-5' fill='none' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% no-repeat; }
+.item__note { margin-top: var(--space-1); }
+.hero__report { margin-top: var(--space-2); }
+.svc-door-sec { padding-block: 0 calc(var(--space-6) + var(--dock-r)); }
+.svc-door { padding: var(--space-4); border-radius: var(--radius-card); background: var(--card); max-width: 46rem; }
+.svc-door p + p { margin-top: var(--space-2); }
+.svc-door__links { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4); }
+.svc-door--link { background: none; padding: 0; }
+.q-claim { margin-top: var(--space-2); font-weight: 700; }
 .item__actions { display: grid; justify-items: start; align-content: end; gap: var(--space-1); }
 .item__more { position: relative; z-index: 1; display: inline-flex; align-items: center; min-height: 2.75rem; font-size: var(--step--1); font-weight: 700; }
 .item__cta { margin: 0; }
@@ -1743,11 +1752,14 @@ html:not(.js) .faq__cats { display: none; }
 <h3 class="svc-pkg__name">AI in customer support</h3>
 <p class="svc-pkg__price">from €590</p>
 <p class="item__extra"><strong>Optional: care plan €90 per month</strong>, cancellable monthly: up to 2 hours for the knowledge base, quality checks and a short report on time saved; beyond that €45 per hour; you pay API costs directly.</p>
-<a class="btn btn--sm btn--primary" href="/en/?paket=ki#contact">Enquire<span class="sr-only">: AI in customer support</span></a>
+<a class="btn btn--sm btn--primary" href="/en/ai-reply-drafts/?paket=ki#svc-form">Enquire<span class="sr-only">: AI in customer support</span></a>
 </li>
 </ul>
 </div>
 </section>
+<div class="svc-sec svc-door-sec bg-blue"><div class="wrap svc-sec__in"><div class="svc-door svc-door--link">
+<p class="svc-door__links"><a class="text-link" href="/musterbericht/technik-check/">Sample report (in German)</a></p>
+</div></div></div>
 <section class="svc-sec bg-pist edge" aria-labelledby="svc-steps">
 <div class="wrap svc-sec__in">
 <h2 id="svc-steps" data-enter="lines">How it works</h2>

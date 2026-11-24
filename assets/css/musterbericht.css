@@ -67,7 +67,7 @@
 @media print {
   html { font-size: 78%; }
   html, body { background: var(--card) !important; }
-  .skip, .site-header, .site-footer, .mb-pdf, .mb-exit, .motion-toggle { display: none !important; }
+  .skip, .site-header, .site-footer, .mb-pdf, .mb-book, .mb-exit, .motion-toggle { display: none !important; }
   main, .mb-head, .mb-sec { background: none !important; }
   .mb-head { padding-block: 0 var(--space-4); }
   .mb-sec { padding-block: var(--space-4); }

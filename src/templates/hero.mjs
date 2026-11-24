@@ -31,7 +31,7 @@ function flowSvg(nodes) {
 
 // Stage 6: eyebrow, H1, one sentence, one primary button with its micro line right under it, then
 // prices as a text link (Stage 6b), and one trust line. The tool row under the hero is static (no marquee, WCAG 2.2.2).
-export function hero(t) {
+export function hero(t, config) {
   const h = t.hero;
   return `<section class="hero bg-hero" aria-labelledby="hero-title">
 <span class="hero__blob hero__blob--1" aria-hidden="true"></span><span class="hero__blob hero__blob--2" aria-hidden="true"></span>
@@ -45,7 +45,8 @@ export function hero(t) {
 <p class="hero__micro small">${esc(h.micro)}</p>
 <a class="text-link" href="#pricing">${esc(h.secondary)}</a>
 </div>
-<p class="hero__proof">${esc(h.trust)}</p>
+<p class="hero__proof">${esc(h.trust)}</p>${h.report && config?.check_report_url ? `
+<p class="hero__report"><a class="text-link" href="${esc(config.check_report_url)}">${esc(h.report)}</a></p>` : ''}
 </div>
 <div class="hero__visual">
 <figure class="hero__flow demo" data-demo="hero" aria-label="${esc(h.flow.label)}">

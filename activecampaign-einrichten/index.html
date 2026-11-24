@@ -904,6 +904,15 @@ html:not(.js) .brief__preview { display: none; }
 .item__bullets { display: grid; gap: var(--space-2); align-content: start; font-size: var(--step--1); line-height: 1.45; }
 .item__bullets li { display: flex; gap: 0.5rem; }
 .item__bullets .viz-check { margin-top: 0.2em; }
+.item__bullets li::before { content: ''; flex: none; width: 0.9rem; height: 0.9rem; margin-top: 0.2em; border-radius: var(--radius-pill); background: var(--done) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.6 8.3l2.2 2.2 4.6-5' fill='none' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% no-repeat; }
+.item__note { margin-top: var(--space-1); }
+.hero__report { margin-top: var(--space-2); }
+.svc-door-sec { padding-block: 0 calc(var(--space-6) + var(--dock-r)); }
+.svc-door { padding: var(--space-4); border-radius: var(--radius-card); background: var(--card); max-width: 46rem; }
+.svc-door p + p { margin-top: var(--space-2); }
+.svc-door__links { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4); }
+.svc-door--link { background: none; padding: 0; }
+.q-claim { margin-top: var(--space-2); font-weight: 700; }
 .item__actions { display: grid; justify-items: start; align-content: end; gap: var(--space-1); }
 .item__more { position: relative; z-index: 1; display: inline-flex; align-items: center; min-height: 2.75rem; font-size: var(--step--1); font-weight: 700; }
 .item__cta { margin: 0; }
@@ -1737,7 +1746,7 @@ html:not(.js) .faq__cats { display: none; }
 <section class="svc-sec bg-blue edge" aria-labelledby="svc-does">
 <div class="wrap svc-sec__in">
 <h2 id="svc-does" data-enter="lines">Was ich mache</h2>
-<ul class="svc-list"><li>Ein Tag Analyse mit Lesezugriff: ActiveCampaign, Zapier oder Make, Zahlung, Landingpages, Double-Opt-In und Einwilligungen</li><li>Abläufe, die jede Anmeldung prüfen und bei Fehlern automatisch neu senden, auch wenn viele gleichzeitig kommen</li><li>Laufende Pflege Ihrer Automationen, kleine Landingpages, Fehlerbehebung</li></ul>
+<ul class="svc-list"><li>Ein Tag Analyse im Testmodus: ActiveCampaign, Zapier oder Make, Zahlung, Landingpages, Double-Opt-In und Einwilligungen</li><li>Abläufe, die jede Anmeldung prüfen und bei Fehlern automatisch neu senden, auch wenn viele gleichzeitig kommen</li><li>Laufende Pflege Ihrer Automationen, kleine Landingpages, Fehlerbehebung</li></ul>
 
 <ul class="svc-pkgs" role="list">
 <li class="svc-pkg">
@@ -1745,18 +1754,22 @@ html:not(.js) .faq__cats { display: none; }
 <p class="svc-pkg__price">290 € fix</p>
 
 <p class="item__referral small">Bei Auftrag innerhalb von 30 Tagen voll angerechnet, auf Empfehlung einer Kundin 60 Tage. Für Technik-Checks bis 31. Januar 2027 gilt die Anrechnung bis 15. März 2027.</p>
-<a class="item__report text-link" href="/musterbericht/technik-check/">So sieht ein Bericht aus</a>
-<a class="btn btn--sm btn--primary" href="/?paket=check#contact">Anfragen<span class="sr-only">: Technik-Check</span></a>
+<a class="btn btn--sm btn--primary" href="/activecampaign-einrichten/?paket=check#svc-form">Anfragen<span class="sr-only">: Technik-Check</span></a>
 </li>
 <li class="svc-pkg">
 <h3 class="svc-pkg__name">Betreuung nach Stunden</h3>
 <p class="svc-pkg__price">45 € pro Stunde</p>
 
-<a class="btn btn--sm btn--primary" href="/?paket=support#contact">Anfragen<span class="sr-only">: Betreuung nach Stunden</span></a>
+<a class="btn btn--sm btn--primary" href="/activecampaign-einrichten/?paket=support#svc-form">Anfragen<span class="sr-only">: Betreuung nach Stunden</span></a>
 </li>
 </ul>
 </div>
 </section>
+<div class="svc-sec svc-door-sec bg-blue"><div class="wrap svc-sec__in"><div class="svc-door">
+<p>Ein klares Problem? Quick-Fix, 190 € fix.</p>
+<p>Hakt es an mehreren Stellen? Technik-Check, 290 €</p>
+<p class="svc-door__links"><a class="text-link" href="/musterbericht/technik-check/">So sieht ein Bericht aus</a></p>
+</div></div></div>
 <section class="svc-sec bg-pist edge" aria-labelledby="svc-steps">
 <div class="wrap svc-sec__in">
 <h2 id="svc-steps" data-enter="lines">So läuft es ab</h2>

@@ -94,11 +94,12 @@ test('JSON-LD: a CreativeWork by the Person, about the Technik-Check, the PDF as
   assert.ok(!/"@type":"(AggregateRating|Review|Rating)"/.test(html));
 });
 
-test('links to the report: the home card (DE), /activecampaign-einrichten/ and /werkzeuge/ein-kauf/; no other page', () => {
+// R2 (December release, «Eine Tür»): home hero and card, the five service pages in DE and EN, Ein Kauf.
+test('links to the report: home (DE, EN), the service pages (DE, EN) and /werkzeuge/ein-kauf/; no other page', () => {
   const linking = Object.entries(by).filter(([f, h]) => f !== 'musterbericht/technik-check/index.html' && h.includes('href="/musterbericht/technik-check/"')).map(([f]) => f).sort();
-  assert.deepEqual(linking, ['activecampaign-einrichten/index.html', 'index.html', 'werkzeuge/ein-kauf/index.html']);
+  assert.deepEqual(linking, ['activecampaign-einrichten/index.html', 'e-mails-landen-im-spam/index.html', 'en/activecampaign-setup/index.html', 'en/ai-reply-drafts/index.html', 'en/course-launch-tech/index.html', 'en/emails-going-to-spam/index.html', 'en/index.html', 'en/one-page-website/index.html', 'index.html', 'ki-antwortentwuerfe/index.html', 'launch-technik/index.html', 'website-one-pager/index.html', 'werkzeuge/ein-kauf/index.html']);
   assert.ok(by['index.html'].includes('<a class="item__report text-link" href="/musterbericht/technik-check/">Beispielbericht ansehen</a>'));
-  assert.ok(by['activecampaign-einrichten/index.html'].includes('<a class="item__report text-link" href="/musterbericht/technik-check/">So sieht ein Bericht aus</a>'));
+  assert.ok(by['activecampaign-einrichten/index.html'].includes('<a class="text-link" href="/musterbericht/technik-check/">So sieht ein Bericht aus</a>'));
   const ek = by['werkzeuge/ein-kauf/index.html'];
   assert.match(ek, /<h2>Wenn Sie das nicht selbst prüfen möchten<\/h2>\n<p>[^<]+<\/p>\n<p><a class="text-link" href="\/musterbericht\/technik-check\/">So sieht ein Bericht aus<\/a><\/p>/);
 });

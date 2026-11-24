@@ -61,11 +61,11 @@ test('dates come from the content, not from the build day', () => {
   // 18.11.2026 (Wortfilter, four texts): home, ki and spam moved; /qualitaet/ is new.
   assert.equal((sitemap(config).match(/<lastmod>2026-10-29<\/lastmod>/g) || []).length, 2, 'Impressum and legal notice (Legal); ActiveCampaign moved to 24.11 (report link)');
   assert.equal((sitemap(config).match(/<lastmod>2026-11-05<\/lastmod>/g) || []).length, 0, 'privacy and launch moved to R1 (December release)');
-  assert.equal((sitemap(config).match(/<lastmod>2026-11-18<\/lastmod>/g) || []).length, 1, '/qualitaet/ (ki and spam moved to R1)');
+  assert.equal((sitemap(config).match(/<lastmod>2026-11-18<\/lastmod>/g) || []).length, 0, 'ki and spam moved to R1, /qualitaet/ to R2');
   // 24.11.2026 (Musterbericht): home and ActiveCampaign (DE and EN share the date), Ein Kauf (report link), the report.
-  assert.equal((sitemap(config).match(/<lastmod>2026-11-24<\/lastmod>/g) || []).length, 1, 'Ein Kauf (the others moved to R1)');
+  assert.equal((sitemap(config).match(/<lastmod>2026-11-24<\/lastmod>/g) || []).length, 0, 'moved to R1, Ein Kauf to R2');
   // R1 (December release): every page with the availability line, the new texts or the Datenschutz line.
-  assert.equal((sitemap(config).match(/<lastmod>2026-11-25<\/lastmod>/g) || []).length, 15, 'home, privacy and the five service pages (DE and EN), Musterbericht');
+  assert.equal((sitemap(config).match(/<lastmod>2026-11-25<\/lastmod>/g) || []).length, 17, 'home, privacy and the five service pages (DE and EN), Musterbericht; R2: /qualitaet/ and Ein Kauf');
 });
 
 test('external links open in a new tab and say so', () => {

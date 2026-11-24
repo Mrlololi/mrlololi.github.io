@@ -44,6 +44,7 @@ export function musterberichtPage(t, config) {
 <h1 id="mb-h">${esc(M.h1)}</h1>
 <p class="mb-fake card card--note"><strong>${esc(M.fake[0])}</strong> ${esc(M.fake[1])}</p>
 <p class="mb-pdf"><a class="text-link" href="${esc(M.pdf)}">${esc(M.pdfLink)}</a></p>
+<p class="mb-book">${esc(M.book[0])} <a class="text-link" href="${esc(M.bookHref)}">${esc(M.book[1])}</a></p>
 </div>
 </section>
 <section class="mb-sec" aria-labelledby="mb-glance-h">
@@ -95,6 +96,7 @@ ${M.price.map((p, i) => `<p>${esc(i === M.price.length - 1 && note(config, 'cred
 <div class="mb-exit">
 <p class="mb-exit__lead">${esc(M.exitLead)}</p>
 <a class="btn btn--primary" href="${esc(M.exitHref)}">${esc(pkg.name)}, ${esc(pkg.price.replace(/\s*fix$/, ''))}</a>
+<p class="mb-talk"><a class="text-link" href="${esc(M.talkHref)}">${esc(M.talk)}</a></p>
 </div>
 </div>
 </section>

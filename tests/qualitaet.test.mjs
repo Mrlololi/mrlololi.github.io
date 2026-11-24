@@ -70,8 +70,10 @@ test('the built page: indexable, DE only, sitemap entry without alternates, exit
   assert.match(h, new RegExp(`<link rel="canonical" href="${config.site_url}${P}">`));
   assert.ok(!/rel="alternate" hreflang/.test(h));
   assert.match(h, /<h1 id="q-h">Prüfprotokoll dieser Website<\/h1>/);
-  const pkg = de.pricing.groups.flatMap((g) => g.items).find((i) => i.id === 'website');
-  assert.ok(h.includes(`<a class="btn btn--primary" href="/?paket=website&amp;quelle=qualitaet#contact">${pkg.name}, ${pkg.price}</a>`));
+  // R2 (December release): the exit is the Technik-Check, the price without «fix».
+  const pkg = de.pricing.groups.flatMap((g) => g.items).find((i) => i.id === 'check');
+  assert.ok(h.includes('<p class="q-exit__lead">Ihren Launch vor dem Start prüfen lassen:</p>'));
+  assert.ok(h.replace(/\u00a0/g, ' ').includes(`<a class="btn btn--primary" href="/?paket=check&amp;quelle=qualitaet#contact">${pkg.name}, ${pkg.price.replace(/\s*fix$/, '')}</a>`));
   assert.ok(!/class="[^"]*\bmscene\b|data-demo|class="rl/.test(h.slice(h.indexOf('<main'), h.indexOf('</main>'))), 'no mascot scene, no demo in the body');
   const xml = sitemap(config, [], { qualitaet: true });
   assert.match(xml, new RegExp(`<loc>${config.site_url}${P}</loc>\\s*<lastmod>${config.page_dates.qualitaet}</lastmod>\\s*</url>`));

@@ -135,6 +135,27 @@ ${body}
 </div>
 </section>`;
 
+// R2 (December release): one door to the Technik-Check before «So läuft es ab». launch: the check block with
+// the report and a local «Technik-Check anfragen»; spam and ActiveCampaign: Quick-Fix first, then the Technik-Check
+// with the report; KI and website: one text link to the report. EN: the same, the report marked as German.
+function door(t, config, s) {
+  const D = t.services.ui.door;
+  const report = config.check_report_url;
+  if (!s.door || !report) return '';
+  const link = (text) => `<a class="text-link" href="${esc(report)}">${esc(text)}</a>`;
+  const body = s.door === 'check'
+    ? `<p><strong>${esc(D.check[0])}</strong> ${esc(D.check[1])}</p>
+<p class="svc-door__links">${link(D.report)}<a class="text-link" href="${esc(`${s.path}?paket=check#svc-form`)}">${esc(D.checkAsk)}</a></p>`
+    : s.door === 'quickcheck'
+      ? `<p>${esc(D.quick)}</p>
+<p>${esc(D.several)}</p>
+<p class="svc-door__links">${link(D.report)}</p>`
+      : `<p class="svc-door__links">${link(D.reportShort)}</p>`;
+  return `<div class="svc-sec svc-door-sec bg-blue"><div class="wrap svc-sec__in"><div class="svc-door${s.door === 'link' ? ' svc-door--link' : ''}">
+${body}
+</div></div></div>`;
+}
+
 export function servicePage(t, config, s, { live = {} } = {}) {
   const L = t.services.ui;
   const pk = packagesOf(t);
@@ -145,9 +166,8 @@ export function servicePage(t, config, s, { live = {} } = {}) {
 <h3 class="svc-pkg__name">${esc(it.name)}</h3>
 <p class="svc-pkg__price">${esc(it.price)}</p>
 ${it.extra ? `<p class="item__extra"><strong>${esc(it.extra.label)}</strong>, ${esc(it.extra.text)}</p>` : ''}${it.id === 'check' ? `
-<p class="item__referral small">${esc([t.s4.starter.checkCredit, note(config, 'credit_winter', t.lang)].filter(Boolean).join(' '))}</p>${s.key === 'activecampaign' && t.lang === 'de' && config.check_report_url ? `
-<a class="item__report text-link" href="${esc(config.check_report_url)}">${esc(t.musterbericht.linkText)}</a>` : ''}` : ''}
-<a class="btn btn--sm btn--primary" href="${esc(ask(t, it))}">${esc(t.pricing.cta)}<span class="sr-only">: ${esc(it.name)}</span></a>
+<p class="item__referral small">${esc([t.s4.starter.checkCredit, note(config, 'credit_winter', t.lang)].filter(Boolean).join(' '))}</p>` : ''}
+<a class="btn btn--sm btn--primary" href="${esc(`${s.path}?paket=${it.id}#svc-form`)}">${esc(t.pricing.cta)}<span class="sr-only">: ${esc(it.name)}</span></a>
 </li>`).join('\n');
   const steps = s.steps.map(([title, line], i) => `<li class="svc-step"><span class="svc-step__n" aria-hidden="true">${i + 1}</span><h3>${esc(title)}</h3><p>${esc(line)}</p></li>`).join('\n');
   const faq = s.faq.map(([q, a]) => `<details class="faq__item svc-faq__item">
@@ -191,6 +211,7 @@ ${cards}
 <ul class="svc-facts__list" role="list">${s.explain.parts.map(([label, x]) => `<li><strong>${esc(label)}:</strong> ${esc(x)}</li>`).join('')}</ul>${note(config, s.explain.note, t.lang) ? `
 <p class="svc-facts__note">${esc(note(config, s.explain.note, t.lang))}</p>` : ''}
 </aside>` : ''}`)}
+${door(t, config, s)}
 ${section('steps', 'bg-pist', L.steps, `<ol class="svc-steps" role="list">
 ${steps}
 </ol>${s.testLink && t.qualitaet && live.qualitaet ? `

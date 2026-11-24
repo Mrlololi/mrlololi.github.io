@@ -69,6 +69,7 @@ export default {
     secondary: 'See pricing',
     micro: '20 minutes · reply within 2 working days',
     trust: 'From Graz, working remotely · Online marketing since 2023 · Registered business in Austria',
+    report: 'Sample report (in German)',
     ribbon: 'Sign-up received · Email confirmed · Tag added · Payment received · Access granted · Welcome email arrived ·',
     flow: {"label":"Flow: form, ActiveCampaign, payment, course open","nodes":["Form","ActiveCampaign","Payment","Course open"],"lines":["The sign-up comes in and is checked.","Contact and tag are set, the welcome email is sent.","Payment or instalment is recognised, the invoice goes out.","Access is granted, with no manual work."],"chip":"Hi, I'm Iva"},
   },
@@ -165,7 +166,7 @@ export default {
             "id": "check",
             "name": "Tech check",
             "price": "€290 fixed",
-            "summary": "One day of analysis with read access: ActiveCampaign, Zapier or Make, payments, landing pages, double opt-in and consents.",
+            "summary": "One day of analysis in test mode: ActiveCampaign, Zapier or Make, payments, landing pages, double opt-in and consents.",
             "details": "You get a list with priorities, effort and prices and a 45-minute review call. If you book a project within 30 days, the €290 is fully credited."
           }
         ]
@@ -702,7 +703,7 @@ export default {
       chooser: 'Which package fits?',
       cards: {
         quick: { line: 'One clearly defined fault: fixed, tested and documented. Fixed price, no meter running.', scope: 'One specific task, up to 4 hours of work.', bullets: ['Email delivery (SPF, DKIM, DMARC)', 'Broken links or forms', 'Bookings or an automation'] },
-        check: { line: 'I test your launch before your customers do.', bullets: ['One day of analysis with read access to your tools', 'A list of priorities, effort and prices', 'A 45-minute review call', 'Fully credited if you order within 30 days, 60 days if a client referred you.'] },
+        check: { line: 'I test your launch before your customers do.', note: 'I never ask for your password. Where a tool has no separate access, we work together via screen sharing.', bullets: ['I go through your purchase like a buyer: in test mode, all the way into the course.', 'A list of priorities, effort and prices', 'A 45-minute review call', 'Fully credited if you order within 30 days, 60 days if a client referred you.'] },
         launch: { line: 'Everything is ready when sales open. Fixed price after the briefing.', bullets: ['Landing pages and checkout', 'ActiveCampaign flows from sign-up to failed payments', 'Forms with double opt-in and tags', 'Course access in your members area'] },
       },
       promise: '30-day promise: if a flow I built does not work as agreed within the first 30 days after handover, I fix it free of charge. On top of statutory warranty rights.',
@@ -786,6 +787,15 @@ export default {
       problem: 'The problem',
       does: 'What I do',
       steps: 'How it works',
+      // R2 (December release): the door to the tech check (EN twins of the German texts, Entwurf).
+      door: {
+        check: ['Not sure yet what is missing?', 'In the tech check I go through your flow for one day like a buyer, in test mode all the way into the course. €290 fixed, credited if you order.'],
+        checkAsk: 'Request a tech check',
+        quick: 'One clear problem? Quick fix, €190 fixed.',
+        several: 'Stuck in several places? Tech check, €290',
+        report: 'Sample report (in German)',
+        reportShort: 'Sample report (in German)',
+      },
       example: 'Example',
       faq: 'Frequently asked questions',
       related: 'Also a good fit',
@@ -800,6 +810,7 @@ export default {
     pages: [
       {
         key: 'launch',
+        door: 'check',
         path: '/en/course-launch-tech/',
         short: 'Launch tech',
         h1: 'Launch tech for online courses',
@@ -837,6 +848,7 @@ export default {
       },
       {
         key: 'spam',
+        door: 'quickcheck',
         path: '/en/emails-going-to-spam/',
         short: 'Emails in spam',
         h1: 'Emails going to spam? Set up SPF, DKIM and DMARC',
@@ -865,6 +877,7 @@ export default {
       },
       {
         key: 'activecampaign',
+        door: 'quickcheck',
         path: '/en/activecampaign-setup/',
         short: 'ActiveCampaign setup',
         h1: 'ActiveCampaign setup and support',
@@ -872,7 +885,7 @@ export default {
         promise: 'I check your ActiveCampaign account, set up flows and look after them afterwards, remotely for clients in Austria, Germany and Switzerland.',
         packages: ['check', 'support'],
         problem: ['Sign-ups get lost between the form and the CRM.', 'And nobody knows exactly where the problem is.', 'Each of these failures only shows up when a customer writes to you.'],
-        does: ['One day of analysis with read access: ActiveCampaign, Zapier or Make, payments, landing pages, double opt-in and consents', 'Flows that check every sign-up and resend it automatically on errors, even when many come in at once', 'Ongoing care for your automations, small landing pages, troubleshooting'],
+        does: ['One day of analysis in test mode: ActiveCampaign, Zapier or Make, payments, landing pages, double opt-in and consents', 'Flows that check every sign-up and resend it automatically on errors, even when many come in at once', 'Ongoing care for your automations, small landing pages, troubleshooting'],
         steps: [
           ['First call, 20 minutes, free.', 'You tell me what is not working in ActiveCampaign. I tell you honestly whether I can help.'],
           ['Tech check or quote.', 'You get a list with priorities, effort and prices.'],
@@ -891,6 +904,7 @@ export default {
       },
       {
         key: 'ki',
+        door: 'link',
         path: '/en/ai-reply-drafts/',
         short: 'AI reply drafts',
         h1: 'AI reply drafts for your customer support',
@@ -917,6 +931,7 @@ export default {
       },
       {
         key: 'website',
+        door: 'link',
         path: '/en/one-page-website/',
         short: 'One-page website',
         h1: 'One-page website with Leadpages or Wix',

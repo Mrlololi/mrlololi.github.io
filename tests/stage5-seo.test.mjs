@@ -197,10 +197,11 @@ test('prices on the service pages equal the home page', () => {
 });
 
 // Stage 6f: «Anfragen» leads to the form with the package preselected; the page closes with the compact form.
-test('service pages: «Anfragen» to /?paket=<id>#contact, the compact form at the end', () => {
+// R2 (December release): the package buttons go to the page's own form, the package preselected.
+test('service pages: «Anfragen» to <page>?paket=<id>#svc-form, the compact form at the end', () => {
   for (const s of SERVICES) {
     const it = items(s.t)[s.packages[0]];
-    const href = `${s.t.paths.home}?paket=${it.id}#contact`;
+    const href = `${s.path}?paket=${it.id}#svc-form`;
     assert.ok(byFile[s.file].includes(`href="${href}"`), s.path);
     assert.ok(byFile[s.file].includes('<form class="contact__form contact__form--compact" id="contact-form"'), s.path);
     assert.ok(!byFile[s.file].includes('href="mailto:hello@mrlololi.com?subject=Anfrage%3A'), s.path);
