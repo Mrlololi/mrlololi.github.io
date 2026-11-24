@@ -1,8 +1,8 @@
 {
   "about": "Written by src/qa/protokoll.mjs; the build renders /qualitaet/ only from this file. Never edit by hand.",
-  "measured": "2026-11-18",
-  "measuredAt": "2026-11-18T22:04:27.721Z",
-  "commit": "e9177a3",
+  "measured": "2026-11-24",
+  "measuredAt": "2026-11-24T20:53:13.329Z",
+  "commit": "a866c40",
   "dirty": false,
   "tools": {
     "lighthouse": "13.5.0",
@@ -13,23 +13,23 @@
   },
   "lighthouseRuns": 3,
   "tests": {
-    "total": 292,
-    "pass": 292,
+    "total": 305,
+    "pass": 305,
     "fail": 0
   },
   "gates": {
-    "total": 573,
-    "pass": 573,
+    "total": 600,
+    "pass": 600,
     "fail": 0
   },
   "summary": {
-    "pages": 19,
+    "pages": 20,
     "perfLimit": 95,
-    "perfMin": 98,
+    "perfMin": 99,
     "perfMax": 100,
     "clsMax": 0,
-    "keyboardPassed": 57,
-    "keyboardTotal": 57,
+    "keyboardPassed": 60,
+    "keyboardTotal": 60,
     "axeSerious": 0,
     "cookies": 0,
     "external": 0,
@@ -52,7 +52,7 @@
           "pass": true
         },
         {
-          "name": "99 tab stops with a visible focus ring",
+          "name": "96 tab stops with a visible focus ring",
           "pass": true,
           "details": ""
         },
@@ -61,7 +61,7 @@
           "pass": true
         }
       ],
-      "perf": 98,
+      "perf": 99,
       "a11y": 100,
       "best": 100,
       "seo": 100,
@@ -92,7 +92,7 @@
           "pass": true
         }
       ],
-      "perf": 98,
+      "perf": 99,
       "a11y": 100,
       "best": 100,
       "seo": 100,
@@ -127,7 +127,7 @@
       "a11y": 100,
       "best": 100,
       "seo": 100,
-      "lcp": 1.81,
+      "lcp": 1.8,
       "tbt": 0,
       "clsLighthouse": 0
     },
@@ -158,7 +158,7 @@
       "a11y": 100,
       "best": 100,
       "seo": 100,
-      "lcp": 1.81,
+      "lcp": 1.8,
       "tbt": 0,
       "clsLighthouse": 0
     },
@@ -189,7 +189,7 @@
       "a11y": 100,
       "best": 100,
       "seo": 100,
-      "lcp": 1.81,
+      "lcp": 1.8,
       "tbt": 0,
       "clsLighthouse": 0
     },
@@ -251,7 +251,7 @@
       "a11y": 100,
       "best": 100,
       "seo": 100,
-      "lcp": 1.66,
+      "lcp": 1.65,
       "tbt": 0,
       "clsLighthouse": 0
     },
@@ -282,7 +282,7 @@
       "a11y": 100,
       "best": 100,
       "seo": 63,
-      "lcp": 1.81,
+      "lcp": 1.8,
       "tbt": 0,
       "clsLighthouse": 0
     },
@@ -313,7 +313,7 @@
       "a11y": 100,
       "best": 100,
       "seo": 63,
-      "lcp": 1.81,
+      "lcp": 1.8,
       "tbt": 0,
       "clsLighthouse": 0
     },
@@ -344,7 +344,7 @@
       "a11y": 100,
       "best": 100,
       "seo": 100,
-      "lcp": 1.66,
+      "lcp": 1.65,
       "tbt": 0,
       "clsLighthouse": 0
     },
@@ -362,7 +362,7 @@
           "pass": true
         },
         {
-          "name": "25 tab stops with a visible focus ring",
+          "name": "26 tab stops with a visible focus ring",
           "pass": true,
           "details": ""
         },
@@ -375,7 +375,38 @@
       "a11y": 100,
       "best": 100,
       "seo": 100,
-      "lcp": 1.96,
+      "lcp": 1.95,
+      "tbt": 0,
+      "clsLighthouse": 0
+    },
+    {
+      "page": "/musterbericht/technik-check/",
+      "cls": 0,
+      "cookies": 0,
+      "external": 0,
+      "externalUrls": [],
+      "axeSerious": 0,
+      "axeIds": [],
+      "keyboard": [
+        {
+          "name": "skip link first, Enter into main",
+          "pass": true
+        },
+        {
+          "name": "19 tab stops with a visible focus ring",
+          "pass": true,
+          "details": ""
+        },
+        {
+          "name": "no keyboard trap",
+          "pass": true
+        }
+      ],
+      "perf": 100,
+      "a11y": 100,
+      "best": 100,
+      "seo": 100,
+      "lcp": 1.65,
       "tbt": 0,
       "clsLighthouse": 0
     },
@@ -406,7 +437,7 @@
       "a11y": 100,
       "best": 100,
       "seo": 100,
-      "lcp": 1.66,
+      "lcp": 1.65,
       "tbt": 0,
       "clsLighthouse": 0
     },
@@ -424,7 +455,7 @@
           "pass": true
         },
         {
-          "name": "43 tab stops with a visible focus ring",
+          "name": "44 tab stops with a visible focus ring",
           "pass": true,
           "details": ""
         },
@@ -468,8 +499,8 @@
       "a11y": 100,
       "best": 100,
       "seo": 100,
-      "lcp": 1.66,
-      "tbt": 10,
+      "lcp": 1.65,
+      "tbt": 0,
       "clsLighthouse": 0
     },
     {
@@ -530,7 +561,7 @@
       "a11y": 100,
       "best": 100,
       "seo": 100,
-      "lcp": 1.66,
+      "lcp": 1.65,
       "tbt": 0,
       "clsLighthouse": 0
     },
@@ -561,8 +592,8 @@
       "a11y": 100,
       "best": 100,
       "seo": 100,
-      "lcp": 1.66,
-      "tbt": 2,
+      "lcp": 1.65,
+      "tbt": 0,
       "clsLighthouse": 0
     },
     {
@@ -592,8 +623,8 @@
       "a11y": 100,
       "best": 100,
       "seo": 100,
-      "lcp": 1.73,
-      "tbt": 8,
+      "lcp": 1.65,
+      "tbt": 0,
       "clsLighthouse": 0
     },
     {
