@@ -109,6 +109,18 @@
       ],
       "about": "Musterbericht Technik-Check (24.11.2026): the approved sample report, word for word. Global list only until the chat «Сайты и контент» decides on the hits listed in the report to Iva (known candidate: «Notfallkarte mit fertigen Antworten für die häufigsten Fragen»).",
       "words": []
+    },
+    {
+      "name": "reference claudia",
+      "pages": [
+        "*"
+      ],
+      "about": "December release R0 (24.11.2026, Claudia's condition): the reference may not read as an ongoing collaboration. On every built page, DE and EN.",
+      "words": [
+        "Laufende Zusammenarbeit",
+        "Ongoing work",
+        "seit April 2026"
+      ]
     }
   ],
   "allow": [

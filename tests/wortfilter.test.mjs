@@ -76,3 +76,13 @@ test('visible text: entities decoded, scripts and styles out', () => {
   assert.ok(!/\.x\{\}|\by\b/.test(t));
   assert.match(t, /\bT\b/);
 });
+
+// December release R0 (24.11.2026), Claudia's condition: the reference never reads as an ongoing collaboration.
+test('reference claudia: «Laufende Zusammenarbeit», «Ongoing work», «seit April 2026» fail on every page, DE and EN', () => {
+  const g = RULES.groups.find((x) => x.name === 'reference claudia');
+  assert.deepEqual(g.pages, ['*']);
+  assert.deepEqual(g.words, ['Laufende Zusammenarbeit', 'Ongoing work', 'seit April 2026']);
+  for (const [p, t] of [['/', 'Laufende Zusammenarbeit mit einer Kursanbieterin'], ['/en/', 'Ongoing work for a course creator'], ['/launch-technik/', 'Betreuung seit April 2026']]) {
+    assert.equal(hitsOf([page(p, `<p>${t}</p>`)]).filter((h) => h.list === 'reference claudia').length, 1, t);
+  }
+});

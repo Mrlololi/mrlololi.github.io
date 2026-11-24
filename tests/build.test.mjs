@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { pages, sitemap, cname } from '../src/build.mjs';
 import config from '../src/config.json' with { type: 'json' };
+import { PAGES, FILES, TOTAL, INDEXABLE, ALTERNATES } from './pages-manifest.mjs';
 
 const SITE = config.site_url.replace(/\/$/, '');
 const SITE_RE = SITE.replace(/[.]/g, '\\.').replace(/\//g, '\\/');
@@ -45,7 +46,20 @@ const expected = {
 test('builds the seven original pages, the two thank-you pages, the ten service pages and /qualitaet/', () => {
   const SERVICE = /^(en\/)?(launch-technik|e-mails-landen-im-spam|activecampaign-einrichten|ki-antwortentwuerfe|website-one-pager|course-launch-tech|emails-going-to-spam|activecampaign-setup|ai-reply-drafts|one-page-website)\/index\.html$/;
   assert.deepEqual(all.map((p) => p.file).filter((f) => !SERVICE.test(f)).sort(), Object.keys(expected).sort());
-  assert.equal(all.length, 22); // + /werkzeuge/ein-kauf/, + /musterbericht/technik-check/
+  // R0 (24.11.2026): the count comes from the one page manifest (tests/pages-manifest.mjs).
+  assert.deepEqual(all.map((p) => p.file).sort(), FILES);
+  assert.equal(all.length, TOTAL);
+});
+
+test('the page manifest matches the build: language, sitemap state and hreflang twin of every page', () => {
+  for (const p of all) {
+    const m = PAGES[p.file];
+    assert.equal(p.html.match(/<html lang="(\w+)"/)[1], m.lang, p.file);
+    assert.equal(!p.html.includes('<meta name="robots" content="noindex">'), m.index, p.file);
+    const head = p.html.slice(0, p.html.indexOf('</head>'));
+    assert.equal((head.match(/hreflang=/g) || []).length, m.twin ? 3 : 0, p.file);
+    if (m.twin) assert.equal(PAGES[m.twin].twin, p.file, `${p.file}: twins point at each other`);
+  }
 });
 
 for (const [file, { lang, url }] of Object.entries(expected)) {
@@ -161,7 +175,7 @@ test('booking button, booking privacy section and UID line appear when set', () 
 
 test('sitemap lists the sixteen indexable pages with alternates (Stage 5: plus ten service pages)', () => {
   const xml = sitemap(config, fixedDate);
-  assert.equal(count(xml, /<url>/g), 19); // + /qualitaet/, /werkzeuge/ein-kauf/ and /musterbericht/technik-check/ (DE only, no alternates)
-  assert.equal(count(xml, /<xhtml:link rel="alternate"/g), 48);
+  assert.equal(count(xml, /<url>/g), INDEXABLE); // tests/pages-manifest.mjs
+  assert.equal(count(xml, /<xhtml:link rel="alternate"/g), ALTERNATES);
   assert.ok(xml.includes(`<loc>${SITE}/en/privacy/</loc>`));
 });

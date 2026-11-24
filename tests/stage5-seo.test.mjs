@@ -1,5 +1,6 @@
 // Stage 5 (28.10.2026): SEO. Entity (Person #iva), five service pages in DE and EN, the Ratgeber
 // template (unpublished while config.ratgeber_live is false), sitemap and robots.
+import { INDEXABLE } from './pages-manifest.mjs';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync, mkdtempSync, rmSync } from 'node:fs';
@@ -128,7 +129,7 @@ test('canonical and reciprocal hreflang pairs, checked over a real build output'
     await build({ outDir: dir, probe: false, quiet: true });
     const r = await checkSeo(dir, SITE);
     assert.deepEqual(r.problems, []);
-    assert.equal(r.indexable, 19, '6 earlier pages + 10 service pages + /qualitaet/ + /werkzeuge/ein-kauf/ + /musterbericht/technik-check/');
+    assert.equal(r.indexable, INDEXABLE, 'tests/pages-manifest.mjs');
     assert.ok(!existsSync(path.join(dir, 'ratgeber')), 'no /ratgeber/ in the output while the flag is false');
   } finally {
     rmSync(dir, { recursive: true, force: true });
@@ -362,7 +363,7 @@ test('sitemap contains exactly the live pages, with lastmod from page_dates', ()
     .map((p) => tag(p.html, /<link rel="canonical" href="([^"]+)">/))
     .sort();
   assert.deepEqual(locs, live);
-  assert.equal(locs.length, 19); // + /qualitaet/, /werkzeuge/ein-kauf/ and /musterbericht/technik-check/ (DE only)
+  assert.equal(locs.length, INDEXABLE); // tests/pages-manifest.mjs
   assert.equal(config.page_dates.website, '2026-10-28');
   // Stage 6 (29.10.2026): the KI demo and calculator moved to the KI page, the video to the launch page.
   assert.equal(config.page_dates.ki, '2026-11-18'); // 18.11.2026: the calculator note (Wortfilter)
