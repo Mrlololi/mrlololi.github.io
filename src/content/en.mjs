@@ -442,7 +442,7 @@ export default {
       // Stage 6f (4.11.2026): two new questions.
       { q: 'I use a different tool. Does that work?', a: 'Many course platforms connect via ActiveCampaign, Zapier or Make, for example Digistore24, CopeCart, ablefy, Kajabi or Memberspot. In the tech check I look at your tool first and tell you honestly whether I can help.' },
       { q: 'Is there a data processing agreement?', a: 'Yes. Before the project starts we sign a data processing agreement under Art. 28 GDPR (the WKO template), including the sub-processors.' },
-      { q: 'And what if you are ill?', a: 'Then I still help: almost everything can be solved remotely from my laptop. Also, all accesses belong to you, and every flow is documented.' },
+      { q: 'And if you are unavailable?', a: 'Everything I set up is documented in your account from the first day. Your assistant can carry on with it.' },
       { q: "My setup already exists, but it's messy. Do you clean up too?", a: 'Yes. I check tags, automations and Zaps, clean them up and document what happens where. The best start is the tech check.' },
     ],
   },
@@ -552,11 +552,18 @@ export default {
       sentenceOpen: 'I sell {what}. The platform is not decided yet. The problem is {issue}. Start: {start}.',
       viaOpen: 'not decided yet',
       fields: {
-        what: ['What', ['an online course', 'a coaching programme', 'a membership', 'a workshop', 'digital products']],
+        what: ['What', ['an online course', 'a coaching programme', 'a membership', 'a workshop', 'digital products', 'I am asking for a client (agency, OBM)']],
         via: ['Via', ['Leadpages', 'WordPress', 'Wix', 'Digistore24', 'CopeCart', 'ablefy', 'Kajabi', 'Memberspot', 'Skool', 'my own website', 'another tool', 'not decided yet']],
-        issue: ['The problem is', ['payments', 'sign-ups', 'emails in spam', 'automations', 'instalments', 'the website']],
+        issue: ['The problem is', ['payments', 'sign-ups', 'emails in spam', 'automations', 'instalments', 'the website', 'the course access after purchase', 'not sure yet']],
         start: ['Start', ['in 4 weeks', 'in 2 weeks', 'right away', 'in 2 to 3 months', 'not decided yet']],
       },
+      // R4 (December release): the new options with their own sentences (EN twins, Entwurf).
+      special: [
+        ['the course access after purchase', 'The problem is {issue}.', 'The course access after purchase is not working.'],
+        ['not sure yet', 'The problem is {issue}.', 'I am not sure yet where the problem is.'],
+        ['I am asking for a client (agency, OBM)', 'I sell {what} via {via}.', 'I am asking for a client (agency, OBM). The client sells via {via}.'],
+        ['I am asking for a client (agency, OBM)', 'I sell {what}. The platform is not decided yet.', 'I am asking for a client (agency, OBM). The platform is not decided yet.'],
+      ],
       preview: 'How your request reaches me',
       to: 'To',
       subjectLabel: 'Subject',
@@ -568,8 +575,9 @@ export default {
       form: {
         name: 'Your name',
         email: 'Your email address',
-        text: 'Anything to add? (optional)',
-        consent: 'I agree that my details are processed to answer my request. More in the {link}.',
+        text: 'What is going wrong? One sentence is enough.',
+        more: 'More details (optional)',
+        info: 'I use your details only to answer your request. More in the {link}.',
         consentLink: 'privacy policy',
         honeypot: 'Please leave empty',
         submit: 'Send request',
@@ -591,7 +599,7 @@ export default {
           name: 'Please enter your name.',
           email: 'Please enter your email address.',
           emailBad: 'Please check the email address, for example name@example.com.',
-          consent: 'Please tick the box so that I may answer your request.',
+          text: 'Please tell me briefly what is going wrong.',
         },
         done: "Thank you, {name}! You'll get a confirmation by email shortly. I'll reply within two working days.",
         failed: "Sorry, that didn't work. Write to me directly at {email}",
@@ -1022,7 +1030,7 @@ export default {
       { key: 'cookies', title: 'No cookies, no analytics', text: "This website sets no cookies and uses no analytics or tracking tools. Fonts and scripts are loaded from the website's own server." },
       { key: 'email', title: 'Contact by email', text: 'If you write to me, I process your details in order to answer your enquiry (Art. 6(1)(b) GDPR, for general enquiries Art. 6(1)(f) GDPR). Emails to hello@mrlololi.com are forwarded via Cloudflare Email Routing (Cloudflare, Inc., USA) to my mailbox at Google (Gmail). The transfer to the USA relies on the EU-US Data Privacy Framework (Art. 45 GDPR). I delete enquiries that do not lead to an assignment after 12 months at the latest. If an assignment follows, I keep business-relevant correspondence until the statutory retention period ends (usually 7 years, § 132 BAO).' },
       // Contact form 30.10.2026 (translation of the German text).
-      { key: 'form', title: 'Contact form', text: 'When you send the contact form, I process your name, your email address, the phrases you selected, your optional text, your optional preferred time, your optional answer on how you heard about me, where applicable the code from a link (for example the QR code in a letter) and the time of sending. The purpose is to answer your request and, where applicable, to take pre-contractual steps (Art. 6(1)(b) GDPR). The request is processed via Make, a service of Celonis (Celonis Inc., New York, USA, and its subsidiaries), which acts as my processor. The scenario runs in Make’s EU region. Where data is transferred to the USA, this relies on the EU-US Data Privacy Framework (Art. 45 GDPR); Celonis Inc. is certified under it. From Make, the request is sent to me by email via Google Gmail, and you receive an automatic confirmation (see {emailSection}). Make keeps execution logs only for a limited time. I keep the emails as long as your request requires and statutory retention duties demand; after that I delete them. You do not have to use the form: you can always write to me directly at {email}.' },
+      { key: 'form', title: 'Contact form', text: 'When you send the contact form, I process your name, your email address, your short description of what is going wrong, the phrases you optionally selected, your optional preferred time, your optional answer on how you heard about me, where applicable the code from a link (for example the QR code in a letter) and the time of sending. The purpose is to answer your request and, where applicable, to take pre-contractual steps (Art. 6(1)(b) GDPR). The request is processed via Make, a service of Celonis (Celonis Inc., New York, USA, and its subsidiaries), which acts as my processor. The scenario runs in Make’s EU region. Where data is transferred to the USA, this relies on the EU-US Data Privacy Framework (Art. 45 GDPR); Celonis Inc. is certified under it. From Make, the request is sent to me by email via Google Gmail, and you receive an automatic confirmation (see {emailSection}). Make keeps execution logs only for a limited time. I keep the emails as long as your request requires and statutory retention duties demand; after that I delete them. You do not have to use the form: you can always write to me directly at {email}.' },
       // Stage 6h (5.11.2026): translation of the German text.
       {
         key: 'post',

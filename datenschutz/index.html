@@ -1415,6 +1415,12 @@ html:not(.js) .ba__side--before { display: none; }
 .contact__alt { display: grid; gap: var(--space-3); }
 .contact__alt .contact__actions { margin-top: 0; }
 .contact__fields { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4); }
+.cf-more { margin-top: var(--space-4); }
+.cf-more[open] > .brief, .contact__fields--more { margin-top: var(--space-4); }
+.contact__info { margin-top: var(--space-4); }
+.contact__fields--hp { display: block; }
+.brief > * { min-width: 0; }
+.cf-more .brief { padding-inline: var(--space-3); }
 @media (min-width: 640px) {
 .contact__fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .field--wide, .field--check { grid-column: 1 / -1; }
@@ -1746,7 +1752,7 @@ html:not(.js) .faq__cats { display: none; }
 </section>
 <section id="form">
 <h2 data-enter="lines">Kontaktformular</h2>
-<p>Wenn Sie das Kontaktformular absenden, verarbeite ich Ihren Namen, Ihre E-Mail-Adresse, die ausgewählten Satzteile, Ihren optionalen Text, Ihren optionalen Terminwunsch, Ihre optionale Angabe, wie Sie auf mich aufmerksam geworden sind, gegebenenfalls die Kennung aus einem Link (zum Beispiel dem QR-Code in einem Brief) und den Zeitpunkt des Absendens. Zweck ist die Beantwortung Ihrer Anfrage und gegebenenfalls vorvertragliche Schritte (Art. 6 Abs. 1 lit. b DSGVO). Die Anfrage wird über Make verarbeitet, einen Dienst von Celonis (Celonis Inc., New York, USA, und ihre Tochtergesellschaften), der als Auftragsverarbeiter für mich tätig ist. Das Szenario läuft in der EU-Region von Make. Soweit Daten in die USA übermittelt werden, stützt sich das auf das EU-US Data Privacy Framework (Art. 45 DSGVO); Celonis Inc. ist danach zertifiziert. Von Make aus wird die Anfrage per E-Mail über Google Gmail an mich geschickt, und Sie erhalten eine automatische Bestätigung (siehe <a href="#email">Kontakt per E-Mail</a>). Make bewahrt Ausführungsprotokolle nur für begrenzte Zeit auf. Die E-Mails bewahre ich so lange auf, wie es für Ihre Anfrage nötig ist und gesetzliche Aufbewahrungspflichten es verlangen; danach lösche ich sie. Sie müssen das Formular nicht nutzen: Sie können mir jederzeit direkt an <a href="mailto:hello@mrlololi.com">hello@mrlololi.com</a> schreiben.</p>
+<p>Wenn Sie das Kontaktformular absenden, verarbeite ich Ihren Namen, Ihre E-Mail-Adresse, Ihre kurze Beschreibung, was hakt, die optional ausgewählten Satzteile, Ihren optionalen Terminwunsch, Ihre optionale Angabe, wie Sie auf mich aufmerksam geworden sind, gegebenenfalls die Kennung aus einem Link (zum Beispiel dem QR-Code in einem Brief) und den Zeitpunkt des Absendens. Zweck ist die Beantwortung Ihrer Anfrage und gegebenenfalls vorvertragliche Schritte (Art. 6 Abs. 1 lit. b DSGVO). Die Anfrage wird über Make verarbeitet, einen Dienst von Celonis (Celonis Inc., New York, USA, und ihre Tochtergesellschaften), der als Auftragsverarbeiter für mich tätig ist. Das Szenario läuft in der EU-Region von Make. Soweit Daten in die USA übermittelt werden, stützt sich das auf das EU-US Data Privacy Framework (Art. 45 DSGVO); Celonis Inc. ist danach zertifiziert. Von Make aus wird die Anfrage per E-Mail über Google Gmail an mich geschickt, und Sie erhalten eine automatische Bestätigung (siehe <a href="#email">Kontakt per E-Mail</a>). Make bewahrt Ausführungsprotokolle nur für begrenzte Zeit auf. Die E-Mails bewahre ich so lange auf, wie es für Ihre Anfrage nötig ist und gesetzliche Aufbewahrungspflichten es verlangen; danach lösche ich sie. Sie müssen das Formular nicht nutzen: Sie können mir jederzeit direkt an <a href="mailto:hello@mrlololi.com">hello@mrlololi.com</a> schreiben.</p>
 </section>
 <section id="post">
 <h2 data-enter="lines">Kontaktaufnahme mit Unternehmen per Post (Direktwerbung)</h2>

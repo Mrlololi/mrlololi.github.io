@@ -1415,6 +1415,12 @@ html:not(.js) .ba__side--before { display: none; }
 .contact__alt { display: grid; gap: var(--space-3); }
 .contact__alt .contact__actions { margin-top: 0; }
 .contact__fields { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4); }
+.cf-more { margin-top: var(--space-4); }
+.cf-more[open] > .brief, .contact__fields--more { margin-top: var(--space-4); }
+.contact__info { margin-top: var(--space-4); }
+.contact__fields--hp { display: block; }
+.brief > * { min-width: 0; }
+.cf-more .brief { padding-inline: var(--space-3); }
 @media (min-width: 640px) {
 .contact__fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .field--wide, .field--check { grid-column: 1 / -1; }
@@ -1746,7 +1752,7 @@ html:not(.js) .faq__cats { display: none; }
 </section>
 <section id="form">
 <h2 data-enter="lines">Contact form</h2>
-<p>When you send the contact form, I process your name, your email address, the phrases you selected, your optional text, your optional preferred time, your optional answer on how you heard about me, where applicable the code from a link (for example the QR code in a letter) and the time of sending. The purpose is to answer your request and, where applicable, to take pre-contractual steps (Art. 6(1)(b) GDPR). The request is processed via Make, a service of Celonis (Celonis Inc., New York, USA, and its subsidiaries), which acts as my processor. The scenario runs in Make’s EU region. Where data is transferred to the USA, this relies on the EU-US Data Privacy Framework (Art. 45 GDPR); Celonis Inc. is certified under it. From Make, the request is sent to me by email via Google Gmail, and you receive an automatic confirmation (see <a href="#email">Contact by email</a>). Make keeps execution logs only for a limited time. I keep the emails as long as your request requires and statutory retention duties demand; after that I delete them. You do not have to use the form: you can always write to me directly at <a href="mailto:hello@mrlololi.com">hello@mrlololi.com</a>.</p>
+<p>When you send the contact form, I process your name, your email address, your short description of what is going wrong, the phrases you optionally selected, your optional preferred time, your optional answer on how you heard about me, where applicable the code from a link (for example the QR code in a letter) and the time of sending. The purpose is to answer your request and, where applicable, to take pre-contractual steps (Art. 6(1)(b) GDPR). The request is processed via Make, a service of Celonis (Celonis Inc., New York, USA, and its subsidiaries), which acts as my processor. The scenario runs in Make’s EU region. Where data is transferred to the USA, this relies on the EU-US Data Privacy Framework (Art. 45 GDPR); Celonis Inc. is certified under it. From Make, the request is sent to me by email via Google Gmail, and you receive an automatic confirmation (see <a href="#email">Contact by email</a>). Make keeps execution logs only for a limited time. I keep the emails as long as your request requires and statutory retention duties demand; after that I delete them. You do not have to use the form: you can always write to me directly at <a href="mailto:hello@mrlololi.com">hello@mrlololi.com</a>.</p>
 </section>
 <section id="post">
 <h2 data-enter="lines">Contacting businesses by post (direct marketing)</h2>

@@ -44,7 +44,7 @@ test('3. FAQ categories: four groups plus «Alle», every question in exactly on
   assert.deepEqual(en.s4.faq.cats.groups.map(([n]) => n), ['Working together', 'Tech and tools', 'Launch', 'Data and contracts']);
   const h = byFile['index.html'];
   assert.match(h, /<div class="faq__cats" role="group" aria-label="Fragen nach Thema"><button class="chip faq__cat" type="button" data-cat="0" aria-pressed="true">Alle<\/button><button class="chip faq__cat" type="button" data-cat="1" aria-pressed="false">Zusammenarbeit<\/button>/);
-  assert.match(h, /<details class="faq__item" id="faq-11" data-cat="3">\n<summary>Und wenn Sie krank sind\?<\/summary>/);
+  assert.match(h, /<details class="faq__item" id="faq-11" data-cat="3">\n<summary>Und wenn Sie ausfallen\?<\/summary>/); // R4
   assert.match(h, /<details class="faq__item" id="faq-10" data-cat="4">\n<summary>Gibt es einen Auftragsverarbeitungsvertrag\?/);
   assert.match(css, /html:not\(\.js\) \.faq__cats \{ display: none; \}/);
   assert.match(js('faq.js'), /if \(items\[k\]\.hidden\) filter\('0'\);/);

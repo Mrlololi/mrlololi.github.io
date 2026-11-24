@@ -20,8 +20,10 @@ test('form: the brief builder stays, then name, e-mail, optional text, consent, 
   assert.equal((c.match(/<select class="brief__select"/g) || []).length, 4);
   assert.match(c, /<label for="cf-name">Ihr Name<\/label><input id="cf-name" name="name" type="text" autocomplete="name"[^>]* required aria-describedby="cf-name-err">/);
   assert.match(c, /<label for="cf-email">Ihre E-Mail-Adresse<\/label><input id="cf-email" name="email" type="email" autocomplete="email"[^>]* required aria-describedby="cf-email-err">/);
-  assert.match(c, /<label for="cf-text">Möchten Sie noch etwas ergänzen\? \(optional\)<\/label><textarea id="cf-text" name="text"/);
-  assert.match(c, /<input id="cf-consent" name="consent" type="checkbox" value="true" required aria-describedby="cf-consent-err"><label for="cf-consent">Ich bin einverstanden, dass meine Angaben zur Beantwortung meiner Anfrage verarbeitet werden\. Mehr in der <a href="\/datenschutz\/#form">Datenschutzerklärung<\/a>\.<\/label>/);
+  // R4 (December release): the one required sentence; the consent box became an information line (lit. b).
+  assert.match(c, /<label for="cf-text">Was hakt\? Ein Satz reicht\.<\/label><textarea id="cf-text" name="text" rows="2" maxlength="3000" required aria-describedby="cf-text-err"><\/textarea>/);
+  assert.match(c, /<p class="contact__info small">Ihre Angaben verwende ich nur, um Ihre Anfrage zu beantworten\. Mehr in der <a class="contact__privacy" href="\/datenschutz\/#form">Datenschutzerklärung<\/a>\.<\/p>\n<input type="hidden" name="consent" value="true">/);
+  assert.ok(!c.includes('type="checkbox"'), 'no consent box');
   assert.match(c, /<button class="btn btn--primary contact__send" type="submit">Anfrage senden<\/button>\n<p class="contact__next">In meiner Antwort bekommen Sie zwei, drei Terminvorschläge, per Zoom oder Telefon\.<\/p>\n<p class="contact__showcase small">Diese Anfrage läuft über eine Automation, wie ich sie für Sie baue\.<\/p>/);
   assert.match(c, /Ihre Angaben gehen nur an mich, über eine Automation in der EU\. Keine Cookies, kein Tracking\./);
   assert.ok(!/gesendet oder gespeichert/.test(c), 'the old note is gone (the run-log demo keeps its own «Nur eine Vorschau»)');
@@ -31,8 +33,8 @@ test('form: the brief builder stays, then name, e-mail, optional text, consent, 
 test('form (EN): the same fields and lines in English, privacy link to /en/privacy/', () => {
   const c = contact('en/index.html');
   assert.match(c, /data-lang="en"/);
-  for (const s of ['Your name', 'Your email address', 'Anything to add? (optional)', 'Send request', 'This request runs through an automation like the ones I build for you.', 'Your details go only to me, through an automation in the EU. No cookies, no tracking.']) assert.ok(c.includes(s), s);
-  assert.match(c, /<a href="\/en\/privacy\/#form">privacy policy<\/a>/);
+  for (const s of ['Your name', 'Your email address', 'What is going wrong? One sentence is enough.', 'More details (optional)', 'I use your details only to answer your request.', 'Send request', 'This request runs through an automation like the ones I build for you.', 'Your details go only to me, through an automation in the EU. No cookies, no tracking.']) assert.ok(c.includes(s), s);
+  assert.match(c, /<a class="contact__privacy" href="\/en\/privacy\/#form">privacy policy<\/a>/);
   assert.ok(!/sent or stored/.test(c));
 });
 

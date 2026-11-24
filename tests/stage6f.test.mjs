@@ -75,7 +75,7 @@ test('3. no-JS path: action to the hook, nojs and the hidden fields, a guard aga
   for (const h of [deHome, byFile['launch-technik/index.html']]) {
     assert.match(h, /<form class="contact__form[^"]*" id="contact-form" action="https:\/\/hook\.eu1\.make\.com\/49mmc0uciouni5rlvys2vb6drzdhhlph" method="post" onsubmit="return window\.__cfReady===true"/);
     assert.match(h, /<input type="hidden" name="nojs" value="1">\n<input type="hidden" name="lang" value="de">\n<input type="hidden" name="page" value="https:\/\/mrlololi\.com\/[^"]*">/);
-    assert.match(h, /name="consent" type="checkbox" value="true"/);
+    assert.match(h, /<input type="hidden" name="consent" value="true">/); // R4: the information line, the key stays
   }
   const c = js('contact.js');
   assert.match(c, /f\.querySelector\('input\[name="nojs"\]'\)\?\.remove\(\);/);

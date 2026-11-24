@@ -138,7 +138,8 @@ export function contactForm(t, config, { page, paket = '', compact = false } = {
   const email = config.contact_email;
   const subjectOnly = `mailto:${email}?subject=${t.contact.subject}`;
   const first = Object.fromEntries(Object.entries(c.fields).map(([k, [, opts]]) => [k, opts[0]]));
-  const mail = briefMail(c, first);
+  // R4: the preview starts with the frame only; the sentence comes when «Mehr Details» is opened.
+  const mail = briefMail(c, null);
   const select = (key) => {
     const [label, opts] = c.fields[key];
     return `<label class="sr-only" for="brief-${key}">${esc(label)}</label><select class="brief__select" id="brief-${key}" name="${PAYLOAD[key]}" data-key="${key}">${opts.map((o) => `<option>${esc(o)}</option>`).join('')}</select>`;
@@ -162,19 +163,27 @@ export function contactForm(t, config, { page, paket = '', compact = false } = {
 <input type="hidden" name="page" value="${esc(absUrl(config, page))}">
 <input type="hidden" name="quelle" value="">
 <div class="contact__errsum" role="alert" tabindex="-1" hidden><p class="contact__errsum-title"></p><ul role="list"></ul></div>
-<div class="brief" role="group" aria-labelledby="brief-label" data-sentence="${esc(c.sentence)}" data-sentence-open="${esc(c.sentenceOpen)}" data-via-open="${esc(c.viaOpen)}"${c.lower ? ' data-lower' : ''} data-greeting="${esc(c.greeting)}" data-closing="${esc(c.closing)}">
-<p class="brief__label" id="brief-label">${esc(c.builderLabel)}</p>
-<p class="brief__sentence">${sentence}</p>
-${preview}
-</div>
 <div class="contact__fields">
-<div class="field field--wide"><label for="cf-paket">${esc(f.paket)}</label><select class="field__select" id="cf-paket" name="paket">${pkgOptions}</select></div>
 ${field('name', 'text', 'autocomplete="name" maxlength="120" required')}
 ${field('email', 'email', 'autocomplete="email" maxlength="160" spellcheck="false" required')}
+<div class="field field--wide"><label for="cf-text">${esc(f.text)}</label><textarea id="cf-text" name="text" rows="2" maxlength="3000" required aria-describedby="cf-text-err"></textarea><p class="field__err" id="cf-text-err" hidden></p></div>
+</div>
+<details class="cf-more faq__item">
+<summary class="cf-more__sum">${esc(f.more)}</summary>
+<div class="brief" role="group" aria-labelledby="brief-label" data-sentence="${esc(c.sentence)}" data-sentence-open="${esc(c.sentenceOpen)}" data-via-open="${esc(c.viaOpen)}"${c.lower ? ' data-lower' : ''} data-greeting="${esc(c.greeting)}" data-closing="${esc(c.closing)}" data-special="${esc(JSON.stringify(c.special || []))}">
+<p class="brief__label" id="brief-label">${esc(c.builderLabel)}</p>
+<p class="brief__sentence">${sentence}</p>
+</div>
+<div class="contact__fields contact__fields--more">
+<div class="field field--wide"><label for="cf-paket">${esc(f.paket)}</label><select class="field__select" id="cf-paket" name="paket">${pkgOptions}</select></div>
 <div class="field field--wide"><label for="cf-termin">${esc(f.termin)}</label><input id="cf-termin" name="termin" type="text" maxlength="160" autocomplete="off" placeholder="${esc(f.terminPlaceholder)}"></div>
 <div class="field field--wide"><label for="cf-gefunden">${esc(f.gefunden)}</label><select class="field__select" id="cf-gefunden" name="gefunden"><option value="">${esc(f.gefundenPick)}</option>${f.gefundenOptions.map((o) => `<option${/^(Brief per Post|Letter by post)$/.test(o) ? ' data-letter' : ''}>${esc(o)}</option>`).join('')}</select></div>
-<div class="field field--wide"><label for="cf-text">${esc(f.text)}</label><textarea id="cf-text" name="text" rows="4" maxlength="3000"></textarea></div>
-<div class="field field--check"><input id="cf-consent" name="consent" type="checkbox" value="true" required aria-describedby="cf-consent-err"><label for="cf-consent">${fill(esc(f.consent), { link: `<a href="${t.paths.privacy}#form">${esc(f.consentLink)}</a>` })}</label><p class="field__err" id="cf-consent-err" hidden></p></div>
+</div>
+</details>
+${preview}
+<p class="contact__info small">${fill(esc(f.info), { link: `<a class="contact__privacy" href="${t.paths.privacy}#form">${esc(f.consentLink)}</a>` })}</p>
+<input type="hidden" name="consent" value="true">
+<div class="contact__fields contact__fields--hp">
 <div class="hp" aria-hidden="true"><label for="cf-website">${esc(f.honeypot)}</label><input id="cf-website" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true"></div>
 </div>
 <div class="contact__submit">

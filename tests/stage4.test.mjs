@@ -112,7 +112,8 @@ test('contact: brief builder with a live preview, mailto, Iva bubble, Graz time,
   assert.equal((c.match(/<select class="brief__select" id="brief-(what|via|issue|start)"/g) || []).length, 4);
   // Without JS the builder is hidden, so the link carries only the subject; contact.js adds the brief as the body.
   assert.match(c, /<a class="btn btn--primary brief__open" href="mailto:hello@mrlololi\.com\?subject=Anfrage%20%C3%BCber%20mrlololi\.com" data-mail="hello@mrlololi\.com"/);
-  assert.match(c, /<p class="brief__body">Hallo Iva,<br><br>ich verkaufe einen Onlinekurs über Leadpages\. Es hakt bei Zahlungen\. Start: in 4 Wochen\.<br><br>Viele Grüße<\/p>/);
+  // R4 (December release): the preview starts with the frame; the sentence joins once «Mehr Details» is opened.
+  assert.match(c, /<p class="brief__body">Hallo Iva,<br><br>Viele Grüße<\/p>/);
   // Stage 6f: without JS the form posts natively; only the live preview needs JS.
   assert.match(css, /html:not\(\.js\) \.brief__preview \{ display: none; \}/);
   assert.match(c, /<p class="contact__bubble"[^>]*>Erzählen Sie mir, was hakt\.<\/p>/);

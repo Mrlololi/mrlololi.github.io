@@ -1415,6 +1415,12 @@ html:not(.js) .ba__side--before { display: none; }
 .contact__alt { display: grid; gap: var(--space-3); }
 .contact__alt .contact__actions { margin-top: 0; }
 .contact__fields { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4); }
+.cf-more { margin-top: var(--space-4); }
+.cf-more[open] > .brief, .contact__fields--more { margin-top: var(--space-4); }
+.contact__info { margin-top: var(--space-4); }
+.contact__fields--hp { display: block; }
+.brief > * { min-width: 0; }
+.cf-more .brief { padding-inline: var(--space-3); }
 @media (min-width: 640px) {
 .contact__fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .field--wide, .field--check { grid-column: 1 / -1; }
@@ -1832,25 +1838,33 @@ html:not(.js) .faq__cats { display: none; }
 <p class="lead">I reply within two working days. The intro call (20 minutes) is free.</p>
 <div class="svc-form" id="svc-form">
 <p class="contact__when">Tech check: request now, dates in January 2027. Launch setup: project start from 22 February 2027.</p>
-<form class="contact__form contact__form--compact" id="contact-form" action="https://hook.eu1.make.com/49mmc0uciouni5rlvys2vb6drzdhhlph" method="post" onsubmit="return window.__cfReady===true" data-endpoint="https://hook.eu1.make.com/49mmc0uciouni5rlvys2vb6drzdhhlph" data-lang="en" data-sending="Sending…" data-summary-one="Please check this entry:" data-summary-many="Please check these {n} entries:" data-paket-label="I am interested in" data-termin-label="Best time" data-gefunden-label="Heard about me via" data-err-name="Please enter your name." data-err-email="Please enter your email address." data-err-emailbad="Please check the email address, for example name@example.com." data-err-consent="Please tick the box so that I may answer your request.">
+<form class="contact__form contact__form--compact" id="contact-form" action="https://hook.eu1.make.com/49mmc0uciouni5rlvys2vb6drzdhhlph" method="post" onsubmit="return window.__cfReady===true" data-endpoint="https://hook.eu1.make.com/49mmc0uciouni5rlvys2vb6drzdhhlph" data-lang="en" data-sending="Sending…" data-summary-one="Please check this entry:" data-summary-many="Please check these {n} entries:" data-paket-label="I am interested in" data-termin-label="Best time" data-gefunden-label="Heard about me via" data-err-name="Please enter your name." data-err-email="Please enter your email address." data-err-emailbad="Please check the email address, for example name@example.com." data-err-text="Please tell me briefly what is going wrong.">
 <input type="hidden" name="nojs" value="1">
 <input type="hidden" name="lang" value="en">
 <input type="hidden" name="page" value="https://mrlololi.com/en/emails-going-to-spam/">
 <input type="hidden" name="quelle" value="">
 <div class="contact__errsum" role="alert" tabindex="-1" hidden><p class="contact__errsum-title"></p><ul role="list"></ul></div>
-<div class="brief" role="group" aria-labelledby="brief-label" data-sentence="I sell {what} via {via}. The problem is {issue}. Start: {start}." data-sentence-open="I sell {what}. The platform is not decided yet. The problem is {issue}. Start: {start}." data-via-open="not decided yet" data-greeting="Hello Iva," data-closing="Best regards">
-<p class="brief__label" id="brief-label">Short brief</p>
-<p class="brief__sentence">I sell <label class="sr-only" for="brief-what">What</label><select class="brief__select" id="brief-what" name="was" data-key="what"><option>an online course</option><option>a coaching programme</option><option>a membership</option><option>a workshop</option><option>digital products</option></select> via <label class="sr-only" for="brief-via">Via</label><select class="brief__select" id="brief-via" name="plattform" data-key="via"><option>Leadpages</option><option>WordPress</option><option>Wix</option><option>Digistore24</option><option>CopeCart</option><option>ablefy</option><option>Kajabi</option><option>Memberspot</option><option>Skool</option><option>my own website</option><option>another tool</option><option>not decided yet</option></select>. The problem is <label class="sr-only" for="brief-issue">The problem is</label><select class="brief__select" id="brief-issue" name="problem" data-key="issue"><option>payments</option><option>sign-ups</option><option>emails in spam</option><option>automations</option><option>instalments</option><option>the website</option></select>. Start: <label class="sr-only" for="brief-start">Start</label><select class="brief__select" id="brief-start" name="start" data-key="start"><option>in 4 weeks</option><option>in 2 weeks</option><option>right away</option><option>in 2 to 3 months</option><option>not decided yet</option></select>.</p>
-
-</div>
 <div class="contact__fields">
-<div class="field field--wide"><label for="cf-paket">I am interested in</label><select class="field__select" id="cf-paket" name="paket"><option value="">Not sure yet</option><option value="quick" selected>Quick fix</option><option value="check">Tech check</option><option value="launch">Launch setup</option><option value="website">One-page website</option><option value="ki">AI in customer support</option><option value="support">Support by the hour</option></select></div>
 <div class="field"><label for="cf-name">Your name</label><input id="cf-name" name="name" type="text" autocomplete="name" maxlength="120" required aria-describedby="cf-name-err"><p class="field__err" id="cf-name-err" hidden></p></div>
 <div class="field"><label for="cf-email">Your email address</label><input id="cf-email" name="email" type="email" autocomplete="email" maxlength="160" spellcheck="false" required aria-describedby="cf-email-err"><p class="field__err" id="cf-email-err" hidden></p></div>
+<div class="field field--wide"><label for="cf-text">What is going wrong? One sentence is enough.</label><textarea id="cf-text" name="text" rows="2" maxlength="3000" required aria-describedby="cf-text-err"></textarea><p class="field__err" id="cf-text-err" hidden></p></div>
+</div>
+<details class="cf-more faq__item">
+<summary class="cf-more__sum">More details (optional)</summary>
+<div class="brief" role="group" aria-labelledby="brief-label" data-sentence="I sell {what} via {via}. The problem is {issue}. Start: {start}." data-sentence-open="I sell {what}. The platform is not decided yet. The problem is {issue}. Start: {start}." data-via-open="not decided yet" data-greeting="Hello Iva," data-closing="Best regards" data-special="[[&quot;the course access after purchase&quot;,&quot;The problem is {issue}.&quot;,&quot;The course access after purchase is not working.&quot;],[&quot;not sure yet&quot;,&quot;The problem is {issue}.&quot;,&quot;I am not sure yet where the problem is.&quot;],[&quot;I am asking for a client (agency, OBM)&quot;,&quot;I sell {what} via {via}.&quot;,&quot;I am asking for a client (agency, OBM). The client sells via {via}.&quot;],[&quot;I am asking for a client (agency, OBM)&quot;,&quot;I sell {what}. The platform is not decided yet.&quot;,&quot;I am asking for a client (agency, OBM). The platform is not decided yet.&quot;]]">
+<p class="brief__label" id="brief-label">Short brief</p>
+<p class="brief__sentence">I sell <label class="sr-only" for="brief-what">What</label><select class="brief__select" id="brief-what" name="was" data-key="what"><option>an online course</option><option>a coaching programme</option><option>a membership</option><option>a workshop</option><option>digital products</option><option>I am asking for a client (agency, OBM)</option></select> via <label class="sr-only" for="brief-via">Via</label><select class="brief__select" id="brief-via" name="plattform" data-key="via"><option>Leadpages</option><option>WordPress</option><option>Wix</option><option>Digistore24</option><option>CopeCart</option><option>ablefy</option><option>Kajabi</option><option>Memberspot</option><option>Skool</option><option>my own website</option><option>another tool</option><option>not decided yet</option></select>. The problem is <label class="sr-only" for="brief-issue">The problem is</label><select class="brief__select" id="brief-issue" name="problem" data-key="issue"><option>payments</option><option>sign-ups</option><option>emails in spam</option><option>automations</option><option>instalments</option><option>the website</option><option>the course access after purchase</option><option>not sure yet</option></select>. Start: <label class="sr-only" for="brief-start">Start</label><select class="brief__select" id="brief-start" name="start" data-key="start"><option>in 4 weeks</option><option>in 2 weeks</option><option>right away</option><option>in 2 to 3 months</option><option>not decided yet</option></select>.</p>
+</div>
+<div class="contact__fields contact__fields--more">
+<div class="field field--wide"><label for="cf-paket">I am interested in</label><select class="field__select" id="cf-paket" name="paket"><option value="">Not sure yet</option><option value="quick" selected>Quick fix</option><option value="check">Tech check</option><option value="launch">Launch setup</option><option value="website">One-page website</option><option value="ki">AI in customer support</option><option value="support">Support by the hour</option></select></div>
 <div class="field field--wide"><label for="cf-termin">When suits you best? (optional)</label><input id="cf-termin" name="termin" type="text" maxlength="160" autocomplete="off" placeholder="e.g. mornings, Tue or Thu"></div>
 <div class="field field--wide"><label for="cf-gefunden">How did you hear about me? (optional)</label><select class="field__select" id="cf-gefunden" name="gefunden"><option value="">Please choose</option><option>Google search</option><option>AI assistant (ChatGPT, Perplexity, Gemini)</option><option>LinkedIn</option><option>Malt</option><option>Referral</option><option>Instagram</option><option data-letter>Letter by post</option><option>Google Maps</option><option>Other</option></select></div>
-<div class="field field--wide"><label for="cf-text">Anything to add? (optional)</label><textarea id="cf-text" name="text" rows="4" maxlength="3000"></textarea></div>
-<div class="field field--check"><input id="cf-consent" name="consent" type="checkbox" value="true" required aria-describedby="cf-consent-err"><label for="cf-consent">I agree that my details are processed to answer my request. More in the <a href="/en/privacy/#form">privacy policy</a>.</label><p class="field__err" id="cf-consent-err" hidden></p></div>
+</div>
+</details>
+
+<p class="contact__info small">I use your details only to answer your request. More in the <a class="contact__privacy" href="/en/privacy/#form">privacy policy</a>.</p>
+<input type="hidden" name="consent" value="true">
+<div class="contact__fields contact__fields--hp">
 <div class="hp" aria-hidden="true"><label for="cf-website">Please leave empty</label><input id="cf-website" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true"></div>
 </div>
 <div class="contact__submit">

@@ -450,7 +450,6 @@ export async function checkStage6(browser, base) {
     await page.fill('#cf-name', 'Anna Test');
     await page.fill('#cf-email', 'anna@example.com');
     await page.fill('#cf-text', 'Bitte um Rückruf');
-    await page.check('#cf-consent');
   };
   for (const [width, lang] of [[1440, ''], [390, 'en/']]) {
     const tag = `contact form ${lang ? 'EN' : 'DE'} @${width}`;
@@ -458,13 +457,15 @@ export async function checkStage6(browser, base) {
     // Empty: three messages, linked to their fields, focus on the first; nothing is sent.
     await page.click('.contact__send');
     const v = await page.evaluate(() => [...document.querySelectorAll('[aria-invalid="true"]')].map((el) => ({ id: el.id, msg: document.getElementById(el.getAttribute('aria-describedby'))?.textContent || '' })).concat({ focus: document.activeElement.className, links: document.querySelectorAll('.contact__errsum a').length }));
-    check(`${tag}: empty submit marks name, e-mail, consent (aria-invalid + message), an error summary with three links takes the focus, nothing sent`, v.length === 4 && v.slice(0, 3).every((x) => x.msg.length > 5) && v[3].focus === 'contact__errsum' && v[3].links === 3 && posts.length === 0, JSON.stringify(v));
+    check(`${tag}: empty submit marks name, e-mail and «Was hakt?» (aria-invalid + message), an error summary with three links takes the focus, nothing sent`, v.length === 4 && v.slice(0, 3).every((x) => x.msg.length > 5) && v[3].focus === 'contact__errsum' && v[3].links === 3 && posts.length === 0, JSON.stringify(v));
     await page.click('.contact__errsum a');
     const jumped = await page.evaluate(() => document.activeElement.id);
     check(`${tag}: a link in the summary moves the focus to its field`, jumped === 'cf-name', jumped);
     await page.fill('#cf-name', 'Anna');
     await page.fill('#cf-email', 'anna@beispiel');
-    await page.check('#cf-consent');
+    await page.fill('#cf-text', 'Bitte um Rückruf');
+    // R4: the sentence values go once «Mehr Details (freiwillig)» has been opened.
+    await page.click('.cf-more__sum');
     await page.click('.contact__send');
     const bad = await page.evaluate(() => document.querySelector('#cf-email').getAttribute('aria-invalid') === 'true' && !document.querySelector('#cf-email-err').hidden);
     check(`${tag}: an incomplete e-mail address blocks sending`, bad && posts.length === 0, String(bad));
@@ -482,19 +483,19 @@ export async function checkStage6(browser, base) {
     check(`${tag}: no other third-party request`, foreign.length === 0, foreign.join(' '));
     await ctx.close();
   }
-  // Keyboard only: Tab from the last select reaches name, e-mail, text, consent, then the button (never the honeypot); Enter sends.
+  // R4: keyboard only: name, e-mail, «Was hakt?», «Mehr Details», the privacy link, then the button (never the honeypot); Enter sends.
   {
     const { ctx, page, posts } = await formPage();
-    await page.focus('#brief-start');
+    await page.focus('#cf-name');
     const order = [];
-    for (let i = 0; i < 9; i += 1) { await page.keyboard.press('Tab'); order.push(await page.evaluate(() => document.activeElement.id || document.activeElement.className)); }
-    check('contact form: keyboard order package, name, e-mail, time, how you heard about me, text, consent, (privacy link), send; never the honeypot', order.slice(0, 7).join() === 'cf-paket,cf-name,cf-email,cf-termin,cf-gefunden,cf-text,cf-consent' && !order.includes('cf-website'), order.join(' > '));
+    for (let i = 0; i < 6; i += 1) { await page.keyboard.press('Tab'); order.push(await page.evaluate(() => document.activeElement.id || document.activeElement.className)); }
+    check('contact form: keyboard order name, e-mail, «Was hakt?», «Mehr Details», privacy link, send; never the honeypot (R4)', order.slice(0, 5).join() === 'cf-email,cf-text,cf-more__sum,contact__privacy,btn btn--primary contact__send' && !order.includes('cf-website'), order.join(' > '));
     await page.focus('#cf-name');
     await page.keyboard.type('Kim Tastatur');
     await page.keyboard.press('Tab');
     await page.keyboard.type('kim@example.com');
-    await page.focus('#cf-consent');
-    await page.keyboard.press('Space');
+    await page.keyboard.press('Tab');
+    await page.keyboard.type('Die Zahlung hakt.');
     await page.focus('#cf-email');
     await page.keyboard.press('Enter');
     await page.waitForSelector('.contact__done:not([hidden])', { timeout: 5000 }).catch(() => {});
@@ -607,7 +608,7 @@ export async function checkStage6(browser, base) {
     await page.evaluate(() => document.getElementById('contact').scrollIntoView());
     await page.fill('#cf-name', 'A');
     await page.fill('#cf-email', 'a@example.com');
-    await page.check('#cf-consent');
+    await page.fill('#cf-text', 'Kurz.');
     await page.click('.contact__send');
     await page.waitForTimeout(1200);
     check('contact form: a click before contact.js has loaded does not navigate (no 405)', navs === 1 && page.url().startsWith(base), `${navs} ${page.url()}`);
@@ -622,7 +623,7 @@ export async function checkStage6(browser, base) {
     await page.goto(base + '/', { waitUntil: 'load' });
     await page.fill('#cf-name', 'Ohne JS');
     await page.fill('#cf-email', 'nojs@example.com');
-    await page.check('#cf-consent');
+    await page.fill('#cf-text', 'Ohne JS gesendet.');
     await Promise.all([page.waitForURL('**/danke/', { timeout: 8000 }).catch(() => {}), page.click('.contact__send')]);
     const body = posted[0] || '';
     check('contact form, no JS: native post with nojs=1, lang, page, the payload names, consent=true; lands on /danke/', /nojs=1/.test(body) && /lang=de/.test(body) && /was=/.test(body) && /plattform=/.test(body) && /consent=true/.test(body) && page.url().endsWith('/danke/'), `${body.slice(0, 160)} -> ${page.url()}`);
@@ -787,7 +788,7 @@ export async function checkStage6(browser, base) {
     const r = await page.evaluate(() => { const fm = document.getElementById('contact-form'); const b = fm.getBoundingClientRect(); return { quelle: fm.elements.quelle.value, gefunden: fm.elements.gefunden.value, inView: b.top < innerHeight && b.bottom > 0 }; });
     await page.fill('#cf-name', 'Anna Test');
     await page.fill('#cf-email', 'anna@example.com');
-    await page.check('#cf-consent');
+    await page.fill('#cf-text', 'Bitte um Rückruf');
     await page.click('.contact__send');
     await page.waitForSelector('.contact__done:not([hidden])', { timeout: 5000 }).catch(() => {});
     const p = posts[0] || {};
@@ -809,8 +810,9 @@ export async function checkStage6(browser, base) {
     await page.goto(base + '/?quelle=brief-nov', { waitUntil: 'load' });
     await page.fill('#cf-name', 'Ohne JS');
     await page.fill('#cf-email', 'nojs@example.com');
+    await page.fill('#cf-text', 'Ohne JS gesendet.');
+    await page.click('.cf-more__sum');
     await page.selectOption('#cf-gefunden', { label: 'LinkedIn' });
-    await page.check('#cf-consent');
     await Promise.all([page.waitForURL('**/danke/', { timeout: 8000 }).catch(() => {}), page.click('.contact__send')]);
     const body = posted[0] || '';
     check('contact form, no JS: gefunden goes with the native post, quelle stays empty without JS', /gefunden=LinkedIn/.test(body) && /(^|&)quelle=(&|$)/.test(body), body.slice(0, 200));

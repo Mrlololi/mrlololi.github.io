@@ -206,7 +206,7 @@ test('contact: the address stays visible under «E-Mail öffnen», «Text kopier
   // Stage 6b: «Text kopieren» next to «E-Mail öffnen», the address with its own button; the mail starts «Hallo Iva, ich».
   assert.match(c, /E-Mail öffnen<\/a>\n<button class="btn btn--secondary contact__copy" type="button" hidden data-done="Text kopiert">Text kopieren<\/button>/);
   assert.match(c, /class="btn btn--secondary btn--sm contact__copymail"[^>]*>Adresse kopieren<\/button>/);
-  assert.match(c, /<p class="brief__body">Hallo Iva,<br><br>ich verkaufe/);
+  assert.match(c, /<p class="brief__body">Hallo Iva,<br><br>Viele Grüße<\/p>/); // R4: the sentence after «Mehr Details»
   assert.match(c, /<textarea readonly rows="6"><\/textarea>/);
 });
 

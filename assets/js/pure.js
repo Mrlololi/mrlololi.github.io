@@ -15,8 +15,12 @@ export function mailtoHref(email, subject, body) {
 // The contact brief: one sentence from the four choices, framed as a short e-mail.
 // Stage 6b: an open platform gets its own sentence (c.sentenceOpen when the choice is c.viaOpen),
 // and in German the text after «Hallo Iva,» goes on in lower case (c.lower).
+// R4 (December release): c.special = [[option, part, own wording]]: a chosen option swaps its part of the template
+// for its own wording. choices === null: no sentence (the details were never opened), only the frame.
 export function briefMail(c, choices) {
-  const tpl = c.sentenceOpen && choices.via === c.viaOpen ? c.sentenceOpen : c.sentence;
+  if (!choices) return { subject: c.subject, body: `${c.greeting}\n\n${c.closing}` };
+  let tpl = c.sentenceOpen && choices.via === c.viaOpen ? c.sentenceOpen : c.sentence;
+  for (const [option, part, own] of c.special || []) if (Object.values(choices).includes(option)) tpl = tpl.replace(part, own);
   const sentence = tpl.replace(/\{(\w+)\}/g, (m, k) => choices[k] ?? m);
   const first = c.lower ? sentence[0].toLowerCase() : sentence[0].toUpperCase();
   return { subject: c.subject, body: `${c.greeting}\n\n${first}${sentence.slice(1)}\n\n${c.closing}` };

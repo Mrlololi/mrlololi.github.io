@@ -130,10 +130,11 @@ test('7. launch facts on /launch-technik/ after the package, «krank» FAQ, the 
   assert.match(d, /Texte für E-Mails und Verkaufsseiten, Werbeanzeigen, Inhalte und Videos des Kurses, Rechtstexte, die Kosten Ihrer Tools\./);
   assert.match(d, /50 % bei Auftrag, 50 % nach dem Livegang\. Rechnung per E-Mail, zahlbar innerhalb von 14 Tagen\./);
   assert.match(d, /Erreichbarkeit am Launch-Tag in einem vereinbarten Zeitfenster, 30-Tage-Zusage\./); // R1.2
-  for (const [t, q, a] of [[de, 'Und wenn Sie krank sind?', 'Dann helfe ich trotzdem: Fast alles lässt sich remote vom Laptop aus lösen. Außerdem gehören alle Zugänge Ihnen, und jeder Ablauf ist dokumentiert.'], [en, 'And what if you are ill?', 'Then I still help: almost everything can be solved remotely from my laptop. Also, all accesses belong to you, and every flow is documented.']]) {
-    assert.equal(t.faq.items.find((x) => x.q === q)?.a, a);
+  // R4 (December release): «Und wenn Sie ausfallen?».
+  for (const [t, q, x] of [[de, 'Und wenn Sie ausfallen?', 'Alles, was ich einrichte, ist ab dem ersten Tag in Ihrem Konto dokumentiert. Ihre Assistenz kann damit weiterarbeiten.'], [en, 'And if you are unavailable?', 'Everything I set up is documented in your account from the first day. Your assistant can carry on with it.']]) {
+    assert.equal(t.faq.items.find((y) => y.q === q)?.a, x);
   }
-  assert.ok(deHome.includes('Und wenn Sie krank sind?') && enHome.includes('And what if you are ill?'));
+  assert.ok(deHome.includes('Und wenn Sie ausfallen?') && enHome.includes('And if you are unavailable?') && !deHome.includes('krank'));
   for (const h of Object.values(byFile)) assert.ok(!/ab 5 Stunden|from 5 hours/i.test(h));
   assert.equal(de.s6.pricing.rows.support, '45 € pro Stunde für Pflege und alles außerhalb der Pakete, abgerechnet nach Aufwand in 15-Minuten-Schritten. Arbeit nach Stunden beginne ich erst, wenn Sie meine Schätzung der Stundenzahl kennen.');
   assert.equal(en.pricing.hourly, '€45 per hour for care and anything outside the packages, billed by effort in 15-minute steps. I only start hourly work once you know my estimate of the hours.');

@@ -449,7 +449,7 @@ export default {
       // Stage 6f (4.11.2026): two new questions.
       { q: 'Ich nutze ein anderes Tool. Geht das?', a: 'Viele Kursplattformen lassen sich über ActiveCampaign, Zapier oder Make anbinden, z. B. Digistore24, CopeCart, ablefy, Kajabi oder Memberspot. Im Technik-Check schaue ich mir Ihr Tool zuerst an und sage Ihnen ehrlich, ob ich helfen kann.' },
       { q: 'Gibt es einen Auftragsverarbeitungsvertrag?', a: 'Ja. Vor Projektstart schließen wir einen AVV nach Art. 28 DSGVO (Muster der WKO), inklusive der Unterauftragsverarbeiter.' },
-      { q: 'Und wenn Sie krank sind?', a: 'Dann helfe ich trotzdem: Fast alles lässt sich remote vom Laptop aus lösen. Außerdem gehören alle Zugänge Ihnen, und jeder Ablauf ist dokumentiert.' },
+      { q: 'Und wenn Sie ausfallen?', a: 'Alles, was ich einrichte, ist ab dem ersten Tag in Ihrem Konto dokumentiert. Ihre Assistenz kann damit weiterarbeiten.' },
       { q: 'Mein Setup ist schon da, aber unübersichtlich. Räumen Sie auch auf?', a: 'Ja. Ich prüfe Tags, Automationen und Zaps, räume auf und dokumentiere, was wo passiert. Am besten starten wir mit dem Technik-Check.' },
     ],
   },
@@ -561,11 +561,18 @@ export default {
       viaOpen: 'noch offen',
       lower: true,
       fields: {
-        what: ['Was', ['einen Onlinekurs', 'ein Coaching-Programm', 'eine Mitgliedschaft', 'einen Workshop', 'digitale Produkte']],
+        what: ['Was', ['einen Onlinekurs', 'ein Coaching-Programm', 'eine Mitgliedschaft', 'einen Workshop', 'digitale Produkte', 'Ich frage für eine Kundin an (Agentur, OBM)']],
         via: ['Über', ['Leadpages', 'WordPress', 'Wix', 'Digistore24', 'CopeCart', 'ablefy', 'Kajabi', 'Memberspot', 'Skool', 'eine eigene Website', 'ein anderes Tool', 'noch offen']],
-        issue: ['Es hakt bei', ['Zahlungen', 'Anmeldungen', 'E-Mails im Spam', 'Automationen', 'Ratenzahlungen', 'der Website']],
+        issue: ['Es hakt bei', ['Zahlungen', 'Anmeldungen', 'E-Mails im Spam', 'Automationen', 'Ratenzahlungen', 'der Website', 'dem Kurszugang nach dem Kauf', 'weiß ich noch nicht']],
         start: ['Start', ['in 4 Wochen', 'in 2 Wochen', 'sofort', 'in 2 bis 3 Monaten', 'noch offen']],
       },
+      // R4 (December release): the new options, each with its own sentence ([option, part of the sentence, its own wording]).
+      special: [
+        ['dem Kurszugang nach dem Kauf', 'Es hakt bei {issue}.', 'Es hakt beim Kurszugang nach dem Kauf.'],
+        ['weiß ich noch nicht', 'Es hakt bei {issue}.', 'Wo es hakt, weiß ich noch nicht.'],
+        ['Ich frage für eine Kundin an (Agentur, OBM)', 'Ich verkaufe {what} über {via}.', 'Ich frage für eine Kundin an (Agentur, OBM). Sie verkauft über {via}.'],
+        ['Ich frage für eine Kundin an (Agentur, OBM)', 'Ich verkaufe {what}. Die Plattform ist noch offen.', 'Ich frage für eine Kundin an (Agentur, OBM). Die Plattform ist noch offen.'],
+      ],
       preview: 'So kommt Ihre Anfrage bei mir an',
       to: 'An',
       subjectLabel: 'Betreff',
@@ -578,8 +585,11 @@ export default {
       form: {
         name: 'Ihr Name',
         email: 'Ihre E-Mail-Adresse',
-        text: 'Möchten Sie noch etwas ergänzen? (optional)',
-        consent: 'Ich bin einverstanden, dass meine Angaben zur Beantwortung meiner Anfrage verarbeitet werden. Mehr in der {link}.',
+        // R4 (December release): the one required sentence; the rest folds into «Mehr Details (freiwillig)».
+        text: 'Was hakt? Ein Satz reicht.',
+        more: 'Mehr Details (freiwillig)',
+        // R4: an information line instead of the consent box (legal basis Art. 6 Abs. 1 lit. b DSGVO).
+        info: 'Ihre Angaben verwende ich nur, um Ihre Anfrage zu beantworten. Mehr in der {link}.',
         consentLink: 'Datenschutzerklärung',
         honeypot: 'Bitte leer lassen',
         submit: 'Anfrage senden',
@@ -604,7 +614,7 @@ export default {
           name: 'Bitte geben Sie Ihren Namen ein.',
           email: 'Bitte geben Sie Ihre E-Mail-Adresse ein.',
           emailBad: 'Bitte prüfen Sie die E-Mail-Adresse, zum Beispiel name@beispiel.at.',
-          consent: 'Bitte setzen Sie das Häkchen, damit ich Ihre Anfrage beantworten darf.',
+          text: 'Bitte schreiben Sie kurz, was hakt.',
         },
         done: 'Danke, {name}! Sie bekommen gleich eine Bestätigung per E-Mail. Ich melde mich innerhalb von zwei Werktagen.',
         failed: 'Das hat leider nicht geklappt. Schreiben Sie mir direkt an {email}',
@@ -1288,7 +1298,7 @@ export default {
       { key: 'cookies', title: 'Keine Cookies, keine Analyse', text: 'Diese Website setzt keine Cookies und verwendet keine Analyse- oder Tracking-Werkzeuge. Schriften und Skripte werden vom eigenen Server geladen.' },
       { key: 'email', title: 'Kontakt per E-Mail', text: 'Wenn Sie mir schreiben, verarbeite ich Ihre Angaben, um Ihre Anfrage zu beantworten (Art. 6 Abs. 1 lit. b DSGVO, bei allgemeinen Anfragen lit. f). E-Mails an hello@mrlololi.com werden über Cloudflare Email Routing (Cloudflare, Inc., USA) an mein Postfach bei Google (Gmail) weitergeleitet. Die Übermittlung in die USA stützt sich auf das EU-US Data Privacy Framework (Art. 45 DSGVO). Anfragen ohne Auftrag lösche ich nach spätestens 12 Monaten. Entsteht ein Auftrag, bewahre ich geschäftsrelevante Korrespondenz bis zum Ende der gesetzlichen Aufbewahrungsfrist auf (in der Regel 7 Jahre, § 132 BAO).' },
       // Kontaktformular 30.10.2026 (docs/PROMPT_Kontaktformular_2026-10-30.md).
-      { key: 'form', title: 'Kontaktformular', text: 'Wenn Sie das Kontaktformular absenden, verarbeite ich Ihren Namen, Ihre E-Mail-Adresse, die ausgewählten Satzteile, Ihren optionalen Text, Ihren optionalen Terminwunsch, Ihre optionale Angabe, wie Sie auf mich aufmerksam geworden sind, gegebenenfalls die Kennung aus einem Link (zum Beispiel dem QR-Code in einem Brief) und den Zeitpunkt des Absendens. Zweck ist die Beantwortung Ihrer Anfrage und gegebenenfalls vorvertragliche Schritte (Art. 6 Abs. 1 lit. b DSGVO). Die Anfrage wird über Make verarbeitet, einen Dienst von Celonis (Celonis Inc., New York, USA, und ihre Tochtergesellschaften), der als Auftragsverarbeiter für mich tätig ist. Das Szenario läuft in der EU-Region von Make. Soweit Daten in die USA übermittelt werden, stützt sich das auf das EU-US Data Privacy Framework (Art. 45 DSGVO); Celonis Inc. ist danach zertifiziert. Von Make aus wird die Anfrage per E-Mail über Google Gmail an mich geschickt, und Sie erhalten eine automatische Bestätigung (siehe {emailSection}). Make bewahrt Ausführungsprotokolle nur für begrenzte Zeit auf. Die E-Mails bewahre ich so lange auf, wie es für Ihre Anfrage nötig ist und gesetzliche Aufbewahrungspflichten es verlangen; danach lösche ich sie. Sie müssen das Formular nicht nutzen: Sie können mir jederzeit direkt an {email} schreiben.' },
+      { key: 'form', title: 'Kontaktformular', text: 'Wenn Sie das Kontaktformular absenden, verarbeite ich Ihren Namen, Ihre E-Mail-Adresse, Ihre kurze Beschreibung, was hakt, die optional ausgewählten Satzteile, Ihren optionalen Terminwunsch, Ihre optionale Angabe, wie Sie auf mich aufmerksam geworden sind, gegebenenfalls die Kennung aus einem Link (zum Beispiel dem QR-Code in einem Brief) und den Zeitpunkt des Absendens. Zweck ist die Beantwortung Ihrer Anfrage und gegebenenfalls vorvertragliche Schritte (Art. 6 Abs. 1 lit. b DSGVO). Die Anfrage wird über Make verarbeitet, einen Dienst von Celonis (Celonis Inc., New York, USA, und ihre Tochtergesellschaften), der als Auftragsverarbeiter für mich tätig ist. Das Szenario läuft in der EU-Region von Make. Soweit Daten in die USA übermittelt werden, stützt sich das auf das EU-US Data Privacy Framework (Art. 45 DSGVO); Celonis Inc. ist danach zertifiziert. Von Make aus wird die Anfrage per E-Mail über Google Gmail an mich geschickt, und Sie erhalten eine automatische Bestätigung (siehe {emailSection}). Make bewahrt Ausführungsprotokolle nur für begrenzte Zeit auf. Die E-Mails bewahre ich so lange auf, wie es für Ihre Anfrage nötig ist und gesetzliche Aufbewahrungspflichten es verlangen; danach lösche ich sie. Sie müssen das Formular nicht nutzen: Sie können mir jederzeit direkt an {email} schreiben.' },
       // Stage 6h (5.11.2026): letters to businesses (wording by Iva, word for word).
       {
         key: 'post',

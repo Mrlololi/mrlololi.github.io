@@ -39,6 +39,9 @@ function preselect(section) {
   const sel = section.querySelector('#cf-paket');
   if (!id || !sel || ![...sel.options].some((o) => o.value === id)) return;
   sel.value = id;
+  // R4: the package sits in «Mehr Details»: open it so the choice can be seen.
+  const more = section.querySelector('.cf-more');
+  if (more) more.open = true;
   sel.dispatchEvent(new Event('change'));
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   section.querySelector('.contact__fields').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
@@ -79,7 +82,9 @@ function builder(section) {
   const open = section.querySelector('.brief__open');
   if (!brief || !open) return;
   const selects = [...brief.querySelectorAll('.brief__select')];
-  const body = brief.querySelector('.brief__body');
+  // R4: the preview stands under «Mehr Details»; the sentence counts once the details have been opened.
+  const body = section.querySelector('.brief__body');
+  const more = section.querySelector('.cf-more');
   const name = section.querySelector('#cf-name');
   const text = section.querySelector('#cf-text');
   const termin = section.querySelector('#cf-termin');
@@ -93,10 +98,11 @@ function builder(section) {
     sentenceOpen: brief.dataset.sentenceOpen,
     viaOpen: brief.dataset.viaOpen,
     lower: 'lower' in brief.dataset,
+    special: JSON.parse(brief.dataset.special || '[]'),
   };
   const update = () => {
     // The selects carry the payload names (was, plattform, problem, start); data-key is the sentence slot.
-    const choices = Object.fromEntries(selects.map((s) => [s.dataset.key, s.value]));
+    const choices = !more || f.dataset.more ? Object.fromEntries(selects.map((s) => [s.dataset.key, s.value])) : null;
     const m = briefMail(c, choices);
     // Package, preferred time and the optional text go before the closing, the name under it
     // (preview and mailto alike).
@@ -118,6 +124,7 @@ function builder(section) {
   for (const el of [name, text, termin]) el?.addEventListener('input', update);
   section.querySelector('#cf-paket')?.addEventListener('change', update);
   section.querySelector('#cf-gefunden')?.addEventListener('change', update);
+  more?.addEventListener('toggle', () => { if (more.open) { f.dataset.more = '1'; update(); } });
   update();
   copier(section, brief);
 }
@@ -130,7 +137,8 @@ function form(section) {
   const alt = f.querySelector('.contact__alt');
   const failed = f.querySelector('.contact__failed');
   const label = send.textContent;
-  const fields = { name: f.elements.name, email: f.elements.email, consent: f.elements.consent };
+  // R4: required are name, e-mail and the one sentence «Was hakt?»; consent is an information line now.
+  const fields = { name: f.elements.name, email: f.elements.email, text: f.elements.text };
   const summary = f.querySelector('.contact__errsum');
 
   // elapsed_ms counts from the moment the form first came into view.
@@ -144,9 +152,9 @@ function form(section) {
 
   const message = (key) => {
     const el = fields[key];
-    if (key === 'consent') return el.checked ? '' : f.dataset.errConsent;
     const v = el.value.trim();
     if (key === 'name') return v ? '' : f.dataset.errName;
+    if (key === 'text') return v ? '' : f.dataset.errText;
     if (!v) return f.dataset.errEmail;
     return el.validity.typeMismatch || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v) ? f.dataset.errEmailbad : '';
   };
@@ -181,11 +189,11 @@ function form(section) {
   // Messages appear after the first attempt (or when leaving a field) and clear as soon as it is right.
   let tried = false;
   for (const [key, el] of Object.entries(fields)) {
-    el.addEventListener(key === 'consent' ? 'change' : 'input', () => {
+    el.addEventListener('input', () => {
       if (tried || el.hasAttribute('aria-invalid')) show(key);
       if (summary && !summary.hidden && Object.keys(fields).every((k) => !message(k))) summary.hidden = true;
     });
-    if (key !== 'consent') el.addEventListener('blur', () => { if (el.value.trim()) show(key); });
+    el.addEventListener('blur', () => { if (el.value.trim()) show(key); });
   }
 
   f.addEventListener('submit', async (e) => {
@@ -198,12 +206,14 @@ function form(section) {
     const payload = {
       name: fields.name.value.trim(),
       email: fields.email.value.trim(),
-      ...Object.fromEntries([...f.querySelectorAll('.brief__select')].map((s) => [s.name, s.value])),
+      // The sentence values only when «Mehr Details» was opened (the keys always go, the Make scenario is unchanged).
+      ...Object.fromEntries([...f.querySelectorAll('.brief__select')].map((s) => [s.name, f.dataset.more || !f.querySelector('.cf-more') ? s.value : ''])),
       text: [paketLine(f), f.elements.text.value.trim()].filter(Boolean).join('\n\n'),
       termin: f.elements.termin.value.trim(),
       gefunden: f.elements.gefunden?.value || '',
       quelle: /^[a-z0-9-]{1,40}$/.test(f.elements.quelle?.value || '') ? f.elements.quelle.value : '',
-      consent: fields.consent.checked,
+      // The key stays for the Make scenario; the form shows the information line instead of a box.
+      consent: true,
       website: f.elements.website.value,
       elapsed_ms: Math.round(performance.now() - (seen || performance.now())),
       lang: f.dataset.lang,

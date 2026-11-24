@@ -1412,6 +1412,12 @@ html:not(.js) .ba__side--before { display: none; }
 .contact__alt { display: grid; gap: var(--space-3); }
 .contact__alt .contact__actions { margin-top: 0; }
 .contact__fields { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4); }
+.cf-more { margin-top: var(--space-4); }
+.cf-more[open] > .brief, .contact__fields--more { margin-top: var(--space-4); }
+.contact__info { margin-top: var(--space-4); }
+.contact__fields--hp { display: block; }
+.brief > * { min-width: 0; }
+.cf-more .brief { padding-inline: var(--space-3); }
 @media (min-width: 640px) {
 .contact__fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .field--wide, .field--check { grid-column: 1 / -1; }
