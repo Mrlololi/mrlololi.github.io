@@ -1,4 +1,4 @@
-import { esc, accent, extLink, fill, absUrl } from './util.mjs';
+import { esc, accent, extLink, fill, absUrl, note } from './util.mjs';
 import { mascotScene } from './mascots.mjs';
 import { ctaStrip } from './pricing.mjs';
 import { briefMail } from '../../assets/js/pure.js';
@@ -212,7 +212,8 @@ export function contact(t, config) {
 <div class="contact__main">
 <h2 class="contact__title" id="contact-title" data-enter="lines">${accent(t.contact.h2)}</h2>
 <p class="lead">${esc(t.contact.text)}</p>
-<p class="contact__free">${esc(t.contact.free)}</p>
+<p class="contact__free">${esc(t.contact.free)}</p>${note(config, 'availability', t.lang) ? `
+<p class="contact__when">${esc(note(config, 'availability', t.lang))}</p>` : ''}
 ${contactForm(t, config, { page: t.paths.home })}
 </div>
 <div class="contact__side">

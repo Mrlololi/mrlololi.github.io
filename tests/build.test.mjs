@@ -146,8 +146,8 @@ test('Impressum: facts from CONTENT.md, full address, no ODR link', () => {
 });
 
 test('privacy: page date as Stand / Last updated', () => {
-  assert.match(byFile['datenschutz/index.html'], /Stand: 05\.11\.2026/);
-  assert.match(byFile['en/privacy/index.html'], /Last updated: 5 November 2026/);
+  assert.match(byFile['datenschutz/index.html'], /Stand: 25.11.2026/);
+  assert.match(byFile['en/privacy/index.html'], /Last updated: 25 November 2026/);
 });
 
 test('privacy: DPF sentence only when verified', () => {

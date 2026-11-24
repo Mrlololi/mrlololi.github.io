@@ -54,16 +54,18 @@ test('dates come from the content, not from the build day', () => {
   for (const f of ['datenschutz/index.html', 'en/privacy/index.html']) {
     assert.equal(later.find((p) => p.file === f).html, html(f), f);
   }
-  assert.match(html('datenschutz/index.html'), /Stand: 05\.11\.2026/); // Stage 6h: «Kontaktaufnahme per Post», 5.11.2026
+  assert.match(html('datenschutz/index.html'), /Stand: 25.11.2026/); // Stage 6h: «Kontaktaufnahme per Post», 5.11.2026
   assert.equal(sitemap(config, new Date('2027-03-01')), sitemap(config, new Date('2026-01-01')));
   assert.equal((sitemap(config).match(/<lastmod>2026-10-21<\/lastmod>/g) || []).length, 0, 'Impressum and legal notice moved to 29.10 (Legal 29.10.2026)');
-  assert.equal((sitemap(config).match(/<lastmod>2026-10-28<\/lastmod>/g) || []).length, 2, 'the website pages (home and privacy moved to 30.10 with the contact form)');
+  assert.equal((sitemap(config).match(/<lastmod>2026-10-28<\/lastmod>/g) || []).length, 0, 'the website pages moved to R1 (availability line above the form)');
   // 18.11.2026 (Wortfilter, four texts): home, ki and spam moved; /qualitaet/ is new.
   assert.equal((sitemap(config).match(/<lastmod>2026-10-29<\/lastmod>/g) || []).length, 2, 'Impressum and legal notice (Legal); ActiveCampaign moved to 24.11 (report link)');
-  assert.equal((sitemap(config).match(/<lastmod>2026-11-05<\/lastmod>/g) || []).length, 4, 'privacy and launch (Stage 6h, 5.11.2026)');
-  assert.equal((sitemap(config).match(/<lastmod>2026-11-18<\/lastmod>/g) || []).length, 5, 'ki, spam (DE and EN) and /qualitaet/');
+  assert.equal((sitemap(config).match(/<lastmod>2026-11-05<\/lastmod>/g) || []).length, 0, 'privacy and launch moved to R1 (December release)');
+  assert.equal((sitemap(config).match(/<lastmod>2026-11-18<\/lastmod>/g) || []).length, 1, '/qualitaet/ (ki and spam moved to R1)');
   // 24.11.2026 (Musterbericht): home and ActiveCampaign (DE and EN share the date), Ein Kauf (report link), the report.
-  assert.equal((sitemap(config).match(/<lastmod>2026-11-24<\/lastmod>/g) || []).length, 6, 'home, ActiveCampaign (DE and EN), Ein Kauf, Musterbericht');
+  assert.equal((sitemap(config).match(/<lastmod>2026-11-24<\/lastmod>/g) || []).length, 1, 'Ein Kauf (the others moved to R1)');
+  // R1 (December release): every page with the availability line, the new texts or the Datenschutz line.
+  assert.equal((sitemap(config).match(/<lastmod>2026-11-25<\/lastmod>/g) || []).length, 15, 'home, privacy and the five service pages (DE and EN), Musterbericht');
 });
 
 test('external links open in a new tab and say so', () => {
@@ -102,7 +104,8 @@ test('wording: new strings exist in DE and EN alike', () => {
   for (const t of [de, en]) {
     assert.equal(t.pricing.groups[1].items[0].bullets.length, 5);
     assert.ok(t.contact.free.includes('20'));
-    assert.ok(!/Cart-Open|cart open|\(DSGVO\)\.|\(GDPR\)\.|Strecke/.test(JSON.stringify(t)));
+    // R1 (December release): the brief's Musterbericht sentence «… einer Launch-Strecke.» is the one exception.
+    assert.ok(!/Cart-Open|cart open|\(DSGVO\)\.|\(GDPR\)\.|Strecke/.test(JSON.stringify(t).replace('Das Launch-Setup ab 1.190 € gilt für den kompletten Aufbau einer Launch-Strecke.', '')));
   }
   assert.match(deHome, /<p class="contact__free">Das Erstgespräch \(20 Minuten\) ist kostenlos\.<\/p>/);
   assert.match(deHome, /„\[…\] halten wir Iva Tsatskrialashvili/);

@@ -1646,6 +1646,9 @@ html:not(.js) .motion-toggle { display: none !important; }
 .vid__note { justify-self: center; }
 .item__call { margin-top: var(--space-1); }
 .item__when { margin-top: var(--space-1); font-size: var(--step--1); font-weight: 700; color: var(--pist-ink); }
+.item__scope { display: block; margin-top: var(--space-1); font-size: var(--step--1); font-weight: 400; }
+.tariff__b2b { margin-top: var(--space-2); font-weight: 700; }
+.contact__when { margin: var(--space-2) 0; font-weight: 700; }
 .proj--main { list-style: none; }
 .proj__link--main { display: grid; gap: var(--space-3) var(--space-5); }
 @media (min-width: 760px) { .proj__link--main { grid-template-columns: minmax(0, 24rem) minmax(0, 1fr); align-items: center; } .proj__link--main picture { grid-row: span 2; } }
@@ -1752,7 +1755,7 @@ html:not(.js) .faq__cats { display: none; }
 <section class="svc-sec bg-pink edge" aria-labelledby="svc-problem">
 <div class="wrap svc-sec__in">
 <h2 id="svc-problem" data-enter="lines">Das Problem</h2>
-<p class="svc-text">Anmeldungen verschwinden zwischen Formular und CRM. Die Ratenzahlung ist fehlgeschlagen, der Zugang bleibt trotzdem offen. Jeder dieser Fehler kostet Anmeldungen, Umsatz oder Nerven.</p>
+<p class="svc-text">Anmeldungen verschwinden zwischen Formular und CRM. Die Ratenzahlung ist fehlgeschlagen, der Zugang bleibt trotzdem offen. Jeder dieser Fehler fällt erst auf, wenn eine Kundin schreibt.</p>
 </div>
 </section>
 <section class="svc-sec bg-blue edge" aria-labelledby="svc-does">
@@ -1770,8 +1773,8 @@ html:not(.js) .faq__cats { display: none; }
 </ul>
 <aside class="svc-explain svc-facts" aria-labelledby="svc-explain">
 <h3 id="svc-explain">Gut zu wissen</h3>
-<ul class="svc-facts__list" role="list"><li><strong>Enthalten (ab 1.190 €):</strong> Landingpages und Checkout, ActiveCampaign-Abläufe von der Anmeldung bis zum Zahlungsausfall, Formulare mit Double-Opt-In und Tags, Verbindungen über Zapier oder Make, Zahlung und Rechnung, Kurszugang im Mitgliederbereich, Tests mit Testkontakten, Dokumentation und Übergabe, Begleitung am Launch-Tag, 30-Tage-Zusage. Den Festpreis bekommen Sie nach dem Briefing.</li><li><strong>Nicht enthalten:</strong> Texte für E-Mails und Verkaufsseiten, Werbeanzeigen, Inhalte und Videos des Kurses, Rechtstexte, die Kosten Ihrer Tools.</li><li><strong>Zeitplan:</strong> Am besten 4 bis 6 Wochen vor dem Launch melden, mindestens 3 Wochen.</li><li><strong>Zahlung:</strong> 50 % bei Auftrag, 50 % nach dem Livegang. Rechnung per E-Mail, zahlbar innerhalb von 14 Tagen.</li><li><strong>Launch-Tag:</strong> Ich bin telefonisch und per Chat in einem Zeitfenster erreichbar, das wir vorher festlegen, abgerechnet nach Aufwand (45 € pro Stunde). Außerhalb antworte ich bis 15 Uhr am nächsten Tag. Ich begleite höchstens einen Launch pro Woche.</li></ul>
-<p class="svc-facts__note">Im Februar 2027 plane ich keine Launches ein. Launch-Setups mit Projektstart ab 22. Februar 2027.</p>
+<ul class="svc-facts__list" role="list"><li><strong>Enthalten (ab 1.190 €):</strong> Landingpages und Checkout, ActiveCampaign-Abläufe von der Anmeldung bis zum Zahlungsausfall, Formulare mit Double-Opt-In und Tags, Verbindungen über Zapier oder Make, Zahlung und Rechnung, Kurszugang im Mitgliederbereich, Tests mit Testkontakten, Dokumentation und Übergabe, Erreichbarkeit am Launch-Tag in einem vereinbarten Zeitfenster, 30-Tage-Zusage. Den Festpreis bekommen Sie nach dem Briefing.</li><li><strong>Nicht enthalten:</strong> Texte für E-Mails und Verkaufsseiten, Werbeanzeigen, Inhalte und Videos des Kurses, Rechtstexte, die Kosten Ihrer Tools.</li><li><strong>Zeitplan:</strong> Am besten 4 bis 6 Wochen vor dem Launch melden, mindestens 3 Wochen.</li><li><strong>Zahlung:</strong> 50 % bei Auftrag, 50 % nach dem Livegang. Rechnung per E-Mail, zahlbar innerhalb von 14 Tagen.</li><li><strong>Launch-Tag:</strong> Ich bin in einem vorher vereinbarten Zeitfenster telefonisch und per Chat erreichbar. Arbeit in diesem Fenster: 45 € pro Stunde, vorher abgesprochen. Außerhalb antworte ich bis 15 Uhr am nächsten Tag. Ich begleite höchstens einen Launch pro Woche.</li></ul>
+<p class="svc-facts__note">Technik-Check: jetzt anfragen, Termine im Januar 2027. Launch-Setup: Projektstart ab 22. Februar 2027.</p>
 </aside>
 </div>
 </section>
@@ -1830,6 +1833,7 @@ html:not(.js) .faq__cats { display: none; }
 <h2 class="svc-contact__title">Erzählen Sie mir, <em class="accent">was hakt.</em></h2>
 <p class="lead">Ich antworte innerhalb von zwei Werktagen. Das Erstgespräch (20 Minuten) ist kostenlos.</p>
 <div class="svc-form" id="svc-form">
+<p class="contact__when">Technik-Check: jetzt anfragen, Termine im Januar 2027. Launch-Setup: Projektstart ab 22. Februar 2027.</p>
 <form class="contact__form contact__form--compact" id="contact-form" action="https://hook.eu1.make.com/49mmc0uciouni5rlvys2vb6drzdhhlph" method="post" onsubmit="return window.__cfReady===true" data-endpoint="https://hook.eu1.make.com/49mmc0uciouni5rlvys2vb6drzdhhlph" data-lang="de" data-sending="Wird gesendet…" data-summary-one="Bitte prüfen Sie diese Angabe:" data-summary-many="Bitte prüfen Sie diese {n} Angaben:" data-paket-label="Mir geht es um" data-termin-label="Wann es passt" data-gefunden-label="Aufmerksam geworden über" data-err-name="Bitte geben Sie Ihren Namen ein." data-err-email="Bitte geben Sie Ihre E-Mail-Adresse ein." data-err-emailbad="Bitte prüfen Sie die E-Mail-Adresse, zum Beispiel name@beispiel.at." data-err-consent="Bitte setzen Sie das Häkchen, damit ich Ihre Anfrage beantworten darf.">
 <input type="hidden" name="nojs" value="1">
 <input type="hidden" name="lang" value="de">

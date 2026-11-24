@@ -79,9 +79,10 @@ test('4. form sources in the new order (DE and EN), the letter option still pres
 });
 
 test('5. referral line under the Technik-Check (home and /activecampaign-einrichten/), estimate before hourly work', () => {
-  const ref = 'Auf Empfehlung einer Kundin: Der Technik-Check wird 60 statt 30 Tage voll auf Ihr Projekt angerechnet.';
-  for (const f of ['index.html', 'activecampaign-einrichten/index.html']) assert.ok(by[f].includes(`<p class="item__referral small">${ref}</p>`), f);
-  assert.ok(by['en/index.html'].includes('Referred by a client: the Technik-Check is credited in full against your project for 60 instead of 30 days.'));
+  // R1 (December release): the referral merged into the crediting bullet; no separate line.
+  const ref = 'Bei Auftrag innerhalb von 30 Tagen voll angerechnet, auf Empfehlung einer Kundin 60 Tage.';
+  for (const f of ['index.html', 'activecampaign-einrichten/index.html']) assert.ok(by[f].includes(ref) && !by[f].includes('Auf Empfehlung einer Kundin: Der Technik-Check'), f);
+  assert.ok(by['en/index.html'].includes('Fully credited if you order within 30 days, 60 days if a client referred you.'));
   const short = 'Arbeit nach Stunden beginne ich erst, wenn Sie meine Schätzung der Stundenzahl kennen.';
   const long = 'Arbeit nach Stunden beginne ich erst, wenn Sie meine Schätzung der Stundenzahl kennen; wird es mehr, frage ich vorher.';
   assert.ok(de.pricing.groups[2].items[0].summary.endsWith(long));

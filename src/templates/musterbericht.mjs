@@ -1,5 +1,5 @@
 import { readFileSync } from 'node:fs';
-import { esc as escape, absUrl } from './util.mjs';
+import { esc as escape, absUrl, note } from './util.mjs';
 
 // Musterbericht Technik-Check (docs/PROMPT_Musterbericht_Technik-Check_2026-11-24.md): the sample report Iva
 // approved on 22.11.2026, rebuilt as a calm document page in the site shell. All texts come from t.musterbericht
@@ -87,7 +87,7 @@ ${plan}
 </table>
 <div class="card card--note mb-price">
 <h3>${esc(M.priceTitle)}</h3>
-${M.price.map((p) => `<p>${esc(p)}</p>`).join('\n')}
+${M.price.map((p, i) => `<p>${esc(i === M.price.length - 1 && note(config, 'credit_winter', 'de') ? `${p} ${note(config, 'credit_winter', 'de')}` : p)}</p>`).join('\n')}
 </div>
 <h2>${esc(M.notTitle)}</h2>
 <p class="mb-note">${esc(M.not)}</p>

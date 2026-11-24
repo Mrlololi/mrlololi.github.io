@@ -55,6 +55,8 @@ export function wordHits(page, text, rules = RULES) {
     for (const w of g.words || []) {
       for (const m of text.matchAll(wordRe(w))) {
         if (allowed(rules, page, text, m.index, m[0].length)) continue;
+        // A group may carry its own allow-list of phrases (R1 frequency words: at most two).
+        if ((g.allow || []).some((a) => [...text.matchAll(wordRe(a))].some((x) => x.index <= m.index && m.index + m[0].length <= x.index + x[0].length))) continue;
         hits.push({ page, kind: 'word', list: g.name, word: w, context: context(text, m.index, m[0].length) });
       }
     }

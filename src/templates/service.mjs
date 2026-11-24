@@ -145,7 +145,7 @@ export function servicePage(t, config, s, { live = {} } = {}) {
 <h3 class="svc-pkg__name">${esc(it.name)}</h3>
 <p class="svc-pkg__price">${esc(it.price)}</p>
 ${it.extra ? `<p class="item__extra"><strong>${esc(it.extra.label)}</strong>, ${esc(it.extra.text)}</p>` : ''}${it.id === 'check' ? `
-<p class="item__referral small">${esc(t.s4.starter.checkReferral)}</p>${s.key === 'activecampaign' && t.lang === 'de' && config.check_report_url ? `
+<p class="item__referral small">${esc([t.s4.starter.checkCredit, note(config, 'credit_winter', t.lang)].filter(Boolean).join(' '))}</p>${s.key === 'activecampaign' && t.lang === 'de' && config.check_report_url ? `
 <a class="item__report text-link" href="${esc(config.check_report_url)}">${esc(t.musterbericht.linkText)}</a>` : ''}` : ''}
 <a class="btn btn--sm btn--primary" href="${esc(ask(t, it))}">${esc(t.pricing.cta)}<span class="sr-only">: ${esc(it.name)}</span></a>
 </li>`).join('\n');
@@ -208,7 +208,8 @@ ${related}
 <div class="svc-contact">
 <h2 class="svc-contact__title">${accent(t.contact.h2)}</h2>
 <p class="lead">${esc(t.contact.text)} ${esc(t.contact.free)}</p>
-<div class="svc-form" id="svc-form">
+<div class="svc-form" id="svc-form">${note(config, 'availability', t.lang) ? `
+<p class="contact__when">${esc(note(config, 'availability', t.lang))}</p>` : ''}
 ${contactForm(t, config, { page: s.path, paket: pkgs[0].id, compact: true })}
 </div>
 <ul class="svc-links" role="list">

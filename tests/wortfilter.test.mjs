@@ -35,8 +35,8 @@ test('the four texts of 17.11 (DE and EN): new wording in, old wording out', () 
 test('a planted listed word fails (global, tools group, brief group, qualitaet group)', () => {
   assert.equal(hitsOf([page('/', '<p>Ihr Launch ist garantiert fehlerfrei.</p>')]).length, 2);
   assert.equal(hitsOf([page('/', '<p>100 % sicher</p>')]).length, 1);
-  assert.equal(hitsOf([page('/werkzeuge/ein-kauf/', '<p>Das passiert oft.</p>')]).filter((h) => h.word === 'oft').length, 2, 'tools list and the Ein-Kauf never-list');
-  assert.equal(hitsOf([page('/', '<p>Das passiert oft.</p>')]).length, 0, 'frequency words only in the tool scope');
+  assert.equal(hitsOf([page('/werkzeuge/ein-kauf/', '<p>Das passiert oft.</p>')]).filter((h) => h.word === 'oft').length, 3, 'tools list, the Ein-Kauf never-list and (R1) the frequency group');
+  assert.equal(hitsOf([page('/', '<p>Das passiert oft.</p>')]).length, 1, 'R1 (December release): frequency words on every page');
   assert.equal(hitsOf([page('/brief/', '<p>Sie haben eingewilligt.</p>')]).length, 1);
   assert.equal(hitsOf([page('/qualitaet/', '<p>Das ist gesetzlich vorgeschrieben.</p>')]).length, 2);
   // In alt, aria-label, title and the meta description, too; never in a <script>.

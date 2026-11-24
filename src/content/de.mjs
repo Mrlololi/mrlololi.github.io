@@ -134,7 +134,7 @@ export default {
   },
 
   problems: {
-    h2: "Wo es bei Launches *oft hakt*",
+    h2: "Wo es bei Launches *hakt*",
     intro: "Typische Stellen, an denen Launches haken.",
     slider: {
       label: 'Vorher / Nachher ziehen',
@@ -169,7 +169,7 @@ export default {
             "name": "Technik-Check",
             "price": "290 € fix",
             "summary": "Ein Tag Analyse mit Lesezugriff: ActiveCampaign, Zapier oder Make, Zahlung, Landingpages, Double-Opt-In und Einwilligungen.",
-            "details": "Sie bekommen eine Liste mit Prioritäten, Aufwand und Preisen und ein Gespräch von 45 Minuten. Beauftragen Sie innerhalb von 30 Tagen ein Projekt, rechne ich die 290 € voll an."
+            "details": "Sie bekommen eine Liste mit Prioritäten, Aufwand und Preisen und ein 45-Minuten-Auswertungsgespräch. Beauftragen Sie innerhalb von 30 Tagen ein Projekt, rechne ich die 290 € voll an."
           }
         ]
       },
@@ -435,8 +435,8 @@ export default {
     h2: 'Häufige *Fragen*',
     items: [
       { q: 'Muss ich mich mit Technik auskennen?', a: 'Nein. Sie sagen mir, was passieren soll, ich kümmere mich um den Rest und erkläre alles in einfachen Worten.' },
-      { q: 'Arbeiten Sie auch remote?', a: 'Ja. Fast alle Projekte laufen remote im DACH-Raum. In Graz komme ich gern persönlich vorbei.' },
-      { q: 'Wie schnell können Sie starten?', a: 'Quick-Fixes oft innerhalb einer Woche. Projekte nach Absprache, weil ich bewusst nur wenige gleichzeitig annehme.' },
+      { q: 'Arbeiten Sie auch remote?', a: 'Ja. Ich arbeite remote im DACH-Raum. In Graz komme ich gern persönlich vorbei.' },
+      { q: 'Wie schnell können Sie starten?', a: 'Einen Quick-Fix plane ich innerhalb einer Woche nach Ihrer Zusage ein. Projekte nach Absprache, weil ich bewusst nur wenige gleichzeitig annehme.' },
       { q: 'Brauche ich bestimmte Tools?', a: 'Nein. Ich arbeite mit dem, was Sie schon haben, und schlage einen Wechsel nur vor, wenn er sich rechnet.' },
       { q: 'Wie gehen Sie mit Daten um?', a: 'Ich bekomme einen eigenen Benutzerzugang statt Ihres Passworts. Nach Projektende entfernen Sie meinen Zugang, und ich lösche die Kopien Ihrer Daten, die bei mir liegen.' },
       { q: 'Übernehmen Sie auch den Kundensupport?', a: 'Nein. Ich baue die Technik, die Ihren Support entlastet, zum Beispiel Antwortentwürfe für wiederkehrende Fragen.' },
@@ -468,7 +468,7 @@ export default {
       show: 'Lösung ansehen',
       again: 'Nochmal ansehen',
       signup: { from: 'Formular', to: 'CRM', retry: 'Prüfen + Wiederholen', count: '{n}/47 angekommen', alt: 'Animation: Anmeldungen fliegen vom Formular ins CRM, zwei gehen verloren. Mit «Prüfen + Wiederholen» kommen alle 47 an. Vereinfachtes Beispiel.' },
-      spam: { spam: 'Spam', inbox: 'Posteingang', badges: ['SPF', 'DKIM', 'DMARC'], alt: 'Animation: Eine Launch-Mail landet im Spam. Nach SPF, DKIM und DMARC kommt sie im Posteingang an.' },
+      spam: { spam: 'Spam', inbox: 'Posteingang', badges: ['SPF', 'DKIM', 'DMARC'], alt: 'Animation: Eine Launch-Mail landet im Spam. SPF, DKIM und DMARC sind die Grundvoraussetzung, damit Postfächer Ihre Mails annehmen. Danach teste ich die Zustellung.' },
       rate: { failed: 'Kartenzahlung fehlgeschlagen', open: 'Kurs offen', steps: ['Erinnerung 1', 'Erinnerung 2', 'Zugang pausiert', 'Zahlung da', 'Zugang wieder offen'], alt: 'Animation: Eine Rate schlägt fehl, der Kurs bleibt offen. Danach: Erinnerung 1, Erinnerung 2, Zugang pausiert, Zahlung da, Zugang wieder offen.' },
     },
     story: {
@@ -543,7 +543,7 @@ export default {
       toolsLabel: 'Werkzeuge',
     },
     faq: {
-      intro: 'Kurze Antworten auf das, was ich am häufigsten gefragt werde.',
+      intro: 'Kurze Antworten vor der Zusammenarbeit.',
       also: 'Auch gefragt:',
       missing: 'Frage nicht dabei? → Schreiben Sie mir',
       related: [[3, 7], [2, 6], [6, 1], [8, 11], [3, 9], [7, 0], [10, 2], [2, 0], [3, 11], [4, 5], [6, 4], [8, 0]],
@@ -629,9 +629,9 @@ export default {
       recommended: 'Vor dem nächsten Launch',
       // Stage 6h: the Technik-Check card's own button and its small line.
       checkAsk: 'Technik-Check anfragen',
-      checkCall: 'Auf Wunsch mit 20-Minuten-Gespräch.',
-      // Stage 7b-S: approved by Iva 13.11.2026; the same line under every Technik-Check card.
-      checkReferral: 'Auf Empfehlung einer Kundin: Der Technik-Check wird 60 statt 30 Tage voll auf Ihr Projekt angerechnet.',
+      // R1 (December release): the referral line merged into the crediting bullet (brief R1.2); the same
+      // bullet on the service pages' Technik-Check card.
+      checkCredit: 'Bei Auftrag innerhalb von 30 Tagen voll angerechnet, auf Empfehlung einer Kundin 60 Tage.',
       checkReport: 'Beispielbericht ansehen',
     },
   },
@@ -744,10 +744,12 @@ export default {
     },
     pricing: {
       intro: 'Feste Preise, klarer Umfang. Ich arbeite mit wenigen Kund:innen gleichzeitig.',
+      // R1.4: under the price section.
+      b2b: 'Meine Leistungen richten sich an Unternehmen und Selbstständige.',
       chooser: 'Welches Paket passt?',
       cards: {
-        quick: { line: 'Eine konkrete Aufgabe, Aufwand bis zu 4 Stunden.', bullets: ['E-Mail-Zustellung (SPF, DKIM, DMARC)', 'Defekte Links oder Formulare', 'Termine oder eine Automation'] },
-        check: { line: 'Ich teste Ihren Launch, bevor es Ihre Kundschaft tut.', bullets: ['Ein Analysetag mit Lesezugriff auf Ihre Tools', 'Liste mit Prioritäten, Aufwand und Preisen', 'Gespräch von 45 Minuten', 'Bei einem Auftrag innerhalb von 30 Tagen voll angerechnet'] },
+        quick: { line: 'Ein klar umrissener Fehler: behoben, getestet und dokumentiert. Festpreis, ohne laufende Uhr.', scope: 'Eine konkrete Aufgabe, Aufwand bis zu 4 Stunden.', bullets: ['E-Mail-Zustellung (SPF, DKIM, DMARC)', 'Defekte Links oder Formulare', 'Termine oder eine Automation'] },
+        check: { line: 'Ich teste Ihren Launch, bevor es Ihre Kundschaft tut.', bullets: ['Ein Analysetag mit Lesezugriff auf Ihre Tools', 'Liste mit Prioritäten, Aufwand und Preisen', '45-Minuten-Auswertungsgespräch', 'Bei Auftrag innerhalb von 30 Tagen voll angerechnet, auf Empfehlung einer Kundin 60 Tage.'] },
         launch: { line: 'Zum Verkaufsstart ist alles startklar. Festpreis nach dem Briefing.', bullets: ['Landingpages und Checkout', 'ActiveCampaign-Abläufe von der Anmeldung bis zum Zahlungsausfall', 'Formulare mit Double-Opt-In und Tags', 'Kurszugang in Ihrem Mitgliederbereich'] },
       },
       promise: '30-Tage-Zusage: Läuft ein von mir gebauter Ablauf in den ersten 30 Tagen nach Übergabe nicht wie vereinbart, behebe ich das ohne Berechnung. Zusätzlich zur gesetzlichen Gewährleistung.',
@@ -843,7 +845,7 @@ export default {
       kiDemo: 'Zur KI-Demo auf der Startseite',
       kiDemoText: 'Auf der Startseite zeigt eine Demo, wie aus einer verärgerten Kundenmail ein fertiger Entwurf wird.',
       kiPortfolio: 'Ganze Demo im Portfolio',
-      spamAlt: 'Eine Launch-Mail landet im Spam. Nach SPF, DKIM und DMARC kommt sie im Posteingang an.',
+      spamAlt: 'Eine Launch-Mail landet im Spam. SPF, DKIM und DMARC sind die Grundvoraussetzung, damit Postfächer Ihre Mails annehmen. Danach teste ich die Zustellung.',
       notFound: 'Leistungen',
     },
     // Home page package card -> service page (the «Mehr zu …» link).
@@ -858,20 +860,20 @@ export default {
         description: 'Launch-Technik für Online-Kurse: Landingpages, Checkout, ActiveCampaign, Double-Opt-In und Kurszugang, startklar zum Verkaufsstart. Ab 1.190 €.',
         promise: 'Ich verbinde Formulare, ActiveCampaign, Zapier, Checkout und Mitgliederbereich und teste alles, damit zum Verkaufsstart keine Anmeldung verloren geht.',
         packages: ['launch'],
-        problem: ['Anmeldungen verschwinden zwischen Formular und CRM.', 'Die Ratenzahlung ist fehlgeschlagen, der Zugang bleibt trotzdem offen.', 'Jeder dieser Fehler kostet Anmeldungen, Umsatz oder Nerven.'],
-        // Stage 6h: the launch-day window; the dated February note comes from config.notes.
-        // Stage 6h (6f section 15): the launch facts, right after the package; the February note from config.notes.
+        problem: ['Anmeldungen verschwinden zwischen Formular und CRM.', 'Die Ratenzahlung ist fehlgeschlagen, der Zugang bleibt trotzdem offen.', 'Jeder dieser Fehler fällt erst auf, wenn eine Kundin schreibt.'],
+        // Stage 6h (6f section 15): the launch facts, right after the package. R1 (December release): the
+        // availability line from config.notes (one value, also on the Technik-Check card and above the form).
         explain: {
           title: 'Gut zu wissen',
           place: 'does',
           parts: [
-            ['Enthalten (ab 1.190 €)', 'Landingpages und Checkout, ActiveCampaign-Abläufe von der Anmeldung bis zum Zahlungsausfall, Formulare mit Double-Opt-In und Tags, Verbindungen über Zapier oder Make, Zahlung und Rechnung, Kurszugang im Mitgliederbereich, Tests mit Testkontakten, Dokumentation und Übergabe, Begleitung am Launch-Tag, 30-Tage-Zusage. Den Festpreis bekommen Sie nach dem Briefing.'],
+            ['Enthalten (ab 1.190 €)', 'Landingpages und Checkout, ActiveCampaign-Abläufe von der Anmeldung bis zum Zahlungsausfall, Formulare mit Double-Opt-In und Tags, Verbindungen über Zapier oder Make, Zahlung und Rechnung, Kurszugang im Mitgliederbereich, Tests mit Testkontakten, Dokumentation und Übergabe, Erreichbarkeit am Launch-Tag in einem vereinbarten Zeitfenster, 30-Tage-Zusage. Den Festpreis bekommen Sie nach dem Briefing.'],
             ['Nicht enthalten', 'Texte für E-Mails und Verkaufsseiten, Werbeanzeigen, Inhalte und Videos des Kurses, Rechtstexte, die Kosten Ihrer Tools.'],
             ['Zeitplan', 'Am besten 4 bis 6 Wochen vor dem Launch melden, mindestens 3 Wochen.'],
             ['Zahlung', '50 % bei Auftrag, 50 % nach dem Livegang. Rechnung per E-Mail, zahlbar innerhalb von 14 Tagen.'],
-            ['Launch-Tag', 'Ich bin telefonisch und per Chat in einem Zeitfenster erreichbar, das wir vorher festlegen, abgerechnet nach Aufwand (45 € pro Stunde). Außerhalb antworte ich bis 15 Uhr am nächsten Tag. Ich begleite höchstens einen Launch pro Woche.'],
+            ['Launch-Tag', 'Ich bin in einem vorher vereinbarten Zeitfenster telefonisch und per Chat erreichbar. Arbeit in diesem Fenster: 45 € pro Stunde, vorher abgesprochen. Außerhalb antworte ich bis 15 Uhr am nächsten Tag. Ich begleite höchstens einen Launch pro Woche.'],
           ],
-          note: 'launch_break',
+          note: 'availability',
         },
         steps: [
           ['Erstgespräch, 20 Minuten, kostenlos.', 'Sie erzählen, was für Ihren Launch geplant ist. Ich sage ehrlich, ob ich helfen kann.'],
@@ -910,7 +912,7 @@ export default {
         ],
         example: 'spam',
         faq: [
-          ['Wie schnell können Sie starten?', 'Quick-Fixes oft innerhalb einer Woche.'],
+          ['Wie schnell können Sie starten?', 'Einen Quick-Fix plane ich innerhalb einer Woche nach Ihrer Zusage ein.'],
           ['Was, wenn 4 Stunden nicht reichen?', '45 € pro Stunde für Pflege und alles außerhalb der Pakete, abgerechnet nach Aufwand in 15-Minuten-Schritten. Sie erfahren den Preis, bevor ich anfange.'],
           ['Bekommen Sie mein Passwort?', 'Nein. Ich bekomme einen eigenen Benutzerzugang statt Ihres Passworts. Nach Projektende entfernen Sie meinen Zugang, und ich lösche die Kopien Ihrer Daten, die bei mir liegen.'],
           ['Muss ich mich mit Technik auskennen?', 'Nein. Sie sagen mir, was passieren soll, ich kümmere mich um den Rest und erkläre alles in einfachen Worten.'],
@@ -925,7 +927,7 @@ export default {
         description: 'ActiveCampaign einrichten und betreuen: ein Tag Technik-Check für 290 €, danach Pflege Ihrer Automationen für 45 € pro Stunde. Aus Graz, remote.',
         promise: 'Ich prüfe Ihr ActiveCampaign-Konto, richte Abläufe ein und betreue sie danach, remote für Kund:innen in Österreich, Deutschland und der Schweiz.',
         packages: ['check', 'support'],
-        problem: ['Anmeldungen verschwinden zwischen Formular und CRM.', 'Oft weiß niemand genau, wo das Problem liegt.', 'Jeder dieser Fehler kostet Anmeldungen, Umsatz oder Nerven.'],
+        problem: ['Anmeldungen verschwinden zwischen Formular und CRM.', 'Und niemand weiß genau, wo das Problem liegt.', 'Jeder dieser Fehler fällt erst auf, wenn eine Kundin schreibt.'],
         does: ['Ein Tag Analyse mit Lesezugriff: ActiveCampaign, Zapier oder Make, Zahlung, Landingpages, Double-Opt-In und Einwilligungen', 'Abläufe, die jede Anmeldung prüfen und bei Fehlern automatisch neu senden, auch wenn viele gleichzeitig kommen', 'Laufende Pflege Ihrer Automationen, kleine Landingpages, Fehlerbehebung'],
         steps: [
           ['Erstgespräch, 20 Minuten, kostenlos.', 'Sie erzählen, was in ActiveCampaign hakt. Ich sage ehrlich, ob ich helfen kann.'],
@@ -935,9 +937,9 @@ export default {
         ],
         example: 'case2',
         faq: [
-          ['Was bekomme ich beim Technik-Check?', 'Sie bekommen eine Liste mit Prioritäten, Aufwand und Preisen und ein Gespräch von 45 Minuten. Beauftragen Sie innerhalb von 30 Tagen ein Projekt, rechne ich die 290 € voll an.'],
+          ['Was bekomme ich beim Technik-Check?', 'Sie bekommen eine Liste mit Prioritäten, Aufwand und Preisen und ein 45-Minuten-Auswertungsgespräch. Beauftragen Sie innerhalb von 30 Tagen ein Projekt, rechne ich die 290 € voll an.'],
           ['Wie wird die Betreuung abgerechnet?', '45 € pro Stunde für Pflege und alles außerhalb der Pakete, abgerechnet nach Aufwand in 15-Minuten-Schritten. Die Rechnung kommt am Monatsende. Arbeit nach Stunden beginne ich erst, wenn Sie meine Schätzung der Stundenzahl kennen.'],
-          ['Arbeiten Sie auch remote?', 'Ja. Fast alle Projekte laufen remote im DACH-Raum. In Graz komme ich gern persönlich vorbei.'],
+          ['Arbeiten Sie auch remote?', 'Ja. Ich arbeite remote im DACH-Raum. In Graz komme ich gern persönlich vorbei.'],
           ['Brauche ich bestimmte Tools?', 'Nein. Ich arbeite mit dem, was Sie schon haben, und schlage einen Wechsel nur vor, wenn er sich rechnet.'],
           ['Wie gehen Sie mit Daten um?', 'Ich bekomme einen eigenen Benutzerzugang statt Ihres Passworts. Nach Projektende entfernen Sie meinen Zugang, und ich lösche die Kopien Ihrer Daten, die bei mir liegen.'],
         ],
@@ -1161,7 +1163,7 @@ export default {
       lines: ['für: Lichtwerk Fotoakademie (erfunden)', 'geprüft: an 1 Tag, eigener Lesezugang', 'Iva Tsatskrialashvili · Techniker für Marketing-Automation · Graz'],
     },
     h1: 'So sieht ein Technik-Check aus',
-    fake: ['Fiktives Beispiel.', 'Die Schule, alle Daten und Befunde sind erfunden. Die Befunde sind aber typische Stolpersteine bei Launches. Ein echter Bericht ist genauso aufgebaut.'],
+    fake: ['Fiktives Beispiel.', 'Die Schule, alle Daten und Befunde sind erfunden. Solche Stolpersteine findet ein Technik-Check. Ein echter Bericht ist genauso aufgebaut. Ein echter Bericht kann auch nur zwei Befunde haben.'],
     cards: [
       ['Der Launch', 'Online-Kurs „Licht verstehen“, Webinar am Dienstag, danach 5 Tage Verkaufsphase. Einmalzahlung oder 3 Raten.'],
       ['Die Technik', 'Landingpage (Leadpages), E-Mails (ActiveCampaign), Verbindungen (Zapier), Zahlung (Stripe), Rechnungen (Quaderno), Mitgliederbereich.'],
@@ -1205,11 +1207,12 @@ export default {
       ['Bis 14 Tage vor dem Launch', 'Befunde 1 bis 4 beheben: Zustellung, Kurszugang, Ratenzahlung. Danach erneuter Testkauf mit allen 3 Testadressen.'],
       ['Bis 7 Tage vorher', 'Befunde 5 bis 9: Danke-Seite, Zeitzone, Links, Abmeldelink, Cookie-Banner am Handy. Danach „Freeze“: keine Änderungen mehr an Formularen und Automationen.'],
       ['Wenn Zeit bleibt', 'Befunde 10 bis 12: Absender der Rechnungsmail, Testkontakte trennen, Antwortvorlage „Zugang fehlt“ (Teil der Notfallkarte).'],
-      ['Am Launch-Tag', 'Notfallkarte mit fertigen Antworten für die häufigsten Fragen. Auf Wunsch bin ich in einem vorher vereinbarten Zeitfenster erreichbar (nach Aufwand, 45 € pro Stunde).'],
+      ['Am Launch-Tag', 'Notfallkarte mit fertigen Antworten für die erwartbaren Fragen. Auf Wunsch bin ich in einem vorher vereinbarten Zeitfenster erreichbar (nach Aufwand, 45 € pro Stunde).'],
     ],
     priceTitle: 'Was das kosten würde',
     price: [
       'Geschätzter Aufwand für alle 12 Befunde: rund 7 Stunden. Als Paket über das Launch-Setup oder einzeln: ein einzelner Fehler als Quick-Fix für 190 € (bis 4 Stunden), alles andere nach Aufwand mit 45 € pro Stunde.',
+      'Diese rund 7 Stunden betreffen nur die gezielte Behebung in einem bestehenden System, nach Aufwand mit 45 € pro Stunde. Das Launch-Setup ab 1.190 € gilt für den kompletten Aufbau einer Launch-Strecke.',
       'Der Technik-Check kostet 290 € und wird angerechnet, wenn Sie innerhalb von 30 Tagen die Umsetzung beauftragen.',
     ],
     notTitle: 'Was dieser Check nicht ist',
@@ -1258,7 +1261,7 @@ export default {
           ['', 'Ich schreibe einzelnen Unternehmen, für die meine Leistungen passen könnten, einmalig einen Brief. Dafür verarbeite ich: Name, Firmenname, Geschäftsanschrift und gegebenenfalls Funktion der Ansprechperson, öffentlich sichtbare Angaben auf der Website des Unternehmens, meine Beobachtung dazu (mit Datum und Screenshot) sowie den Kontaktverlauf (Datum des Briefs, Antwort, Widerspruch).'],
           ['Quelle', 'das öffentlich zugängliche Impressum und die Website des Unternehmens.'],
           ['Rechtsgrundlage', 'mein berechtigtes Interesse, Unternehmen meine Leistungen vorzustellen (Art. 6 Abs. 1 lit. f DSGVO, Erwägungsgrund 47). Ich schreibe jedes Unternehmen höchstens einmal in 12 Monaten an und nicht, wenn auf der Website der Werbung widersprochen wird.'],
-          ['Empfänger', 'keine Weitergabe an Dritte. Technische Dienstleister, die als Auftragsverarbeiter für mich tätig sind: Google (Google Drive, Gmail; Google Ireland Ltd.). Soweit Daten in die USA übermittelt werden, stützt sich das auf das EU-US Data Privacy Framework (Art. 45 DSGVO). Die Briefe drucke ich selbst; zugestellt werden sie von der Post.'],
+          ['Empfänger', 'keine Weitergabe an Dritte. Für mein Postfach und meine Dateiablage nutze ich Google (Gmail, Google Drive; Google Ireland Ltd.). Soweit Daten in die USA übermittelt werden, stützt sich das auf das EU-US Data Privacy Framework (Art. 45 DSGVO). Die Briefe drucke ich selbst; zugestellt werden sie von der Post.'],
           ['Speicherdauer', 'Ohne Rückmeldung lösche ich die Daten 12 Monate nach dem Brief. Wenn Sie widersprechen, speichere ich nur einen Sperrvermerk (Firma, Domain, Datum), damit ich Sie nicht erneut anschreibe. Entsteht ein Auftrag, gelten die Fristen unter „{emailSection}“.'],
           ['Widerspruch', 'Sie können der Verwendung Ihrer Daten für Direktwerbung jederzeit ohne Begründung widersprechen (Art. 21 Abs. 2 DSGVO), per E-Mail an {email} oder per Post.'],
           ['', 'Bis 4. November 2026 habe ich in Einzelfällen statt eines Briefs eine einmalige E-Mail mit einem Hinweis geschickt; diese Daten behandle ich ebenso.'],

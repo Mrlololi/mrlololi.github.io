@@ -17,32 +17,41 @@
   "header_variant": "light",
   "ratgeber_live": false,
   "page_dates": {
-    "home": "2026-11-24",
+    "home": "2026-11-25",
     "legal": "2026-10-29",
-    "privacy": "2026-11-05",
-    "launch": "2026-11-05",
-    "spam": "2026-11-18",
-    "activecampaign": "2026-11-24",
-    "ki": "2026-11-18",
-    "website": "2026-10-28",
+    "privacy": "2026-11-25",
+    "launch": "2026-11-25",
+    "spam": "2026-11-25",
+    "activecampaign": "2026-11-25",
+    "ki": "2026-11-25",
+    "website": "2026-11-25",
     "qualitaet": "2026-11-18",
     "ein_kauf": "2026-11-24",
-    "musterbericht": "2026-11-24"
+    "musterbericht": "2026-11-25"
   },
   "github_dpf_verified": true,
   "github_dpf_checked": "2026-10-15: dataprivacyframework.gov/list shows GitHub (San Francisco, CA) Active for the EU-U.S. DPF, Non-HR data",
   "cloudflare_dpf_checked": "2026-10-21: dataprivacyframework.gov/participant/5666 Cloudflare, Inc.: EU-U.S. DPF Active (re-certification under review), next due 09/15/2027",
   "google_dpf_checked": "2026-10-21: dataprivacyframework.gov/participant/5780 Google LLC: EU-U.S. DPF Active, next due 09/13/2027",
   "notes": {
-    "check_availability": {
-      "until": "2026-12-31",
-      "de": "Termine ab Januar 2027",
-      "en": "Dates from January 2027"
+    "availability": {
+      "about": "R1 (December release, Iva 24.11.2026): ONE value, shown on the Technik-Check card, in «Gut zu wissen» of /launch-technik/ and above the contact form. tests/dezember-r1.test.mjs fails once a month named in the line is over.",
+      "until": "2027-01-31",
+      "de": "Technik-Check: jetzt anfragen, Termine im Januar 2027. Launch-Setup: Projektstart ab 22. Februar 2027.",
+      "en": "Tech check: request now, dates in January 2027. Launch setup: project start from 22 February 2027."
     },
-    "launch_break": {
-      "until": "2027-02-21",
-      "de": "Im Februar 2027 plane ich keine Launches ein. Launch-Setups mit Projektstart ab 22. Februar 2027.",
-      "en": "I am not planning any launches in February 2027. Launch setups with a project start from 22 February 2027."
+    "holiday": {
+      "about": "Appended to the availability line on builds from 15.12 to 03.01 (static site: the line follows the build day).",
+      "from": "2026-12-15",
+      "until": "2027-01-03",
+      "de": "Anfragen vom 21. Dezember bis 3. Januar beantworte ich ab 4. Januar.",
+      "en": "Requests sent between 21 December and 3 January will be answered from 4 January."
+    },
+    "credit_winter": {
+      "about": "Iva 24.11.2026: Technik-Checks until 31.01.2027 are credited until 15.03.2027 (crediting bullet and Musterbericht).",
+      "until": "2027-01-31",
+      "de": "Für Technik-Checks bis 31. Januar 2027 gilt die Anrechnung bis 15. März 2027.",
+      "en": "For tech checks until 31 January 2027, the credit applies until 15 March 2027."
     }
   },
   "check_report_url": "/musterbericht/technik-check/",

@@ -50,16 +50,20 @@ function card(t, it, email, config) {
   const c = t.s6.pricing.cards[it.id];
   const s = t.s4.starter;
   // Stage 6h: the Technik-Check card asks in its own words; its availability comes from config.notes.
+  // R1 (December release): the 20-minute line and the separate referral line are gone (the referral is in
+  // the crediting bullet, with the dated winter note); the one availability value.
   const isCheck = it.id === 'check';
-  const when = isCheck ? note(config, 'check_availability', t.lang) : '';
-  const extra = isCheck ? `<p class="item__call small">${esc(s.checkCall)}</p>\n<p class="item__referral small">${esc(s.checkReferral)}</p>${when ? `\n<p class="item__when">${esc(when)}</p>` : ''}${config.check_report_url && t.lang === 'de' ? `\n<a class="item__report text-link" href="${esc(config.check_report_url)}">${esc(s.checkReport)}</a>` : ''}` : '';
+  const when = isCheck ? note(config, 'availability', t.lang) : '';
+  const winter = isCheck ? note(config, 'credit_winter', t.lang) : '';
+  const bullets = c.bullets.map((b, i) => (winter && i === c.bullets.length - 1 ? `${b} ${winter}` : b));
+  const extra = isCheck ? `${when ? `<p class="item__when">${esc(when)}</p>` : ''}${config.check_report_url && t.lang === 'de' ? `\n<a class="item__report text-link" href="${esc(config.check_report_url)}">${esc(s.checkReport)}</a>` : ''}` : '';
   const badge = it.id === 'check' ? `<span class="label label--lav item__badge">${esc(t.s4.starter.recommended)}</span>` : '';
   return `<li class="item item--${it.id} card card--lift" id="pkg-${it.id}">
 <div class="item__head">${badge}<h3 class="item__name">${esc(it.name)}</h3>
 <p class="item__price">${esc(it.price)}</p></div>
 ${VIZ[it.id](t)}
-<p class="item__line">${esc(c.line)}</p>
-<ul class="item__bullets" role="list">${c.bullets.map((b) => `<li>${check}<span>${esc(b)}</span></li>`).join('')}</ul>
+<p class="item__line">${esc(c.line)}${c.scope ? `<span class="item__scope">${esc(c.scope)}</span>` : ''}</p>
+<ul class="item__bullets" role="list">${bullets.map((b) => `<li>${check}<span>${esc(b)}</span></li>`).join('')}</ul>
 <div class="item__actions">
 ${moreLink(t, it.id, 'item__more')}
 ${isCheck ? `<a class="btn btn--sm btn--primary item__cta" href="${ask(t, email, it)}">${esc(s.checkAsk)}</a>` : `<a class="btn btn--sm btn--primary item__cta" href="${ask(t, email, it)}">${esc(t.pricing.cta)}<span class="sr-only">: ${esc(it.name)}</span></a>`}
@@ -117,6 +121,7 @@ ${MORE.map((id) => row(t, items[id], config.contact_email)).join('\n')}
 </div>
 <p class="notdo-line">${esc(t.s6.b.notDo)}</p>
 <p class="small tariff__tax">${esc(t.pricing.smallPrint)}</p>
+<p class="tariff__b2b">${esc(p.b2b)}</p>
 </div>
 </div>
 </section>`;

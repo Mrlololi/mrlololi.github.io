@@ -121,6 +121,31 @@
         "Ongoing work",
         "seit April 2026"
       ]
+    },
+    {
+      "name": "frequency",
+      "pages": [
+        "*"
+      ],
+      "about": "December release R1.1 (24.11.2026): no frequency claims on any page, DE and EN, inflected forms listed one by one. The group allow-list holds exactly two phrases (tests/wortfilter.test.mjs: at most 2).",
+      "words": [
+        "oft",
+        "häufig",
+        "häufige",
+        "häufigen",
+        "häufigsten",
+        "typisch",
+        "typische",
+        "typischen",
+        "fast alle",
+        "often",
+        "typical",
+        "most common"
+      ],
+      "allow": [
+        "Häufige Fragen",
+        "welche Fragen oft kommen"
+      ]
     }
   ],
   "allow": [

@@ -131,7 +131,7 @@ export default {
   },
 
   problems: {
-    h2: "Where launches *often break*",
+    h2: "Where launches *break*",
     intro: "Typical places where launches break.",
     slider: {
       label: 'Drag before / after',
@@ -166,7 +166,7 @@ export default {
             "name": "Tech check",
             "price": "€290 fixed",
             "summary": "One day of analysis with read access: ActiveCampaign, Zapier or Make, payments, landing pages, double opt-in and consents.",
-            "details": "You get a list with priorities, effort and prices and a 45-minute call. If you book a project within 30 days, the €290 is fully credited."
+            "details": "You get a list with priorities, effort and prices and a 45-minute review call. If you book a project within 30 days, the €290 is fully credited."
           }
         ]
       },
@@ -430,8 +430,8 @@ export default {
     h2: 'Frequently asked *questions*',
     items: [
       { q: 'Do I need to know about tech?', a: 'No. You tell me what should happen, I take care of the rest and explain everything in plain words.' },
-      { q: 'Do you work remotely?', a: 'Yes. Almost all projects run remotely across Europe. In Graz I am happy to meet in person.' },
-      { q: 'How soon can you start?', a: 'Quick fixes often within a week. Projects by arrangement, because I take on only a few at a time.' },
+      { q: 'Do you work remotely?', a: 'Yes. I work remotely across Europe. In Graz I am happy to meet in person.' },
+      { q: 'How soon can you start?', a: 'I schedule a quick fix within one week of your go-ahead. Projects by arrangement, because I take on only a few at a time.' },
       { q: 'Do I need specific tools?', a: 'No. I work with what you already have and only suggest a switch when it pays off.' },
       { q: 'How do you handle data?', a: 'I get my own user access instead of your password. When the project ends, you remove my access and I delete the copies of your data that I hold.' },
       { q: 'Do you also do customer support?', a: 'No. I build the tech that takes load off your support, for example draft replies for recurring questions.' },
@@ -462,7 +462,7 @@ export default {
       show: 'Show the fix',
       again: 'Watch again',
       signup: { from: 'Form', to: 'CRM', retry: 'Check + retry', count: '{n}/47 arrived', alt: 'Animation: sign-ups fly from the form to the CRM, two get lost. With «Check + retry» all 47 arrive. Simplified example.' },
-      spam: { spam: 'Spam', inbox: 'Inbox', badges: ['SPF', 'DKIM', 'DMARC'], alt: 'Animation: a launch email lands in spam. After SPF, DKIM and DMARC it arrives in the inbox.' },
+      spam: { spam: 'Spam', inbox: 'Inbox', badges: ['SPF', 'DKIM', 'DMARC'], alt: 'Animation: a launch email lands in spam. SPF, DKIM and DMARC are the basic requirement for mailboxes to accept your emails. After that I test delivery.' },
       rate: { failed: 'Card payment failed', open: 'Course open', steps: ['Reminder 1', 'Reminder 2', 'Access paused', 'Payment in', 'Access open again'], alt: 'Animation: an instalment fails, the course stays open. Then: reminder 1, reminder 2, access paused, payment in, access open again.' },
     },
     story: {
@@ -537,7 +537,7 @@ export default {
       toolsLabel: 'Tools',
     },
     faq: {
-      intro: 'Short answers to what I am asked most often.',
+      intro: 'Short answers before we work together.',
       also: 'Also asked:',
       missing: 'Question not here? → Write to me',
       related: [[3, 7], [2, 6], [6, 1], [8, 11], [3, 9], [7, 0], [10, 2], [2, 0], [3, 11], [4, 5], [6, 4], [8, 0]],
@@ -615,9 +615,8 @@ export default {
       check: ['ActiveCampaign', 'Zapier/Make', 'Payment', 'Landing pages', 'Double opt-in'],
       recommended: 'Before your next launch',
       checkAsk: 'Request a tech check',
-      checkCall: 'With a 20-minute call if you like.',
       // Stage 7b-S (Entwurf).
-      checkReferral: 'Referred by a client: the Technik-Check is credited in full against your project for 60 instead of 30 days.',
+      checkCredit: 'Fully credited if you order within 30 days, 60 days if a client referred you.',
       checkReport: 'See a sample report',
     },
   },
@@ -699,10 +698,11 @@ export default {
       intro: 'Fixed prices, clear scope. I work with a few clients at a time.',
       // Stage 6f: English only.
       audience: 'Selling to German-speaking customers? I set up double opt-in, German-language emails and your legal pages (with your texts).',
+      b2b: 'My services are for businesses and the self-employed.',
       chooser: 'Which package fits?',
       cards: {
-        quick: { line: 'One specific task, up to 4 hours of work.', bullets: ['Email delivery (SPF, DKIM, DMARC)', 'Broken links or forms', 'Bookings or an automation'] },
-        check: { line: 'I test your launch before your customers do.', bullets: ['One day of analysis with read access to your tools', 'A list of priorities, effort and prices', 'A 45-minute call', 'Fully credited if you order a project within 30 days'] },
+        quick: { line: 'One clearly defined fault: fixed, tested and documented. Fixed price, no meter running.', scope: 'One specific task, up to 4 hours of work.', bullets: ['Email delivery (SPF, DKIM, DMARC)', 'Broken links or forms', 'Bookings or an automation'] },
+        check: { line: 'I test your launch before your customers do.', bullets: ['One day of analysis with read access to your tools', 'A list of priorities, effort and prices', 'A 45-minute review call', 'Fully credited if you order within 30 days, 60 days if a client referred you.'] },
         launch: { line: 'Everything is ready when sales open. Fixed price after the briefing.', bullets: ['Landing pages and checkout', 'ActiveCampaign flows from sign-up to failed payments', 'Forms with double opt-in and tags', 'Course access in your members area'] },
       },
       promise: '30-day promise: if a flow I built does not work as agreed within the first 30 days after handover, I fix it free of charge. On top of statutory warranty rights.',
@@ -793,7 +793,7 @@ export default {
       kiDemo: 'See the AI demo on the home page',
       kiDemoText: 'On the home page a demo shows how an angry customer email becomes a finished draft.',
       kiPortfolio: 'Full demo in the portfolio',
-      spamAlt: 'A launch email lands in spam. After SPF, DKIM and DMARC it arrives in the inbox.',
+      spamAlt: 'A launch email lands in spam. SPF, DKIM and DMARC are the basic requirement for mailboxes to accept your emails. After that I test delivery.',
       notFound: 'Services',
     },
     byPackage: { quick: 'spam', check: 'activecampaign', launch: 'launch', website: 'website', ki: 'ki', support: 'activecampaign' },
@@ -806,18 +806,18 @@ export default {
         description: 'Launch tech for online courses: landing pages, checkout, ActiveCampaign, double opt-in and course access, ready when sales open. From €1,190.',
         promise: 'I connect forms, ActiveCampaign, Zapier, checkout and your members area and test everything, so no sign-up gets lost when sales open.',
         packages: ['launch'],
-        problem: ['Sign-ups get lost between the form and the CRM.', 'The instalment payment failed, but access is still open.', 'Each of these failures costs sign-ups, revenue or nerves.'],
+        problem: ['Sign-ups get lost between the form and the CRM.', 'The instalment payment failed, but access is still open.', 'Each of these failures only shows up when a customer writes to you.'],
         explain: {
           title: 'Good to know',
           place: 'does',
           parts: [
-            ['Included (from €1,190)', 'Landing pages and checkout, ActiveCampaign flows from sign-up to failed payments, forms with double opt-in and tags, connections via Zapier or Make, payment and invoices, course access in the members area, tests with test contacts, documentation and handover, support on launch day, the 30-day promise. You get the fixed price after the briefing.'],
+            ['Included (from €1,190)', 'Landing pages and checkout, ActiveCampaign flows from sign-up to failed payments, forms with double opt-in and tags, connections via Zapier or Make, payment and invoices, course access in the members area, tests with test contacts, documentation and handover, availability on launch day in an agreed time window, the 30-day promise. You get the fixed price after the briefing.'],
             ['Not included', 'Copy for emails and sales pages, ads, course content and videos, legal texts, the costs of your tools.'],
             ['Timing', 'Ideally get in touch 4 to 6 weeks before the launch, at least 3 weeks.'],
             ['Payment', '50% when you place the order, 50% after go-live. Invoice by email, payable within 14 days.'],
-            ['Launch day', 'I am available by phone and chat in a time window we agree beforehand, billed by effort (€45 per hour). Outside it I reply by 3 pm the next day. I support at most one launch per week.'],
+            ['Launch day', 'I am available by phone and chat in a time window agreed beforehand. Work in this window: €45 per hour, agreed in advance. Outside it I reply by 3 pm the next day. I support at most one launch per week.'],
           ],
-          note: 'launch_break',
+          note: 'availability',
         },
         steps: [
           ['First call, 20 minutes, free.', 'You tell me what you are planning for your launch. I tell you honestly whether I can help.'],
@@ -856,7 +856,7 @@ export default {
         ],
         example: 'spam',
         faq: [
-          ['How soon can you start?', 'Quick fixes often within a week.'],
+          ['How soon can you start?', 'I schedule a quick fix within one week of your go-ahead.'],
           ['What if 4 hours are not enough?', '€45 per hour for care and anything outside the packages, billed by effort in 15-minute steps. You get the price before I start.'],
           ['Do you need my password?', 'No. I get my own user access instead of your password. When the project ends, you remove my access and I delete the copies of your data that I hold.'],
           ['Do I need to know about tech?', 'No. You tell me what should happen, I take care of the rest and explain everything in plain words.'],
@@ -871,7 +871,7 @@ export default {
         description: 'ActiveCampaign setup and support: a one-day tech check for €290, then care for your automations at €45 per hour. From Graz, remotely.',
         promise: 'I check your ActiveCampaign account, set up flows and look after them afterwards, remotely for clients in Austria, Germany and Switzerland.',
         packages: ['check', 'support'],
-        problem: ['Sign-ups get lost between the form and the CRM.', 'Often nobody knows exactly where the problem is.', 'Each of these failures costs sign-ups, revenue or nerves.'],
+        problem: ['Sign-ups get lost between the form and the CRM.', 'And nobody knows exactly where the problem is.', 'Each of these failures only shows up when a customer writes to you.'],
         does: ['One day of analysis with read access: ActiveCampaign, Zapier or Make, payments, landing pages, double opt-in and consents', 'Flows that check every sign-up and resend it automatically on errors, even when many come in at once', 'Ongoing care for your automations, small landing pages, troubleshooting'],
         steps: [
           ['First call, 20 minutes, free.', 'You tell me what is not working in ActiveCampaign. I tell you honestly whether I can help.'],
@@ -881,9 +881,9 @@ export default {
         ],
         example: 'case2',
         faq: [
-          ['What do I get from the tech check?', 'You get a list with priorities, effort and prices and a 45-minute call. If you book a project within 30 days, the €290 is fully credited.'],
+          ['What do I get from the tech check?', 'You get a list with priorities, effort and prices and a 45-minute review call. If you book a project within 30 days, the €290 is fully credited.'],
           ['How is support billed?', '€45 per hour for care and anything outside the packages, billed by effort in 15-minute steps. The invoice comes at the end of the month. I only start hourly work once you know my estimate of the hours.'],
-          ['Do you work remotely?', 'Yes. Almost all projects run remotely across Europe. In Graz I am happy to meet in person.'],
+          ['Do you work remotely?', 'Yes. I work remotely across Europe. In Graz I am happy to meet in person.'],
           ['Do I need specific tools?', 'No. I work with what you already have and only suggest a switch when it pays off.'],
           ['How do you handle data?', 'I get my own user access instead of your password. When the project ends, you remove my access and I delete the copies of your data that I hold.'],
         ],
@@ -901,7 +901,7 @@ export default {
         does: ['A knowledge base from your FAQ and course rules', 'A flow in Make or Zapier', 'Draft replies with topic and urgency in GrooveHQ, Gmail or Help Scout', 'A test with 50 sample emails from your inbox, anonymised', 'Handover'],
         doesText: ['Only drafts are created: your team reviews and sends every reply itself.'],
         steps: [
-          ['First call, 20 minutes, free.', 'You tell me which questions come up often. I tell you honestly whether I can help.'],
+          ['First call, 20 minutes, free.', 'You tell me which questions keep coming up. I tell you honestly whether I can help.'],
           ['Quote.', 'After the briefing you get a fixed price.'],
           ['Build.', 'I build the knowledge base and the flow and test with 50 anonymised sample emails.'],
           ['Handover.', 'Written instructions, and a short video on request, so your team can maintain everything.'],
@@ -1010,7 +1010,7 @@ export default {
           ['', 'I write a single letter, once, to individual businesses that my services might suit. For this I process: name, company name, business address and, where applicable, the contact person’s role, information publicly visible on the company’s website, my observation about it (with date and screenshot) and the contact history (date of the letter, reply, objection).'],
           ['Source', 'the publicly accessible legal notice (Impressum) and the company’s website.'],
           ['Legal basis', 'my legitimate interest in presenting my services to businesses (Art. 6(1)(f) GDPR, Recital 47). I write to each business at most once in 12 months, and not if the website objects to advertising.'],
-          ['Recipients', 'no disclosure to third parties. Technical service providers acting as my processors: Google (Google Drive, Gmail; Google Ireland Ltd.). Where data is transferred to the USA, this relies on the EU-US Data Privacy Framework (Art. 45 GDPR). I print the letters myself; they are delivered by the postal service.'],
+          ['Recipients', 'no disclosure to third parties. For my mailbox and file storage I use Google (Gmail, Google Drive; Google Ireland Ltd.). Where data is transferred to the USA, this relies on the EU-US Data Privacy Framework (Art. 45 GDPR). I print the letters myself; they are delivered by the postal service.'],
           ['Storage', 'Without a reply, I delete the data 12 months after the letter. If you object, I keep only a blocking note (company, domain, date) so that I do not write to you again. If an assignment follows, the periods under “{emailSection}” apply.'],
           ['Objection', 'You can object to the use of your data for direct marketing at any time without giving reasons (Art. 21(2) GDPR), by email to {email} or by post.'],
           ['', 'Until 4 November 2026 I sent, in individual cases, a single email with a note instead of a letter; I treat this data in the same way.'],

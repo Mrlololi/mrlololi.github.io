@@ -31,7 +31,9 @@ test('softer claims: no «nichts bricht», no «nie Ihr Passwort», no course cl
   }
   assert.ok(de.hero.flow.lines[1].includes('Willkommens-Mail wird verschickt'));
   assert.match(byFile['launch-technik/index.html'], /damit zum Verkaufsstart keine Anmeldung verloren geht\./);
-  assert.equal(de.s6.pricing.cards.quick.line, 'Eine konkrete Aufgabe, Aufwand bis zu 4 Stunden.');
+  // R1 (December release): the lead line frames the fault; the 4-hour scope is the small line under it.
+  assert.equal(de.s6.pricing.cards.quick.line, 'Ein klar umrissener Fehler: behoben, getestet und dokumentiert. Festpreis, ohne laufende Uhr.');
+  assert.equal(de.s6.pricing.cards.quick.scope, 'Eine konkrete Aufgabe, Aufwand bis zu 4 Stunden.');
   assert.equal(de.s6.pricing.cards.quick.bullets[0], 'E-Mail-Zustellung (SPF, DKIM, DMARC)');
 });
 

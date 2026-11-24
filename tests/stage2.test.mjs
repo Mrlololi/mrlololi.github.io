@@ -28,7 +28,7 @@ test('headings carry exactly one accent each', () => {
       assert.equal(count(h, /<em class="accent">/g), 1, id);
     }
   }
-  assert.match(de, /Wo es bei Launches <em class="accent">oft hakt<\/em>/);
+  assert.match(de, /Wo es bei Launches <em class="accent">hakt<\/em>/); // R1: no «oft»
   assert.match(de, /Erzählen Sie mir, <em class="accent">was hakt\.<\/em>/);
   assert.match(en, /Services and <em class="accent">pricing<\/em>/);
   for (const html of [de, en]) assert.ok(!/\*[^*\s<][^*<]*\*/.test(body(html)), 'no raw asterisks left');

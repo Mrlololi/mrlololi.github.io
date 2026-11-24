@@ -45,7 +45,7 @@ test('2. honesty: trust line, no Italy, no «hunderte», «oft», no seconds cla
     const m = text(h).match(gone);
     assert.ok(!m, m && m[0]);
   }
-  assert.match(deHome, /Wo es bei Launches <em class="accent">oft hakt<\/em>/);
+  assert.match(deHome, /Wo es bei Launches <em class="accent">hakt<\/em>/); // R1: no «oft»
   assert.equal(de.run.summary, '6 Schritte, 0 Fehler (vereinfachtes Beispiel)');
   assert.match(byFile['website-one-pager/index.html'], /Impressum- und Datenschutzseite angelegt und eingebunden \(Texte von Ihnen\)/);
   assert.match(byFile['impressum/index.html'], /Werbeagentur/, '«Werbeagentur» stays in the Impressum');

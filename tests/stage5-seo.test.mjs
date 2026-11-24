@@ -261,8 +261,8 @@ test('service pages: structure (problem, what I do, steps, example, 3 to 5 FAQ, 
   assert.ok(enBox && enBox.includes('>In short</h3>') && /Since 2024 Gmail and Yahoo/.test(enBox) && /since 2025 Microsoft/.test(enBox));
   for (const k of ['activecampaign', 'ki', 'website']) assert.ok(!by(de, k).includes('<aside class="svc-explain"'), k);
   // Stage 6h: /launch-technik/ has its «Gut zu wissen» box (launch day, the dated February note).
-  assert.match(by(de, 'launch'), /<h3 id="svc-explain">Gut zu wissen<\/h3>\n<ul class="svc-facts__list" role="list"><li><strong>Enthalten \(ab 1\.190 €\):<\/strong>[\s\S]*?<strong>Launch-Tag:<\/strong> Ich bin telefonisch und per Chat[\s\S]*?<p class="svc-facts__note">Im Februar 2027 plane ich keine Launches ein\. Launch-Setups mit Projektstart ab 22\. Februar 2027\.<\/p>/);
-  assert.match(by(en, 'launch'), /<h3 id="svc-explain">Good to know<\/h3>[\s\S]*?I am not planning any launches in February 2027\./);
+  assert.match(by(de, 'launch'), /<h3 id="svc-explain">Gut zu wissen<\/h3>\n<ul class="svc-facts__list" role="list"><li><strong>Enthalten \(ab 1\.190 €\):<\/strong>[\s\S]*?<strong>Launch-Tag:<\/strong> Ich bin in einem vorher vereinbarten Zeitfenster telefonisch und per Chat erreichbar\.[\s\S]*?<p class="svc-facts__note">Technik-Check: jetzt anfragen, Termine im Januar 2027\. Launch-Setup: Projektstart ab 22\. Februar 2027\./);
+  assert.match(by(en, 'launch'), /<h3 id="svc-explain">Good to know<\/h3>[\s\S]*?Launch setup: project start from 22 February 2027\./);
   // ActiveCampaign page names the three countries once.
   const ac = by(de, 'activecampaign').replace(/<[^>]+>/g, ' ');
   assert.equal((ac.match(/Österreich, Deutschland und der Schweiz/g) || []).length, 1);
@@ -364,14 +364,14 @@ test('sitemap contains exactly the live pages, with lastmod from page_dates', ()
     .sort();
   assert.deepEqual(locs, live);
   assert.equal(locs.length, INDEXABLE); // tests/pages-manifest.mjs
-  assert.equal(config.page_dates.website, '2026-10-28');
+  assert.equal(config.page_dates.website, '2026-11-25'); // R1: availability line above the form
   // Stage 6 (29.10.2026): the KI demo and calculator moved to the KI page, the video to the launch page.
-  assert.equal(config.page_dates.ki, '2026-11-18'); // 18.11.2026: the calculator note (Wortfilter)
-  assert.equal(config.page_dates.launch, '2026-11-05'); // Stage 6h: «Gut zu wissen»
+  assert.equal(config.page_dates.ki, '2026-11-25'); // R1 // 18.11.2026: the calculator note (Wortfilter)
+  assert.equal(config.page_dates.launch, '2026-11-25'); // R1 // Stage 6h: «Gut zu wissen»
   // Iva's corrections of 29.10.2026 changed these two pages.
-  assert.equal(config.page_dates.activecampaign, '2026-11-24'); // 24.11.2026: the «So sieht ein Bericht aus» link (before: 29.10)
-  assert.equal(config.page_dates.spam, '2026-11-18'); // 18.11.2026: the problem line (Wortfilter)
-  assert.match(xml, new RegExp(`<loc>${SITE}/en/course-launch-tech/</loc>\\s*<lastmod>2026-11-05</lastmod>\\s*<xhtml:link rel="alternate" hreflang="de" href="${SITE}/launch-technik/"/>`));
+  assert.equal(config.page_dates.activecampaign, '2026-11-25'); // R1 // 24.11.2026: the «So sieht ein Bericht aus» link (before: 29.10)
+  assert.equal(config.page_dates.spam, '2026-11-25'); // R1 // 18.11.2026: the problem line (Wortfilter)
+  assert.match(xml, new RegExp(`<loc>${SITE}/en/course-launch-tech/</loc>\\s*<lastmod>2026-11-25</lastmod>\\s*<xhtml:link rel="alternate" hreflang="de" href="${SITE}/launch-technik/"/>`));
 });
 
 test('robots.txt names the Webprojekte sitemap only when it answered 200', () => {

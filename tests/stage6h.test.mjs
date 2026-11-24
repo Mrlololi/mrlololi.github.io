@@ -29,7 +29,7 @@ test('1. Datenschutz #post (DE/EN) with all its sub-headings, the link to the e-
   assert.match(e, /<h2 data-enter="lines">Contacting businesses by post \(direct marketing\)<\/h2>/);
   for (const h of ['Source', 'Legal basis', 'Recipients', 'Storage', 'Objection']) assert.ok(e.includes(`<strong>${h}:</strong>`), h);
   assert.match(e, /<a href="#email">Contact by email<\/a>/);
-  assert.equal(config.page_dates.privacy, '2026-11-05');
+  assert.equal(config.page_dates.privacy, '2026-11-25'); // R1
 });
 
 test('2. honest numbers: «vereinfachtes Beispiel» at the counters, assumptions labelled, no «AVV mit allen Anbietern»', () => {
@@ -66,15 +66,15 @@ test('4. Technik-Check card: badge, own button, call line, dated availability, r
   const c = deHome.slice(deHome.indexOf('id="pkg-check"'), deHome.indexOf('id="pkg-launch"'));
   assert.match(c, /<span class="label label--lav item__badge">Vor dem nächsten Launch<\/span>/);
   assert.match(c, /<a class="btn btn--sm btn--primary item__cta" href="\/\?paket=check#contact">Technik-Check anfragen<\/a>/);
-  assert.match(c, /<p class="item__call small">Auf Wunsch mit 20-Minuten-Gespräch\.<\/p>/);
-  assert.match(c, /<p class="item__when">Termine ab Januar 2027<\/p>/);
+  // R1 (December release): no 20-minute line; the one availability value (tests/dezember-r1.test.mjs).
+  assert.ok(!c.includes('item__call') && !c.includes('20-Minuten-Gespräch'));
+  assert.match(c, /<p class="item__when">Technik-Check: jetzt anfragen, Termine im Januar 2027\. Launch-Setup: Projektstart ab 22\. Februar 2027\.(?: Anfragen vom 21\. Dezember bis 3\. Januar beantworte ich ab 4\. Januar\.)?<\/p>/);
   // Musterbericht 24.11.2026: the URL is set, so the link is there; with an empty URL it is not.
   assert.match(c, /<a class="item__report text-link" href="\/musterbericht\/technik-check\/">Beispielbericht ansehen<\/a>/);
   const noReport = pages({ ...config, check_report_url: '' }, { live: {} }).find((x) => x.file === 'index.html').html;
   assert.ok(!/item__report/.test(noReport.slice(noReport.indexOf('id="pkg-check"'), noReport.indexOf('id="pkg-launch"'))), 'no report link while the URL is empty');
-  assert.match(enHome, /Before your next launch[\s\S]*?Request a tech check[\s\S]*?Dates from January 2027/);
-  assert.equal(note(config, 'check_availability', 'de', new Date('2027-01-01T12:00:00Z')), '', 'gone after 31.12.2026');
-  assert.equal(note(config, 'check_availability', 'de', new Date('2026-12-31T12:00:00Z')), 'Termine ab Januar 2027');
+  assert.match(enHome, /Before your next launch[\s\S]*?Request a tech check[\s\S]*?Tech check: request now, dates in January 2027\./);
+  assert.equal(note(config, 'availability', 'de', new Date('2027-02-01T12:00:00Z')), '', 'gone after 31.01.2027');
   const withReport = pages({ ...config, check_report_url: 'https://example.com/bericht.pdf' }, { live: {} }).find((x) => x.file === 'index.html').html;
   assert.match(withReport, /<a class="item__report text-link" href="https:\/\/example\.com\/bericht\.pdf">Beispielbericht ansehen<\/a>/);
 });
@@ -84,8 +84,9 @@ test('4. launch day: the new FAQ answer (DE/EN) and «Gut zu wissen» on /launch
   assert.equal(a, 'Ja, telefonisch und per Chat in einem Zeitfenster, das wir vorher festlegen: zum Beispiel zwei Stunden ab Verkaufsstart und die letzten zwei Stunden vor Cart Close. Dieses Fenster rechne ich nach Aufwand ab (45 € pro Stunde). Außerhalb antworte ich bis 15 Uhr am nächsten Tag. Pannen fangen wir möglichst vorher ab: mit Testkontakten, Testkäufen und einer Notfallkarte mit fertigen Antworten für Ihre Kundinnen. Ich begleite höchstens einen Launch pro Woche, damit ich wirklich da bin.');
   assert.ok(deHome.includes('Notfallkarte mit fertigen Antworten'));
   assert.match(en.faq.items.find((x) => x.q === 'Are you available on launch day?').a, /cart close[\s\S]*€45 per hour[\s\S]*at most one launch per week/);
-  assert.match(byFile['launch-technik/index.html'], /Gut zu wissen[\s\S]*?Im Februar 2027 plane ich keine Launches ein\./);
-  assert.equal(note(config, 'launch_break', 'de', new Date('2027-02-22T12:00:00Z')), '', 'gone from 22.2.2027');
+  // R1 (December release): the February sentence is gone; «Gut zu wissen» shows the one availability value.
+  assert.match(byFile['launch-technik/index.html'], /Gut zu wissen[\s\S]*?Launch-Setup: Projektstart ab 22\. Februar 2027\./);
+  assert.ok(!JSON.stringify(config.notes).includes('Im Februar 2027 plane ich keine Launches ein'));
 });
 
 test('5. contact form: «Wie sind Sie auf mich aufmerksam geworden?», hidden quelle, the inline script, no storage', () => {
@@ -128,7 +129,7 @@ test('7. launch facts on /launch-technik/ after the package, «krank» FAQ, the 
   const d = byFile['launch-technik/index.html'];
   assert.match(d, /Texte für E-Mails und Verkaufsseiten, Werbeanzeigen, Inhalte und Videos des Kurses, Rechtstexte, die Kosten Ihrer Tools\./);
   assert.match(d, /50 % bei Auftrag, 50 % nach dem Livegang\. Rechnung per E-Mail, zahlbar innerhalb von 14 Tagen\./);
-  assert.match(d, /Begleitung am Launch-Tag, 30-Tage-Zusage\./);
+  assert.match(d, /Erreichbarkeit am Launch-Tag in einem vereinbarten Zeitfenster, 30-Tage-Zusage\./); // R1.2
   for (const [t, q, a] of [[de, 'Und wenn Sie krank sind?', 'Dann helfe ich trotzdem: Fast alles lässt sich remote vom Laptop aus lösen. Außerdem gehören alle Zugänge Ihnen, und jeder Ablauf ist dokumentiert.'], [en, 'And what if you are ill?', 'Then I still help: almost everything can be solved remotely from my laptop. Also, all accesses belong to you, and every flow is documented.']]) {
     assert.equal(t.faq.items.find((x) => x.q === q)?.a, a);
   }

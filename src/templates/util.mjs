@@ -37,8 +37,12 @@ export const extLink = (href, label, t, { me = false, cls = '' } = {}) =>
 // Joins template parts, dropping false/null/undefined.
 export const join = (parts) => parts.filter((p) => p !== false && p != null && p !== '').join('\n');
 
-// Stage 6h: a dated note from config.notes in the page's language, or '' after its «until» day.
+// Stage 6h: a dated note from config.notes in the page's language, or '' after its «until» day (and, R1, before
+// its «from» day). R1 (December release): «availability» is the one availability value; on the days of the
+// «holiday» note that line follows it.
 export function note(config, key, lang, now = new Date()) {
   const n = config.notes?.[key];
-  return n && now.toISOString().slice(0, 10) <= n.until ? n[lang] || '' : '';
+  const day = now.toISOString().slice(0, 10);
+  const text = n && (!n.from || n.from <= day) && day <= n.until ? n[lang] || '' : '';
+  return key === 'availability' ? [text, note(config, 'holiday', lang, now)].filter(Boolean).join(' ') : text;
 }
