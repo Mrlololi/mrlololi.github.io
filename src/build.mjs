@@ -16,6 +16,7 @@ import { ratgeberIndex, ratgeberArticle, blogPostingLd } from './templates/ratge
 import { loadArticles } from './ratgeber.mjs';
 import { qualitaetPage, qualitaetCss, loadProtokoll } from './templates/qualitaet.mjs';
 import { einKaufPage, einKaufLd, einKaufCss } from './templates/werkzeug-ein-kauf.mjs';
+import { musterberichtPage, musterberichtLd, musterberichtCss } from './templates/musterbericht.mjs';
 
 export { sitemap, cname };
 
@@ -83,9 +84,14 @@ export function pages(cfg = config, { articles = loadArticles(), live = {}, prot
   if (cfg.werkzeug_ein_kauf_path) {
     out.push({
       file: fileFor(cfg.werkzeug_ein_kauf_path),
-      html: layout({ t: de, other: en, config: cfg, ratgeber, qualitaet, page: { key: 'werkzeug', path: cfg.werkzeug_ein_kauf_path, altPath: en.paths.home, title: de.einKauf.title, description: de.einKauf.description, ogImage: '/assets/og/de-ein-kauf.png', css: einKaufCss, ld: einKaufLd(de, cfg) }, main: einKaufPage(de) }),
+      html: layout({ t: de, other: en, config: cfg, ratgeber, qualitaet, page: { key: 'werkzeug', path: cfg.werkzeug_ein_kauf_path, altPath: en.paths.home, title: de.einKauf.title, description: de.einKauf.description, ogImage: '/assets/og/de-ein-kauf.png', css: einKaufCss, ld: einKaufLd(de, cfg) }, main: einKaufPage(de, cfg) }),
     });
   }
+  // Musterbericht Technik-Check (24.11.2026): DE only, indexable, in the sitemap; config.check_report_url points here.
+  out.push({
+    file: fileFor(de.musterbericht.path),
+    html: layout({ t: de, other: en, config: cfg, ratgeber, qualitaet, page: { key: 'musterbericht', path: de.musterbericht.path, altPath: en.paths.home, title: de.musterbericht.title, description: de.musterbericht.description, ogImage: '/assets/og/de-musterbericht.png', css: musterberichtCss, ld: musterberichtLd(de, cfg) }, main: musterberichtPage(de, cfg) }),
+  });
   if (qualitaet) {
     out.push({
       file: fileFor(de.qualitaet.path),

@@ -101,6 +101,14 @@
         "vorgeschrieben",
         "Barrierefreiheitsstärkungsgesetz"
       ]
+    },
+    {
+      "name": "document sample",
+      "pages": [
+        "/musterbericht/*"
+      ],
+      "about": "Musterbericht Technik-Check (24.11.2026): the approved sample report, word for word. Global list only until the chat «Сайты и контент» decides on the hits listed in the report to Iva (known candidate: «Notfallkarte mit fertigen Antworten für die häufigsten Fragen»).",
+      "words": []
     }
   ],
   "allow": [

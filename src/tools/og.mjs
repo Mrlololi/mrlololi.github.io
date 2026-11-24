@@ -4,7 +4,7 @@ import { mkdir } from 'node:fs/promises';
 import path from 'node:path';
 import { chromium, repoRoot } from '../qa/browsers.mjs';
 import { startServer } from '../qa/serve.mjs';
-import { ogHtml, ogPageHtml, ogToolHtml } from '../templates/og.mjs';
+import { ogHtml, ogPageHtml, ogToolHtml, ogReportHtml } from '../templates/og.mjs';
 import { icon } from '../../assets/js/kit/icons.mjs';
 import { RUNLOG_ICONS } from '../templates/runlog.mjs';
 import de from '../content/de.mjs';
@@ -25,6 +25,16 @@ const fontsReady = (page) => page.evaluate(() => Promise.all(['680 60px "Bricola
   await mkdir(path.join(repoRoot, 'assets/og'), { recursive: true });
   await page.screenshot({ path: path.join(repoRoot, 'assets/og/de-ein-kauf.png') });
   console.log('og: assets/og/de-ein-kauf.png');
+  await page.close();
+}
+// Musterbericht Technik-Check: assets/og/de-musterbericht.png (title, the label, a small table). Also under --only-tools.
+{
+  const page = await browser.newPage({ viewport: { width: 1200, height: 630 } });
+  await page.goto(`${server.url}/404.html`);
+  await page.setContent(ogReportHtml(de), { waitUntil: 'load' });
+  await fontsReady(page);
+  await page.screenshot({ path: path.join(repoRoot, 'assets/og/de-musterbericht.png') });
+  console.log('og: assets/og/de-musterbericht.png');
   await page.close();
 }
 if (process.argv.includes('--only-tools')) { await browser.close(); await server.close(); process.exit(0); }

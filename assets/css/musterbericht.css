@@ -1,0 +1,91 @@
+/* Musterbericht Technik-Check (24.11.2026): /musterbericht/technik-check/ only (inlined by
+   src/templates/musterbericht.mjs through page.css, so no other page changes). Tokens only. A calm document:
+   no motion, no mascot scene. The findings table scrolls sideways on phones (.mb-scroll). The print rules at the
+   end make the PDF (src/tools/musterbericht-pdf.mjs, A4). */
+.mb-head { padding-block: var(--space-7) var(--space-8); }
+.mb-wrap { display: grid; gap: var(--space-4); }
+.mb-wrap > * { margin: 0; }
+.mb-meta { display: grid; gap: 0.1rem; font-size: var(--step--1); color: var(--ink-soft); }
+.mb-meta strong { font-family: var(--font-display); font-weight: 700; color: var(--ink); }
+.mb-head h1 { font-size: var(--step-3); line-height: 1.08; }
+.mb-fake { --tint: var(--pink-tint); max-width: var(--measure); padding: var(--space-4); border: 1px solid var(--pink); }
+.mb-fake strong { color: var(--pink-ink); }
+.mb-sec { padding-block: var(--space-8); background: var(--sec-paper); }
+.mb-sec + .mb-sec { padding-top: 0; }
+.mb-sec h2 { font-size: var(--step-2); margin-top: var(--space-4); }
+.mb-sec h3 { font-size: var(--step-1); margin: 0; }
+.mb-note { max-width: var(--measure); color: var(--ink-soft); }
+
+.mb-cards { display: grid; gap: var(--space-3); padding: 0; list-style: none; }
+.mb-card { padding: var(--space-4); }
+.mb-card p { margin: 0; }
+.mb-card__k { font-family: var(--font-display); font-weight: 700; font-size: var(--step--1); color: var(--blue-ink); }
+.mb-tag { white-space: nowrap; }
+
+/* Result at a glance: one row per area, area and status word first, the line below on phones. */
+.mb-glance { display: grid; padding: 0; list-style: none; border-top: var(--surface-line); }
+.mb-glance__row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-2) var(--space-4); align-items: center; padding-block: var(--space-3); border-bottom: var(--surface-line); }
+.mb-glance__area { font-weight: 700; }
+.mb-glance__line { grid-column: 1 / -1; }
+.mb-top3 { --tint: var(--blue-tint); display: grid; gap: var(--space-2); padding: var(--space-5); }
+.mb-top3 ol { margin: 0; padding-left: 1.4rem; display: grid; gap: var(--space-2); }
+
+/* All findings: a real table; on phones it keeps its columns and scrolls inside its box. */
+.mb-scroll { overflow-x: auto; border-radius: var(--radius-card); background: var(--card); border: var(--surface-line); }
+.mb-scroll:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+.mb-table { width: 100%; min-width: 46rem; border-collapse: collapse; font-size: var(--step--1); }
+.mb-table th, .mb-table td { padding: var(--space-3); text-align: left; vertical-align: top; border-bottom: var(--surface-line); }
+.mb-table thead th { font-weight: 700; color: var(--ink-soft); border-bottom: 2px solid var(--ink); white-space: nowrap; }
+.mb-table tbody tr:last-child > * { border-bottom: 0; }
+.mb-nr { font-family: var(--font-display); font-weight: 700; color: var(--pink-ink); }
+.mb-how { display: block; margin-top: var(--space-1); color: var(--ink-soft); }
+.mb-effort { white-space: nowrap; }
+
+/* Recommendation: «when» above «what» on phones, two columns from 768 px. */
+.mb-plan { width: 100%; border-collapse: collapse; border-top: var(--surface-line); }
+.mb-plan tr { display: grid; gap: var(--space-1); padding-block: var(--space-3); border-bottom: var(--surface-line); }
+.mb-plan th, .mb-plan td { padding: 0; text-align: left; vertical-align: top; }
+.mb-plan th { font-family: var(--font-display); font-weight: 700; }
+.mb-price { --tint: var(--pist-tint); display: grid; gap: var(--space-2); padding: var(--space-5); }
+.mb-price p { margin: 0; }
+.mb-price + h2 { margin-top: var(--space-6); }
+.mb-sig span { display: block; font-size: var(--step--1); color: var(--ink-soft); }
+.mb-exit { display: grid; justify-items: start; gap: var(--space-3); margin-top: var(--space-5); }
+.mb-exit__lead { margin: 0; font-family: var(--font-display); font-weight: 700; font-size: var(--step-1); }
+
+@media (min-width: 768px) {
+  .mb-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .mb-glance__row { grid-template-columns: 16rem 6.5rem minmax(0, 1fr); }
+  .mb-glance__line { grid-column: auto; }
+  .mb-plan tr { display: table-row; }
+  .mb-plan th, .mb-plan td { padding: var(--space-3); border-bottom: var(--surface-line); }
+  .mb-plan th { width: 15rem; padding-left: 0; }
+}
+
+/* The PDF (A4, printed from this page): the report alone, the findings and the recommendation each on a new
+   page, as in the approved PDF. */
+@media print {
+  html { font-size: 78%; }
+  html, body { background: var(--card) !important; }
+  .skip, .site-header, .site-footer, .mb-pdf, .mb-exit, .motion-toggle { display: none !important; }
+  main, .mb-head, .mb-sec { background: none !important; }
+  .mb-head { padding-block: 0 var(--space-4); }
+  .mb-sec { padding-block: var(--space-4); }
+  .wrap { width: 100%; }
+  .mb-sec--findings, .mb-sec--plan { break-before: page; }
+  .mb-scroll { overflow: visible; border: 0; }
+  .mb-table { min-width: 0; font-size: 0.78rem; }
+  .mb-table th, .mb-table td { padding: var(--space-2) var(--space-3); }
+  .mb-sec h2 { margin-top: 0; }
+  .mb-wrap { gap: var(--space-3); }
+  .mb-table tr, .mb-plan tr, .mb-card, .mb-top3, .mb-price { break-inside: avoid; }
+  .card { box-shadow: none; }
+  .mb-sig a { color: inherit; }
+  .mb-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .mb-glance__row { grid-template-columns: 14rem 6.5rem minmax(0, 1fr); padding-block: var(--space-2); }
+  .mb-glance__line { grid-column: auto; }
+  .mb-plan tr { display: table-row; }
+  .mb-plan th, .mb-plan td { padding: var(--space-2) var(--space-3); border-bottom: var(--surface-line); }
+  .mb-plan th { width: 15.5rem; padding-left: 0; }
+  .mb-head h1 { font-size: 2.2rem; }
+}

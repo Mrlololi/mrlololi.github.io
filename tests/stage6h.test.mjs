@@ -68,7 +68,10 @@ test('4. Technik-Check card: badge, own button, call line, dated availability, r
   assert.match(c, /<a class="btn btn--sm btn--primary item__cta" href="\/\?paket=check#contact">Technik-Check anfragen<\/a>/);
   assert.match(c, /<p class="item__call small">Auf Wunsch mit 20-Minuten-Gespräch\.<\/p>/);
   assert.match(c, /<p class="item__when">Termine ab Januar 2027<\/p>/);
-  assert.ok(!/item__report/.test(c), 'no report link while the URL is empty');
+  // Musterbericht 24.11.2026: the URL is set, so the link is there; with an empty URL it is not.
+  assert.match(c, /<a class="item__report text-link" href="\/musterbericht\/technik-check\/">Beispielbericht ansehen<\/a>/);
+  const noReport = pages({ ...config, check_report_url: '' }, { live: {} }).find((x) => x.file === 'index.html').html;
+  assert.ok(!/item__report/.test(noReport.slice(noReport.indexOf('id="pkg-check"'), noReport.indexOf('id="pkg-launch"'))), 'no report link while the URL is empty');
   assert.match(enHome, /Before your next launch[\s\S]*?Request a tech check[\s\S]*?Dates from January 2027/);
   assert.equal(note(config, 'check_availability', 'de', new Date('2027-01-01T12:00:00Z')), '', 'gone after 31.12.2026');
   assert.equal(note(config, 'check_availability', 'de', new Date('2026-12-31T12:00:00Z')), 'Termine ab Januar 2027');

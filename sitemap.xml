@@ -2,14 +2,14 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://mrlololi.com/</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-24</lastmod>
     <xhtml:link rel="alternate" hreflang="de" href="https://mrlololi.com/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://mrlololi.com/en/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mrlololi.com/"/>
   </url>
   <url>
     <loc>https://mrlololi.com/en/</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-24</lastmod>
     <xhtml:link rel="alternate" hreflang="de" href="https://mrlololi.com/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://mrlololi.com/en/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mrlololi.com/"/>
@@ -72,14 +72,14 @@
   </url>
   <url>
     <loc>https://mrlololi.com/activecampaign-einrichten/</loc>
-    <lastmod>2026-10-29</lastmod>
+    <lastmod>2026-11-24</lastmod>
     <xhtml:link rel="alternate" hreflang="de" href="https://mrlololi.com/activecampaign-einrichten/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://mrlololi.com/en/activecampaign-setup/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mrlololi.com/activecampaign-einrichten/"/>
   </url>
   <url>
     <loc>https://mrlololi.com/en/activecampaign-setup/</loc>
-    <lastmod>2026-10-29</lastmod>
+    <lastmod>2026-11-24</lastmod>
     <xhtml:link rel="alternate" hreflang="de" href="https://mrlololi.com/activecampaign-einrichten/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://mrlololi.com/en/activecampaign-setup/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mrlololi.com/activecampaign-einrichten/"/>
@@ -114,7 +114,11 @@
   </url>
   <url>
     <loc>https://mrlololi.com/werkzeuge/ein-kauf/</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-24</lastmod>
+  </url>
+  <url>
+    <loc>https://mrlololi.com/musterbericht/technik-check/</loc>
+    <lastmod>2026-11-24</lastmod>
   </url>
   <url>
     <loc>https://mrlololi.com/qualitaet/</loc>

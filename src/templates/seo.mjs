@@ -138,6 +138,11 @@ export function sitemap(config, articles = [], { qualitaet = Boolean(loadProtoko
     <lastmod>${config.page_dates.ein_kauf}</lastmod>
   </url>`);
   }
+  // Musterbericht Technik-Check (DE only, no alternates).
+  urls.push(`  <url>
+    <loc>${absUrl(config, de.musterbericht.path)}</loc>
+    <lastmod>${config.page_dates.musterbericht}</lastmod>
+  </url>`);
   if (qualitaet) {
     urls.push(`  <url>
     <loc>${absUrl(config, de.qualitaet.path)}</loc>

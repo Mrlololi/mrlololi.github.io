@@ -83,3 +83,33 @@ ${lockup({ kind: 'full', lang: t.lang, class: 'mark' })}
 <div class="foot">Iva Tsatskrialashvili · mrlololi.com</div>
 </div></body></html>`;
 }
+
+// Musterbericht Technik-Check (24.11.2026): title, the «Fiktives Beispiel» label and a small table motif (findings
+// 1, 5 and 10: one of each risk word; number, area, risk), like the Ein Kauf card. All words come from t.musterbericht.
+export function ogReportHtml(t) {
+  const M = t.musterbericht;
+  const tone = { hoch: ['#FBE7EC', '#8E3650'], mittel: ['#FBEDE3', '#7A4E2D'], niedrig: ['#E6F1DF', '#3F6B31'] };
+  const rows = [0, 4, 9].map((i) => M.findings[i]).map(([nr, area, , , risk]) => `<tr><td class="nr">${nr}</td><td>${esc(area)}</td><td><span class="tag" style="background:${tone[risk][0]};color:${tone[risk][1]}">${esc(risk)}</span></td></tr>`).join('');
+  return `<!doctype html>
+<html lang="${t.lang}"><head><meta charset="utf-8"><link rel="stylesheet" href="/assets/css/components.css"><link rel="stylesheet" href="/assets/css/kit.css"><link rel="stylesheet" href="/assets/css/main.css">
+<style>
+  html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; background: linear-gradient(135deg, #F4C9D3, #DCD3F0); }
+  .og { box-sizing: border-box; width: 1200px; height: 630px; padding: 64px 80px; display: grid; grid-template-columns: 1fr 430px; grid-template-rows: auto 1fr auto; gap: 28px 56px; }
+  .mark { grid-column: 1 / -1; display: block; height: 84px; width: auto; }
+  .text { align-self: center; display: grid; gap: 22px; }
+  .title { font-family: var(--font-display); font-weight: 680; font-size: 64px; line-height: 1.04; letter-spacing: -0.025em; color: #2B2A33; }
+  .fake { justify-self: start; font-family: var(--font-display); font-weight: 700; font-size: 24px; color: #8E3650; background: #FDF0F3; border: 2px solid #F4C9D3; border-radius: 12px; padding: 6px 16px; }
+  table { align-self: center; border-collapse: collapse; background: #fff; border-radius: 20px; overflow: hidden; box-shadow: 0 8px 24px rgb(43 42 51 / 0.12); font-family: var(--font-body); font-size: 26px; color: #2B2A33; }
+  td { padding: 18px 22px; border-bottom: 2px solid #ECE6E1; }
+  tr:last-child td { border-bottom: 0; }
+  .nr { font-family: var(--font-display); font-weight: 700; color: #8E3650; }
+  .tag { font-family: var(--font-display); font-weight: 700; font-size: 20px; border-radius: 10px; padding: 4px 12px; }
+  .foot { grid-column: 1 / -1; font-family: var(--font-body); font-size: 26px; color: #4A4753; }
+</style></head>
+<body><div class="og">
+${lockup({ kind: 'full', lang: t.lang, class: 'mark' })}
+<div class="text"><div class="title">${esc(M.title.replace(/ \| mrlololi$/, ''))}</div><div class="fake">${esc(M.fake[0].replace(/\.$/, ''))}</div></div>
+<table>${rows}</table>
+<div class="foot">Iva Tsatskrialashvili · mrlololi.com</div>
+</div></body></html>`;
+}

@@ -128,7 +128,7 @@ test('canonical and reciprocal hreflang pairs, checked over a real build output'
     await build({ outDir: dir, probe: false, quiet: true });
     const r = await checkSeo(dir, SITE);
     assert.deepEqual(r.problems, []);
-    assert.equal(r.indexable, 18, '6 earlier pages + 10 service pages + /qualitaet/ + /werkzeuge/ein-kauf/');
+    assert.equal(r.indexable, 19, '6 earlier pages + 10 service pages + /qualitaet/ + /werkzeuge/ein-kauf/ + /musterbericht/technik-check/');
     assert.ok(!existsSync(path.join(dir, 'ratgeber')), 'no /ratgeber/ in the output while the flag is false');
   } finally {
     rmSync(dir, { recursive: true, force: true });
@@ -362,13 +362,13 @@ test('sitemap contains exactly the live pages, with lastmod from page_dates', ()
     .map((p) => tag(p.html, /<link rel="canonical" href="([^"]+)">/))
     .sort();
   assert.deepEqual(locs, live);
-  assert.equal(locs.length, 18); // + /qualitaet/ and /werkzeuge/ein-kauf/ (DE only)
+  assert.equal(locs.length, 19); // + /qualitaet/, /werkzeuge/ein-kauf/ and /musterbericht/technik-check/ (DE only)
   assert.equal(config.page_dates.website, '2026-10-28');
   // Stage 6 (29.10.2026): the KI demo and calculator moved to the KI page, the video to the launch page.
   assert.equal(config.page_dates.ki, '2026-11-18'); // 18.11.2026: the calculator note (Wortfilter)
   assert.equal(config.page_dates.launch, '2026-11-05'); // Stage 6h: «Gut zu wissen»
   // Iva's corrections of 29.10.2026 changed these two pages.
-  assert.equal(config.page_dates.activecampaign, '2026-10-29');
+  assert.equal(config.page_dates.activecampaign, '2026-11-24'); // 24.11.2026: the «So sieht ein Bericht aus» link (before: 29.10)
   assert.equal(config.page_dates.spam, '2026-11-18'); // 18.11.2026: the problem line (Wortfilter)
   assert.match(xml, new RegExp(`<loc>${SITE}/en/course-launch-tech/</loc>\\s*<lastmod>2026-11-05</lastmod>\\s*<xhtml:link rel="alternate" hreflang="de" href="${SITE}/launch-technik/"/>`));
 });

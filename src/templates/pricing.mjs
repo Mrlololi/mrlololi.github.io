@@ -52,7 +52,7 @@ function card(t, it, email, config) {
   // Stage 6h: the Technik-Check card asks in its own words; its availability comes from config.notes.
   const isCheck = it.id === 'check';
   const when = isCheck ? note(config, 'check_availability', t.lang) : '';
-  const extra = isCheck ? `<p class="item__call small">${esc(s.checkCall)}</p>\n<p class="item__referral small">${esc(s.checkReferral)}</p>${when ? `\n<p class="item__when">${esc(when)}</p>` : ''}${config.check_report_url ? `\n<a class="item__report text-link" href="${esc(config.check_report_url)}">${esc(s.checkReport)}</a>` : ''}` : '';
+  const extra = isCheck ? `<p class="item__call small">${esc(s.checkCall)}</p>\n<p class="item__referral small">${esc(s.checkReferral)}</p>${when ? `\n<p class="item__when">${esc(when)}</p>` : ''}${config.check_report_url && t.lang === 'de' ? `\n<a class="item__report text-link" href="${esc(config.check_report_url)}">${esc(s.checkReport)}</a>` : ''}` : '';
   const badge = it.id === 'check' ? `<span class="label label--lav item__badge">${esc(t.s4.starter.recommended)}</span>` : '';
   return `<li class="item item--${it.id} card card--lift" id="pkg-${it.id}">
 <div class="item__head">${badge}<h3 class="item__name">${esc(it.name)}</h3>

@@ -41,7 +41,7 @@ ${k.notfallId ? `<dt>${esc(R.notfall)}</dt><dd data-notfall="${esc(k.notfallId)}
 </section>`;
 }
 
-export function einKaufPage(t) {
+export function einKaufPage(t, config = {}) {
   const E = t.einKauf;
   const pkg = t.pricing.groups.flatMap((g) => g.items).find((it) => it.id === E.exitPackage);
   const switches = kauf.map((k) => `<li><button class="ek-switch btn btn--secondary btn--sm" type="button" aria-pressed="false" data-step="${k.id}" data-missing="${k.kommtNichtAn.join(' ')}"><span class="ek-switch__nr" aria-hidden="true">${k.nr}</span><span class="ek-switch__text">${esc(E.switchOff)}</span><span class="sr-only">: ${esc(k.titel)}</span></button></li>`).join('\n');
@@ -78,7 +78,7 @@ ${kauf.map((k) => panel(E, k)).join('\n')}
 </section>
 <section class="ek-sec bg-paper" aria-labelledby="ek-text-h">
 <div class="wrap ek-wrap ek-text">
-${E.text.map(([h, ps], i) => `<h2${i === 0 ? ' id="ek-text-h"' : ''}>${esc(h)}</h2>\n${ps.map((p) => `<p>${esc(p)}</p>`).join('\n')}`).join('\n')}
+${E.text.map(([h, ps, report], i) => `<h2${i === 0 ? ' id="ek-text-h"' : ''}>${esc(h)}</h2>\n${ps.map((p) => `<p>${esc(p)}</p>`).join('\n')}${report && config.check_report_url ? `\n<p><a class="text-link" href="${esc(config.check_report_url)}">${esc(t.musterbericht.linkText)}</a></p>` : ''}`).join('\n')}
 <div class="ek-exit">
 <p class="ek-exit__lead">${esc(E.exitLead)}</p>
 <a class="btn btn--primary" href="${esc(E.exitHref)}">${esc(pkg.name)}, ${esc(pkg.price.replace(/\s*fix$/, ''))}</a>

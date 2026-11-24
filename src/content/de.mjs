@@ -1138,8 +1138,91 @@ export default {
       ]],
       ['Wenn Sie das nicht selbst prüfen möchten', [
         'Im Technik-Check gehe ich Ihren Ablauf einen Tag lang mit Lesezugriff durch und gebe Ihnen eine Liste mit Prioritäten, Aufwand und Preisen.',
-      ]],
+      ], 'report'], // Musterbericht 24.11.2026: «So sieht ein Bericht aus» (config.check_report_url)
     ],
+  },
+
+  // Musterbericht Technik-Check (docs/PROMPT_Musterbericht_Technik-Check_2026-11-24.md). The texts are the
+  // sample report Iva approved on 22.11.2026 (docs/musterbericht-quelle/), word for word. Changed only, as the brief
+  // and Iva (24.11.2026) say: «Werbeagentur» in the header line and in the signature line becomes «Techniker für
+  // Marketing-Automation» (identity rule of 7b-S). Meta, link texts and the exit line are Entwurf.
+  // beispiel: the Wortfilter checks that the element data-entry="musterbericht" says «fiktives Beispiel».
+  musterbericht: {
+    id: 'musterbericht',
+    beispiel: true,
+    path: '/musterbericht/technik-check/',
+    pdf: '/musterbericht/technik-check.pdf',
+    title: 'Technik-Check: Beispielbericht | mrlololi',
+    description: 'So sieht ein Technik-Check aus: ein vollständiger Beispielbericht für eine erfundene Online-Kurs-Schule, mit Befunden, Risiko, Aufwand und den drei Punkten vor dem Launch.',
+    pdfLink: 'Als PDF ansehen',
+    linkText: 'So sieht ein Bericht aus',
+    head: {
+      title: 'Technik-Check vor dem Launch',
+      lines: ['für: Lichtwerk Fotoakademie (erfunden)', 'geprüft: an 1 Tag, eigener Lesezugang', 'Iva Tsatskrialashvili · Techniker für Marketing-Automation · Graz'],
+    },
+    h1: 'So sieht ein Technik-Check aus',
+    fake: ['Fiktives Beispiel.', 'Die Schule, alle Daten und Befunde sind erfunden. Die Befunde sind aber typische Stolpersteine bei Launches. Ein echter Bericht ist genauso aufgebaut.'],
+    cards: [
+      ['Der Launch', 'Online-Kurs „Licht verstehen“, Webinar am Dienstag, danach 5 Tage Verkaufsphase. Einmalzahlung oder 3 Raten.'],
+      ['Die Technik', 'Landingpage (Leadpages), E-Mails (ActiveCampaign), Verbindungen (Zapier), Zahlung (Stripe), Rechnungen (Quaderno), Mitgliederbereich.'],
+      ['So habe ich geprüft', 'Wie eine Käuferin: 3 Testadressen, Testkäufe im Stripe-Testmodus, Handy und Rechner, alle Links in 6 Launch-Mails. Nichts verändert.'],
+    ],
+    glanceTitle: 'Ergebnis auf einen Blick',
+    // [area, status, line]; status «kritisch» or «beheben».
+    glance: [
+      ['Anmeldung & Double-Opt-in', 'beheben', 'Formular funktioniert, aber nach dem Absenden fehlt eine Danke-Seite.'],
+      ['E-Mail-Zustellung', 'kritisch', 'Bestätigungsmail landet bei GMX im Spam, SPF ist doppelt eingetragen.'],
+      ['Webinar & Erinnerungen', 'beheben', 'Die Erinnerung „1 Stunde vorher“ kommt erst zum Start (Zeitzone).'],
+      ['Checkout & Zahlung', 'kritisch', 'Fehlgeschlagene 2. Rate löst keine Erinnerung aus.'],
+      ['Kurszugang & Onboarding', 'kritisch', 'Bei Umlauten im Namen wird kein Kurszugang angelegt.'],
+    ],
+    top3Title: 'Diese 3 Punkte vor dem Launch beheben',
+    top3: [
+      ['Zustellung:', 'doppelten SPF-Eintrag zusammenführen und DMARC anlegen, damit die Bestätigungsmail nicht im Spam landet (Befund 1 und 2).'],
+      ['Kurszugang:', 'Umlaute im Zapier-Schritt abfangen, sonst bekommen manche Käuferinnen keinen Zugang (Befund 3).'],
+      ['Ratenzahlung:', 'Erinnerung und Hinweis bei fehlgeschlagener Rate einrichten (Befund 4).'],
+    ],
+    findingsTitle: 'Alle Befunde',
+    findingsNote: 'Sortiert nach Risiko für den Launch. Aufwand ist meine Schätzung für die Behebung, nicht für die Suche.',
+    cols: ['Nr.', 'Bereich', 'Befund', 'Risiko', 'Aufwand', 'Wer behebt'],
+    // [nr, area, finding, how it was checked, risk, effort, who]; risk «hoch», «mittel» or «niedrig».
+    findings: [
+      [1, 'Zustellung', 'Die Bestätigungsmail (Double-Opt-in) landet bei GMX im Spam-Ordner, bei Gmail im Posteingang.', 'Geprüft: Anmeldung mit 3 Testadressen (Gmail, GMX, Outlook)', 'hoch', '1 h', 'ich'],
+      [2, 'Zustellung', 'Für die Domain gibt es zwei SPF-Einträge (alter Hoster und ActiveCampaign). Dadurch gilt SPF als ungültig. Ein DMARC-Eintrag fehlt.', 'Geprüft: DNS-Abfrage (TXT, _dmarc)', 'hoch', '30 min', 'ich, mit Ihrem Domain-Zugang'],
+      [3, 'Kurszugang', 'Steht im Namen ein Umlaut („Jürgen“), bricht der Zapier-Schritt „Mitglied anlegen“ ab. Die Käuferin bekommt keinen Zugang.', 'Geprüft: Testkauf im Stripe-Testmodus mit 2 Namen', 'hoch', '1 h', 'ich'],
+      [4, 'Zahlung', 'Bei Ratenzahlung (3 Raten) löst eine fehlgeschlagene 2. Rate keine Erinnerung und keinen Hinweis an Sie aus.', 'Geprüft: Testkarte „Zahlung abgelehnt“ im Stripe-Testmodus', 'hoch', '1,5 h', 'ich'],
+      [5, 'Anmeldung', 'Nach dem Absenden des Formulars erscheint nur „Erfolg“ im Formular. Keine Danke-Seite, kein Hinweis „Bitte Postfach prüfen“.', 'Geprüft: Anmeldung am Handy und am Rechner', 'mittel', '30 min', 'ich'],
+      [6, 'Webinar', 'Die Erinnerung „in 1 Stunde geht es los“ ist auf UTC statt Wiener Zeit eingestellt und kommt erst zum Webinarbeginn.', 'Geprüft: Testkontakt durch die Automation geschickt', 'mittel', '15 min', 'ich'],
+      [7, 'Onboarding', 'Die Willkommensmail verlinkt noch auf den Test-Kursbereich (staging). Die Seite lädt nicht.', 'Geprüft: Alle Links in 6 Launch-Mails geklickt', 'mittel', '15 min', 'ich'],
+      [8, 'Zustellung', 'Der Abmeldelink in den Launch-Mails führt auf eine Fehlerseite.', 'Geprüft: Link in 3 Mails geklickt', 'mittel', '15 min', 'ich'],
+      [9, 'Checkout', 'Auf kleinen iPhones verdeckt der Cookie-Banner den Button „Jetzt kaufen“, bis man ihn schließt.', 'Geprüft: Bestellseite auf iPhone SE und Android', 'mittel', '30 min', 'Ihr Webdesign oder ich'],
+      [10, 'Zahlung', 'Die Rechnungsmail kommt von der Standardadresse des Rechnungstools, nicht von der Schule. Wirkt für Käuferinnen fremd.', 'Geprüft: Testkauf, Rechnungsmail geprüft', 'niedrig', '15 min', 'ich'],
+      [11, 'Kurszugang', 'Testkäufe und echte Käufe landen in derselben Liste. Testkontakte verfälschen die Zahlen im Launch.', 'Geprüft: Kontaktliste angesehen', 'niedrig', '15 min', 'ich'],
+      [12, 'Support', 'Für „Mein Zugang ist nicht angekommen“ gibt es keine fertige Antwort. Am Launch-Tag kostet das Zeit.', 'Geprüft: Postfach-Vorlagen angesehen', 'niedrig', '30 min', 'ich, Text mit Ihnen'],
+    ],
+    planTitle: 'Was ich empfehle',
+    plan: [
+      ['Bis 14 Tage vor dem Launch', 'Befunde 1 bis 4 beheben: Zustellung, Kurszugang, Ratenzahlung. Danach erneuter Testkauf mit allen 3 Testadressen.'],
+      ['Bis 7 Tage vorher', 'Befunde 5 bis 9: Danke-Seite, Zeitzone, Links, Abmeldelink, Cookie-Banner am Handy. Danach „Freeze“: keine Änderungen mehr an Formularen und Automationen.'],
+      ['Wenn Zeit bleibt', 'Befunde 10 bis 12: Absender der Rechnungsmail, Testkontakte trennen, Antwortvorlage „Zugang fehlt“ (Teil der Notfallkarte).'],
+      ['Am Launch-Tag', 'Notfallkarte mit fertigen Antworten für die häufigsten Fragen. Auf Wunsch bin ich in einem vorher vereinbarten Zeitfenster erreichbar (nach Aufwand, 45 € pro Stunde).'],
+    ],
+    priceTitle: 'Was das kosten würde',
+    price: [
+      'Geschätzter Aufwand für alle 12 Befunde: rund 7 Stunden. Als Paket über das Launch-Setup oder einzeln: ein einzelner Fehler als Quick-Fix für 190 € (bis 4 Stunden), alles andere nach Aufwand mit 45 € pro Stunde.',
+      'Der Technik-Check kostet 290 € und wird angerechnet, wenn Sie innerhalb von 30 Tagen die Umsetzung beauftragen.',
+    ],
+    notTitle: 'Was dieser Check nicht ist',
+    not: 'Keine Rechts- oder Steuerberatung (zum Beispiel Impressum, Datenschutzerklärung, Umsatzsteuer). Keine Bewertung von Inhalten, Preisen oder Werbeanzeigen. Ich prüfe, ob die Technik so funktioniert, wie eine Käuferin sie erlebt.',
+    sigLead: 'Fragen zum Bericht?',
+    sigLine: 'Iva Tsatskrialashvili · Techniker für Marketing-Automation · Herbersteinstraße 4/4181 · 8020 Graz',
+    // The PDF: page header and footer (as in the approved PDF).
+    pdfHeader: 'Fiktives Beispiel',
+    pdfFooter: 'Technik-Check vor dem Launch · Beispielbericht · mrlololi.com',
+    pdfPage: 'Seite {page} von {pages}',
+    exitLead: 'Ihren Launch so prüfen lassen:',
+    exitPackage: 'check',
+    exitHref: '/?paket=check&quelle=musterbericht#contact',
   },
 
   // Datenschutzerklärung (CONTENT.md section 4).
