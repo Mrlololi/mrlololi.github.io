@@ -1481,6 +1481,8 @@ html:not(.js) .ba__side--before { display: none; }
 .field--check .field__err { grid-column: 2; }
 /* The privacy link inside the consent sentence: a 44 px tall target, the line height stays. */
 .field--check a { display: inline-block; padding-block: 0.6875rem; margin-block: -0.6875rem; }
+/* R4: the privacy link in the information line under the form, the same 44 px target (small text: more padding). */
+.contact__info a { display: inline-block; padding-block: 0.875rem; margin-block: -0.875rem; }
 .hp { position: absolute; left: -10000px; top: auto; width: 1px; height: 1px; overflow: hidden; }
 .contact__submit { display: grid; gap: var(--space-2); justify-items: start; }
 .contact__send { min-width: 12rem; }
