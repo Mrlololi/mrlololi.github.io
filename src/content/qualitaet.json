@@ -1,8 +1,8 @@
 {
   "about": "Written by src/qa/protokoll.mjs; the build renders /qualitaet/ only from this file. Never edit by hand.",
   "measured": "2026-11-25",
-  "measuredAt": "2026-11-25T00:48:23.643Z",
-  "commit": "cf40dde",
+  "measuredAt": "2026-11-25T04:23:41.740Z",
+  "commit": "366e5e2",
   "dirty": false,
   "tools": {
     "lighthouse": "13.5.0",
@@ -13,8 +13,8 @@
   },
   "lighthouseRuns": 3,
   "tests": {
-    "total": 322,
-    "pass": 322,
+    "total": 327,
+    "pass": 327,
     "fail": 0
   },
   "gates": {
@@ -27,7 +27,7 @@
     "perfLimit": 95,
     "perfMin": 99,
     "perfMax": 100,
-    "clsMax": 0.0004,
+    "clsMax": 0,
     "keyboardPassed": 60,
     "keyboardTotal": 60,
     "axeSerious": 0,
@@ -40,7 +40,7 @@
   "pages": [
     {
       "page": "/",
-      "cls": 0.0004,
+      "cls": 0,
       "cookies": 0,
       "external": 0,
       "externalUrls": [],
@@ -52,7 +52,7 @@
           "pass": true
         },
         {
-          "name": "97 tab stops with a visible focus ring",
+          "name": "94 tab stops with a visible focus ring",
           "pass": true,
           "details": ""
         },
@@ -83,7 +83,7 @@
           "pass": true
         },
         {
-          "name": "93 tab stops with a visible focus ring",
+          "name": "91 tab stops with a visible focus ring",
           "pass": true,
           "details": ""
         },
@@ -406,7 +406,7 @@
       "a11y": 100,
       "best": 100,
       "seo": 100,
-      "lcp": 1.65,
+      "lcp": 1.8,
       "tbt": 0,
       "clsLighthouse": 0
     },
