@@ -1,8 +1,8 @@
 {
   "about": "Written by src/qa/protokoll.mjs; the build renders /qualitaet/ only from this file. Never edit by hand.",
   "measured": "2026-11-25",
-  "measuredAt": "2026-11-25T04:23:41.740Z",
-  "commit": "366e5e2",
+  "measuredAt": "2026-11-25T10:44:30.946Z",
+  "commit": "bca185a",
   "dirty": false,
   "tools": {
     "lighthouse": "13.5.0",
@@ -13,8 +13,8 @@
   },
   "lighthouseRuns": 3,
   "tests": {
-    "total": 327,
-    "pass": 327,
+    "total": 328,
+    "pass": 328,
     "fail": 0
   },
   "gates": {
@@ -25,7 +25,7 @@
   "summary": {
     "pages": 20,
     "perfLimit": 95,
-    "perfMin": 99,
+    "perfMin": 98,
     "perfMax": 100,
     "clsMax": 0,
     "keyboardPassed": 60,
@@ -61,7 +61,7 @@
           "pass": true
         }
       ],
-      "perf": 99,
+      "perf": 98,
       "a11y": 100,
       "best": 100,
       "seo": 100,
@@ -127,7 +127,7 @@
       "a11y": 100,
       "best": 100,
       "seo": 100,
-      "lcp": 1.8,
+      "lcp": 1.81,
       "tbt": 0,
       "clsLighthouse": 0
     },
@@ -158,7 +158,7 @@
       "a11y": 100,
       "best": 100,
       "seo": 100,
-      "lcp": 1.8,
+      "lcp": 1.81,
       "tbt": 0,
       "clsLighthouse": 0
     },
@@ -189,7 +189,7 @@
       "a11y": 100,
       "best": 100,
       "seo": 100,
-      "lcp": 1.8,
+      "lcp": 1.81,
       "tbt": 0,
       "clsLighthouse": 0
     },
@@ -282,7 +282,7 @@
       "a11y": 100,
       "best": 100,
       "seo": 63,
-      "lcp": 1.8,
+      "lcp": 1.81,
       "tbt": 0,
       "clsLighthouse": 0
     },
@@ -313,7 +313,7 @@
       "a11y": 100,
       "best": 100,
       "seo": 63,
-      "lcp": 1.8,
+      "lcp": 1.81,
       "tbt": 0,
       "clsLighthouse": 0
     },
@@ -344,7 +344,7 @@
       "a11y": 100,
       "best": 100,
       "seo": 100,
-      "lcp": 1.65,
+      "lcp": 1.66,
       "tbt": 0,
       "clsLighthouse": 0
     },
@@ -375,7 +375,7 @@
       "a11y": 100,
       "best": 100,
       "seo": 100,
-      "lcp": 1.95,
+      "lcp": 1.96,
       "tbt": 0,
       "clsLighthouse": 0
     },
@@ -406,7 +406,7 @@
       "a11y": 100,
       "best": 100,
       "seo": 100,
-      "lcp": 1.8,
+      "lcp": 1.66,
       "tbt": 0,
       "clsLighthouse": 0
     },
@@ -437,7 +437,7 @@
       "a11y": 100,
       "best": 100,
       "seo": 100,
-      "lcp": 1.65,
+      "lcp": 1.66,
       "tbt": 0,
       "clsLighthouse": 0
     },
@@ -468,7 +468,7 @@
       "a11y": 100,
       "best": 100,
       "seo": 100,
-      "lcp": 1.65,
+      "lcp": 1.66,
       "tbt": 0,
       "clsLighthouse": 0
     },
