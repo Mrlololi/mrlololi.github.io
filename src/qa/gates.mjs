@@ -273,42 +273,35 @@ export async function stage7bGates(browser, base, { quick = false } = {}) {
       await ctx.close();
     }
   }
-  // Gate 4: the run-log story.
+  // Gate 4: the run-log story. R3 (December release): the run-log lives on /werkzeuge/ein-kauf/ only (home has the
+  // teaser card). The stage keeps its height while each of the six steps is switched off, one step at a time, and
+  // nothing runs once it rests (also with the global pause).
   for (const w of widths) {
     const ctx = await ctxFor(w);
     const page = await ctx.newPage();
-    await page.goto(base + '/', { waitUntil: 'load' });
-    await page.waitForTimeout(1500);
-    await page.locator('#vtab-2').scrollIntoViewIfNeeded();
-    await page.locator('#vtab-2').click();
+    await page.goto(base + '/werkzeuge/ein-kauf/', { waitUntil: 'load' });
+    await page.waitForFunction(() => document.documentElement.classList.contains('ek-ready'), null, { timeout: 8000 }).catch(() => {});
     await page.mouse.move(1, 1);
-    const log = await page.evaluate(async () => {
-      const rl = document.querySelector('.rl');
-      const seen = []; const hs = new Set(); let cur = 0; let t0 = null; let fade = null; const start = performance.now();
-      while (performance.now() - start < 21000) {
-        const now = performance.now() - start;
-        hs.add(Math.round(rl.querySelector('.rl__scene').getBoundingClientRect().height));
-        cur = Math.max(cur, rl.querySelectorAll('.rl__step.is-current').length);
-        if (t0 === null && rl.dataset.play === 'run') t0 = now;
-        if (t0 !== null && fade === null && rl.classList.contains('is-fading')) fade = now;
-        seen.push(rl.dataset.step);
-        await new Promise((r) => setTimeout(r, 50));
-      }
-      return { heights: [...hs], cur, round: fade !== null && t0 !== null ? Math.round(fade - t0) : null, autostart: t0 };
-    });
-    check(`run-log ${w}: stage height constant over the six steps and the reset`, log.heights.length === 1, log.heights.join(','));
-    check(`run-log ${w}: one current step at a time`, log.cur === 1, String(log.cur));
-    check(`run-log ${w}: one round = 6 x 1.8 s + 4 s (+-300 ms), autostart after about 4 s`, log.round !== null && Math.abs(log.round - 14800) <= 300 && log.autostart >= 3800 && log.autostart <= 4800, JSON.stringify(log));
+    const ids = await page.evaluate(() => [...document.querySelectorAll('.ek-switch')].map((b) => b.dataset.step));
+    const hs = new Set(); let maxPressed = 0;
+    for (const id of ids) {
+      await page.click(`.ek-switch[data-step="${id}"]`);
+      await page.waitForTimeout(400);
+      const r = await page.evaluate(() => ({ h: Math.round(document.querySelector('.rl__scene').getBoundingClientRect().height), pressed: document.querySelectorAll('.ek-switch[aria-pressed="true"]').length }));
+      hs.add(r.h); maxPressed = Math.max(maxPressed, r.pressed);
+    }
+    check(`run-log ${w}: stage height constant over the six steps`, ids.length === 6 && hs.size === 1, [...hs].join(','));
+    check(`run-log ${w}: one step off at a time`, maxPressed === 1, String(maxPressed));
+    await page.waitForTimeout(2500);
+    const running = await page.evaluate(() => document.querySelector('.rl').getAnimations({ subtree: true }).filter((a) => a.playState === 'running' && a.effect?.getComputedTiming().iterations === Infinity).length);
+    check(`run-log ${w}: nothing loops once it rests`, running === 0, String(running));
     await ctx.close();
     const still = await ctxFor(w, { paused: true });
     const sp = await still.newPage();
-    await sp.goto(base + '/', { waitUntil: 'load' });
-    await sp.waitForTimeout(1200);
-    await sp.locator('#vtab-2').scrollIntoViewIfNeeded();
-    await sp.locator('#vtab-2').click();
-    await sp.waitForTimeout(5500);
-    const e = await sp.evaluate(() => { const rl = document.querySelector('.rl'); return { step: rl.dataset.step, checks: rl.querySelectorAll('.rl__log.is-on').length, nodes: rl.querySelectorAll('.rl__node.is-done').length, anims: rl.getAnimations({ subtree: true }).filter((a) => a.playState === 'running').length, summary: getComputedStyle(rl.querySelector('.rl__summary')).visibility, live: getComputedStyle(rl.querySelector('.rl__live')).visibility }; });
-    check(`run-log ${w}, paused: the end frame, six checks, nothing running`, e.step === '5' && e.checks === 6 && e.nodes === 6 && e.anims === 0 && e.summary === 'visible' && e.live === 'visible', JSON.stringify(e));
+    await sp.goto(base + '/werkzeuge/ein-kauf/', { waitUntil: 'load' });
+    await sp.waitForTimeout(2500);
+    const e = await sp.evaluate(() => { const rl = document.querySelector('.rl'); return { anims: rl.getAnimations({ subtree: true }).filter((a) => a.playState === 'running').length, summary: getComputedStyle(rl.querySelector('.rl__summary')).visibility }; });
+    check(`run-log ${w}, paused: at rest, nothing running`, e.anims === 0 && e.summary === 'visible', JSON.stringify(e));
     await still.close();
   }
   // Gate 5: the conductor (1280: the process block and the hero line).
@@ -368,19 +361,18 @@ export async function stage7bGates(browser, base, { quick = false } = {}) {
     check('conductor: three rounds, then the end frame', runs === 3 && last === 'end', `${runs} rounds, now ${last}`);
     await ctx.close();
   }
-  // Gate 1g: one story at a time with the run-log tab open, sampled every 100 ms.
+  // Gate 1g: one story at a time while scrolling the whole page, sampled every 100 ms (R3: no run-log tab on home).
   for (const w of widths) {
     for (const p of ['/', '/en/']) {
       const ctx = await ctxFor(w);
       const page = await ctx.newPage();
       await page.goto(base + p, { waitUntil: 'load' });
       await page.waitForTimeout(1200);
-      await page.locator('#vtab-2').scrollIntoViewIfNeeded();
-      await page.locator('#vtab-2').click();
+      // R3: home has no run-log tab any more; the scroll through the whole page stays.
       await page.waitForTimeout(5000);
       await scrollAll(page);
       const r = await page.evaluate(() => ({ maxRun: window.__maxRun, runs: window.__runs }));
-      check(`one story at a time with the run-log open: ${p} ${w}`, r.maxRun <= 1, r.runs.join(', '));
+      check(`one story at a time: ${p} ${w}`, r.maxRun <= 1, r.runs.join(', '));
       await ctx.close();
     }
   }

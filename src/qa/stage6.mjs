@@ -338,92 +338,35 @@ export async function checkStage6(browser, base) {
     await page.close();
     await ctx.close();
   }
-  // Stage 6f: the run-log is the second tab of the video frame. Tabs by keyboard, runlog.js only on
-  // the tab, auto start after about 4 s, forward only (1 s a step, 4 s hold), up to 3 rounds, then still.
-  // Stage 7b: one beat is 1800 ms (design system 5.4), a round 6 x 1.8 s + 4 s hold + 0.45 s fade; the
-  // reset goes straight to step 1 of the next round (the -1 frame lasts one frame).
+  // R3 (December release): the run-log tab left home; one teaser card leads to /werkzeuge/ein-kauf/ (where the
+  // run-log lives, tested in tests/werkzeug-ein-kauf.test.mjs and gate 4) and to the sample report.
   for (const w of [1440, 390]) {
-    const page = await browser.newPage({ viewport: { width: w, height: 900 } });
+    const page = await browser.newPage({ viewport: { width: w, height: w < 600 ? 844 : 900 } });
     const files = [];
     page.on('request', (r) => { if (/runlog\.js/.test(r.url())) files.push(r.url()); });
     await page.goto(base + '/', { waitUntil: 'load' });
-    await page.evaluate(() => document.querySelector('.vtabs').scrollIntoView({ block: 'start' }));
-    await page.waitForFunction(() => document.querySelector('.vtabs.is-ready'), null, { timeout: 8000 }).catch(() => {});
-    check(`run-log @${w}: runlog.js does not load before its tab`, files.length === 0, files.join(' '));
-    await page.focus('#vtab-1');
-    await page.keyboard.press('ArrowRight');
-    const k1 = await page.evaluate(() => ({ sel: document.querySelector('#vtab-2').getAttribute('aria-selected'), focus: document.activeElement.id, p1: document.querySelector('#vpanel-1').hidden, p2: document.querySelector('#vpanel-2').hidden, ti: document.querySelector('#vtab-1').tabIndex }));
-    await page.keyboard.press('Home');
-    const k2 = await page.evaluate(() => document.activeElement.id + ' ' + document.querySelector('#vtab-1').getAttribute('aria-selected'));
-    await page.keyboard.press('End');
-    check(`run-log @${w}: tabs by keyboard (arrows, Home, End), aria-selected, one panel, roving tabindex`, k1.sel === 'true' && k1.focus === 'vtab-2' && k1.p1 && !k1.p2 && k1.ti === -1 && k2 === 'vtab-1 true' && files.length === 1, JSON.stringify({ ...k1, k2, files: files.length }));
-    await page.mouse.move(2, 2);
-    await page.evaluate(() => document.activeElement.blur());
-    const seq = await page.evaluate(async () => {
-      const r = document.querySelector('.rl');
-      const out = [];
-      let last = null;
-      const t0 = performance.now();
-      while (performance.now() - t0 < (innerWidth > 1000 ? 52000 : 17000)) {
-        const st = r.dataset.step;
-        const lit = r.querySelectorAll('.rl__step.is-current').length;
-        if (st !== last) { out.push([Number(st), Math.round(performance.now() - t0), lit]); last = st; }
-        await new Promise((res) => setTimeout(res, 40));
-      }
-      return out;
+    await page.evaluate(() => document.querySelector('.rl-teaser').scrollIntoView({ block: 'center' }));
+    await page.waitForTimeout(1200);
+    const r = await page.evaluate(() => {
+      const t = document.querySelector('.rl-teaser');
+      const box = t.getBoundingClientRect();
+      return { links: [...t.querySelectorAll('a')].map((a) => a.getAttribute('href')), visible: box.height > 0 && getComputedStyle(t).visibility === 'visible', inside: box.right <= innerWidth + 1, tabs: !!document.querySelector('.vtabs, .rl') };
     });
-    const steps = seq.map((x) => x[0]);
-    const firstRun = seq.find((x) => x[0] === 0)?.[1] ?? null;
-    // The clock starts after the tab was opened by keys above, so «about 4 s» reads from 3.5 s here
-    // (Stage 7b: the conductor counts real time now, it no longer runs a little late).
-    // Forward only: each change is +1, or a reset after the last step (to -1 or straight to step 1).
-    const forward = seq.slice(1).every((x, i) => x[0] === seq[i][0] + 1 || ((x[0] === -1 || x[0] === 0) && seq[i][0] === 5));
-    const oneLit = seq.every((x) => x[0] < 0 || x[2] === 1);
-    check(`run-log @${w}: starts by itself after about 4 s, forward only, one step lit at a time`, firstRun != null && firstRun >= 3500 && firstRun <= 6500 && forward && oneLit, JSON.stringify({ firstRun, forward, oneLit, steps: steps.join(',') }));
-    if (w > 1000) {
-      // The rounds that reached the last step after the start (the first 5 is the end frame before it).
-      const rounds = steps.slice(1).filter((x) => x === 5).length;
-      const still = await page.evaluate(() => document.querySelector('.rl').dataset.step);
-      check('run-log: up to three rounds, then it stays on the end frame', rounds === 3 && still === '5', `${rounds} ${still}`);
-    }
-    // A visitor's own name and «Anmelden»: the story runs with it; the result is announced afterwards.
-    await page.fill('#rl-name', 'Mia');
-    await page.click('.rl__go');
-    await page.waitForTimeout(11600);
-    const own = await page.evaluate(() => ({ name: [...document.querySelectorAll('.rl__name')].every((n) => n.textContent === 'Mia'), status: document.querySelector('.rl__status').textContent, step: document.querySelector('.rl').dataset.step }));
-    check(`run-log @${w}: «Anmelden» runs it with the typed name, the result is announced (polite)`, own.name && own.status.length > 5 && own.step === '5', JSON.stringify(own));
-    // Zurück / Weiter by hand.
-    await page.click('.rl__back');
-    const back = await page.evaluate(() => document.querySelector('.rl').dataset.step);
-    await page.click('.rl__next');
-    const next = await page.evaluate(() => document.querySelector('.rl').dataset.step);
-    check(`run-log @${w}: Zurück and Weiter step by hand`, back === '4' && next === '5', `${back} ${next}`);
-    // Phones: one step visible in a fixed stage, no height change over the round.
-    if (w < 600) {
-      const h = await page.evaluate(async () => {
-        const st = document.querySelector('.rl__stage');
-        const hs = new Set();
-        document.querySelector('.rl__again').click();
-        for (let i = 0; i < 40; i += 1) { hs.add(Math.round(st.getBoundingClientRect().height)); await new Promise((r) => setTimeout(r, 200)); }
-        return { hs: [...hs], visible: [...document.querySelectorAll('.rl__step')].filter((x) => getComputedStyle(x).visibility === 'visible').length };
-      });
-      check('run-log @390: one step at a time in a fixed stage (no height change)', h.hs.length === 1 && h.visible === 1, JSON.stringify(h));
-    }
-    // The video pauses when the other tab opens (DE has the video).
+    check(`teaser @${w}: one card with the tool and the sample report instead of the run-log tab, inside the viewport`, r.visible && r.inside && !r.tabs && r.links.join() === '/werkzeuge/ein-kauf/,/musterbericht/technik-check/', JSON.stringify(r));
+    check(`teaser @${w}: runlog.js is not loaded on home`, files.length === 0, files.join(' '));
     await page.close();
   }
-  // Reduced motion: the run-log tab shows the end frame, nothing plays, Zurück / Weiter work.
+  // Reduced motion: the tool page shows its run-log at rest (nothing plays) and the switches work.
   {
     const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, reducedMotion: 'reduce' });
     const page = await ctx.newPage();
-    await page.goto(base + '/', { waitUntil: 'load' });
-    await page.evaluate(() => document.querySelector('.vtabs').scrollIntoView({ block: 'start' }));
-    await page.click('#vtab-2');
-    await page.waitForTimeout(5500);
-    const r = await page.evaluate(() => document.querySelector('.rl').dataset.step);
-    await page.click('.rl__back');
-    const b2 = await page.evaluate(() => document.querySelector('.rl').dataset.step);
-    check('run-log, reduced motion: the end frame, no autoplay, Zurück works', r === '5' && b2 === '4', `${r} ${b2}`);
+    await page.goto(base + '/werkzeuge/ein-kauf/', { waitUntil: 'load' });
+    await page.waitForFunction(() => document.documentElement.classList.contains('ek-ready'), null, { timeout: 8000 }).catch(() => {});
+    await page.waitForTimeout(1500);
+    const r = await page.evaluate(() => ({ running: document.querySelector('.rl').getAnimations({ subtree: true }).filter((a) => a.playState === 'running').length, pressed: document.querySelectorAll('.ek-switch[aria-pressed="true"]').length }));
+    await page.click('.ek-switch[data-step="zahlung"]');
+    const after = await page.evaluate(() => [...document.querySelectorAll('.ek-switch[aria-pressed="true"]')].map((b) => b.dataset.step).join());
+    check('run-log (tool page), reduced motion: nothing plays, one step off, a switch moves it', r.running === 0 && r.pressed === 1 && after === 'zahlung', JSON.stringify({ ...r, after }));
     await ctx.close();
   }
   // FAQ: Logik types (three dots), then the answer.
@@ -954,6 +897,10 @@ export async function checkStage6(browser, base) {
     const chatTop = () => page.evaluate(() => Math.round(document.querySelector('.faq__chat').getBoundingClientRect().top - document.querySelector('.faqbox').getBoundingClientRect().top));
     const visible = () => page.evaluate(() => [...document.querySelectorAll('.faq__list .faq__item')].filter((x) => !x.hidden && x.getBoundingClientRect().height).map((x) => x.id));
     const oneRow = await page.evaluate(() => new Set([...document.querySelectorAll('.faq__cat')].map((b) => Math.round(b.getBoundingClientRect().top))).size === 1);
+    // R3: home is shorter now; bring the category row into view first, so the click itself does not scroll
+    // (a scroll moves the sticky chat panel, which is not what this check is about).
+    await page.evaluate(() => document.querySelector('.faq__cat').scrollIntoView({ block: 'center' }));
+    await page.waitForTimeout(600);
     const t0 = await chatTop();
     await page.click('.faq__cat[data-cat="3"]'); await page.waitForTimeout(1200);
     const launch = await visible();
