@@ -1,8 +1,8 @@
 {
   "about": "Written by src/qa/protokoll.mjs; the build renders /qualitaet/ only from this file. Never edit by hand.",
   "measured": "2026-11-25",
-  "measuredAt": "2026-11-24T23:44:52.760Z",
-  "commit": "fce1830",
+  "measuredAt": "2026-11-25T00:48:23.643Z",
+  "commit": "cf40dde",
   "dirty": false,
   "tools": {
     "lighthouse": "13.5.0",
@@ -13,8 +13,8 @@
   },
   "lighthouseRuns": 3,
   "tests": {
-    "total": 315,
-    "pass": 315,
+    "total": 322,
+    "pass": 322,
     "fail": 0
   },
   "gates": {
@@ -25,9 +25,9 @@
   "summary": {
     "pages": 20,
     "perfLimit": 95,
-    "perfMin": 98,
+    "perfMin": 99,
     "perfMax": 100,
-    "clsMax": 0,
+    "clsMax": 0.0004,
     "keyboardPassed": 60,
     "keyboardTotal": 60,
     "axeSerious": 0,
@@ -40,7 +40,7 @@
   "pages": [
     {
       "page": "/",
-      "cls": 0,
+      "cls": 0.0004,
       "cookies": 0,
       "external": 0,
       "externalUrls": [],
@@ -52,7 +52,7 @@
           "pass": true
         },
         {
-          "name": "96 tab stops with a visible focus ring",
+          "name": "97 tab stops with a visible focus ring",
           "pass": true,
           "details": ""
         },
@@ -61,7 +61,7 @@
           "pass": true
         }
       ],
-      "perf": 98,
+      "perf": 99,
       "a11y": 100,
       "best": 100,
       "seo": 100,
@@ -83,7 +83,7 @@
           "pass": true
         },
         {
-          "name": "92 tab stops with a visible focus ring",
+          "name": "93 tab stops with a visible focus ring",
           "pass": true,
           "details": ""
         },
@@ -189,7 +189,7 @@
       "a11y": 100,
       "best": 100,
       "seo": 100,
-      "lcp": 1.81,
+      "lcp": 1.8,
       "tbt": 0,
       "clsLighthouse": 0
     },
@@ -207,7 +207,7 @@
           "pass": true
         },
         {
-          "name": "44 tab stops with a visible focus ring",
+          "name": "46 tab stops with a visible focus ring",
           "pass": true,
           "details": ""
         },
@@ -238,7 +238,7 @@
           "pass": true
         },
         {
-          "name": "41 tab stops with a visible focus ring",
+          "name": "43 tab stops with a visible focus ring",
           "pass": true,
           "details": ""
         },
@@ -362,7 +362,7 @@
           "pass": true
         },
         {
-          "name": "26 tab stops with a visible focus ring",
+          "name": "27 tab stops with a visible focus ring",
           "pass": true,
           "details": ""
         },
@@ -393,7 +393,7 @@
           "pass": true
         },
         {
-          "name": "19 tab stops with a visible focus ring",
+          "name": "21 tab stops with a visible focus ring",
           "pass": true,
           "details": ""
         },
@@ -424,7 +424,7 @@
           "pass": true
         },
         {
-          "name": "41 tab stops with a visible focus ring",
+          "name": "42 tab stops with a visible focus ring",
           "pass": true,
           "details": ""
         },
@@ -486,7 +486,7 @@
           "pass": true
         },
         {
-          "name": "55 tab stops with a visible focus ring",
+          "name": "56 tab stops with a visible focus ring",
           "pass": true,
           "details": ""
         },
@@ -517,7 +517,7 @@
           "pass": true
         },
         {
-          "name": "43 tab stops with a visible focus ring",
+          "name": "44 tab stops with a visible focus ring",
           "pass": true,
           "details": ""
         },
@@ -548,7 +548,7 @@
           "pass": true
         },
         {
-          "name": "40 tab stops with a visible focus ring",
+          "name": "41 tab stops with a visible focus ring",
           "pass": true,
           "details": ""
         },
@@ -579,7 +579,7 @@
           "pass": true
         },
         {
-          "name": "42 tab stops with a visible focus ring",
+          "name": "43 tab stops with a visible focus ring",
           "pass": true,
           "details": ""
         },
@@ -641,7 +641,7 @@
           "pass": true
         },
         {
-          "name": "41 tab stops with a visible focus ring",
+          "name": "42 tab stops with a visible focus ring",
           "pass": true,
           "details": ""
         },
