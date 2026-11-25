@@ -1,8 +1,8 @@
 {
   "about": "Written by src/qa/protokoll.mjs; the build renders /qualitaet/ only from this file. Never edit by hand.",
-  "measured": "2026-11-24",
-  "measuredAt": "2026-11-24T20:53:13.329Z",
-  "commit": "a866c40",
+  "measured": "2026-11-25",
+  "measuredAt": "2026-11-24T23:44:52.760Z",
+  "commit": "fce1830",
   "dirty": false,
   "tools": {
     "lighthouse": "13.5.0",
@@ -13,8 +13,8 @@
   },
   "lighthouseRuns": 3,
   "tests": {
-    "total": 305,
-    "pass": 305,
+    "total": 315,
+    "pass": 315,
     "fail": 0
   },
   "gates": {
@@ -25,7 +25,7 @@
   "summary": {
     "pages": 20,
     "perfLimit": 95,
-    "perfMin": 99,
+    "perfMin": 98,
     "perfMax": 100,
     "clsMax": 0,
     "keyboardPassed": 60,
@@ -61,7 +61,7 @@
           "pass": true
         }
       ],
-      "perf": 99,
+      "perf": 98,
       "a11y": 100,
       "best": 100,
       "seo": 100,
@@ -189,7 +189,7 @@
       "a11y": 100,
       "best": 100,
       "seo": 100,
-      "lcp": 1.8,
+      "lcp": 1.81,
       "tbt": 0,
       "clsLighthouse": 0
     },
@@ -610,7 +610,7 @@
           "pass": true
         },
         {
-          "name": "54 tab stops with a visible focus ring",
+          "name": "55 tab stops with a visible focus ring",
           "pass": true,
           "details": ""
         },
