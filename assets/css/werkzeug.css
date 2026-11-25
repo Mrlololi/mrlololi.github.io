@@ -1,5 +1,7 @@
 /* Werkzeug «Ein Kauf» (18.11.2026): /werkzeuge/ein-kauf/ only (inlined through page.css). Tokens only.
-   Without JS (no .ek-ready): the intact run-log and the six panels one under the other, no switches.
+   Without JS (no .js / .ek-ready): the intact run-log and the six panels one under the other, no switches.
+   R4 fix (25.11.2026): the switch row takes its place from the first paint (.js, set in the head), so the run-log never
+   moves down when the script is ready (a cold load shifted it by 0.06 at 390 px).
    With JS: one panel visible at a time; all panels share one grid cell (height = the tallest, CLS 0). */
 .ek-head { padding-block: var(--space-8) var(--space-9); }
 .ek-wrap { display: grid; gap: var(--space-4); }
@@ -11,7 +13,7 @@
 .ek-log { display: grid; gap: var(--space-3); min-width: 0; }
 
 .ek-switches { display: none; }
-.ek-ready .ek-switches { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
+.js .ek-switches { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
 .ek-switch { width: 100%; min-height: var(--target); padding: var(--space-2); gap: var(--space-2); justify-content: flex-start; text-align: left; font-size: var(--step--1); line-height: 1.2; }
 .ek-switch__nr { display: inline-grid; place-items: center; flex: none; width: 1.5rem; height: 1.5rem; border-radius: var(--radius-pill); background: var(--pist-tint); font-weight: 700; }
 .ek-switch[aria-pressed="true"] { background: var(--ink); color: var(--card); border-color: var(--ink); }
@@ -79,5 +81,5 @@
   .ek-grid { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); }
 }
 @media (max-width: 599.98px) {
-  .ek-ready .ek-switches { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .js .ek-switches { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }

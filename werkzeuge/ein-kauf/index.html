@@ -1707,7 +1707,7 @@ html:not(.js) .faq__cats { display: none; }
 .ek-grid { display: grid; gap: var(--space-6); align-items: start; }
 .ek-log { display: grid; gap: var(--space-3); min-width: 0; }
 .ek-switches { display: none; }
-.ek-ready .ek-switches { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
+.js .ek-switches { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
 .ek-switch { width: 100%; min-height: var(--target); padding: var(--space-2); gap: var(--space-2); justify-content: flex-start; text-align: left; font-size: var(--step--1); line-height: 1.2; }
 .ek-switch__nr { display: inline-grid; place-items: center; flex: none; width: 1.5rem; height: 1.5rem; border-radius: var(--radius-pill); background: var(--pist-tint); font-weight: 700; }
 .ek-switch[aria-pressed="true"] { background: var(--ink); color: var(--card); border-color: var(--ink); }
@@ -1763,7 +1763,7 @@ html:not([data-motion="paused"]) .rl--kauf .rl__log.is-off .i[data-icon="cross"]
 .ek-grid { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); }
 }
 @media (max-width: 599.98px) {
-.ek-ready .ek-switches { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.js .ek-switches { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }</style>
 <script>document.documentElement.classList.add('js')</script>
 <script type="module">requestAnimationFrame(()=>requestAnimationFrame(()=>import('/assets/js/main.js')))</script>
