@@ -23,6 +23,17 @@ test('1. home: one teaser card (tool and report) instead of the run-log; no Lang
   assert.ok(by['ki-antwortentwuerfe/index.html'].includes('id="ki-demo"'), 'the KI demo stays');
 });
 
+test('1. problem cards: the buyer\'s words as headline, the former headline as subline (DE, EN)', () => {
+  const titles = [...home.matchAll(/<h3 class="pc__title">([^<]+)<\/h3>\n<p class="pc__sub">([^<]+)<\/p>/g)].map((m) => [m[1], m[2]]);
+  assert.deepEqual(titles, [
+    ['Angemeldet, aber nie in der Liste angekommen.', 'Anmeldungen verschwinden zwischen Formular und CRM.'],
+    ['Die Bestätigungsmail liegt im Spam.', 'Launch-Mails landen im Spam.'],
+    ['Rate nicht bezahlt, Kurs trotzdem offen.', 'Die Ratenzahlung ist fehlgeschlagen, der Zugang bleibt trotzdem offen.'],
+  ]);
+  assert.ok(!/<h3 class="pc__title">[^<]*[«»„“"]/.test(home), 'no quote marks');
+  assert.equal((by['en/index.html'].match(/<p class="pc__sub">/g) || []).length, 3);
+});
+
 test('2. reference «Online-Kursanbieterin, 2026»: no video link, no tool names (home and service pages)', () => {
   const card = home.match(/<li class="ref card ref--course">[\s\S]*?<\/li>/)[0];
   assert.ok(card.includes('<h3>Launch-Technik für eine Online-Kursanbieterin, 2026</h3>\n<p>Anmeldung, E-Mail-Abläufe, Zahlung und Kurszugang.</p>'));

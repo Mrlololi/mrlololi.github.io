@@ -143,9 +143,10 @@ export default {
       nodes: ['Form', 'ActiveCampaign', 'Zapier', 'Stripe', 'Course'],
     },
     items: [
-      { problem: "Sign-ups get lost between the form and the CRM.", fix: "I build flows that check every sign-up and resend it automatically on errors, even when many come in at once.", pkg: "launch" },
-      { problem: "Launch emails land in spam.", fix: "Set up SPF, DKIM and DMARC correctly and test delivery.", pkg: "quick" },
-      { problem: "The instalment payment failed, but access is still open.", fix: "Automatic reminders, suspension and reactivation, in sync with Quaderno, Stripe and your members area.", pkg: "launch" },
+      // R3: EN twins of the buyer-words headlines (Iva 25.11.2026: by meaning).
+      { title: "Signed up, but never made it onto the list.", problem: "Sign-ups get lost between the form and the CRM.", fix: "I build flows that check every sign-up and resend it automatically on errors, even when many come in at once.", pkg: "launch" },
+      { title: "The confirmation email is in spam.", problem: "Launch emails land in spam.", fix: "Set up SPF, DKIM and DMARC correctly and test delivery.", pkg: "quick" },
+      { title: "Instalment not paid, course still open.", problem: "The instalment payment failed, but access is still open.", fix: "Automatic reminders, suspension and reactivation, in sync with Quaderno, Stripe and your members area.", pkg: "launch" },
     ],
   },
 

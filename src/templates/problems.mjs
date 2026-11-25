@@ -71,7 +71,8 @@ export function problems(t) {
       const kind = KINDS[i];
       return `<li class="pc card">
 <div class="pc__problem"><span class="label label--pink">${esc(t.ui.problem)}</span>
-<h3 class="pc__title">${esc(item.problem)}</h3></div>
+<h3 class="pc__title">${esc(item.title ?? item.problem)}</h3>${item.title ? `
+<p class="pc__sub">${esc(item.problem)}</p>` : ''}</div>
 <figure class="fixdemo fixdemo--${kind} demo" data-demo="fix-${kind}">
 <div class="fixdemo__stage">
 <div class="fixdemo__art" aria-hidden="true">

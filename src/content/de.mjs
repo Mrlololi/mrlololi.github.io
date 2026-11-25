@@ -147,9 +147,10 @@ export default {
       nodes: ['Formular', 'ActiveCampaign', 'Zapier', 'Stripe', 'Kurs'],
     },
     items: [
-      { problem: "Anmeldungen verschwinden zwischen Formular und CRM.", fix: "Ich baue Abläufe, die jede Anmeldung prüfen und bei Fehlern automatisch neu senden, auch wenn viele gleichzeitig kommen.", pkg: "launch" },
-      { problem: "Launch-Mails landen im Spam.", fix: "SPF, DKIM und DMARC richtig einrichten und die Zustellung testen.", pkg: "quick" },
-      { problem: "Die Ratenzahlung ist fehlgeschlagen, der Zugang bleibt trotzdem offen.", fix: "Automatische Erinnerungen, Sperre und Freischaltung, abgestimmt mit Quaderno, Stripe und Ihrem Mitgliederbereich.", pkg: "launch" },
+      // R3 (Iva 25.11.2026): the headline in the buyer's words, the former headline as the subline.
+      { title: "Angemeldet, aber nie in der Liste angekommen.", problem: "Anmeldungen verschwinden zwischen Formular und CRM.", fix: "Ich baue Abläufe, die jede Anmeldung prüfen und bei Fehlern automatisch neu senden, auch wenn viele gleichzeitig kommen.", pkg: "launch" },
+      { title: "Die Bestätigungsmail liegt im Spam.", problem: "Launch-Mails landen im Spam.", fix: "SPF, DKIM und DMARC richtig einrichten und die Zustellung testen.", pkg: "quick" },
+      { title: "Rate nicht bezahlt, Kurs trotzdem offen.", problem: "Die Ratenzahlung ist fehlgeschlagen, der Zugang bleibt trotzdem offen.", fix: "Automatische Erinnerungen, Sperre und Freischaltung, abgestimmt mit Quaderno, Stripe und Ihrem Mitgliederbereich.", pkg: "launch" },
     ],
   },
 
