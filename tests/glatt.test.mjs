@@ -49,7 +49,7 @@ test('the fixes of 18.11.2026 stay in the code', () => {
   assert.match(kit, /duration: 1800, easing: 'ease-in-out'/, 'the wrench turns slowly enough');
   assert.match(read('assets/js/kit/motion.js'), /\[data-poke\]'\)\) return;/, 'a click on a mascot never pauses the picture');
   assert.match(read('assets/js/kit/motion.js'), /if \(d\.phase !== 'end'\) \{ cycle\(d\); return; \}/, 'a finished frame always fades before a new round');
-  assert.match(read('assets/css/main.css'), /\.demo\.is-fading, \[data-demo\]\.is-fading \{ filter: grayscale\(1\); opacity: 0; \}/);
+  assert.match(read('assets/css/main.css'), /\.hero__flow\.is-fading \.hf-wrap, \.fixdemo\.is-fading \.fixdemo__art[\s\S]*?filter: grayscale\(1\); opacity: 0;/);
   assert.match(read('assets/js/notfound.js'), /duration: 3000/);
   assert.match(read('assets/js/mascots.js'), /duration: 0\.11, yoyo: true, repeat: 1, ease: 'sine\.inOut'/);
 });

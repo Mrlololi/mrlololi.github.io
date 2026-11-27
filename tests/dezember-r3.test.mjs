@@ -35,7 +35,7 @@ test('1. problem cards: the buyer\'s words as headline, the former headline as s
 });
 
 test('2. reference Claudia Witticke (approved 25.11.2026): named card, no video link (home and service pages)', () => {
-  const card = home.match(/<li class="ref card ref--course ref--claudia">[\s\S]*?<\/li>\n<li class="ref card ref--site">/)[0];
+  const card = home.match(/<li class="ref card ref--course ref--claudia[^"]*">[\s\S]*?<\/li>\n<li class="ref card ref--site/)[0];
   assert.ok(card.includes('<h3>Launch-Technik für die Online-Nähkurse von Claudia Witticke</h3>'));
   assert.ok(!/Ablauf im Video ansehen|href="#video"/.test(card));
   assert.ok(by['launch-technik/index.html'].includes('svc-case--claudia'));

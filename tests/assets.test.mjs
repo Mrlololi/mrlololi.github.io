@@ -37,6 +37,6 @@ test('every <img> has width, height and alt', () => {
     }
     // Only decorative photos (their adjacent text names the person/item) have an empty alt.
     const empty = html.match(/<img\b[^>]*\salt=""[^>]*>/g) || [];
-    assert.ok(empty.every((img) => /avatar-44\.jpg|claudia-photo-56\.jpg|\/assets\/video\/anmeldung-|project-\w+-400\.jpg/.test(img)), empty.join(' '));
+    assert.ok(empty.every((img) => /avatar-44\.jpg|claudia-photo-56\.jpg|alexandra-photo-56\.jpg|\/assets\/video\/anmeldung-|project-\w+-400\.jpg/.test(img)), empty.join(' '));
   }
 });
