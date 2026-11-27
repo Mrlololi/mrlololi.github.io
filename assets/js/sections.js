@@ -34,11 +34,19 @@ function once(el, share, fn) {
   io.observe(el);
 }
 
-/* ---------- So arbeiten wir zusammen: line, numbers, pictograms (a looping demo) ---------- */
 function processSteps() {
   const wrap = document.querySelector('.steps-wrap');
   if (!wrap) return;
-  demo(wrap, { tap: '.steps', duration: 3200, rest: 2500 });
+  const steps = [...wrap.querySelectorAll('.step')];
+  let ts = [];
+  const clr = () => { ts.forEach(clearTimeout); ts = []; steps.forEach((s) => s.classList.remove('is-active')); };
+  const on = (k) => steps.forEach((s, i) => s.classList.toggle('is-active', i === k));
+  steps.forEach((s, i) => s.addEventListener('pointerenter', () => on(i)));
+  wrap.addEventListener('pointerleave', () => on(-1));
+  demo(wrap, {
+    tap: '.steps', duration: 3200, rest: 2500, reset: clr, finish: clr,
+    play: () => { [50, 850, 1700, 2550].forEach((ms, i) => ts.push(setTimeout(() => on(i), ms))); ts.push(setTimeout(clr, 3200)); return 3200; },
+  });
 }
 
 /* ---------- Über mich: the timeline line draws in 2 s; each dot comes on as it passes ---------- */
@@ -61,48 +69,51 @@ function pathLine() {
   });
 }
 
-/* ---------- Referenzen: the long screenshot pans slowly inside the browser frame ---------- */
-// 1.5 s at the top, 12 s down, 2 s at the bottom; then the round's rest and back to the top. It holds
-// while the pointer or the focus is on the frame. Reduced motion: the frame scrolls by hand (CSS).
+/* ---------- Referenzen: long screenshots (Claudia & Alexandra) pan slowly inside their browser frames ---------- */
+// 1.5 s at the top, 12 s down, 2 s at the bottom; then rest and reset. Both share the conductor so only
+// one pans at a time (maxRun <= 1) and both hold on pointer hover or focus.
 function browserPan() {
-  const frame = document.querySelector('.ref--site .browser');
-  const view = frame?.querySelector('.browser__view');
-  const shot = frame?.querySelector('.case__shot');
-  if (!view || !shot || !shot.animate) return;
-  // Reduced motion or motion paused: a labelled box that scrolls by hand (keyboard too).
-  if (calm()) {
-    view.tabIndex = 0;
-    view.setAttribute('role', 'region');
-    view.setAttribute('aria-label', shot.querySelector('img')?.alt || frame.closest('.ref')?.querySelector('h3')?.textContent || '');
-    return;
-  }
-  let anim = null;
-  let inside = false;
-  const pan = () => -Math.max(0, shot.getBoundingClientRect().height - view.clientHeight);
-  const hold = (on) => { inside = on; if (anim) { if (on) anim.pause(); else if (frame.dataset.play === 'run') anim.play(); } };
-  frame.addEventListener('pointerenter', () => hold(true));
-  frame.addEventListener('pointerleave', () => hold(false));
-  frame.addEventListener('focusin', () => hold(true));
-  frame.addEventListener('focusout', () => hold(false));
-  const T = 15500;
-  demo(frame, {
-    key: 'refshot',
-    duration: T,
-    rest: 2500,
-    reset: () => { anim?.cancel(); anim = null; },
-    finish: () => { anim?.finish(); },
-    play: () => {
-      const y = pan();
-      anim = shot.animate([
-        { transform: 'translateY(0)' },
-        { transform: 'translateY(0)', offset: 1.5 / 15.5 },
-        { transform: `translateY(${y}px)`, offset: 13.5 / 15.5 },
-        { transform: `translateY(${y}px)` },
-      ], { duration: T, fill: 'forwards', easing: 'linear' });
-      if (inside) anim.pause();
-      return T;
-    },
-    held: () => inside,
+  const frames = [...document.querySelectorAll('.ref--scroll .browser')];
+  frames.forEach((frame, idx) => {
+    const view = frame.querySelector('.browser__view');
+    const shot = frame.querySelector('.case__shot');
+    if (!view || !shot || !shot.animate) return;
+    if (calm()) {
+      view.tabIndex = 0;
+      view.setAttribute('role', 'region');
+      view.setAttribute('aria-label', shot.querySelector('img')?.alt || frame.closest('.ref')?.querySelector('h3')?.textContent || '');
+      return;
+    }
+    let anim = null;
+    let inside = false;
+    const pan = () => -Math.max(0, shot.getBoundingClientRect().height - view.clientHeight);
+    const hold = (on) => { inside = on; if (anim) { if (on) anim.pause(); else if (frame.dataset.play === 'run') anim.play(); } };
+    frame.addEventListener('pointerenter', () => hold(true));
+    frame.addEventListener('pointerleave', () => hold(false));
+    frame.addEventListener('focusin', () => hold(true));
+    frame.addEventListener('focusout', () => hold(false));
+    const T = 15500;
+    demo(frame, {
+      key: idx ? `refshot-${idx}` : 'refshot',
+      duration: T,
+      rest: 2500,
+      rotate: true,
+      idle: 'end',
+      reset: () => { anim?.cancel(); anim = null; },
+      finish: () => { anim?.finish(); },
+      play: () => {
+        const y = pan();
+        anim = shot.animate([
+          { transform: 'translateY(0)' },
+          { transform: 'translateY(0)', offset: 1.5 / 15.5 },
+          { transform: `translateY(${y}px)`, offset: 13.5 / 15.5 },
+          { transform: `translateY(${y}px)` },
+        ], { duration: T, fill: 'forwards', easing: 'linear' });
+        if (inside) anim.pause();
+        return T;
+      },
+      held: () => inside,
+    });
   });
 }
 

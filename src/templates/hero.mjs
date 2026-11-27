@@ -1,4 +1,4 @@
-import { claudiaQuote } from './references.mjs';
+import { claudiaQuote, clientQuote } from './references.mjs';
 import { esc, headline } from './util.mjs';
 import { heroMascots, heroTrio } from './mascots.mjs';
 
@@ -48,7 +48,7 @@ export function hero(t, config) {
 </div>
 <p class="hero__proof">${esc(h.trust)}</p>
 ${heroTrio()}${h.report && config?.check_report_url ? `
-<p class="hero__report"><a class="text-link" href="${esc(config.check_report_url)}">${esc(h.report)}</a></p>` : ''}${t.refs?.case2?.heroQuote ? `\n${claudiaQuote(t, t.refs.case2, t.refs.case2.heroQuote, 'hero__quote')}` : ''}
+<p class="hero__report"><a class="text-link" href="${esc(config.check_report_url)}">${esc(h.report)}</a></p>` : ''}
 </div>
 <div class="hero__visual">
 <figure class="hero__flow demo" data-demo="hero" aria-label="${esc(h.flow.label)}">
@@ -64,7 +64,11 @@ ${h.flow.nodes.map((n, i) => {
 <ul class="hf__lines" role="list">${h.flow.lines.map((l, i) => `<li id="hf-line-${i + 1}">${esc(l)}</li>`).join('')}</ul>
 </figure>
 </div>
-</div>
+</div>${t.refs?.case2?.heroQuote || t.refs?.case1?.quote ? `
+<div class="wrap hero__quotes">
+${t.refs?.case2?.heroQuote ? claudiaQuote(t, t.refs.case2, t.refs.case2.heroQuote, 'hero__quote') : ''}
+${t.refs?.case1?.quote ? clientQuote(t, 'alexandra-photo', t.refs.case1.quote, 'hero__quote hero__quote--alex') : ''}
+</div>` : ''}
 </section>`;
 }
 

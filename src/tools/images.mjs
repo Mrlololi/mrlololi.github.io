@@ -46,6 +46,9 @@ await variants(src('iva-hallstatt-see.jpg'), 'avatar', [[44, 44], [88, 88], [128
 await variants(src('case-alexandrafry.png'), 'case-alexandrafry', [[640, 400], [1280, 800]]);
 // Stage 4: the long capture that scrolls inside the browser frame (capture-case.mjs --long).
 await variants(src('case-alexandrafry-long.png'), 'case-alexandrafry-long', [[640, 1067], [1280, 2133]]);
+await variants(src('case-claudia-long.png'), 'case-claudia-long', [[640, 1067], [1280, 2133]]);
+await variants(src('alexandra-portrait.jpg'), 'alexandra-photo', [[56, 56], [112, 112]], { crop: { left: 390, top: 340, width: 470, height: 470 } });
+await variants(src('project-ki-ui.png'), 'project-ki', [[400, 250], [800, 500]]);
 // Referenz Claudia (25.11.2026, her selection): first screens 1440x900 (cropped in src/images), her logo, her photo «Holzwand».
 for (const n of ['claudia-startseite', 'claudia-overlock', 'claudia-advent']) await variants(src(`${n}.png`), n, [[640, 400], [1280, 800]]);
 await variants(src('claudia-holzwand.webp'), 'claudia-photo', [[56, 56], [112, 112]], { crop: { left: 220, top: 40, width: 460, height: 460 } });

@@ -261,7 +261,7 @@ html:not(.js) .site-nav__toggle { display: none; }
 }
 
 /* ---------- Hero: soft pastel light behind, the automation flow on the right ---------- */
-.hero { position: relative; isolation: isolate; overflow: hidden; padding-block: clamp(2.5rem, 6vw, 5rem) var(--section); }
+.hero { position: relative; isolation: isolate; overflow: hidden; padding-block: clamp(1.5rem, 3.5vw, 2.75rem) var(--section); }
 .hero__grid { display: grid; gap: var(--space-8); align-items: center; }
 .hero__text { display: grid; gap: var(--space-5); max-width: 42rem; }
 .hero h1 { max-width: 15ch; }
@@ -1324,15 +1324,15 @@ html:not(.js) .calc__fields { display: none; }
 @keyframes pi-drop { from { opacity: 0; transform: translateY(-9px); } }
 @keyframes hand-over { from { transform: translateX(-3.6px) rotate(-20deg); opacity: 0; } }
 
-/* References: course and shop on the left, alexandrafry.ch with its long screenshot on the right; the
-   quotes in the fanned stack below. */
+/* References: Claudia and Alexandra side-by-side at equal height, shop spanning full width below;
+   both site cards scroll smoothly inside their browser frames. */
 @media (min-width: 860px) {
-  .refs__list { display: grid; columns: auto; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-areas: "course site" "shop site"; gap: var(--space-5); align-items: start; }
+  .refs__list { display: grid; columns: auto; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-areas: "course site" "shop shop"; gap: var(--space-5); align-items: stretch; }
   .ref { margin: 0; }
   .ref--course { grid-area: course; } .ref--site { grid-area: site; } .ref--shop { grid-area: shop; }
 }
-.ref--site .browser__view { aspect-ratio: 16 / 10; overflow: hidden; }
-.ref--site .browser__view img { width: 100%; height: auto; }
+.ref--scroll .browser__view { aspect-ratio: 16 / 10; overflow: hidden; }
+.ref--scroll .browser__view img { width: 100%; height: auto; }
 .qcards { display: grid; gap: var(--space-5); margin-top: var(--space-7); }
 .qcard { display: grid; gap: var(--space-2); align-content: start; }
 .qcard .quote { margin: 0; height: 100%; padding: var(--space-5); border-radius: 22px; border: 1px solid var(--line); border-left: 1px solid var(--line); }
@@ -1645,11 +1645,10 @@ html:not(.js) .rl__ctl button, html:not(.js) .rl__go { display: none; }
 .hero__flow, .fixdemo, .steps-wrap { position: relative; }
 .hero__flow > .loopctl--icon, .fixdemo > .loopctl--icon, .steps-wrap > .loopctl--icon { position: absolute; top: var(--space-2); right: var(--space-2); z-index: 2; margin: 0; }
 .tariff__ctl .loopctl--icon, .pcs__ctl .loopctl--icon, .more__head .loopctl--icon, .nf__ctl .loopctl--icon { margin: 0; }
-/* The soft reset after a round: a short fade to grey, then the start frame. */
-/* Rule 7 (18.11.2026): a picture fades out completely before the conductor switches its frame (soft reset,
-   a loop silenced by a claim), so the switch is never seen; it comes back the same way. */
-.demo, [data-demo] { transition: filter 0.4s ease, opacity 0.4s ease; }
-.demo.is-fading, [data-demo].is-fading { filter: grayscale(1); opacity: 0; }
+/* Soft reset after a round (27.11.2026): fade ONLY the moving illustration inside, NEVER headings,
+   prices, card text or outer containers (fixes disappearing-block bug while keeping Rule 7 glatt). */
+:is(.hero__flow .hf-wrap, .fixdemo .fixdemo__art, .pkgs-wrap .viz, .pkgs-wrap .days, .more .viz, .steps-wrap .steps__line, .steps-wrap .step__n, .steps-wrap .step__icon, .nf__scene .nf__line, .browser .case__shot) { transition: filter 0.4s ease, opacity 0.4s ease; }
+.hero__flow.is-fading .hf-wrap, .fixdemo.is-fading .fixdemo__art, .pkgs-wrap.is-fading :is(.viz, .days), .more.is-fading .viz, .steps-wrap.is-fading :is(.steps__line, .step__n, .step__icon), .nf__scene.is-fading .nf__line, .browser.is-fading .case__shot { filter: grayscale(1); opacity: 0; }
 .site-footer__motion { margin-top: var(--space-3); }
 .motion-toggle[hidden] { display: none; }
 
@@ -1701,10 +1700,9 @@ html:not(.js) .rl__ctl button, html:not(.js) .rl__go { display: none; }
   .qcard { transform: none; }
 }
 .qcard--lav .quote { background: #EEEAF8; }
-/* The screenshot frame: under reduced motion (or motion paused) it scrolls by hand. */
-@media (prefers-reduced-motion: reduce) { .ref--site .browser__view { overflow-y: auto; } }
-html[data-motion="paused"] .ref--site .browser__view { overflow-y: auto; }
-.browser.is-fading { filter: grayscale(1); opacity: 0; transition: filter 0.4s ease, opacity 0.4s ease; } /* rule 7, like .demo */
+/* The screenshot frames: under reduced motion (or motion paused) they scroll by hand. */
+@media (prefers-reduced-motion: reduce) { .ref--scroll .browser__view { overflow-y: auto; } }
+html[data-motion="paused"] .ref--scroll .browser__view { overflow-y: auto; }
 
 /* Stage 6f: EN line for German-speaking customers. */
 .services__audience { max-width: var(--measure); font-weight: 700; }
@@ -1858,3 +1856,84 @@ html:not(.js) .faq__cats { display: none; }
 .faq__item:has(> summary:focus-visible) { outline: 3px solid var(--ink); outline-offset: -1px; }
 /* The contact bubble types over its own sentence (the rest transparent): its height never changes. */
 .contact__ghost { color: transparent; }
+
+/* ---------- Editorial & Motion Upgrade (27.11.2026): full-bleed texture, ribbons, dual hero quotes,
+   symmetric references with tool marquees, FAQ hierarchy, floating pill header & sticky CTA ---------- */
+
+/* 1. Full-bleed subtle dot texture & sweeping organic ribbons (pure CSS tokens, zero DOM cost) */
+.bg-hero { background-image: var(--ribbon-hero), var(--sec-hero); background-size: cover, auto; background-position: center; background-repeat: no-repeat; }
+.bg-pink, .bg-blue, .bg-pist, .bg-lav, .bg-peach { background-image: var(--tex-dots); background-size: 24px 24px; }
+#process.bg-blue, #projects.bg-lav { background-image: var(--ribbon-band), var(--tex-dots); background-size: 100% auto, 24px 24px; background-position: center bottom, top left; background-repeat: no-repeat, repeat; }
+
+/* 2. Claudia-inspired subtle pastel highlighter sweep under italic accent headings */
+h1 .accent, h2 .accent { background-image: linear-gradient(transparent 74%, var(--hl-mark) 74%, var(--hl-mark) 94%, transparent 94%); padding-inline: 0.06em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+
+/* 3. Wispr Flow-inspired floating rounded-pill header on desktop scroll (constant padding-inline -> exact 0 CLS) */
+@media (min-width: 800px) {
+  .site-header__in { padding-inline: var(--space-5); border: 1px solid transparent; border-radius: var(--radius-pill); transition: background-color 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease; }
+  .site-header[data-variant="light"].is-scrolled { background: transparent; border-bottom-color: transparent; -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .site-header[data-variant="light"].is-scrolled .site-header__in { background: var(--header-pill); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border-color: var(--line); box-shadow: var(--shadow-hover); }
+}
+
+/* 4. Dual balanced client quotes row at bottom of Hero (Claudia + Alexandra) */
+.hero__quotes { display: grid; gap: var(--space-4); margin-top: var(--space-6); }
+@media (min-width: 800px) {
+  .hero__quotes { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: stretch; }
+}
+.hero__quotes .hero__quote { margin-top: 0; max-width: none; height: 100%; display: flex; flex-direction: column; justify-content: space-between; box-shadow: var(--shadow-soft); border-top: 1px solid var(--line); border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.hero__quote--alex { border-left-color: var(--pink-ink); }
+
+/* 5. Symmetric reference cards (Claudia & Alexandra) + calm tool marquee inside card */
+.ref--scroll { display: flex; flex-direction: column; }
+.ref--scroll > p:first-of-type { flex: 1; }
+.ref__head { min-height: 3rem; }
+.ref__marquee { width: 100%; overflow: hidden; contain: inline-size; }
+.ref__marquee-track { display: flex; width: max-content; }
+.ref__tools { flex-wrap: nowrap; padding-inline-end: var(--space-2); }
+.ref__tools li { white-space: nowrap; }
+.ref__tools--copy { display: none; }
+@media (prefers-reduced-motion: no-preference) {
+  html.js:not([data-motion="paused"]) .ref__marquee { -webkit-mask-image: linear-gradient(90deg, transparent, var(--ink) 8%, var(--ink) 92%, transparent); mask-image: linear-gradient(90deg, transparent, var(--ink) 8%, var(--ink) 92%, transparent); }
+  html.js:not([data-motion="paused"]) .ref__tools--copy { display: flex; }
+  html.js:not([data-motion="paused"]) .ref__marquee-track { animation: marquee var(--ref-marquee-s, 50s) linear infinite; }
+  html.js:not([data-motion="paused"]) .ref__marquee:is(:hover, :focus-within) .ref__marquee-track { animation-play-state: paused; }
+}
+html[data-motion="paused"] .ref__marquee-track, html:not(.js) .ref__marquee-track { width: auto; }
+html[data-motion="paused"] .ref__tools, html:not(.js) .ref__tools { flex-wrap: wrap; }
+@media (prefers-reduced-motion: reduce) {
+  .ref__marquee-track { width: auto; }
+  .ref__tools { flex-wrap: wrap; }
+}
+
+/* 6. Centered pricing small-print block aligned with the 30-day promise strip */
+.tariff__foot { width: 100%; max-width: 51.25rem; margin-inline: auto; padding: var(--space-4) var(--space-5); border-radius: var(--radius-card); background: var(--paper); border: 1px solid var(--line); display: grid; gap: var(--space-2); justify-items: center; text-align: center; }
+.tariff__foot .notdo-line, .tariff__foot .tariff__tax, .tariff__foot .tariff__b2b { max-width: 46rem; margin: 0; }
+
+/* 7. Elevated interactive process step cards (Wispr Flow-inspired active highlight) */
+@media (min-width: 768px) {
+  .steps-wrap .step { padding: var(--space-4); border-radius: var(--radius-card); background: var(--sheet); border: 1px solid var(--line); box-shadow: var(--shadow-soft); transition: border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease, transform 0.25s var(--ease-soft); }
+  .steps-wrap .step.is-active, .steps-wrap .step:hover { background: var(--card); border-color: var(--ink); box-shadow: var(--shadow-hover); transform: translateY(var(--lift)); }
+  .steps-wrap .steps__line { top: 2.35rem; }
+}
+
+/* 8. FAQ crisp color hierarchy: opaque white cards on lavender, dark active question in chat mode */
+.faq__item { background: var(--card); border: 1px solid var(--line); box-shadow: var(--shadow-soft); transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease; }
+.faq__item[open] { border-color: var(--lav-ink); box-shadow: var(--shadow-hover); }
+@media (hover: hover) {
+  .faq__item:not([open]):hover { border-color: var(--lav-ink); background: var(--lav-tint); }
+}
+@media (min-width: 960px) {
+  .js .faqbox .faq__item[open] { background: var(--ink); border-color: var(--ink); box-shadow: var(--shadow-hover); }
+  .js .faqbox .faq__item[open] summary { color: var(--card); }
+  .js .faqbox .faq__item[open] summary::after { color: var(--lav); }
+  .js .faqbox .faq__chat { box-shadow: var(--shadow-raised); border-top: 4px solid var(--lav-ink); }
+}
+.bubble--iva { border: 1px solid var(--lav); }
+
+/* 9. Claudia-inspired floating sticky CTA pill (desktop only, hides whenever any primary CTA or #contact is visible) */
+.float-cta { display: none; }
+@media (min-width: 800px) {
+  .float-cta { display: inline-flex; position: fixed; right: var(--gutter); bottom: var(--space-5); z-index: 40; box-shadow: var(--shadow-raised); opacity: 0; transform: translateY(1rem); transition: opacity 0.25s ease, transform 0.25s var(--ease-soft), box-shadow 0.2s ease; }
+  .float-cta.is-visible { opacity: 1; transform: none; }
+}
+.float-cta[hidden] { display: none !important; }

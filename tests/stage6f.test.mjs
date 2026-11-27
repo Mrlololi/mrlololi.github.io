@@ -127,7 +127,8 @@ test('8/9/10. chips, tools marquee, quotes, home order, four projects, transcrip
   assert.match(css, /\.tools__in\[data-play="run"\] \.marquee:is\(:hover, :focus-within\) \.marquee__track \{ animation-play-state: paused; \}/);
   assert.match(css, /#000 3rem, #000 calc\(100% - 3rem\)/);
   assert.ok(!/class="qcards"[^>]*tabindex/.test(deHome), 'no needless tab stop');
-  assert.ok(enHome.indexOf('He was also highly adaptable') < enHome.indexOf('Sehr gerne bestätige ich'), 'English quote first on EN');
+  const enQ = enHome.slice(enHome.indexOf('class="qcards"'));
+  assert.ok(enQ.indexOf('He was also highly adaptable') < enQ.indexOf('Ditoma'), 'English quote first in EN qcards');
   assert.ok(!/<p class="lead">Typische Stellen/.test(deHome), 'the problem intro repeating the H2 is gone');
   assert.ok(!/<details class="vid__text[^"]*" open/.test(deHome), 'transcript closed');
   assert.match(js('sections.js'), /once\(path, 0\.3,/);

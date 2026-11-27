@@ -11,6 +11,7 @@ const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
 const locale = root.lang === 'de' ? 'de-AT' : 'en-GB';
 
 initHeader();
+initFloatCta();
 initFlowNodes();
 initHeroLine();
 initMarquee();
@@ -111,6 +112,10 @@ function initMarquee() {
     // Stage 7b: ambient, so no round limit (design system 5.3).
     demo(box, { duration: 2147483000, rest: 0, rounds: Infinity, frames: 1, tap: '.marquee', state: (p) => { if (p === 'run') speed(); } });
   }
+  for (const tr of document.querySelectorAll('.ref__marquee-track')) {
+    const s = Math.max(16, Math.round(tr.scrollWidth / 2 / 24));
+    tr.style.setProperty('--ref-marquee-s', `${s}s`);
+  }
 }
 
 /* ---------- Video frame: «Video | Schritt für Schritt» (Stage 6f), the run-log loads on its tab ---------- */
@@ -184,4 +189,18 @@ function initHeader() {
     if (!ticking) { ticking = true; requestAnimationFrame(update); }
   }, { passive: true });
   header.addEventListener('focusin', () => header.classList.remove('is-hidden'));
+}
+
+function initFloatCta() {
+  const cta = document.querySelector('[data-float-cta]');
+  const hides = [...document.querySelectorAll('.hero__ctas, .ctastrip, #contact, .site-footer')];
+  if (!cta || !hides.length || !('IntersectionObserver' in window)) return;
+  const seen = new Set([hides[0]]);
+  const io = new IntersectionObserver((es) => {
+    for (const e of es) if (e.isIntersecting) seen.add(e.target); else seen.delete(e.target);
+    const show = seen.size === 0;
+    cta.hidden = !show;
+    cta.classList.toggle('is-visible', show);
+  }, { threshold: 0.05 });
+  hides.forEach((el) => io.observe(el));
 }

@@ -36,58 +36,63 @@ export const shotFrame = (name, domain, alt, sizes = '(min-width: 800px) 34rem, 
 <img src="/assets/img/${name}-640.jpg" srcset="/assets/img/${name}-640.jpg 640w, /assets/img/${name}-1280.jpg 1280w" sizes="${sizes}" width="640" height="400" loading="lazy" decoding="async" alt="${esc(alt)}">
 </picture>
 </div>`;
-// Her quote with her round photo (Holzwand, 56 px) in the caption.
-export const claudiaQuote = (t, c, q, cls = '') => {
+// Reusable client quote with a 56 px circular portrait in the caption.
+export const clientQuote = (t, photo, q, cls = '') => {
   const langAttr = q.lang !== t.lang ? ` lang="${q.lang}"` : '';
   const translation = q.translation ? `\n<p class="quote__translation">${esc(t.ui.translation)} ${esc(quoted(q.translation, t.lang))}</p>` : '';
   return `<figure class="quote quote--claudia${cls ? ` ${cls}` : ''}">
 <blockquote${langAttr}><p>${esc(quoted(q.text, q.lang))}</p></blockquote>${translation}
-<figcaption><picture><source type="image/avif" srcset="/assets/img/claudia-photo-56.avif 1x, /assets/img/claudia-photo-112.avif 2x"><source type="image/webp" srcset="/assets/img/claudia-photo-56.webp 1x, /assets/img/claudia-photo-112.webp 2x"><img class="quote__photo" src="/assets/img/claudia-photo-56.jpg" srcset="/assets/img/claudia-photo-112.jpg 2x" width="56" height="56" loading="lazy" decoding="async" alt=""></picture><span>${esc(q.source)}</span></figcaption>
+<figcaption><picture><source type="image/avif" srcset="/assets/img/${photo}-56.avif 1x, /assets/img/${photo}-112.avif 2x"><source type="image/webp" srcset="/assets/img/${photo}-56.webp 1x, /assets/img/${photo}-112.webp 2x"><img class="quote__photo" src="/assets/img/${photo}-56.jpg" srcset="/assets/img/${photo}-112.jpg 2x" width="56" height="56" loading="lazy" decoding="async" alt=""></picture><span>${esc(q.source)}</span></figcaption>
 </figure>`;
 };
+export const claudiaQuote = (t, c, q, cls = '') => clientQuote(t, 'claudia-photo', q, cls);
 const claudiaLogo = (c) => `<picture class="ref__logo"><source type="image/avif" srcset="/assets/img/claudia-logo-135.avif 1x, /assets/img/claudia-logo-270.avif 2x"><source type="image/webp" srcset="/assets/img/claudia-logo-135.webp 1x, /assets/img/claudia-logo-270.webp 2x"><img src="/assets/img/claudia-logo-135.png" srcset="/assets/img/claudia-logo-270.png 2x" width="135" height="48" loading="lazy" decoding="async" alt="${esc(c.logoAlt)}"></picture>`;
+const scrollShot = (name, domain, alt) => `<div class="browser"><div class="browser__bar" aria-hidden="true"><i></i><i></i><i></i><span>${esc(domain)}</span></div>
+<div class="browser__view">
+<picture class="case__shot">
+<source type="image/avif" srcset="/assets/img/${name}-640.avif 640w, /assets/img/${name}-1280.avif 1280w" sizes="(min-width: 800px) 34rem, 100vw">
+<source type="image/webp" srcset="/assets/img/${name}-640.webp 640w, /assets/img/${name}-1280.webp 1280w" sizes="(min-width: 800px) 34rem, 100vw">
+<img src="/assets/img/${name}-640.jpg" srcset="/assets/img/${name}-640.jpg 640w, /assets/img/${name}-1280.jpg 1280w" sizes="(min-width: 800px) 34rem, 100vw" width="640" height="1067" loading="lazy" decoding="async" alt="${esc(alt)}">
+</picture>
+</div>
+</div>`;
+const toolMarquee = (items) => {
+  const lis = items.map((x) => `<li>${esc(x)}</li>`).join('');
+  return `<div class="ref__marquee"><div class="ref__marquee-track"><ul class="ref__tools" role="list">${lis}</ul><ul class="ref__tools ref__tools--copy" role="list" aria-hidden="true">${lis}</ul></div></div>`;
+};
 
 export function references(t, config) {
   const r = t.refs;
   const L = t.s6.refs.labels;
-  const B = t.s6.b.refs;
-  const shot = `<div class="browser"><div class="browser__bar" aria-hidden="true"><i></i><i></i><i></i><span>${esc(r.case1.domain)}</span></div>
-<div class="browser__view">
-<picture class="case__shot">
-<source type="image/avif" srcset="/assets/img/case-alexandrafry-long-640.avif 640w, /assets/img/case-alexandrafry-long-1280.avif 1280w" sizes="(min-width: 800px) 34rem, 100vw">
-<source type="image/webp" srcset="/assets/img/case-alexandrafry-long-640.webp 640w, /assets/img/case-alexandrafry-long-1280.webp 1280w" sizes="(min-width: 800px) 34rem, 100vw">
-<img src="/assets/img/case-alexandrafry-long-640.jpg" srcset="/assets/img/case-alexandrafry-long-640.jpg 640w, /assets/img/case-alexandrafry-long-1280.jpg 1280w" sizes="(min-width: 800px) 34rem, 100vw" width="640" height="1067" loading="lazy" decoding="async" alt="${esc(t.ui.caseImageAlt)}">
-</picture>
-</div>
-</div>`;
   const cards = [
-    // Referenz Claudia (25.11.2026): her offer as the tag, her logo, the link on its own line, the tools, her start page,
-    // her quote with her photo, «Zusammenarbeit 2026.».
-    `<li class="ref card ref--course ref--claudia"><div class="ref__head"><span class="label label--lav">${esc(r.case2.tag)}</span>${claudiaLogo(r.case2)}</div>
+    // Symmetrical 2-column client showcase: Claudia Witticke (left) and Alexandra Fry (right), both with
+    // scrolling full-page browser previews, calm tool marquees and client quotes with circular portraits.
+    `<li class="ref card ref--course ref--claudia ref--scroll"><div class="ref__head"><span class="label label--lav">${esc(r.case2.tag)}</span>${claudiaLogo(r.case2)}</div>
 <h3>${esc(r.case2.title)}</h3>
 ${extLink(config.case2_url, esc(r.case2.domain), t, { cls: 'ref__site' })}
 <p>${esc(r.case2.text)}</p>
-<ul class="ref__tools" role="list">${r.case2.tools.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>
-${shotFrame('claudia-startseite', r.case2.domain, r.case2.shotAlt)}
+${toolMarquee(r.case2.tools)}
+${scrollShot('case-claudia-long', r.case2.domain, r.case2.shotAlt)}
 ${claudiaQuote(t, r.case2, r.case2.quote)}
 <p class="ref__honest">${esc(r.case2.honest)}</p></li>`,
-    `<li class="ref card ref--site"><span class="label label--pink">${esc(L.site)}</span>
+    `<li class="ref card ref--site ref--scroll"><div class="ref__head"><span class="label label--pink">${esc(L.site)}</span></div>
 <h3>${esc(r.case1.title)}</h3>
 ${extLink(config.case1_url, esc(r.case1.domain), t, { cls: 'ref__site' })}
-${shot}
-<p>${esc(r.case1.text)}</p></li>`,
+<p>${esc(r.case1.text)}</p>
+${toolMarquee(r.case1.tools)}
+${scrollShot('case-alexandrafry-long', r.case1.domain, t.ui.caseImageAlt)}
+${clientQuote(t, 'alexandra-photo', r.case1.quote)}
+<p class="ref__honest">${esc(r.case1.honest)}</p></li>`,
     `<li class="ref card ref--shop"><span class="label label--blue">${esc(L.shop)}</span>
 <h3>${esc(r.case3.title)}</h3>
 <p>${esc(r.case3.text)}</p></li>`,
   ];
-  // Stage 6f: the quotes by relevance; on EN the English one first. A course client's quote takes the
-  // first place once a real text exists (r.courseQuote, none yet). They fan out once (sections.js).
+  // Three non-repetitive client quotes in the fanned stack below: Claudia (automation), Ditoma, CMX.
   const qcards = [
-    r.courseQuote ? `<li class="qcard qcard--lav">${quote(t, r.courseQuote)}</li>` : '',
-    `<li class="qcard qcard--pink">${quote(t, r.case1.quote)}</li>`,
+    `<li class="qcard qcard--lav">${quote(t, r.case2.acQuote)}</li>`,
     `<li class="qcard qcard--blue">${quote(t, r.case3.quote)}</li>`,
-    `<li class="qcard qcard--pist"><span class="label label--peach">${esc(L.earlier)}</span>${quote(t, r.quote4)}<p class="ref__line">${esc(B.earlierLine)}</p></li>`,
-  ].filter(Boolean);
+    `<li class="qcard qcard--pist"><span class="label label--peach">${esc(L.earlier)}</span>${quote(t, r.quote4)}</li>`,
+  ];
   if (t.lang === 'en') qcards.unshift(qcards.splice(qcards.length - 1, 1)[0]);
   return `<section class="section refs bg-pist edge" id="references" aria-labelledby="refs-title">
 <div class="wrap">

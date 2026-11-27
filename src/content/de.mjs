@@ -69,6 +69,7 @@ export default {
     // Stage 6h: the one positioning line first.
     lead: 'Ich teste Ihren Launch, bevor es Ihre Kundschaft tut. Ich verbinde Formular, E-Mail-Tool, Zahlung und Kursplattform, damit beim Verkaufsstart keine Anmeldung verloren geht. Feste Preise ab 190 €.',
     primary: 'Kostenloses Erstgespräch anfragen',
+    floatCta: 'Kostenloses Erstgespräch',
     secondary: 'Preise ansehen',
     micro: '20 Minuten · Antwort in 2 Werktagen',
     trust: 'Aus Graz, remote im DACH-Raum · Online-Marketing seit 2023 · Gewerbe in Österreich',
@@ -388,6 +389,8 @@ export default {
       // Iva 18.11.2026: the title without the domain; the site link stands on its own line under it.
       title: 'Website für eine Executive-Coachin in Bern',
       text: 'One-Pager mit Leadpages: responsives Design, Terminbuchung über Calendly, Cookie-Hinweis, SEO-Grundeinstellungen, Rechtsseiten, Domain und Übergabe-Gespräch.',
+      tools: ['Leadpages', 'Calendly', 'Domain & DNS', 'SEO', 'Cookie-Hinweis', 'Recht'],
+      honest: 'Abgeschlossenes Projekt.',
       quote: {
         lang: 'de',
         text: 'Sehr gerne bestätige ich, dass Iva Tsatskrialashvili diese Aufgabe hervorragend erfüllt und die Erwartungen übertroffen hat.',
@@ -749,7 +752,6 @@ export default {
         tools: ['ActiveCampaign', 'Zapier', 'Leadpages', 'Quaderno', 'Zoom'],
         video: 'Ablauf im Video ansehen',
         honest: 'Zusammenarbeit 2026.',
-        earlierLine: 'Daher kenne ich Support-Teams von innen, die Grundlage für die KI-Antwortentwürfe.',
       },
       projects: { also: 'Außerdem:', and: 'und' },
       copyMail: 'Adresse kopieren',
@@ -814,7 +816,7 @@ export default {
       tryItems: [
         { key: 'ein-kauf', img: 'preview-ein-kauf', w: 400, h: 250, bar: 'mrlololi.com/werkzeuge/ein-kauf', href: '/werkzeuge/ein-kauf/', name: 'Ein Kauf: Was, wenn ein Teil fehlt?', text: 'Schalten Sie einen Schritt aus und sehen Sie, was Ihre Käuferin erlebt.', alt: 'Vorschau: Ein Kauf mit ausgeschaltetem Schritt Zugang und Hinweis fehlt' },
         { key: 'musterbericht', img: 'preview-musterbericht', w: 400, h: 250, bar: 'mrlololi.com/musterbericht', href: '/musterbericht/technik-check/', name: 'So sieht ein Technik-Check aus', text: 'Ein Beispielbericht mit 12 Befunden für eine erfundene Online-Schule.', alt: 'Vorschau: Musterbericht Technik-Check mit Hinweis Fiktives Beispiel und Übersicht' },
-        { key: 'ki', img: 'project-ki', w: 400, h: 300, bar: 'mrlololi.com/Webprojekte/ki', external: true, path: 'ki-kundenservice/', name: 'KI im Kundenservice', text: 'KI-Entwürfe für Kundenmails. Ein Mensch gibt frei, nichts geht automatisch raus.', alt: 'Vorschau: KI im Kundenservice mit Kundenmail und Antwortentwurf' },
+        { key: 'ki', img: 'project-ki', w: 400, h: 250, bar: 'mrlololi.com/Webprojekte/ki', external: true, path: 'ki-kundenservice/', name: 'KI im Kundenservice', text: 'KI-Entwürfe für Kundenmails. Ein Mensch gibt frei, nichts geht automatisch raus.', alt: 'Vorschau: KI im Kundenservice mit Postfach, Kundenmail und Antwortentwurf' },
       ],
       // Shortened from the «Was es zeigt» lines on mrlololi.com/Webprojekte/.
       items: [

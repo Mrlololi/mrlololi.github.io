@@ -40,13 +40,14 @@ test('every quote is made of her nine sentences only, in her order, «[…]» be
   assert.equal(c.longQuote.text, `${S[0]} ${S[1]} ${S[2]} […] ${S[4]} […] ${S[6]}`);
 });
 
-test('the home card: tag, logo, link on its own line, title, text, seven tools, start page, quote with photo, «Zusammenarbeit 2026.»', () => {
-  const card = by['index.html'].match(/<li class="ref card ref--course ref--claudia">[\s\S]*?<\/li>\n<li class="ref card ref--site">/)[0];
+test('the home card: tag, logo, link on its own line, title, text, seven tools, scrolling page preview, quote with photo, «Zusammenarbeit 2026.»', () => {
+  const card = by['index.html'].match(/<li class="ref card ref--course ref--claudia[^"]*">[\s\S]*?<\/li>\n<li class="ref card ref--site/)[0];
   assert.ok(card.includes('<span class="label label--lav">Online-Nähkurse</span><picture class="ref__logo">'));
   assert.ok(card.includes('<h3>Launch-Technik für die Online-Nähkurse von Claudia Witticke</h3>\n<a class="ext ref__site" href="https://claudiawitticke.com/"'));
   assert.ok(card.includes('<p>ActiveCampaign- und Zapier-Abläufe für Anmeldung, Launch, Onboarding und Zahlungserinnerungen, Landingpages in Leadpages, Zahlungen mit Stripe, Rechnungen mit Quaderno, Kurszugänge in GoHighLevel, Live-Termine mit Zoom, Kundenservice in GrooveHQ.</p>'));
-  assert.deepEqual([...card.matchAll(/<li>([^<]+)<\/li>/g)].map((m) => m[1]), ['ActiveCampaign', 'Zapier', 'Leadpages', 'Stripe', 'Quaderno', 'Zoom', 'GrooveHQ']);
-  assert.ok(card.includes('claudia-startseite-640.jpg') && card.includes('class="quote__photo"'));
+  const firstList = card.match(/<ul class="ref__tools" role="list">([\s\S]*?)<\/ul>/)[1];
+  assert.deepEqual([...firstList.matchAll(/<li>([^<]+)<\/li>/g)].map((m) => m[1]), ['ActiveCampaign', 'Zapier', 'Leadpages', 'Stripe', 'Quaderno', 'Zoom', 'GrooveHQ']);
+  assert.ok(card.includes('case-claudia-long-640.jpg') && card.includes('class="quote__photo"'));
   assert.ok(card.includes('<span>Claudia Witticke, Online-Nähkurse, claudiawitticke.com</span>'));
   assert.ok(card.includes('<p class="ref__honest">Zusammenarbeit 2026.</p>'));
 });

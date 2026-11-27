@@ -150,8 +150,9 @@ test('process right under the prices, then the CTA strip; references with their 
   const refs = deHome.slice(deHome.indexOf('id="references"'), deHome.indexOf('id="projects"'));
   const cards = refs.match(/<li class="ref card ref--(\w+)(?:\s[^"]*)?">/g).map((c) => c.match(/ref--(\w+)/)[1]);
   assert.deepEqual(cards, ['course', 'site', 'shop']);
-  // Stage 6d: the quotes are back in the fanned stack (Fry pink, Ditoma blue, CMX white with its line).
-  assert.match(refs, /<li class="qcard qcard--pink">[\s\S]*Alexandra Fry[\s\S]*<li class="qcard qcard--blue">[\s\S]*Ditoma GmbH[\s\S]*<li class="qcard qcard--pist"><span class="label label--peach">Frühere Tätigkeit<\/span>[\s\S]*CMX Solutions[\s\S]*Daher kenne ich Support-Teams/);
+  // Symmetrical Claudia + Alexandra cards above; three non-repetitive quotes in the fanned stack below.
+  assert.match(refs, /<li class="qcard qcard--lav">[\s\S]*Claudia Witticke[\s\S]*<li class="qcard qcard--blue">[\s\S]*Ditoma GmbH[\s\S]*<li class="qcard qcard--pist"><span class="label label--peach">Frühere Tätigkeit<\/span>[\s\S]*CMX Solutions/);
+  assert.ok(!refs.includes('Daher kenne ich Support-Teams'), 'removed out-of-place support-teams line');
   assert.match(refs, /Zitate aus schriftlichen Referenzen, Original auf Anfrage\./);
   assert.ok(!/class="ctastrip"/.test(refs), 'Stage 6f: the second CTA band is gone');
 });

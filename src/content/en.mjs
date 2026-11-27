@@ -66,6 +66,7 @@ export default {
     h1: 'The tech behind your *course launch.*',
     lead: 'I test your launch before your customers do. I connect your form, email tool, payments and course platform, so no sign-up gets lost when sales open. Fixed prices from €190.',
     primary: 'Request a free call',
+    floatCta: 'Request a free call',
     secondary: 'See pricing',
     micro: '20 minutes · reply within 2 working days',
     trust: 'From Graz, working remotely · Online marketing since 2023 · Registered business in Austria',
@@ -382,6 +383,8 @@ export default {
       domain: 'alexandrafry.ch',
       title: 'Website for an executive coach in Bern',
       text: 'One-pager built in Leadpages: responsive design, booking via Calendly, cookie notice, SEO basics, legal pages, domain and handover call.',
+      tools: ['Leadpages', 'Calendly', 'Domain & DNS', 'SEO', 'Cookie notice', 'Legal pages'],
+      honest: 'Completed project.',
       quote: {
         lang: 'de',
         text: 'Sehr gerne bestätige ich, dass Iva Tsatskrialashvili diese Aufgabe hervorragend erfüllt und die Erwartungen übertroffen hat.',
@@ -716,7 +719,6 @@ export default {
         tools: ['ActiveCampaign', 'Zapier', 'Leadpages', 'Quaderno', 'Zoom'],
         video: 'See the flow in four steps',
         honest: 'Work in 2026.',
-        earlierLine: 'That is how I know support teams from the inside, the basis for the AI reply drafts.',
       },
       projects: { also: 'Also:', and: 'and' },
       copyMail: 'Copy address',
@@ -764,7 +766,7 @@ export default {
       tryItems: [
         { key: 'ein-kauf', img: 'preview-ein-kauf', w: 400, h: 250, bar: 'mrlololi.com/werkzeuge/ein-kauf', href: '/werkzeuge/ein-kauf/', name: 'Ein Kauf: What if one part is missing? (in German)', text: 'Switch off one step and see what your buyer experiences.', alt: 'Preview: Ein Kauf with step Zugang switched off' },
         { key: 'musterbericht', img: 'preview-musterbericht', w: 400, h: 250, bar: 'mrlololi.com/musterbericht', href: '/musterbericht/technik-check/', name: 'What a tech check looks like (in German)', text: 'A sample report with 12 findings for a fictional online school.', alt: 'Preview: Sample tech check report with fictional example notice' },
-        { key: 'ki', img: 'project-ki', w: 400, h: 300, bar: 'mrlololi.com/Webprojekte/ki', external: true, path: 'ki-kundenservice/', name: 'AI in customer service (in German)', text: 'AI drafts for customer emails. A person approves, nothing is sent automatically.', alt: 'Preview: AI in customer service reply draft' },
+        { key: 'ki', img: 'project-ki', w: 400, h: 250, bar: 'mrlololi.com/Webprojekte/ki', external: true, path: 'ki-kundenservice/', name: 'AI in customer service (in German)', text: 'AI drafts for customer emails. A person approves, nothing is sent automatically.', alt: 'Preview: AI in customer service inbox and reply draft' },
       ],
       // Shortened from the «What it shows» lines on mrlololi.com/Webprojekte/.
       items: [

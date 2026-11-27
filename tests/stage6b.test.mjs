@@ -37,13 +37,13 @@ test('softer claims: no «nichts bricht», no «nie Ihr Passwort», no course cl
   assert.equal(de.s6.pricing.cards.quick.bullets[0], 'E-Mail-Zustellung (SPF, DKIM, DMARC)');
 });
 
-test('references: the course card (Claudia Witticke, approved 25.11.2026) with seven tools, honest line and no video link; CMX with its support line; the H2 like the others', () => {
+test('references: the course card (Claudia Witticke, approved 25.11.2026) with seven tools, honest line and no video link; no out-of-place support line; the H2 like the others', () => {
   const h = byFile['index.html'];
-  const course = h.match(/<li class="ref card ref--course[^"]*">[\s\S]*?<\/li>\n<li class="ref card ref--site">/)[0];
+  const course = h.match(/<li class="ref card ref--course[^"]*">[\s\S]*?<\/li>\n<li class="ref card ref--site/)[0];
   for (const tool of ['ActiveCampaign', 'Zapier', 'Leadpages', 'Stripe', 'Quaderno', 'Zoom', 'GrooveHQ']) assert.ok(course.includes(`<li>${tool}</li>`), tool);
   assert.ok(course.includes('<p class="ref__honest">Zusammenarbeit 2026.</p>'));
   assert.ok(!course.includes('Ablauf im Video ansehen') && !course.includes('href="#video"'));
-  assert.match(h, /Daher kenne ich Support-Teams von innen, die Grundlage für die KI-Antwortentwürfe\./);
+  assert.ok(!h.includes('Daher kenne ich Support-Teams von innen'), 'removed out-of-place support line');
   assert.match(h, /<h2 id="refs-title" data-enter="lines">Arbeit und <em class="accent">Referenzen<\/em><\/h2>/);
   assert.ok(!/Workflows, 0/.test(course), 'no invented numbers');
 });

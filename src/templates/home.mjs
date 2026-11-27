@@ -1,3 +1,4 @@
+import { esc } from './util.mjs';
 import { hero, tools } from './hero.mjs';
 import { problems } from './problems.mjs';
 import { videoBlock, stepStrip } from './video.mjs';
@@ -21,5 +22,6 @@ export function home(t, config) {
     projects(t, config),
     faq(t),
     contact(t, config),
+    `<a class="float-cta btn btn--primary btn--sm" href="#contact" data-float-cta hidden>${esc(t.hero.floatCta || t.hero.primary)}</a>`,
   ].join('\n');
 }

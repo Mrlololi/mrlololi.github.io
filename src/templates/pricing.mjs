@@ -119,9 +119,11 @@ ${MAIN.map((id) => card(t, items[id], config.contact_email, config)).join('\n')}
 ${MORE.map((id) => row(t, items[id], config.contact_email)).join('\n')}
 </ul>
 </div>
+<div class="tariff__foot">
 <p class="notdo-line">${esc(t.s6.b.notDo)}</p>
 <p class="small tariff__tax">${esc(t.pricing.smallPrint)}</p>
 <p class="tariff__b2b">${esc(p.b2b)}</p>
+</div>
 </div>
 </div>
 </section>`;
