@@ -1,4 +1,5 @@
 import { esc, accent, absUrl, extLink, quoted, keepHyphenated, note } from './util.mjs';
+import { shotFrame, claudiaQuote } from './references.mjs';
 import { kiDemo, calculator } from './ki.mjs';
 import { videoFigure, videoLd } from './video.mjs';
 import { contactForm } from './sections.mjs';
@@ -104,7 +105,29 @@ function quote(t, q) {
 function example(t, config, s, live) {
   const L = t.services.ui;
   if (s.example === 'case2') {
-    return `<article class="svc-card"><h3>${esc(t.refs.case2.title)}</h3><p>${esc(t.refs.case2.text)}</p></article>`;
+    // Referenz Claudia (25.11.2026): the named case on /launch-technik/, the short card on /activecampaign-einrichten/.
+    const c = t.refs.case2;
+    const head = `<h3>${esc(c.title)}</h3>
+${extLink(config.case2_url, esc(c.domain), t, { cls: 'ref__site' })}`;
+    if (s.key === 'launch') {
+      return `<article class="svc-case svc-case--claudia">
+${head}
+<p>${esc(c.text)}</p>
+<h4>${esc(c.changesTitle)}</h4>
+<ul class="svc-list">${c.changes.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>
+${claudiaQuote(t, c, c.longQuote)}
+<div class="claudia-shots">
+${c.shots.map(([n, alt]) => shotFrame(n, c.domain, alt, '(min-width: 800px) 20rem, 100vw')).join('\n')}
+</div>
+<p class="ref__honest">${esc(c.honest)}</p>
+</article>`;
+    }
+    return `<article class="svc-card svc-card--claudia">
+${head}
+<ul class="ref__tools" role="list">${c.tools.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>
+${claudiaQuote(t, c, c.acQuote)}
+<p class="ref__honest">${esc(c.honest)}</p>
+</article>`;
   }
   if (s.example === 'case1') {
     const c1 = t.refs.case1;

@@ -176,6 +176,20 @@
       ],
       "phrase": "außerhalb Garantie",
       "reason": "an invented customer mail of the demo school (Iva 18.11.2026)"
+    },
+    {
+      "pages": [
+        "*"
+      ],
+      "phrase": "Die Conversion Rate ist dadurch um 70 bis 80 Prozent gestiegen.",
+      "reason": "Kundenzitat, wörtlich (Claudia Witticke, 25.11.2026): «Prozent» und «70 bis 80» nur hier"
+    },
+    {
+      "pages": [
+        "*"
+      ],
+      "phrase": "Außerdem hat er Automatisierungen gebaut, die uns im Alltag Arbeit abnehmen und Personalaufwand sparen.",
+      "reason": "Kundenzitat, wörtlich (Claudia Witticke, 25.11.2026): «sparen» nur hier"
     }
   ],
   "prices": {

@@ -914,6 +914,15 @@ html:not(.js) .brief__preview { display: none; }
 .svc-door--link { background: none; padding: 0; }
 .q-claim { margin-top: var(--space-2); font-weight: 700; }
 .pc__sub { margin-top: var(--space-1); font-size: var(--step--1); color: var(--ink-soft); }
+.ref__head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2); }
+.ref__logo img { display: block; width: 135px; height: auto; }
+.quote--claudia figcaption { display: flex; align-items: center; gap: var(--space-2); }
+.quote--claudia figcaption picture { flex: none; width: 56px; height: 56px; display: block; }
+.quote--claudia .quote__photo, .quote__photo { width: 56px; height: 56px; aspect-ratio: 1 / 1; border-radius: var(--radius-pill); object-fit: cover; flex: none; display: block; }
+.hero__quote { margin-top: var(--space-4); max-width: 34rem; }
+.claudia-shots { display: grid; gap: var(--space-4); margin-top: var(--space-4); }
+.claudia-shots img { width: 100%; height: auto; }
+@media (min-width: 800px) { .claudia-shots { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .rl-teaser { display: grid; gap: var(--space-2); max-width: 46rem; margin: var(--space-5) auto 0; padding: var(--space-4); }
 .item__actions { display: grid; justify-items: start; align-content: end; gap: var(--space-1); }
 .item__more { position: relative; z-index: 1; display: inline-flex; align-items: center; min-height: 2.75rem; font-size: var(--step--1); font-weight: 700; }
@@ -1744,6 +1753,10 @@ html:not(.js) .faq__cats { display: none; }
 </div>
 <p class="hero__proof">Aus Graz, remote im DACH-Raum · Online-Marketing seit 2023 · Gewerbe in Österreich</p>
 <p class="hero__report"><a class="text-link" href="/musterbericht/technik-check/">So sieht ein Technik-Bericht aus (Beispiel)</a></p>
+<figure class="quote quote--claudia hero__quote">
+<blockquote><p>„Iva ist ein angenehmer und lösungsorientierter Partner. Wer technisches Know-how mit Mitdenken verbinden möchte, ist bei ihm gut aufgehoben.“</p></blockquote>
+<figcaption><picture><source type="image/avif" srcset="/assets/img/claudia-photo-56.avif 1x, /assets/img/claudia-photo-112.avif 2x"><source type="image/webp" srcset="/assets/img/claudia-photo-56.webp 1x, /assets/img/claudia-photo-112.webp 2x"><img class="quote__photo" src="/assets/img/claudia-photo-56.jpg" srcset="/assets/img/claudia-photo-112.jpg 2x" width="56" height="56" loading="lazy" decoding="async" alt=""></picture><span>Claudia Witticke, Online-Nähkurse</span></figcaption>
+</figure>
 </div>
 <div class="hero__visual">
 <figure class="hero__flow demo" data-demo="hero" aria-label="Ablauf: Formular, ActiveCampaign, Zahlung, Kurs offen">
@@ -2036,9 +2049,22 @@ html:not(.js) .faq__cats { display: none; }
 <p class="small refs__note">Zitate aus schriftlichen Referenzen, Original auf Anfrage.</p>
 </div>
 <ul class="refs__list" role="list" data-enter="stagger">
-<li class="ref card ref--course"><span class="label label--lav">Online-Kurse</span>
-<h3>Launch-Technik für eine Online-Kursanbieterin, 2026</h3>
-<p>Anmeldung, E-Mail-Abläufe, Zahlung und Kurszugang.</p>
+<li class="ref card ref--course ref--claudia"><div class="ref__head"><span class="label label--lav">Online-Nähkurse</span><picture class="ref__logo"><source type="image/avif" srcset="/assets/img/claudia-logo-135.avif 1x, /assets/img/claudia-logo-270.avif 2x"><source type="image/webp" srcset="/assets/img/claudia-logo-135.webp 1x, /assets/img/claudia-logo-270.webp 2x"><img src="/assets/img/claudia-logo-135.png" srcset="/assets/img/claudia-logo-270.png 2x" width="135" height="48" loading="lazy" decoding="async" alt="Logo Claudia Witticke"></picture></div>
+<h3>Launch-Technik für die Online-Nähkurse von Claudia Witticke</h3>
+<a class="ext ref__site" href="https://claudiawitticke.com/" target="_blank" rel="noopener">claudiawitticke.com<span class="sr-only"> (öffnet in neuem Tab)</span></a>
+<p>ActiveCampaign- und Zapier-Abläufe für Anmeldung, Launch, Onboarding und Zahlungserinnerungen, Landingpages in Leadpages, Zahlungen mit Stripe, Rechnungen mit Quaderno, Kurszugänge in GoHighLevel, Live-Termine mit Zoom, Kundenservice in GrooveHQ.</p>
+<ul class="ref__tools" role="list"><li>ActiveCampaign</li><li>Zapier</li><li>Leadpages</li><li>Stripe</li><li>Quaderno</li><li>Zoom</li><li>GrooveHQ</li></ul>
+<div class="browser"><div class="browser__bar" aria-hidden="true"><i></i><i></i><i></i><span>claudiawitticke.com</span></div>
+<picture>
+<source type="image/avif" srcset="/assets/img/claudia-startseite-640.avif 640w, /assets/img/claudia-startseite-1280.avif 1280w" sizes="(min-width: 800px) 34rem, 100vw">
+<source type="image/webp" srcset="/assets/img/claudia-startseite-640.webp 640w, /assets/img/claudia-startseite-1280.webp 1280w" sizes="(min-width: 800px) 34rem, 100vw">
+<img src="/assets/img/claudia-startseite-640.jpg" srcset="/assets/img/claudia-startseite-640.jpg 640w, /assets/img/claudia-startseite-1280.jpg 1280w" sizes="(min-width: 800px) 34rem, 100vw" width="640" height="400" loading="lazy" decoding="async" alt="Startseite von claudiawitticke.com, erster Bildschirm">
+</picture>
+</div>
+<figure class="quote quote--claudia">
+<blockquote><p>„Er hat verstanden, wie mein Business funktioniert, wen wir ansprechen und worauf es in unserer Kommunikation ankommt. […] Iva hat unsere Landing Pages überarbeitet und optimiert. Die Conversion Rate ist dadurch um 70 bis 80 Prozent gestiegen.“</p></blockquote>
+<figcaption><picture><source type="image/avif" srcset="/assets/img/claudia-photo-56.avif 1x, /assets/img/claudia-photo-112.avif 2x"><source type="image/webp" srcset="/assets/img/claudia-photo-56.webp 1x, /assets/img/claudia-photo-112.webp 2x"><img class="quote__photo" src="/assets/img/claudia-photo-56.jpg" srcset="/assets/img/claudia-photo-112.jpg 2x" width="56" height="56" loading="lazy" decoding="async" alt=""></picture><span>Claudia Witticke, Online-Nähkurse, claudiawitticke.com</span></figcaption>
+</figure>
 <p class="ref__honest">Zusammenarbeit 2026.</p></li>
 <li class="ref card ref--site"><span class="label label--pink">Website</span>
 <h3>Website für eine Executive-Coachin in Bern</h3>
@@ -2091,7 +2117,7 @@ html:not(.js) .faq__cats { display: none; }
 <h2 id="about-title" data-enter="lines">Über <em class="accent">mich</em></h2>
 <p class="about__line"><span class="tl-pink">Lo</span>gik, <span class="tl-blue">Lö</span>sung, <span class="tl-pist">Li</span>ve: so arbeite ich.</p>
 <p>Ich bin Iva Tsatskrialashvili (er/ihm) und lebe in Graz. Ich habe Informationstechnologie studiert und studiere jetzt berufsbegleitend Marketing &amp; Sales an der FH CAMPUS 02. So verstehe ich beides: den Funnel und die API dahinter.</p>
-<p>Seit 2023 arbeite ich für Kund:innen in Deutschland, der Schweiz und Österreich, zuerst für Onlineshops, 2026 auch für eine Online-Kursanbieterin. Mein Gewerbe ist in Österreich angemeldet: ordentliche Rechnungen, ein fester Ansprechpartner.</p>
+<p>Seit 2023 arbeite ich für Kund:innen in Deutschland, der Schweiz und Österreich, zuerst für Onlineshops, 2026 auch für die Online-Kursanbieterin Claudia Witticke. Mein Gewerbe ist in Österreich angemeldet: ordentliche Rechnungen, ein fester Ansprechpartner.</p>
 <div class="aboutrow demo" data-demo="about" role="group" aria-labelledby="aboutrow-label">
 <p class="aboutrow__label" id="aboutrow-label">Worauf Sie sich verlassen können</p>
 <ul class="aboutrow__chips" role="list"><li class="trust">Festpreise</li><li class="trust">Testkontakte vor dem Livegang</li><li class="trust">Dokumentation und Übergabe</li><li class="trust">Eigener Zugang statt Ihres Passworts</li><li class="trust">Deutsch und Englisch</li></ul>

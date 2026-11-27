@@ -395,10 +395,31 @@ export default {
       },
     },
     case2: {
-      // Stage 7b-S section 8, UPDATE 19.11.2026: neutral until the client says ok (no name, no link); the named
-      // version waits in the branch zitat-claudia.
-      title: 'Launch-Technik für eine Online-Kursanbieterin, 2026',
-      text: 'Anmeldung, E-Mail-Abläufe, Zahlung und Kurszugang.',
+      // Referenz Claudia Witticke (her selection 25.11.2026, Iva after the call: «разрешила»). Word for word; what she
+      // did not select does not appear. The neutral wording of 19.11 stays in git history (branch zitat-claudia superseded).
+      domain: 'claudiawitticke.com',
+      tag: 'Online-Nähkurse',
+      logoAlt: 'Logo Claudia Witticke',
+      title: 'Launch-Technik für die Online-Nähkurse von Claudia Witticke',
+      text: 'ActiveCampaign- und Zapier-Abläufe für Anmeldung, Launch, Onboarding und Zahlungserinnerungen, Landingpages in Leadpages, Zahlungen mit Stripe, Rechnungen mit Quaderno, Kurszugänge in GoHighLevel, Live-Termine mit Zoom, Kundenservice in GrooveHQ.',
+      tools: ['ActiveCampaign', 'Zapier', 'Leadpages', 'Stripe', 'Quaderno', 'Zoom', 'GrooveHQ'],
+      shotAlt: 'Startseite von claudiawitticke.com, erster Bildschirm',
+      honest: 'Zusammenarbeit 2026.',
+      photoAlt: 'Claudia Witticke',
+      quote: { lang: 'de', text: 'Er hat verstanden, wie mein Business funktioniert, wen wir ansprechen und worauf es in unserer Kommunikation ankommt. […] Iva hat unsere Landing Pages überarbeitet und optimiert. Die Conversion Rate ist dadurch um 70 bis 80 Prozent gestiegen.', source: 'Claudia Witticke, Online-Nähkurse, claudiawitticke.com' },
+      heroQuote: { lang: 'de', text: 'Iva ist ein angenehmer und lösungsorientierter Partner. Wer technisches Know-how mit Mitdenken verbinden möchte, ist bei ihm gut aufgehoben.', source: 'Claudia Witticke, Online-Nähkurse' },
+      acQuote: { lang: 'de', text: 'Außerdem hat er Automatisierungen gebaut, die uns im Alltag Arbeit abnehmen und Personalaufwand sparen.', source: 'Claudia Witticke, Online-Nähkurse, claudiawitticke.com' },
+      changesTitle: 'Was sich verändert hat',
+      changes: [
+        'Neue Website: vom alten Baukasten auf eigenen Code umgezogen. 112 Seiten gebaut, 58 Kassen auf die neue Domain umgestellt.',
+        '62 Seiten geprüft, 84 Maßnahmen, rund 45 davon sofort umgesetzt. Danach zeigt jede Seite am Handy gleich im ersten Bildschirm einen Kaufbutton.',
+        'Bilder von 135 MB auf 3 MB verkleinert, die Seiten laden schneller.',
+        'Läuft jetzt automatisch: Kurszugang nach der Zahlung, Gutscheincodes, Lieferadressen, Buchbestellungen, Aktionen nach Zeitplan.',
+        'Fehler gefunden, bevor Kundinnen sie bemerkt haben: im Anmeldeformular zum Live-Kurs und in der Gutschein-Automation.',
+        'Ein interaktiver Adventskalender mit 24 Türchen, Videos und Gutscheincode.',
+      ],
+      longQuote: { lang: 'de', text: 'Nach einer kurzen Einarbeitungszeit hat sich Iva schnell und gründlich in mein Unternehmen eingedacht. Er hat verstanden, wie mein Business funktioniert, wen wir ansprechen und worauf es in unserer Kommunikation ankommt. Aufgaben erledigt er so, wie wir sie besprochen haben, und er hält Termine ein. […] Iva hat unsere Landing Pages überarbeitet und optimiert. […] Außerdem hat er Automatisierungen gebaut, die uns im Alltag Arbeit abnehmen und Personalaufwand sparen.', source: 'Claudia Witticke, Online-Nähkurse, claudiawitticke.com' },
+      shots: [['claudia-overlock', 'Kursseite «Overlock rockt!» auf claudiawitticke.com, erster Bildschirm'], ['claudia-advent', 'Anmeldeseite zum Adventskalender auf claudiawitticke.com, erster Bildschirm']],
     },
     case3: {
       title: 'E-Commerce für zwei deutsche Onlineshops, zweieinhalb Jahre',
@@ -423,7 +444,7 @@ export default {
     // Stage 6: two short paragraphs (shortened from the three before, nothing new).
     paragraphs: [
       'Ich bin Iva Tsatskrialashvili (er/ihm) und lebe in Graz. Ich habe Informationstechnologie studiert und studiere jetzt berufsbegleitend Marketing & Sales an der FH CAMPUS 02. So verstehe ich beides: den Funnel und die API dahinter.',
-      'Seit 2023 arbeite ich für Kund:innen in Deutschland, der Schweiz und Österreich, zuerst für Onlineshops, 2026 auch für eine Online-Kursanbieterin. Mein Gewerbe ist in Österreich angemeldet: ordentliche Rechnungen, ein fester Ansprechpartner.',
+      'Seit 2023 arbeite ich für Kund:innen in Deutschland, der Schweiz und Österreich, zuerst für Onlineshops, 2026 auch für die Online-Kursanbieterin Claudia Witticke. Mein Gewerbe ist in Österreich angemeldet: ordentliche Rechnungen, ein fester Ansprechpartner.',
     ],
     tools: 'ActiveCampaign, Zapier, Make, Google Apps Script, Leadpages, WordPress, Wix, Shopware, Stripe, Quaderno, GrooveHQ, Canva, HTML, CSS, JavaScript, Python, SQL',
     path: ['Tbilisi', 'DACH-Vertrieb ab 2020', 'Erasmus+ in 11 Ländern', 'Graz seit 2025'],

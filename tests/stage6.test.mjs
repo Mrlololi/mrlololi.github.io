@@ -148,7 +148,7 @@ test('process right under the prices, then the CTA strip; references with their 
   const process = deHome.slice(deHome.indexOf('id="process"'), deHome.indexOf('id="references"'));
   assert.match(process, /<div class="ctastrip">\n<p class="ctastrip__text">Nicht sicher, was passt\? 20 Minuten, kostenlos\. Ich sage ehrlich, ob ich helfen kann\.<\/p>/);
   const refs = deHome.slice(deHome.indexOf('id="references"'), deHome.indexOf('id="projects"'));
-  const cards = refs.match(/<li class="ref card ref--(\w+)">/g).map((c) => c.match(/ref--(\w+)/)[1]);
+  const cards = refs.match(/<li class="ref card ref--(\w+)(?:\s[^"]*)?">/g).map((c) => c.match(/ref--(\w+)/)[1]);
   assert.deepEqual(cards, ['course', 'site', 'shop']);
   // Stage 6d: the quotes are back in the fanned stack (Fry pink, Ditoma blue, CMX white with its line).
   assert.match(refs, /<li class="qcard qcard--pink">[\s\S]*Alexandra Fry[\s\S]*<li class="qcard qcard--blue">[\s\S]*Ditoma GmbH[\s\S]*<li class="qcard qcard--pist"><span class="label label--peach">Frühere Tätigkeit<\/span>[\s\S]*CMX Solutions[\s\S]*Daher kenne ich Support-Teams/);

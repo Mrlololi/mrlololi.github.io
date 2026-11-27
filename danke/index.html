@@ -910,6 +910,15 @@ html:not(.js) .brief__preview { display: none; }
 .svc-door--link { background: none; padding: 0; }
 .q-claim { margin-top: var(--space-2); font-weight: 700; }
 .pc__sub { margin-top: var(--space-1); font-size: var(--step--1); color: var(--ink-soft); }
+.ref__head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2); }
+.ref__logo img { display: block; width: 135px; height: auto; }
+.quote--claudia figcaption { display: flex; align-items: center; gap: var(--space-2); }
+.quote--claudia figcaption picture { flex: none; width: 56px; height: 56px; display: block; }
+.quote--claudia .quote__photo, .quote__photo { width: 56px; height: 56px; aspect-ratio: 1 / 1; border-radius: var(--radius-pill); object-fit: cover; flex: none; display: block; }
+.hero__quote { margin-top: var(--space-4); max-width: 34rem; }
+.claudia-shots { display: grid; gap: var(--space-4); margin-top: var(--space-4); }
+.claudia-shots img { width: 100%; height: auto; }
+@media (min-width: 800px) { .claudia-shots { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .rl-teaser { display: grid; gap: var(--space-2); max-width: 46rem; margin: var(--space-5) auto 0; padding: var(--space-4); }
 .item__actions { display: grid; justify-items: start; align-content: end; gap: var(--space-1); }
 .item__more { position: relative; z-index: 1; display: inline-flex; align-items: center; min-height: 2.75rem; font-size: var(--step--1); font-weight: 700; }

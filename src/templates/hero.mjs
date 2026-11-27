@@ -1,3 +1,4 @@
+import { claudiaQuote } from './references.mjs';
 import { esc, headline } from './util.mjs';
 import { heroMascots } from './mascots.mjs';
 
@@ -46,7 +47,7 @@ export function hero(t, config) {
 <a class="text-link" href="#pricing">${esc(h.secondary)}</a>
 </div>
 <p class="hero__proof">${esc(h.trust)}</p>${h.report && config?.check_report_url ? `
-<p class="hero__report"><a class="text-link" href="${esc(config.check_report_url)}">${esc(h.report)}</a></p>` : ''}
+<p class="hero__report"><a class="text-link" href="${esc(config.check_report_url)}">${esc(h.report)}</a></p>` : ''}${t.refs?.case2?.heroQuote ? `\n${claudiaQuote(t, t.refs.case2, t.refs.case2.heroQuote, 'hero__quote')}` : ''}
 </div>
 <div class="hero__visual">
 <figure class="hero__flow demo" data-demo="hero" aria-label="${esc(h.flow.label)}">

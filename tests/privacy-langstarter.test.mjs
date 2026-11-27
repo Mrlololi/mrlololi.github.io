@@ -39,7 +39,7 @@ test('privacy date and sitemap lastmod: 5.11.2026 for the privacy pages and home
   assert.match(html('en/privacy/index.html'), /Last updated: 25 November 2026/);
   const xml = sitemap(config);
   assert.match(xml, /<loc>https:\/\/mrlololi\.com\/datenschutz\/<\/loc>\s*(<[^>]+>\s*)*?<lastmod>2026-11-25<\/lastmod>/);
-  assert.equal(config.page_dates.home, '2026-11-25'); // R1 (December release) // 24.11.2026: the «Beispielbericht ansehen» link on home (before: 18.11, Wortfilter texts)
+  assert.equal(config.page_dates.home, '2026-11-27'); // Referenz Claudia (27.11.2026)
   for (const loc of ['datenschutz/', 'en/privacy/']) assert.match(xml, new RegExp(`<loc>https://mrlololi\\.com/${loc}</loc>\\s*<lastmod>2026-11-25</lastmod>`), loc || '/');
   assert.equal((xml.match(/<lastmod>2026-11-05<\/lastmod>/g) || []).length, 0, 'privacy and launch moved to R1');
   assert.equal((xml.match(/<lastmod>2026-10-28<\/lastmod>/g) || []).length, 0, 'the two website pages moved to R1');

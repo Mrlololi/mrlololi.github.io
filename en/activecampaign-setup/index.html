@@ -914,6 +914,15 @@ html:not(.js) .brief__preview { display: none; }
 .svc-door--link { background: none; padding: 0; }
 .q-claim { margin-top: var(--space-2); font-weight: 700; }
 .pc__sub { margin-top: var(--space-1); font-size: var(--step--1); color: var(--ink-soft); }
+.ref__head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2); }
+.ref__logo img { display: block; width: 135px; height: auto; }
+.quote--claudia figcaption { display: flex; align-items: center; gap: var(--space-2); }
+.quote--claudia figcaption picture { flex: none; width: 56px; height: 56px; display: block; }
+.quote--claudia .quote__photo, .quote__photo { width: 56px; height: 56px; aspect-ratio: 1 / 1; border-radius: var(--radius-pill); object-fit: cover; flex: none; display: block; }
+.hero__quote { margin-top: var(--space-4); max-width: 34rem; }
+.claudia-shots { display: grid; gap: var(--space-4); margin-top: var(--space-4); }
+.claudia-shots img { width: 100%; height: auto; }
+@media (min-width: 800px) { .claudia-shots { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .rl-teaser { display: grid; gap: var(--space-2); max-width: 46rem; margin: var(--space-5) auto 0; padding: var(--space-4); }
 .item__actions { display: grid; justify-items: start; align-content: end; gap: var(--space-1); }
 .item__more { position: relative; z-index: 1; display: inline-flex; align-items: center; min-height: 2.75rem; font-size: var(--step--1); font-weight: 700; }
@@ -1793,7 +1802,17 @@ html:not(.js) .faq__cats { display: none; }
 <section class="svc-sec bg-lav edge" aria-labelledby="svc-example">
 <div class="wrap svc-sec__in">
 <h2 id="svc-example" data-enter="lines">Example</h2>
-<article class="svc-card"><h3>Launch tech for an online course creator, 2026</h3><p>Sign-up, email flows, payment and course access.</p></article>
+<article class="svc-card svc-card--claudia">
+<h3>Launch tech for Claudia Witticke's online sewing courses</h3>
+<a class="ext ref__site" href="https://claudiawitticke.com/" target="_blank" rel="noopener">claudiawitticke.com<span class="sr-only"> (opens in a new tab)</span></a>
+<ul class="ref__tools" role="list"><li>ActiveCampaign</li><li>Zapier</li><li>Leadpages</li><li>Stripe</li><li>Quaderno</li><li>Zoom</li><li>GrooveHQ</li></ul>
+<figure class="quote quote--claudia">
+<blockquote lang="de"><p>„Außerdem hat er Automatisierungen gebaut, die uns im Alltag Arbeit abnehmen und Personalaufwand sparen.“</p></blockquote>
+<p class="quote__translation">Translation: “He also built automations that take work off our hands day to day and save staff time.”</p>
+<figcaption><picture><source type="image/avif" srcset="/assets/img/claudia-photo-56.avif 1x, /assets/img/claudia-photo-112.avif 2x"><source type="image/webp" srcset="/assets/img/claudia-photo-56.webp 1x, /assets/img/claudia-photo-112.webp 2x"><img class="quote__photo" src="/assets/img/claudia-photo-56.jpg" srcset="/assets/img/claudia-photo-112.jpg 2x" width="56" height="56" loading="lazy" decoding="async" alt=""></picture><span>Claudia Witticke, Online-Nähkurse, claudiawitticke.com</span></figcaption>
+</figure>
+<p class="ref__honest">Work in 2026.</p>
+</article>
 </div>
 </section>
 <section class="svc-sec bg-peach edge" aria-labelledby="svc-faq">

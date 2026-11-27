@@ -34,15 +34,13 @@ test('1. problem cards: the buyer\'s words as headline, the former headline as s
   assert.equal((by['en/index.html'].match(/<p class="pc__sub">/g) || []).length, 3);
 });
 
-test('2. reference «Online-Kursanbieterin, 2026»: no video link, no tool names (home and service pages)', () => {
-  const card = home.match(/<li class="ref card ref--course">[\s\S]*?<\/li>/)[0];
-  assert.ok(card.includes('<h3>Launch-Technik für eine Online-Kursanbieterin, 2026</h3>\n<p>Anmeldung, E-Mail-Abläufe, Zahlung und Kurszugang.</p>'));
-  assert.ok(!/ActiveCampaign|Zapier|Leadpages|Quaderno|Zoom|Ablauf im Video ansehen/.test(card));
-  for (const f of ['launch-technik/index.html', 'activecampaign-einrichten/index.html']) {
-    const c = by[f].match(/<article class="svc-card"><h3>Launch-Technik für eine Online-Kursanbieterin, 2026<\/h3><p>([^<]+)<\/p><\/article>/);
-    assert.equal(c?.[1], 'Anmeldung, E-Mail-Abläufe, Zahlung und Kurszugang.', f);
-  }
-  assert.ok(by['index.html'].includes('2026 auch für eine Online-Kursanbieterin'), 'the About line stays');
+test('2. reference Claudia Witticke (approved 25.11.2026): named card, no video link (home and service pages)', () => {
+  const card = home.match(/<li class="ref card ref--course ref--claudia">[\s\S]*?<\/li>\n<li class="ref card ref--site">/)[0];
+  assert.ok(card.includes('<h3>Launch-Technik für die Online-Nähkurse von Claudia Witticke</h3>'));
+  assert.ok(!/Ablauf im Video ansehen|href="#video"/.test(card));
+  assert.ok(by['launch-technik/index.html'].includes('svc-case--claudia'));
+  assert.ok(by['activecampaign-einrichten/index.html'].includes('svc-card--claudia'));
+  assert.ok(by['index.html'].includes('2026 auch für die Online-Kursanbieterin Claudia Witticke.'), 'the About line stays');
 });
 
 test('3. Ein Kauf: the label on top and at the end, the short tag per panel, step names on the switches, title and meta', () => {

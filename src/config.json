@@ -17,12 +17,12 @@
   "header_variant": "light",
   "ratgeber_live": false,
   "page_dates": {
-    "home": "2026-11-25",
+    "home": "2026-11-27",
     "legal": "2026-10-29",
     "privacy": "2026-11-25",
-    "launch": "2026-11-25",
+    "launch": "2026-11-27",
     "spam": "2026-11-25",
-    "activecampaign": "2026-11-25",
+    "activecampaign": "2026-11-27",
     "ki": "2026-11-25",
     "website": "2026-11-25",
     "qualitaet": "2026-11-25",
@@ -56,5 +56,6 @@
   },
   "check_report_url": "/musterbericht/technik-check/",
   "werkzeug_ein_kauf_path": "/werkzeuge/ein-kauf/",
-  "indexnow_key": "98d92c1046417ab4f69a33651b7744c9"
+  "indexnow_key": "98d92c1046417ab4f69a33651b7744c9",
+  "case2_url": "https://claudiawitticke.com/"
 }

@@ -46,3 +46,14 @@ await variants(src('iva-hallstatt-see.jpg'), 'avatar', [[44, 44], [88, 88], [128
 await variants(src('case-alexandrafry.png'), 'case-alexandrafry', [[640, 400], [1280, 800]]);
 // Stage 4: the long capture that scrolls inside the browser frame (capture-case.mjs --long).
 await variants(src('case-alexandrafry-long.png'), 'case-alexandrafry-long', [[640, 1067], [1280, 2133]]);
+// Referenz Claudia (25.11.2026, her selection): first screens 1440x900 (cropped in src/images), her logo, her photo «Holzwand».
+for (const n of ['claudia-startseite', 'claudia-overlock', 'claudia-advent']) await variants(src(`${n}.png`), n, [[640, 400], [1280, 800]]);
+await variants(src('claudia-holzwand.webp'), 'claudia-photo', [[56, 56], [112, 112]], { crop: { left: 220, top: 40, width: 460, height: 460 } });
+// The logo keeps its transparency: PNG instead of JPG as the fallback.
+for (const [w, h] of [[135, 48], [270, 96]]) {
+  const base = () => sharp(src('claudia-logo.png')).resize(w, h, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } });
+  for (const [file, p] of [[`claudia-logo-${w}.avif`, base().avif({ quality: 60 })], [`claudia-logo-${w}.webp`, base().webp({ quality: 85 })], [`claudia-logo-${w}.png`, base().png({ compressionLevel: 9 })]]) {
+    await p.toFile(path.join(out, file));
+    console.log(`img: ${file} ${w}x${h} ${((await stat(path.join(out, file))).size / 1024).toFixed(1)} KB`);
+  }
+}

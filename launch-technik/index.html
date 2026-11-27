@@ -914,6 +914,15 @@ html:not(.js) .brief__preview { display: none; }
 .svc-door--link { background: none; padding: 0; }
 .q-claim { margin-top: var(--space-2); font-weight: 700; }
 .pc__sub { margin-top: var(--space-1); font-size: var(--step--1); color: var(--ink-soft); }
+.ref__head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2); }
+.ref__logo img { display: block; width: 135px; height: auto; }
+.quote--claudia figcaption { display: flex; align-items: center; gap: var(--space-2); }
+.quote--claudia figcaption picture { flex: none; width: 56px; height: 56px; display: block; }
+.quote--claudia .quote__photo, .quote__photo { width: 56px; height: 56px; aspect-ratio: 1 / 1; border-radius: var(--radius-pill); object-fit: cover; flex: none; display: block; }
+.hero__quote { margin-top: var(--space-4); max-width: 34rem; }
+.claudia-shots { display: grid; gap: var(--space-4); margin-top: var(--space-4); }
+.claudia-shots img { width: 100%; height: auto; }
+@media (min-width: 800px) { .claudia-shots { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .rl-teaser { display: grid; gap: var(--space-2); max-width: 46rem; margin: var(--space-5) auto 0; padding: var(--space-4); }
 .item__actions { display: grid; justify-items: start; align-content: end; gap: var(--space-1); }
 .item__more { position: relative; z-index: 1; display: inline-flex; align-items: center; min-height: 2.75rem; font-size: var(--step--1); font-weight: 700; }
@@ -1814,7 +1823,34 @@ html:not(.js) .faq__cats { display: none; }
 <section class="svc-sec bg-lav edge" aria-labelledby="svc-example">
 <div class="wrap svc-sec__in">
 <h2 id="svc-example" data-enter="lines">Beispiel</h2>
-<article class="svc-card"><h3>Launch-Technik für eine Online-Kursanbieterin, 2026</h3><p>Anmeldung, E-Mail-Abläufe, Zahlung und Kurszugang.</p></article>
+<article class="svc-case svc-case--claudia">
+<h3>Launch-Technik für die Online-Nähkurse von Claudia Witticke</h3>
+<a class="ext ref__site" href="https://claudiawitticke.com/" target="_blank" rel="noopener">claudiawitticke.com<span class="sr-only"> (öffnet in neuem Tab)</span></a>
+<p>ActiveCampaign- und Zapier-Abläufe für Anmeldung, Launch, Onboarding und Zahlungserinnerungen, Landingpages in Leadpages, Zahlungen mit Stripe, Rechnungen mit Quaderno, Kurszugänge in GoHighLevel, Live-Termine mit Zoom, Kundenservice in GrooveHQ.</p>
+<h4>Was sich verändert hat</h4>
+<ul class="svc-list"><li>Neue Website: vom alten Baukasten auf eigenen Code umgezogen. 112 Seiten gebaut, 58 Kassen auf die neue Domain umgestellt.</li><li>62 Seiten geprüft, 84 Maßnahmen, rund 45 davon sofort umgesetzt. Danach zeigt jede Seite am Handy gleich im ersten Bildschirm einen Kaufbutton.</li><li>Bilder von 135 MB auf 3 MB verkleinert, die Seiten laden schneller.</li><li>Läuft jetzt automatisch: Kurszugang nach der Zahlung, Gutscheincodes, Lieferadressen, Buchbestellungen, Aktionen nach Zeitplan.</li><li>Fehler gefunden, bevor Kundinnen sie bemerkt haben: im Anmeldeformular zum Live-Kurs und in der Gutschein-Automation.</li><li>Ein interaktiver Adventskalender mit 24 Türchen, Videos und Gutscheincode.</li></ul>
+<figure class="quote quote--claudia">
+<blockquote><p>„Nach einer kurzen Einarbeitungszeit hat sich Iva schnell und gründlich in mein Unternehmen eingedacht. Er hat verstanden, wie mein Business funktioniert, wen wir ansprechen und worauf es in unserer Kommunikation ankommt. Aufgaben erledigt er so, wie wir sie besprochen haben, und er hält Termine ein. […] Iva hat unsere Landing Pages überarbeitet und optimiert. […] Außerdem hat er Automatisierungen gebaut, die uns im Alltag Arbeit abnehmen und Personalaufwand sparen.“</p></blockquote>
+<figcaption><picture><source type="image/avif" srcset="/assets/img/claudia-photo-56.avif 1x, /assets/img/claudia-photo-112.avif 2x"><source type="image/webp" srcset="/assets/img/claudia-photo-56.webp 1x, /assets/img/claudia-photo-112.webp 2x"><img class="quote__photo" src="/assets/img/claudia-photo-56.jpg" srcset="/assets/img/claudia-photo-112.jpg 2x" width="56" height="56" loading="lazy" decoding="async" alt=""></picture><span>Claudia Witticke, Online-Nähkurse, claudiawitticke.com</span></figcaption>
+</figure>
+<div class="claudia-shots">
+<div class="browser"><div class="browser__bar" aria-hidden="true"><i></i><i></i><i></i><span>claudiawitticke.com</span></div>
+<picture>
+<source type="image/avif" srcset="/assets/img/claudia-overlock-640.avif 640w, /assets/img/claudia-overlock-1280.avif 1280w" sizes="(min-width: 800px) 20rem, 100vw">
+<source type="image/webp" srcset="/assets/img/claudia-overlock-640.webp 640w, /assets/img/claudia-overlock-1280.webp 1280w" sizes="(min-width: 800px) 20rem, 100vw">
+<img src="/assets/img/claudia-overlock-640.jpg" srcset="/assets/img/claudia-overlock-640.jpg 640w, /assets/img/claudia-overlock-1280.jpg 1280w" sizes="(min-width: 800px) 20rem, 100vw" width="640" height="400" loading="lazy" decoding="async" alt="Kursseite «Overlock rockt!» auf claudiawitticke.com, erster Bildschirm">
+</picture>
+</div>
+<div class="browser"><div class="browser__bar" aria-hidden="true"><i></i><i></i><i></i><span>claudiawitticke.com</span></div>
+<picture>
+<source type="image/avif" srcset="/assets/img/claudia-advent-640.avif 640w, /assets/img/claudia-advent-1280.avif 1280w" sizes="(min-width: 800px) 20rem, 100vw">
+<source type="image/webp" srcset="/assets/img/claudia-advent-640.webp 640w, /assets/img/claudia-advent-1280.webp 1280w" sizes="(min-width: 800px) 20rem, 100vw">
+<img src="/assets/img/claudia-advent-640.jpg" srcset="/assets/img/claudia-advent-640.jpg 640w, /assets/img/claudia-advent-1280.jpg 1280w" sizes="(min-width: 800px) 20rem, 100vw" width="640" height="400" loading="lazy" decoding="async" alt="Anmeldeseite zum Adventskalender auf claudiawitticke.com, erster Bildschirm">
+</picture>
+</div>
+</div>
+<p class="ref__honest">Zusammenarbeit 2026.</p>
+</article>
 </div>
 </section>
 <section class="svc-sec bg-peach edge" aria-labelledby="svc-faq">

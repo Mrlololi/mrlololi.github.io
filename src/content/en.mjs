@@ -390,9 +390,30 @@ export default {
       },
     },
     case2: {
-      // Stage 7b-S section 8, UPDATE 19.11.2026: neutral (see de.mjs).
-      title: 'Launch tech for an online course creator, 2026',
-      text: 'Sign-up, email flows, payment and course access.',
+      // Referenz Claudia Witticke (25.11.2026, see de.mjs). Her quotes stay German with a faithful translation.
+      domain: 'claudiawitticke.com',
+      tag: 'Online sewing courses',
+      logoAlt: 'Logo Claudia Witticke',
+      title: 'Launch tech for Claudia Witticke\'s online sewing courses',
+      text: 'ActiveCampaign and Zapier flows for sign-up, launch, onboarding and payment reminders, landing pages in Leadpages, payments with Stripe, invoices with Quaderno, course access in GoHighLevel, live sessions with Zoom, customer service in GrooveHQ.',
+      tools: ['ActiveCampaign', 'Zapier', 'Leadpages', 'Stripe', 'Quaderno', 'Zoom', 'GrooveHQ'],
+      shotAlt: 'Home page of claudiawitticke.com, first screen',
+      honest: 'Work in 2026.',
+      photoAlt: 'Claudia Witticke',
+      quote: { lang: 'de', text: 'Er hat verstanden, wie mein Business funktioniert, wen wir ansprechen und worauf es in unserer Kommunikation ankommt. […] Iva hat unsere Landing Pages überarbeitet und optimiert. Die Conversion Rate ist dadurch um 70 bis 80 Prozent gestiegen.', translation: 'He understood how my business works, who we address and what matters in our communication. […] Iva revised and optimised our landing pages. As a result, the conversion rate rose by 70 to 80 percent.', source: 'Claudia Witticke, Online-Nähkurse, claudiawitticke.com' },
+      heroQuote: { lang: 'de', text: 'Iva ist ein angenehmer und lösungsorientierter Partner. Wer technisches Know-how mit Mitdenken verbinden möchte, ist bei ihm gut aufgehoben.', translation: 'Iva is a pleasant and solution-oriented partner. Anyone who wants technical know-how combined with thinking along is in good hands with him.', source: 'Claudia Witticke, Online-Nähkurse' },
+      acQuote: { lang: 'de', text: 'Außerdem hat er Automatisierungen gebaut, die uns im Alltag Arbeit abnehmen und Personalaufwand sparen.', translation: 'He also built automations that take work off our hands day to day and save staff time.', source: 'Claudia Witticke, Online-Nähkurse, claudiawitticke.com' },
+      changesTitle: 'What changed',
+      changes: [
+        'New website: moved from the old site builder to own code. 112 pages built, 58 checkouts switched to the new domain.',
+        '62 pages checked, 84 measures, about 45 of them carried out right away. Since then every page shows a buy button in the first screen on a phone.',
+        'Images reduced from 135 MB to 3 MB, the pages load faster.',
+        'Now running automatically: course access after payment, voucher codes, delivery addresses, book orders, campaigns on a schedule.',
+        'Errors found before customers noticed them: in the sign-up form for the live course and in the voucher automation.',
+        'An interactive advent calendar with 24 doors, videos and a voucher code.',
+      ],
+      longQuote: { lang: 'de', text: 'Nach einer kurzen Einarbeitungszeit hat sich Iva schnell und gründlich in mein Unternehmen eingedacht. Er hat verstanden, wie mein Business funktioniert, wen wir ansprechen und worauf es in unserer Kommunikation ankommt. Aufgaben erledigt er so, wie wir sie besprochen haben, und er hält Termine ein. […] Iva hat unsere Landing Pages überarbeitet und optimiert. […] Außerdem hat er Automatisierungen gebaut, die uns im Alltag Arbeit abnehmen und Personalaufwand sparen.', translation: 'After a short familiarisation period, Iva got into my business quickly and thoroughly. He understood how my business works, who we address and what matters in our communication. He completes tasks the way we discussed them, and he meets deadlines. […] Iva revised and optimised our landing pages. […] He also built automations that take work off our hands day to day and save staff time.', source: 'Claudia Witticke, Online-Nähkurse, claudiawitticke.com' },
+      shots: [['claudia-overlock', 'Course page «Overlock rockt!» on claudiawitticke.com, first screen'], ['claudia-advent', 'Advent calendar sign-up page on claudiawitticke.com, first screen']],
     },
     case3: {
       title: 'E-commerce for two German online shops, two and a half years',
@@ -417,7 +438,7 @@ export default {
     // Stage 6: two short paragraphs (shortened from the three before, nothing new).
     paragraphs: [
       "I'm Iva Tsatskrialashvili (he/him) and I live in Graz, Austria. I studied information technology and now study marketing and sales part-time at FH CAMPUS 02. So I understand both: the funnel and the API behind it.",
-      'Since 2023 I have worked for clients in Germany, Switzerland and Austria, first for online shops, in 2026 also for an online course creator. My business is registered in Austria: proper invoices and one person who is responsible.',
+      'Since 2023 I have worked for clients in Germany, Switzerland and Austria, first for online shops, in 2026 also for the online course creator Claudia Witticke. My business is registered in Austria: proper invoices and one person who is responsible.',
     ],
     tools: 'ActiveCampaign, Zapier, Make, Google Apps Script, Leadpages, WordPress, Wix, Shopware, Stripe, Quaderno, GrooveHQ, Canva, HTML, CSS, JavaScript, Python, SQL',
     path: ['Tbilisi', 'Sales for German-speaking markets since 2020', 'Erasmus+ in 11 countries', 'Graz since 2025'],

@@ -108,18 +108,18 @@ test('7. internal links: the home body links all five service pages', () => {
   assert.ok(body(by['en/index.html']).includes('href="/en/one-page-website/"'));
 });
 
-// Section 8, UPDATE 19.11.2026 (Iva, the client asked): neutral until her ok. The named version is in zitat-claudia.
-test('8. clients: case2 neutral (no name, no link, no «seit April», no «laufend»); case1 with its site link', () => {
+// Section 8, UPDATE 25.11.2026: Claudia Witticke approved her named reference (docs/PROMPT_Referenz_Claudia_live_2026-11-25.md).
+test('8. clients: case2 named Claudia Witticke (no «seit April», no «laufend»); case1 with its site link', () => {
   for (const [f, h] of Object.entries(by)) {
-    for (const w of ['seit April', 'since April', 'Laufende Zusammenarbeit', 'Ongoing work', 'witticke', 'Name nicht genannt', 'name not disclosed']) assert.ok(!h.toLowerCase().includes(w.toLowerCase()), `${f}: ${w}`);
+    for (const w of ['seit April', 'since April', 'Laufende Zusammenarbeit', 'Ongoing work', 'Name nicht genannt', 'name not disclosed']) assert.ok(!h.toLowerCase().includes(w.toLowerCase()), `${f}: ${w}`);
   }
-  assert.ok(by['index.html'].includes('<h3>Launch-Technik für eine Online-Kursanbieterin, 2026</h3>\n<p>'));
-  assert.ok(by['en/index.html'].includes('<h3>Launch tech for an online course creator, 2026</h3>'));
+  assert.ok(by['index.html'].includes('<h3>Launch-Technik für die Online-Nähkurse von Claudia Witticke</h3>'));
+  assert.ok(by['en/index.html'].includes("<h3>Launch tech for Claudia Witticke&#39;s online sewing courses</h3>") || by['en/index.html'].includes("<h3>Launch tech for Claudia Witticke's online sewing courses</h3>"));
   assert.ok(by['index.html'].includes('<p class="ref__honest">Zusammenarbeit 2026.</p>') && by['en/index.html'].includes('<p class="ref__honest">Work in 2026.</p>'));
-  assert.ok(by['index.html'].includes('zuerst für Onlineshops, 2026 auch für eine Online-Kursanbieterin.'));
-  assert.ok(by['en/index.html'].includes('first for online shops, in 2026 also for an online course creator.'));
+  assert.ok(by['index.html'].includes('zuerst für Onlineshops, 2026 auch für die Online-Kursanbieterin Claudia Witticke.'));
+  assert.ok(by['en/index.html'].includes('first for online shops, in 2026 also for the online course creator Claudia Witticke.'));
   assert.ok(by['index.html'].includes('<h3>Website für eine Executive-Coachin in Bern</h3>\n<a class="ext ref__site" href='));
   assert.ok(!Object.values(by).some((h) => h.includes('<h3>undefined</h3>')), 'every case title is there');
-  assert.equal(config.case2_url, undefined);
+  assert.equal(config.case2_url, 'https://claudiawitticke.com/');
   assert.equal(de.refs.study.title, 'Fallbeispiel: Online-Kursanbieterin');
 });
