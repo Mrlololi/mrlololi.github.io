@@ -805,11 +805,17 @@ export default {
       note: 'Zitate aus schriftlichen Referenzen, Original auf Anfrage.',
     },
     projects: {
-      h2: 'Eigene *Projekte*',
-      line: 'Selbst gebaut, keine Kundenarbeit.',
+      // R5 «Zum Ausprobieren» (docs/PROMPT_R5_Zum_Ausprobieren_2026-11-25.md)
+      h2: 'Zum *Ausprobieren*',
+      line: 'Drei Dinge, die Sie selbst ansehen können. Alle mit Beispieldaten.',
       shows: 'Was es zeigt:',
       play: 'Spielwiese und Lernprojekte',
       all: 'Weitere Projekte', // R3: Language Starter and GeoAPP are reached from there
+      tryItems: [
+        { key: 'ein-kauf', img: 'preview-ein-kauf', w: 400, h: 250, bar: 'mrlololi.com/werkzeuge/ein-kauf', href: '/werkzeuge/ein-kauf/', name: 'Ein Kauf: Was, wenn ein Teil fehlt?', text: 'Schalten Sie einen Schritt aus und sehen Sie, was Ihre Käuferin erlebt.', alt: 'Vorschau: Ein Kauf mit ausgeschaltetem Schritt Zugang und Hinweis fehlt' },
+        { key: 'musterbericht', img: 'preview-musterbericht', w: 400, h: 250, bar: 'mrlololi.com/musterbericht', href: '/musterbericht/technik-check/', name: 'So sieht ein Technik-Check aus', text: 'Ein Beispielbericht mit 12 Befunden für eine erfundene Online-Schule.', alt: 'Vorschau: Musterbericht Technik-Check mit Hinweis Fiktives Beispiel und Übersicht' },
+        { key: 'ki', img: 'project-ki', w: 400, h: 300, bar: 'mrlololi.com/Webprojekte/ki', external: true, path: 'ki-kundenservice/', name: 'KI im Kundenservice', text: 'KI-Entwürfe für Kundenmails. Ein Mensch gibt frei, nichts geht automatisch raus.', alt: 'Vorschau: KI im Kundenservice mit Kundenmail und Antwortentwurf' },
+      ],
       // Shortened from the «Was es zeigt» lines on mrlololi.com/Webprojekte/.
       items: [
         { key: 'ki', name: 'KI im Kundenservice', path: 'ki-kundenservice/', shows: 'KI-Entwürfe für Kundenmails. Ein Mensch gibt frei, nichts geht automatisch raus.' },

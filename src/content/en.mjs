@@ -755,11 +755,17 @@ export default {
       note: 'Quotes from written references, originals on request.',
     },
     projects: {
-      h2: 'Side *projects*',
-      line: 'Built by me, not client work.',
+      // R5 «Zum Ausprobieren» (docs/PROMPT_R5_Zum_Ausprobieren_2026-11-25.md)
+      h2: 'Try it *yourself*',
+      line: 'Three things you can look at yourself. All with sample data.',
       shows: 'What it shows:',
       play: 'Playground and learning projects',
       all: 'More projects', // R3
+      tryItems: [
+        { key: 'ein-kauf', img: 'preview-ein-kauf', w: 400, h: 250, bar: 'mrlololi.com/werkzeuge/ein-kauf', href: '/werkzeuge/ein-kauf/', name: 'Ein Kauf: What if one part is missing? (in German)', text: 'Switch off one step and see what your buyer experiences.', alt: 'Preview: Ein Kauf with step Zugang switched off' },
+        { key: 'musterbericht', img: 'preview-musterbericht', w: 400, h: 250, bar: 'mrlololi.com/musterbericht', href: '/musterbericht/technik-check/', name: 'What a tech check looks like (in German)', text: 'A sample report with 12 findings for a fictional online school.', alt: 'Preview: Sample tech check report with fictional example notice' },
+        { key: 'ki', img: 'project-ki', w: 400, h: 300, bar: 'mrlololi.com/Webprojekte/ki', external: true, path: 'ki-kundenservice/', name: 'AI in customer service (in German)', text: 'AI drafts for customer emails. A person approves, nothing is sent automatically.', alt: 'Preview: AI in customer service reply draft' },
+      ],
       // Shortened from the «What it shows» lines on mrlololi.com/Webprojekte/.
       items: [
         { key: 'ki', name: 'AI in customer service (in German)', path: 'ki-kundenservice/', shows: 'AI drafts for customer emails. A person approves, nothing is sent automatically.' },

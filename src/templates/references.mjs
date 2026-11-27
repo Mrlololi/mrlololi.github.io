@@ -106,37 +106,32 @@ ${config.case_study ? study(t, config.case_study) : ''}
 </section>`;
 }
 
-// Stage 6, «Eigene Projekte»: a compact row. Each card is one link (no links inside it) with a 4:3
-// screenshot and one «Was es zeigt» line; «Alle Webprojekte» leads to the overview. Webprojekte
-// links open in a new tab and say so (as everywhere since the Fixes of 21.10.2026).
-// Stage 6h (5.11.2026): the KI project is the main card; GeoAPP and Language Starter follow lighter
-// under «Spielwiese und Lernprojekte». Stage 7a: KittyCats is gone from the sources (offline since 5.11.).
+// R5 «Zum Ausprobieren» (docs/PROMPT_R5_Zum_Ausprobieren_2026-11-25.md): three clickable cards in a row on desktop
+// (stacked on phones), each with a static preview in the existing CSS browser frame. «Weitere Projekte» below.
 export function projects(t, config) {
   const p = t.s6.projects;
-  const pic = (it, sizes) => `<picture><source type="image/avif" srcset="/assets/img/project-${it.key}-400.avif 400w, /assets/img/project-${it.key}-800.avif 800w" sizes="${sizes}"><source type="image/webp" srcset="/assets/img/project-${it.key}-400.webp 400w, /assets/img/project-${it.key}-800.webp 800w" sizes="${sizes}"><img src="/assets/img/project-${it.key}-400.jpg" srcset="/assets/img/project-${it.key}-400.jpg 400w, /assets/img/project-${it.key}-800.jpg 800w" sizes="${sizes}" width="400" height="300" loading="lazy" decoding="async" alt=""></picture>`;
-  const link = (it, cls, sizes) => `<a class="${cls} card" href="${config.projects_url}${it.path}" target="_blank" rel="noopener">
-${pic(it, sizes)}
+  const sizes = '(min-width: 900px) 22rem, 92vw';
+  const card = (it) => {
+    const href = it.external ? `${config.projects_url}${it.path}` : it.href;
+    const ext = it.external ? ` target="_blank" rel="noopener"` : '';
+    const sr = it.external ? `<span class="sr-only"> ${esc(t.ui.newTab)}</span>` : '';
+    const pic = `<div class="browser"><div class="browser__bar" aria-hidden="true"><i></i><i></i><i></i><span>${esc(it.bar)}</span></div><div class="browser__view"><picture><source type="image/avif" srcset="/assets/img/${it.img}-400.avif 400w, /assets/img/${it.img}-800.avif 800w" sizes="${sizes}"><source type="image/webp" srcset="/assets/img/${it.img}-400.webp 400w, /assets/img/${it.img}-800.webp 800w" sizes="${sizes}"><img src="/assets/img/${it.img}-400.jpg" srcset="/assets/img/${it.img}-400.jpg 400w, /assets/img/${it.img}-800.jpg 800w" sizes="${sizes}" width="${it.w}" height="${it.h}" loading="lazy" decoding="async" alt="${esc(it.alt)}"></picture></div></div>`;
+    return `<li class="proj proj--try"><a class="proj__link proj__link--try card" href="${esc(href)}"${ext}>
+${pic}
 <span class="proj__name">${esc(it.name)}</span>
-<span class="proj__shows"><span class="proj__label">${esc(p.shows)}</span> ${esc(it.shows)}</span><span class="sr-only"> ${esc(t.ui.newTab)}</span>
-</a>`;
-  const home = p.items.filter((it) => it.home !== false);
-  const [main, ...play] = home;
+<span class="proj__shows">${esc(it.text)}</span>${sr}
+</a></li>`;
+  };
   return `<section class="section projects bg-lav edge" id="projects" aria-labelledby="projects-title">
 <div class="wrap">
 <div class="projects__head">
 <div><h2 id="projects-title" data-enter="lines">${accent(p.h2)}</h2>
 <p class="projects__line">${esc(p.line)}</p></div>
-<p class="projects__all">${extLink(config.projects_url, esc(p.all), t)}</p>
 </div>
-<div class="proj proj--main" data-enter>
-${link(main, 'proj__link proj__link--main', '(min-width: 760px) 24rem, 90vw')}
-</div>
-${play.length ? `<h3 class="projects__play">${esc(p.play)}</h3>
-<ul class="projs projs--play" role="list" data-enter="stagger">
-${play.map((it) => `<li class="proj">
-${link(it, 'proj__link', '(min-width: 560px) 16rem, 90vw')}
-</li>`).join('\n')}
-</ul>` : ''}
+<ul class="projs projs--try" role="list" data-enter="stagger">
+${p.tryItems.map(card).join('\n')}
+</ul>
+<p class="projects__all projects__all--below">${extLink(config.projects_url, esc(p.all), t)}</p>
 </div>
 </section>`;
 }

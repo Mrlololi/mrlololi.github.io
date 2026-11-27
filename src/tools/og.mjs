@@ -1,7 +1,8 @@
 // Renders og-image-de.png and og-image-en.png (1200x630) from src/templates/og.mjs, plus a 2x
 // source of each for Iva in ../docs/brand-export/ (not deployed).
-import { mkdir } from 'node:fs/promises';
+import { mkdir, stat } from 'node:fs/promises';
 import path from 'node:path';
+import sharp from 'sharp';
 import { chromium, repoRoot } from '../qa/browsers.mjs';
 import { startServer } from '../qa/serve.mjs';
 import { ogHtml, ogPageHtml, ogToolHtml, ogReportHtml } from '../templates/og.mjs';
@@ -36,6 +37,39 @@ const fontsReady = (page) => page.evaluate(() => Promise.all(['680 60px "Bricola
   await page.screenshot({ path: path.join(repoRoot, 'assets/og/de-musterbericht.png') });
   console.log('og: assets/og/de-musterbericht.png');
   await page.close();
+}
+// R5 «Zum Ausprobieren»: Playwright previews of Ein Kauf (step 5 off) and Musterbericht (top), AVIF/WebP/JPG 400 & 800.
+async function savePreview(pngPath, name) {
+  const out = path.join(repoRoot, 'assets/img');
+  await mkdir(out, { recursive: true });
+  for (const [w, h] of [[400, 250], [800, 500]]) {
+    const base = () => sharp(pngPath).resize(w, h, { fit: 'cover', position: 'top' });
+    for (const [ext, pipe] of [['avif', base().avif({ quality: 55, effort: 6 })], ['webp', base().webp({ quality: 78 })], ['jpg', base().jpeg({ quality: 80, mozjpeg: true })]]) {
+      const f = path.join(out, `${name}-${w}.${ext}`);
+      await pipe.toFile(f);
+      console.log(`preview: ${name}-${w}.${ext} ${((await stat(f)).size / 1024).toFixed(1)} KB`);
+    }
+  }
+}
+{
+  const p1 = await browser.newPage({ viewport: { width: 1040, height: 650 }, reducedMotion: 'reduce' });
+  await p1.goto(`${server.url}/werkzeuge/ein-kauf/`, { waitUntil: 'load' });
+  await p1.waitForSelector('.ek-switch[aria-pressed="true"]', { timeout: 10000 });
+  await p1.locator('.ek-tool').scrollIntoViewIfNeeded();
+  await p1.waitForTimeout(400);
+  const src1 = path.join(repoRoot, 'src/images/preview-ein-kauf.png');
+  await p1.screenshot({ path: src1 });
+  await p1.close();
+  await savePreview(src1, 'preview-ein-kauf');
+
+  const p2 = await browser.newPage({ viewport: { width: 1040, height: 650 }, reducedMotion: 'reduce' });
+  await p2.goto(`${server.url}/musterbericht/technik-check/`, { waitUntil: 'load' });
+  await p2.evaluate(() => { const h = document.querySelector('header'); if (h) h.style.display = 'none'; window.scrollTo(0, 40); });
+  await p2.waitForTimeout(300);
+  const src2 = path.join(repoRoot, 'src/images/preview-musterbericht.png');
+  await p2.screenshot({ path: src2 });
+  await p2.close();
+  await savePreview(src2, 'preview-musterbericht');
 }
 if (process.argv.includes('--only-tools')) { await browser.close(); await server.close(); process.exit(0); }
 // Stage 5: one card per service page, assets/og/<lang>-<key>.png (--only-pages skips the home cards).

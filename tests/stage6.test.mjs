@@ -156,24 +156,19 @@ test('process right under the prices, then the CTA strip; references with their 
   assert.ok(!/class="ctastrip"/.test(refs), 'Stage 6f: the second CTA band is gone');
 });
 
-test('projects: four cards, one link each (no nested links), 4:3 screenshots, KI first', () => {
+test('projects: three «Zum Ausprobieren» cards (R5), one link each (no nested links), browser previews', () => {
   const p = deHome.slice(deHome.indexOf('id="projects"'), deHome.indexOf('id="faq"'));
-  // Stage 6h: the KI project as the main card, GeoAPP and Language Starter lighter below, no KittyCats.
-  // Stage 7b: the main card enters (data-enter).
-  const cards = p.match(/<(?:li|div) class="proj(?: proj--main)?"(?: data-enter)?>[\s\S]*?<\/(?:li|div)>/g);
-  assert.match(p, /<div class="proj proj--main" data-enter>/);
-  // R3 (December release): Language Starter and GeoAPP left home; «Weitere Projekte» leads to /Webprojekte/.
+  const cards = p.match(/<li class="proj proj--try">[\s\S]*?<\/li>/g) || [];
   assert.ok(!p.includes('projs--play') && !p.includes('Spielwiese und Lernprojekte'));
-  assert.equal(cards.length, 1);
+  assert.equal(cards.length, 3);
   assert.ok(!/KittyCats|Language Starter|GeoAPP/.test(p));
   assert.ok(p.includes('>Weitere Projekte<'));
-  assert.match(cards[0], /KI im Kundenservice/);
+  assert.match(cards[2], /KI im Kundenservice/);
   for (const c of cards) {
     assert.equal((c.match(/<a /g) || []).length, 1, 'one link per card');
-    assert.match(c, /width="400" height="300"/);
-    assert.match(c, /Was es zeigt:/);
+    assert.match(c, /class="browser"/);
   }
-  assert.match(p, /Selbst gebaut, keine Kundenarbeit\./);
+  assert.match(p, /Alle mit Beispieldaten\./);
   assert.match(p, /Weitere Projekte/); // R3
 });
 
