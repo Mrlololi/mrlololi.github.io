@@ -1,6 +1,6 @@
 import { claudiaQuote } from './references.mjs';
 import { esc, headline } from './util.mjs';
-import { heroMascots } from './mascots.mjs';
+import { heroMascots, heroTrio } from './mascots.mjs';
 
 // Stage 6c: one pause button for every looping demo (WCAG 2.2.2), a secondary button with icon and
 // text, at least 44 px: «Pause» / «Abspielen», under reduced motion «Nächster Schritt». Its name for
@@ -46,7 +46,8 @@ export function hero(t, config) {
 <p class="hero__micro small">${esc(h.micro)}</p>
 <a class="text-link" href="#pricing">${esc(h.secondary)}</a>
 </div>
-<p class="hero__proof">${esc(h.trust)}</p>${h.report && config?.check_report_url ? `
+<p class="hero__proof">${esc(h.trust)}</p>
+${heroTrio()}${h.report && config?.check_report_url ? `
 <p class="hero__report"><a class="text-link" href="${esc(config.check_report_url)}">${esc(h.report)}</a></p>` : ''}${t.refs?.case2?.heroQuote ? `\n${claudiaQuote(t, t.refs.case2, t.refs.case2.heroQuote, 'hero__quote')}` : ''}
 </div>
 <div class="hero__visual">

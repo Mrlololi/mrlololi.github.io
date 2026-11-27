@@ -40,7 +40,8 @@ test('1. spam and ActiveCampaign: Quick-Fix first, then the Technik-Check with t
 test('2. home hero: «Preise ansehen» stays, one text link under the trust line (DE; EN marked as German)', () => {
   const h = by['index.html'];
   assert.ok(h.includes('<p class="hero__proof">'));
-  assert.ok(h.includes(`</p>\n<p class="hero__report"><a class="text-link" href="${R}">So sieht ein Technik-Bericht aus (Beispiel)</a></p>`));
+  assert.ok(h.includes(`<p class="hero__report"><a class="text-link" href="${R}">So sieht ein Technik-Bericht aus (Beispiel)</a></p>`));
+  assert.ok(h.indexOf('<p class="hero__report">') > h.indexOf('<p class="hero__proof">'));
   assert.ok(h.includes('href="#pricing">Preise ansehen</a>') || h.includes('href="#pricing">'), 'prices link stays');
   assert.ok(by['en/index.html'].includes(`<p class="hero__report"><a class="text-link" href="${R}">Sample report (in German)</a></p>`));
 });

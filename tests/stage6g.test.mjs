@@ -55,9 +55,14 @@ test('9. new video renders published, the old ones only local (_alt ignored)', (
   assert.ok(!de.s6.video.lines.some((l) => /hunderte/.test(l)));
 });
 
-test('4. every mascot reacts: lines DE/EN, one group button each (mascots.js)', () => {
-  for (const t of [de, en]) for (const k of ['logik', 'loesung', 'live']) assert.ok(t.brand.lines[k].length >= 3 && t.brand.lines[k].length <= 5, `${t.lang} ${k}`);
-  for (const f of ['index.html', 'en/index.html', '404.html', 'danke/index.html', 'en/thanks/index.html']) assert.match(byFile[f], /<script type="application\/json" id="mascot-say">/, f);
+test('4. every mascot reacts silently: lines archived under _altLines, one group button each (mascots.js, R7)', () => {
+  for (const t of [de, en]) for (const k of ['logik', 'loesung', 'live']) assert.ok(t.brand._altLines[k].length >= 3 && t.brand._altLines[k].length <= 5, `${t.lang} ${k}`);
+  for (const f of ['index.html', 'en/index.html', '404.html', 'danke/index.html', 'en/thanks/index.html']) {
+    const m = byFile[f].match(/<script type="application\/json" id="mascot-say">([\s\S]*?)<\/script>/);
+    assert.ok(m, f);
+    const data = JSON.parse(m[1]);
+    assert.equal(data.lines, undefined, `${f}: no speech lines emitted`);
+  }
   const m = js('mascots.js') + js('kit/mascot-react.js');
   assert.match(m, /const GROUPS = '\.mscene, \.footer-mascots, \.nf__scene';/);
   assert.match(m, /g\.setAttribute\('role', 'button'\);/);

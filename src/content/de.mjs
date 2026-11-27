@@ -55,10 +55,10 @@ export default {
     example: 'Beispiel',
   },
 
-  // Stage 6: four items, «Projekte» is the compact row of own projects.
+  // R7 (25.11.2026): «Zum Ausprobieren» matches the R5 section heading.
   nav: [
     { label: 'Leistungen', href: '#services' },
-    { label: 'Projekte', href: '#projects' },
+    { label: 'Zum Ausprobieren', href: '#projects' },
     { label: 'Über mich', href: '#about' },
     { label: 'Kontakt', href: '#contact' },
   ],
@@ -859,7 +859,8 @@ export default {
     pokeOne: '{name} winkt',
     pokeMany: '{names} winken',
     and: 'und',
-    lines: {
+    // R7 (25.11.2026): mascots stay silent; speech lines kept archived under _altLines (nothing deleted).
+    _altLines: {
       logik: ['Erst denken, dann bauen.', 'Ich prüfe das kurz.', 'Jede Anmeldung zählt.', 'Klingt logisch, oder?'],
       loesung: ['Das kriegen wir hin.', 'Schraube fest, läuft.', 'Einmal testen, bitte.', 'Gelöst!'],
       live: ['Hallo!', 'Kurs offen!', 'Alles läuft.', 'Schön, dass Sie da sind.'],

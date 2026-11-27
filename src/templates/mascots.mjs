@@ -21,9 +21,15 @@ export function heroMascots(t, node) {
 }
 
 // Footer: all three wave next to the dark lockup (home) or in a slim row (every other page, Stage 7a).
-// With JS the group is one button (assets/js/kit/mascot-react.js) with the footer lines.
+// With JS the group is one button (assets/js/kit/mascot-react.js).
 export function footerMascots() {
   return `<span class="footer-mascots" data-say="footer" aria-hidden="true">${MASCOTS.map((m, i) => mascotSvg(i, 'wave', `class="mascot mascot--on-dark" data-base="wave" focusable="false"`)).join('')}</span>`;
+}
+
+// R7 (25.11.2026): small quiet row of the three mascots on phones (<800 px) in the first screen of the
+// home page (DE and EN). Same figures as the footer trio, static on load, silent reaction on tap/Enter.
+export function heroTrio() {
+  return `<span class="mscene hero__trio" data-scene="hero-trio" aria-hidden="true">${MASCOTS.map((m, i) => mascotSvg(i, 'wave', 'class="mascot" data-base="wave" focusable="false"', '-ht')).join('')}</span>`;
 }
 
 // Stage 4 scenes (8 more places on the home page): small decorative groups next to content. The

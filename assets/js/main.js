@@ -9,9 +9,7 @@ import { initEnter } from './kit/enter.js';
 const root = document.documentElement;
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
 const locale = root.lang === 'de' ? 'de-AT' : 'en-GB';
-const CONDITIONS = { isDesktop: '(min-width: 800px)' };
 
-initNav();
 initHeader();
 initFlowNodes();
 initHeroLine();
@@ -164,26 +162,6 @@ function initFlowNodes() {
     b.addEventListener('click', () => show(i));
     b.addEventListener('focus', () => show(i));
   });
-}
-
-/* ---------- Navigation: disclosure menu below 800 px ---------- */
-function initNav() {
-  const nav = document.querySelector('.site-nav');
-  if (!nav) return;
-  const button = nav.querySelector('.site-nav__toggle');
-  const list = nav.querySelector('.site-nav__list');
-  const setOpen = (open) => {
-    nav.classList.toggle('is-open', open);
-    button.setAttribute('aria-expanded', String(open));
-  };
-  button.hidden = false;
-  root.classList.add('nav-ready');
-  button.addEventListener('click', () => setOpen(button.getAttribute('aria-expanded') !== 'true'));
-  list.addEventListener('click', (e) => { if (e.target.closest('a')) setOpen(false); });
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && nav.classList.contains('is-open')) { setOpen(false); button.focus(); }
-  });
-  matchMedia(CONDITIONS.isDesktop).addEventListener('change', (e) => { if (e.matches) setOpen(false); });
 }
 
 /* ---------- Header: hides on scroll down, returns on scroll up (CSS transition) ---------- */

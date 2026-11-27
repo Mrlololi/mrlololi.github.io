@@ -96,7 +96,7 @@ ${top}
 ${main}
 </main>
 ${bottom}
-<script type="application/json" id="mascot-say">${JSON.stringify({ one: t.brand.pokeOne, many: t.brand.pokeMany, and: t.brand.and, lines: t.brand.lines }).replace(/</g, '\\u003c')}</script>
+<script type="application/json" id="mascot-say">${JSON.stringify({ one: t.brand.pokeOne, many: t.brand.pokeMany, and: t.brand.and }).replace(/</g, '\\u003c')}</script>
 </body>
 </html>
 `;
@@ -108,6 +108,11 @@ ${bottom}
 const motionIcon = '<svg class="motion-toggle__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path class="motion-toggle__pause" d="M9 6v12M15 6v12"/><path class="motion-toggle__play" d="M8 5.5v13l10.5-6.5z"/></svg>';
 const motionToggle = (t, cls = '') => `<button class="motion-toggle btn btn--secondary btn--sm${cls ? ` ${cls}` : ''}" type="button" aria-pressed="false" data-pause-label="${esc(t.ui.motionPause)}" data-play-label="${esc(t.ui.motionPlay)}">${motionIcon}<span class="motion-toggle__text">${esc(t.ui.motionPause)}</span></button>`;
 
+// R7 (25.11.2026): tiny inline script right after </header> wires the phone disclosure menu before
+// main.js loads, so the very first tap opens at the top (never jumps to #footer-nav). Focus stays
+// inside the open menu (Tab/Shift+Tab), Escape closes it, and the header stays visible while open.
+const navScript = '<script>(()=>{const h=document.querySelector("[data-header]"),n=h&&h.querySelector(".site-nav"),b=n&&n.querySelector(".site-nav__toggle"),l=n&&n.querySelector(".site-nav__list");if(!b||!l)return;const s=o=>{n.classList.toggle("is-open",o);b.setAttribute("aria-expanded",String(o));if(o)h.classList.remove("is-hidden");};n.dataset.navInit="1";b.addEventListener("click",()=>s(b.getAttribute("aria-expanded")!=="true"));l.addEventListener("click",e=>{if(e.target.closest("a"))s(false);});document.addEventListener("click",e=>{if(n.classList.contains("is-open")&&!h.contains(e.target))s(false);});document.addEventListener("keydown",e=>{if(!n.classList.contains("is-open"))return;if(e.key==="Escape"){s(false);b.focus();return;}if(e.key==="Tab"){const f=[b,...l.querySelectorAll("a,button")].filter(x=>!x.hidden&&x.offsetParent!==null);if(!f.length)return;const i=f.indexOf(document.activeElement);if(e.shiftKey&&i<=0){e.preventDefault();f[f.length-1].focus();}else if(!e.shiftKey&&(i<0||i>=f.length-1)){e.preventDefault();f[0].focus();}}});matchMedia("(min-width: 800px)").addEventListener("change",e=>{if(e.matches)s(false);});})();</script>';
+
 // Stage 4: variant «light» (warm white bar with blur) or «halo» (pink bar, white ring around each ball).
 function header({ t, page, isHome, variant }) {
   const base = isHome ? '' : t.paths.home;
@@ -117,16 +122,16 @@ function header({ t, page, isHome, variant }) {
 <div class="site-header__in">
 <a class="wordmark" href="${t.paths.home}">${lockup({ kind: 'header', class: 'logo', wordId: 'mrl-word', halo: variant === 'halo' })}<span class="sr-only">mrlololi ${esc(t.ui.wordmarkName)}</span></a>
 <nav class="site-nav" aria-label="${esc(t.ui.navLabel)}">
-<a class="site-nav__jump" href="#footer-nav">${esc(t.ui.menu)}</a>
-${motionToggle(t, 'motion-toggle--head')}
-<button class="site-nav__toggle" type="button" aria-expanded="false" aria-controls="site-nav-list" hidden>${esc(t.ui.menu)}</button>
+<noscript><a class="site-nav__jump" href="#footer-nav">${esc(t.ui.menu)}</a></noscript>
+<button class="site-nav__toggle" type="button" aria-expanded="false" aria-controls="site-nav-list">${esc(t.ui.menu)}</button>
 <ul class="site-nav__list" id="site-nav-list">
 ${items}
 <li class="site-nav__lang"><a href="${altPath}" hreflang="${t.ui.langCode}" lang="${t.ui.langCode}" aria-label="${esc(t.ui.langName)}">${esc(t.ui.langShort)}</a></li>
+<li class="site-nav__motion">${motionToggle(t, 'motion-toggle--head')}</li>
 </ul>
 </nav>
 </div>
-</header>`;
+</header>${navScript}`;
 }
 
 // Home pages: the dark lockup with the live tagline (EB Garamond italic, initials in the

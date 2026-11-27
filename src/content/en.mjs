@@ -53,10 +53,10 @@ export default {
     example: 'Example',
   },
 
-  // Stage 6: four items, «Projects» is the compact row of side projects.
+  // R7 (25.11.2026): «Try it yourself» matches the R5 section heading.
   nav: [
     { label: 'Services', href: '#services' },
-    { label: 'Projects', href: '#projects' },
+    { label: 'Try it yourself', href: '#projects' },
     { label: 'About', href: '#about' },
     { label: 'Contact', href: '#contact' },
   ],
@@ -806,7 +806,8 @@ export default {
     pokeOne: '{name} waves',
     pokeMany: '{names} wave',
     and: 'and',
-    lines: {
+    // R7 (25.11.2026): mascots stay silent; speech lines kept archived under _altLines (nothing deleted).
+    _altLines: {
       logik: ['Think first, then build.', 'Let me check that.', 'Every sign-up counts.', 'Sounds logical, right?'],
       loesung: ['We can fix that.', 'Bolt tight, it runs.', 'One more test, please.', 'Sorted!'],
       live: ['Hello!', 'Course open!', 'All running.', 'Nice to see you.'],

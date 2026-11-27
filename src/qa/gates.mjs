@@ -132,22 +132,24 @@ export async function runGates({ which = 'all', quick = false, log = console.log
           // step is off (Iva 18.11.2026, no empty hole); a hidden group can be neither clicked nor focused.
           const groups = page.locator('[data-poke][role="button"]:visible');
           const n = await groups.count();
+          let anyBubble = await page.evaluate(() => document.querySelectorAll('.mbubble').length);
           for (const i of [...new Set([0, n - 1])].filter((x) => x >= 0 && x < n)) {
             for (const how of ['click', 'Enter']) {
               const g = groups.nth(i);
               await g.scrollIntoViewIfNeeded();
-              await page.evaluate(() => { const l = document.querySelector('[data-mascot-live]'); if (l) l.textContent = ''; });
               if (how === 'click') await g.click({ position: { x: 22, y: 22 } }); else { await g.focus(); await page.keyboard.press('Enter'); }
               await page.waitForTimeout(250);
               const r = await g.evaluate((el) => ({
                 moving: [...el.querySelectorAll('svg.mascot')].some((s) => s.dataset.jumping === 'true' || s.dataset.emo !== s.dataset.base),
-                bubble: Boolean(el.querySelector('.mbubble') || el.parentElement?.querySelector('.mbubble')),
+                bubble: document.querySelectorAll('.mbubble').length,
                 live: document.querySelector('[data-mascot-live]')?.textContent || '',
               }));
-              check(`mascot ${how} reacts (${i}): ${tag}`, r.moving && r.bubble && r.live.length > 3, JSON.stringify(r));
+              anyBubble += r.bubble;
+              check(`mascot ${how} reacts silently (${i}): ${tag}`, r.moving && r.bubble === 0 && r.live === '', JSON.stringify(r));
               await page.waitForTimeout(1700);
             }
           }
+          check(`no speech-bubble element rendered: ${tag}`, anyBubble === 0, String(anyBubble));
           await ctx.close();
         }
       }

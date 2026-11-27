@@ -64,9 +64,9 @@ test('dates come from the content, not from the build day', () => {
   assert.equal((sitemap(config).match(/<lastmod>2026-11-18<\/lastmod>/g) || []).length, 0, 'ki and spam moved to R1, /qualitaet/ to R2');
   // 24.11.2026 (Musterbericht): home and ActiveCampaign (DE and EN share the date), Ein Kauf (report link), the report.
   assert.equal((sitemap(config).match(/<lastmod>2026-11-24<\/lastmod>/g) || []).length, 0, 'moved to R1, Ein Kauf to R2');
-  // R1-R6 + Referenz Claudia (27.11.2026): home, launch, activecampaign, website (DE/EN) + Ein Kauf moved to 2026-11-27.
-  assert.equal((sitemap(config).match(/<lastmod>2026-11-25<\/lastmod>/g) || []).length, 8, 'privacy, spam, ki (DE/EN), Musterbericht, /qualitaet/');
-  assert.equal((sitemap(config).match(/<lastmod>2026-11-27<\/lastmod>/g) || []).length, 9, 'home, launch, activecampaign, website (DE/EN), Ein Kauf');
+  // R1-R7 + Referenz Claudia (27.11.2026): home, launch, activecampaign, website (DE/EN), Ein Kauf, /qualitaet/ moved to 2026-11-27.
+  assert.equal((sitemap(config).match(/<lastmod>2026-11-25<\/lastmod>/g) || []).length, 7, 'privacy, spam, ki (DE/EN), Musterbericht');
+  assert.equal((sitemap(config).match(/<lastmod>2026-11-27<\/lastmod>/g) || []).length, 10, 'home, launch, activecampaign, website (DE/EN), Ein Kauf, /qualitaet/');
 });
 
 test('external links open in a new tab and say so', () => {

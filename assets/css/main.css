@@ -185,13 +185,14 @@ main:focus { outline: none; }
   color: var(--ink); text-decoration: none; cursor: pointer;
 }
 .site-nav__jump { display: none; }
-/* The toggle waits hidden until main.js wires it (its display rule would otherwise beat [hidden]). */
+html.js .site-nav__jump { display: none !important; }
+html:not(.js) .site-nav__toggle { display: none; }
 .site-nav__toggle[hidden] { display: none; }
 .site-nav__toggle[aria-expanded="true"] { border-color: var(--ink); }
 
-/* With JS (class set in <head> before first paint) the phone menu starts collapsed, so the
-   header never changes height when main.js arrives. Until main.js has wired the toggle,
-   "Menü" is a plain link to the footer navigation. Without JS the links simply wrap. */
+/* With JS (class set in <head> before first paint) the phone menu starts collapsed and its toggle is
+   wired synchronously right after </header>, so the very first tap opens at the top (never jumps to
+   the footer). Without JS the links simply wrap. */
 @media (max-width: 799.98px) {
   .js .site-nav__list {
     display: none;
@@ -200,11 +201,18 @@ main:focus { outline: none; }
     padding: var(--space-2) var(--gutter) var(--space-5);
     background: var(--sec-pink); border-bottom: 1px solid var(--line);
   }
-  .js:not(.nav-ready) .site-nav__jump { display: inline-flex; }
   .js .site-nav.is-open .site-nav__list { display: flex; }
   .js .site-nav__list li { border-top: 1px solid var(--line); }
   .js .site-nav__list a { width: 100%; min-height: 3rem; color: var(--ink); }
   .js .site-nav__lang a { border: 0; border-radius: 0; background: none; padding-inline: 0; min-height: 3rem; }
+  .js .site-nav__motion .motion-toggle--head {
+    width: 100%; min-height: 3rem; justify-content: center;
+    border: 0; border-radius: 0; background: none; padding: 0;
+    font-size: var(--step-0); color: var(--ink);
+  }
+  .js .site-nav__motion .motion-toggle__text {
+    position: static; width: auto; height: auto; overflow: visible; clip-path: none; white-space: normal;
+  }
   .js .site-header__in { flex-wrap: nowrap; }
   html:not(.js) .site-header__in { padding-block: var(--space-2); }
   html:not(.js) .site-header { position: static; }
@@ -1751,21 +1759,23 @@ html[data-motion="paused"] [data-tap] { cursor: auto; }
 .motion-toggle[aria-pressed="true"] .motion-toggle__play { display: inline; }
 .motion-toggle[hidden] { display: none !important; }
 .site-nav { display: flex; align-items: center; gap: var(--space-2) var(--space-4); }
-.motion-toggle--head { order: 2; min-width: var(--target); white-space: nowrap; }
-@media (max-width: 1099.98px) {
+.motion-toggle--head { min-width: var(--target); white-space: nowrap; }
+@media (min-width: 800px) and (max-width: 1099.98px) {
   .motion-toggle--head { width: var(--target); padding: 0; justify-content: center; border-radius: 50%; }
   .motion-toggle--head .motion-toggle__text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 }
 
-/* Stage 6g: mascot groups are buttons (one tab stop each) with a small speech bubble. */
+/* Stage 6g / R7: mascot groups are buttons (one tab stop each), silent reaction only (no speech bubble). */
 [data-poke] { cursor: pointer; z-index: 4; }
 [data-poke][role="button"] { min-width: var(--target); min-height: var(--target); border-radius: 14px; }
 [data-poke]:focus-visible { outline: 3px solid var(--ink); outline-offset: 4px; }
 .site-footer [data-poke]:focus-visible { outline-color: #fff; }
 svg.faq__logik { cursor: pointer; }
-.mbubble { position: absolute; left: 50%; bottom: calc(100% + 0.35rem); z-index: 6; width: max-content; max-width: min(14rem, 80vw); transform: translateX(-50%); padding: 0.35rem 0.7rem; border-radius: 14px 14px 14px 4px; background: #fff; border: 1px solid var(--line); box-shadow: 0 8px 18px rgb(43 42 51 / 0.14); color: var(--ink); font-family: var(--font-body); font-size: 0.875rem; font-weight: 700; line-height: 1.3; text-align: center; white-space: normal; pointer-events: none; }
-@media (prefers-reduced-motion: no-preference) { .mbubble { animation: bubble-in 0.25s ease-out both; } }
 .fixdemo .mscene[data-poke] { pointer-events: auto; }
+/* R7 (25.11.2026): quiet row of the three mascots on phones (<800 px) in the first screen of home. */
+.hero__trio { display: inline-flex; align-items: flex-end; gap: var(--space-2); justify-self: start; }
+.hero__trio .mascot { display: block; width: var(--target); height: auto; overflow: visible; }
+@media (min-width: 800px) { .hero__trio { display: none; } }
 
 /* Stage 6g: «Eigene Projekte», four aligned cards (two on tablets, one on phones), each with a
    readable 1:1 detail of the project. */

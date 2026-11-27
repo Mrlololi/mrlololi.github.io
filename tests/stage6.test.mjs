@@ -46,10 +46,10 @@ test('hero: eyebrow, H1, one primary button, prices as a text link, micro line, 
   assert.ok(!/data-magnet|data-wave|data-tilt/.test(deHome), 'no magnet, letter wave or tilt');
 });
 
-test('nav: Leistungen, Projekte, Über mich, Kontakt (EN alike)', () => {
-  assert.deepEqual(de.nav.map((n) => n.label), ['Leistungen', 'Projekte', 'Über mich', 'Kontakt']);
-  assert.deepEqual(en.nav.map((n) => n.label), ['Services', 'Projects', 'About', 'Contact']);
-  assert.match(deHome, /<li><a href="#projects">Projekte<\/a><\/li>/);
+test('nav: Leistungen, Zum Ausprobieren, Über mich, Kontakt (EN alike, R7)', () => {
+  assert.deepEqual(de.nav.map((n) => n.label), ['Leistungen', 'Zum Ausprobieren', 'Über mich', 'Kontakt']);
+  assert.deepEqual(en.nav.map((n) => n.label), ['Services', 'Try it yourself', 'About', 'Contact']);
+  assert.match(deHome, /<li><a href="#projects">Zum Ausprobieren<\/a><\/li>/);
   assert.match(deHome, /<section class="section projects[^"]*" id="projects"/);
 });
 

@@ -7,7 +7,7 @@
 // Stage 7a (11.11.2026): the reactions, the bubbles and the group buttons live in the mascot kit
 // (assets/js/kit/mascot-react.js, shared with Webprojekte); this file adds the hero, the footer wave
 // and the idles on top of it.
-import { setPose, jump, react, speak, initPoke } from './kit/mascot-react.js';
+import { setPose, jump, react, initPoke } from './kit/mascot-react.js';
 import { reduceMotion, motion } from './kit/motion.js';
 
 export { setPose };
@@ -19,7 +19,7 @@ export function initMascots() {
   const spots = [...document.querySelectorAll('.mascot-spot')];
   for (const b of spots) {
     const svg = b.querySelector('.mascot');
-    b.querySelector('.mascot-btn').addEventListener('click', () => { react(svg, 30); speak(b, [svg]); });
+    b.querySelector('.mascot-btn').addEventListener('click', () => { react(svg, 30); });
     // Choosing a flow node also greets it.
     document.querySelector(`.hf__btn--${b.dataset.node}`)?.addEventListener('click', () => jump(svg, 18));
   }
@@ -39,7 +39,7 @@ export function initMascots() {
   // The reading Logik in the FAQ chat answers a click too, without a tab stop in the middle of the chat.
   document.addEventListener('click', (e) => {
     const reader = e.target.closest?.('svg.faq__logik');
-    if (reader) { react(reader, 18); speak(reader, [reader]); }
+    if (reader) { react(reader, 18); }
   });
 }
 

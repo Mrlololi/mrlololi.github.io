@@ -69,7 +69,7 @@ function measure() {
     if (!m.getBoundingClientRect().width || getComputedStyle(m).visibility === 'hidden') continue;
     const host = m.ownerSVGElement;
     const r = { width: host ? m.width.baseVal.value * (host.clientWidth / host.viewBox.baseVal.width) : parseFloat(getComputedStyle(m).width) };
-    const min = m.classList.contains('faq__logik') ? 40 : 56;
+    const min = (m.classList.contains('faq__logik') || m.closest('.hero__trio')) ? 40 : 56;
     if (r.width < min - 0.5) out.mascots.push(`${m.getAttribute('class')} ${r.width.toFixed(1)} < ${min}`);
   }
   // Stage 6b: small labels and quiet lines on pastel reach 4.5:1 (against the worst colour behind them).
@@ -653,9 +653,16 @@ export async function checkStage6(browser, base) {
     await page.evaluate(() => { try { localStorage.removeItem('motion-paused'); } catch {} });
     await page.close();
   }
-  // The timeline draws on phones too (390 px).
+  // R6 (25.11.2026): «Mein Weg» timeline is hidden on phones (<800 px) and draws on desktop (>=800 px).
   {
     const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
+    await page.goto(base + '/', { waitUntil: 'load' });
+    const hidden = await page.evaluate(() => getComputedStyle(document.querySelector('.path')).display === 'none');
+    check('timeline @390: hidden on phones (<800 px, R6)', hidden, String(hidden));
+    await page.close();
+  }
+  {
+    const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
     await page.goto(base + '/', { waitUntil: 'load' });
     await walk(page);
     await page.addStyleTag({ content: SHOW_ALL });
@@ -668,7 +675,7 @@ export async function checkStage6(browser, base) {
       for (let i = 0; i < 40; i += 1) { vals.add(getComputedStyle(p).getPropertyValue('--draw').trim()); await new Promise((r) => setTimeout(r, 80)); }
       return [...vals];
     });
-    check('timeline @390: draws (values between 0 and 1 seen)', seen.some((v) => Number(v) > 0 && Number(v) < 1) && seen.includes('1.000'), seen.slice(0, 8).join(','));
+    check('timeline @1280: draws on desktop (values between 0 and 1 seen)', seen.some((v) => Number(v) > 0 && Number(v) < 1) && seen.includes('1.000'), seen.slice(0, 8).join(','));
     await page.close();
   }
   // Nothing shifts when the pause buttons appear (phone, first screen and while the modules load).
@@ -711,8 +718,9 @@ export async function checkStage6(browser, base) {
       return { hits: [...new Set(hits)].slice(0, 8), pauses };
     });
     check(`${p} @${w}: no button rectangle on top of other content`, r.hits.length === 0, r.hits.join('; '));
-    const allowed = p === '/ki-antwortentwuerfe/' ? 3 : 2;
-    check(`${p} @${w}: pause controls: the global toggle (header, footer) and the demo rows only`, r.pauses.length <= allowed && r.pauses.filter((x) => x === 'motion-toggle').length === 2, r.pauses.join(','));
+    const expectedToggles = w < 800 ? 1 : 2;
+    const allowed = p === '/ki-antwortentwuerfe/' ? expectedToggles + 1 : expectedToggles;
+    check(`${p} @${w}: pause controls: the global toggle (header/menu, footer) and the demo rows only`, r.pauses.length <= allowed && r.pauses.filter((x) => x === 'motion-toggle').length === expectedToggles, r.pauses.join(','));
     await page.close();
   }
   // Stage 6g: the video when the phone turns (Android emulation): a source and a poster, the play state
@@ -747,7 +755,7 @@ export async function checkStage6(browser, base) {
     check('video, phone in landscape before playing: the 16:9 poster, the frame fits the screen height', r.h <= r.vh && /16x9/.test(r.poster), JSON.stringify(r));
     await ctx.close();
   }
-  // Stage 6g: every mascot group reacts to a click and to Enter (a bubble), on home, 404 and /danke/.
+  // Stage 6g / R7: every mascot group reacts silently to a click and to Enter (no speech bubble), on home, 404 and /danke/.
   for (const p of ['/', '/en/', '/diese-seite-gibt-es-nicht/', '/danke/']) {
     const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
     await page.goto(base + p, { waitUntil: 'load' });
@@ -755,7 +763,7 @@ export async function checkStage6(browser, base) {
     await page.addStyleTag({ content: SHOW_ALL });
     await page.waitForTimeout(800);
     const groups = await page.$$('[data-poke]');
-    let ok = 0; let total = 0; let keyOk = null;
+    let ok = 0; let total = 0; let keyOk = null; let bubbles = 0;
     for (const g of groups) {
       if (!(await g.isVisible())) continue;
       total += 1;
@@ -763,17 +771,27 @@ export async function checkStage6(browser, base) {
       await page.waitForTimeout(120);
       await g.click({ force: true });
       await page.waitForTimeout(200);
-      if (await g.evaluate((el) => !!(el instanceof SVGElement ? el.parentElement : el).querySelector('.mbubble'))) ok += 1;
+      const r = await g.evaluate((el) => ({
+        moving: [...el.querySelectorAll('svg.mascot')].some((s) => s.dataset.jumping === 'true' || s.dataset.emo !== s.dataset.base),
+        b: document.querySelectorAll('.mbubble').length,
+      }));
+      if (r.moving && r.b === 0) ok += 1;
+      bubbles += r.b;
       if (keyOk == null && await g.evaluate((el) => el.getAttribute('role') === 'button')) {
-        await page.waitForTimeout(2500);
+        await page.waitForTimeout(1700);
         await g.focus();
         await page.keyboard.press('Enter');
         await page.waitForTimeout(200);
-        keyOk = await g.evaluate((el) => !!el.querySelector('.mbubble'));
+        const kr = await g.evaluate((el) => ({
+          moving: [...el.querySelectorAll('svg.mascot')].some((s) => s.dataset.jumping === 'true' || s.dataset.emo !== s.dataset.base),
+          b: document.querySelectorAll('.mbubble').length,
+        }));
+        keyOk = kr.moving && kr.b === 0;
+        bubbles += kr.b;
       }
     }
     const loose = await page.evaluate(() => [...document.querySelectorAll('svg.mascot')].filter((s) => s.getBoundingClientRect().width && !s.closest('[data-poke], .mascot-spot, [hidden], template') && !s.classList.contains('faq__logik')).length);
-    check(`mascots ${p}: every group answers a click (and Enter) with a bubble, no mascot left out`, total > 0 && ok === total && keyOk === true && loose === 0, `${ok}/${total}, Enter ${keyOk}, loose ${loose}`);
+    check(`mascots ${p}: every group reacts silently to click and Enter, zero bubbles, no mascot left out`, total > 0 && ok === total && keyOk === true && bubbles === 0 && loose === 0, `${ok}/${total}, Enter ${keyOk}, bubbles ${bubbles}, loose ${loose}`);
     await page.close();
   }
   // Stage 6h: the QR code in a letter: ?quelle=brief-nov#contact brings the form into view, fills
