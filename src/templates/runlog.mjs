@@ -28,7 +28,10 @@ export function runlog(t, { variant = '', ids = [], kauf = null } = {}) {
   const line = (s) => esc(s).replace(/\{name\}/g, `<span class="rl__name">${name}</span>`);
   const total = r.steps.length;
   // Iva 13.11.2026 (DOM ceiling): the disc is the node itself, the check badge and the protocol check are CSS.
-  const rail = RUNLOG_ICONS.map((id, i) => `<li class="rl__node is-done" data-i="${i}"${k ? ` data-id="${ids[i]}"` : ''}>${icon(id, { size: 24 })}</li>`).join('');
+  // R6 (25.11.2026): on /werkzeuge/ein-kauf/ each rail icon is a real button (44 px target, aria-pressed) toggling that step.
+  const rail = RUNLOG_ICONS.map((id, i) => k
+    ? `<li class="rl__node is-done" data-i="${i}" data-id="${ids[i]}"><button class="rl__nodebtn" type="button" aria-pressed="false" data-step="${ids[i]}" aria-label="${esc(kauf.switchOff)}: ${esc(kauf.titles[i])}">${icon(id, { size: 24 })}</button></li>`
+    : `<li class="rl__node is-done" data-i="${i}">${icon(id, { size: 24 })}</li>`).join('');
   const steps = r.steps.map(([title, text], i) => `<li class="rl__step card card--pic ${i === total - 1 ? 'is-current' : 'is-done'}" data-i="${i}"><span class="card__media">${icon(RUNLOG_ICONS[i], { size: 48, inline: true })}</span><span class="rl__title card__title">${esc(title)}</span><span class="rl__line card__text">${line(text)}</span></li>`).join('');
   const log = r.log.map((x, i) => `<li class="rl__log is-on" data-i="${i}"${k ? ` data-id="${ids[i]}"` : ''}>${icon(RUNLOG_ICONS[i], { size: 20 })}${k ? icon('cross', { size: 20, inline: true }) : ''}<span>${esc(x)}</span>${k ? `<span class="rl__fehlt">${esc(kauf.fehlt)}</span><span class="rl__kommt">${esc(kauf.kommtNicht)}</span>` : ''}</li>`).join('');
   const start = k ? '' : `<form class="rl__start" novalidate>
@@ -41,7 +44,7 @@ export function runlog(t, { variant = '', ids = [], kauf = null } = {}) {
   return `<div class="rl${k ? ' rl--kauf' : ' demo'} is-end"${k ? '' : ' data-demo="runlog"'} data-step="${total - 1}" data-total="${total}" data-step-of="${esc(r.stepOf)}">
 ${start}<div class="rl__stage">
 <p class="rl__count" aria-hidden="true">${esc(fill(r.stepOf, { n: total, total }))}</p>
-<div class="rl__railbox" aria-hidden="true"><ol class="rl__rail" role="list">${rail}</ol><span class="rl__car"><span class="rl__dot"></span></span></div>
+<div class="rl__railbox"${k ? '' : ' aria-hidden="true"'}><ol class="rl__rail" role="list">${rail}</ol><span class="rl__car" aria-hidden="true"><span class="rl__dot"></span></span></div>
 <div class="rl__scene">
 <ol class="rl__steps" role="list">${steps}</ol>
 ${mascotScene('runlog', [[2, 'joy']], 'rl__live', 'runlog')}

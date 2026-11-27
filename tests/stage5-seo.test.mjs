@@ -108,7 +108,7 @@ test('service pages: unique title (<= 60, «Focus phrase | mrlololi») and descr
     const desc = unesc(descOf(h));
     assert.ok(title.length <= 60, `${s.path}: title ${title.length} chars`);
     assert.ok(desc.length <= 155 && desc.length >= 70, `${s.path}: description ${desc.length} chars`);
-    assert.ok(title === `${s.h1} | mrlololi` || (title === s.h1 && `${s.h1} | mrlololi`.length > 60), `${s.path}: title pattern`);
+    assert.ok(title === `${s.h1} | mrlololi` || (title === s.h1 && `${s.h1} | mrlololi`.length > 60) || (s.title && title === s.title && title.endsWith(' | mrlololi')), `${s.path}: title pattern`);
     titles.add(title);
     descs.add(desc);
     assert.equal((h.match(/<h1[\s>]/g) || []).length, 1, `${s.path}: one h1`);
@@ -120,7 +120,7 @@ test('service pages: unique title (<= 60, «Focus phrase | mrlololi») and descr
   assert.equal(de.services.pages.find((s) => s.key === 'spam').h1, 'E-Mails landen im Spam? SPF, DKIM und DMARC einrichten');
   assert.equal(de.services.pages.find((s) => s.key === 'activecampaign').h1, 'ActiveCampaign einrichten und betreuen');
   assert.equal(de.services.pages.find((s) => s.key === 'ki').h1, 'KI-Antwortentwürfe für Ihren Kundenservice');
-  assert.equal(de.services.pages.find((s) => s.key === 'website').h1, 'Website als One-Pager mit Leadpages oder Wix');
+  assert.equal(de.services.pages.find((s) => s.key === 'website').h1, 'Website als One-Pager mit Leadpages, Wix, WordPress oder eigenem HTML');
 });
 
 test('canonical and reciprocal hreflang pairs, checked over a real build output', async () => {
@@ -365,7 +365,7 @@ test('sitemap contains exactly the live pages, with lastmod from page_dates', ()
     .sort();
   assert.deepEqual(locs, live);
   assert.equal(locs.length, INDEXABLE); // tests/pages-manifest.mjs
-  assert.equal(config.page_dates.website, '2026-11-25'); // R1: availability line above the form
+  assert.equal(config.page_dates.website, '2026-11-27'); // R6: WordPress added to One-Pager H1/description/promise
   // Stage 6 (29.10.2026): the KI demo and calculator moved to the KI page, the video to the launch page.
   assert.equal(config.page_dates.ki, '2026-11-25'); // R1 // 18.11.2026: the calculator note (Wortfilter)
   assert.equal(config.page_dates.launch, '2026-11-27'); // Referenz Claudia (27.11.2026)

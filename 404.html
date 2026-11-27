@@ -392,8 +392,8 @@ padding: 0.3rem var(--space-4) 0.3rem 0.3rem;
 background: var(--sheet); border: 1px solid var(--line); border-radius: 999px; box-shadow: var(--shadow-soft);
 font-weight: 700; font-size: var(--step--1); line-height: 1.2;
 }
-.hero__chip picture { flex: none; }
-.hero__chip img { width: 2.75rem; height: 2.75rem; border-radius: 50%; object-fit: cover; }
+.hero__chip picture { flex: none; width: 2.75rem; height: 2.75rem; display: block; }
+.hero__chip img { width: 2.75rem; height: 2.75rem; aspect-ratio: 1 / 1; border-radius: 50%; object-fit: cover; display: block; }
 .hf { width: 100%; height: auto; overflow: visible; }
 .hf__wire { fill: none; stroke: var(--wire); stroke-width: 2.5; }
 .hf__pulse { fill: none; stroke: var(--blue-ink); stroke-width: 9; stroke-linecap: round; stroke-dasharray: 0.1 200; opacity: 0; }
@@ -619,7 +619,8 @@ html:not(.js) .brief__preview { display: none; }
 .contact__card a { color: #fff; }
 .contact__card :focus-visible { outline-color: #fff; }
 .contact__who { display: flex; align-items: flex-end; gap: var(--space-3); }
-.contact__who img { width: 4rem; height: 4rem; border-radius: 50%; object-fit: cover; border: 2px solid var(--pink); }
+.contact__who picture { flex: none; width: 4rem; height: 4rem; display: block; }
+.contact__who img { width: 4rem; height: 4rem; aspect-ratio: 1 / 1; border-radius: 50%; object-fit: cover; border: 2px solid var(--pink); display: block; }
 .contact__bubble { position: relative; padding: var(--space-3) var(--space-4); border-radius: 18px 18px 18px 4px; background: #fff; color: var(--ink); font-family: var(--font-accent); font-style: italic; font-size: var(--step-1); min-height: 2.6em; }
 .contact__reply { font-weight: 700; }
 .contact__time-row { font-size: var(--step--1); color: #D8D3E6; }
@@ -1687,6 +1688,7 @@ html:not(.js) .motion-toggle { display: none !important; }
 .proj__link--try .browser__view img { width: 100%; height: 100%; aspect-ratio: auto; object-fit: cover; object-position: top left; border: 0; border-radius: 0; display: block; }
 .proj__link--try .proj__name { font-size: var(--step-1); line-height: 1.28; }
 .projects__all--below { margin-top: var(--space-4); }
+@media (max-width: 799.98px) { .path { display: none; } }
 .faq__side, .faq__list, .faq__chat { min-width: 0; }
 .faq summary, .faq__a, .faq__chat .bubble { overflow-wrap: anywhere; hyphens: auto; }
 @media (min-width: 760px) {

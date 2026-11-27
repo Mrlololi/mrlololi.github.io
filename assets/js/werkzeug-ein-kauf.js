@@ -12,6 +12,7 @@ if (tool) init();
 
 function init() {
   const switches = [...tool.querySelectorAll('.ek-switch')];
+  const nodeBtns = [...root.querySelectorAll('.rl__nodebtn')];
   const ids = switches.map((b) => b.dataset.step);
   const panels = new Map([...tool.querySelectorAll('.ek-panel')].map((p) => [p.id || '', p]));
   const nodes = [...root.querySelectorAll('.rl__node')];
@@ -28,6 +29,7 @@ function init() {
     const i = id ? ids.indexOf(id) : -1;
     const missing = id ? (switches[i].dataset.missing || '').split(' ').filter(Boolean) : [];
     switches.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.step === id)));
+    nodeBtns.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.step === id)));
     nodes.forEach((n, k) => {
       const lost = ids[k] === id || missing.includes(ids[k]);
       n.classList.toggle('is-done', !lost);
@@ -54,7 +56,7 @@ function init() {
     if (moved) history.replaceState(null, '', id ? `#${id}` : location.pathname + location.search);
   };
 
-  switches.forEach((b) => b.addEventListener('click', () => {
+  [...switches, ...nodeBtns].forEach((b) => b.addEventListener('click', () => {
     const id = b.dataset.step;
     if (off === id) return;
     set(id);

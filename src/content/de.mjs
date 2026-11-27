@@ -1038,9 +1038,10 @@ export default {
         moreLabel: 'Mehr zur Website als One-Pager',
         // Qualität 17.11.2026: one text link to /qualitaet/ at the end of «So läuft es ab». Entwurf.
         testLink: 'So prüfe ich diese Website',
-        h1: 'Website als One-Pager mit Leadpages oder Wix',
-        description: 'Website als One-Pager mit Leadpages, Wix oder eigenem HTML: responsiv, mit Terminbuchung, Domain und Ihren Rechtstexten eingebunden. Ab 990 €.',
-        promise: 'Ein One-Pager mit Leadpages, Wix oder eigenem HTML, fertig veröffentlicht.',
+        title: 'Website als One-Pager: Leadpages, Wix, WordPress | mrlololi',
+        h1: 'Website als One-Pager mit Leadpages, Wix, WordPress oder eigenem HTML',
+        description: 'Website als One-Pager mit Leadpages, Wix, WordPress oder eigenem HTML: responsiv, mit Terminbuchung, Domain und Rechtstexten. Ab 990 €.',
+        promise: 'Ein One-Pager mit Leadpages, Wix, WordPress oder eigenem HTML, fertig veröffentlicht.',
         packages: ['website'],
         problem: ['Sie brauchen eine Website.', 'Design, Terminbuchung, Rechtsseiten und Domain kosten Zeit und Nerven, bevor die Seite überhaupt online ist.'],
         does: ['Wix, Leadpages oder eigenes HTML, responsiv', 'Terminbuchung mit Calendly', 'Cookie-Banner und SEO-Grundlagen', 'Impressum- und Datenschutzseite angelegt und eingebunden (Texte von Ihnen)', 'Domain und Veröffentlichung', 'Übergabe-Gespräch und drei Korrekturschleifen'],

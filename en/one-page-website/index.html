@@ -4,16 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light">
-<title>One-page website with Leadpages or Wix | mrlololi</title>
-<meta name="description" content="A one-page website with Leadpages, Wix or custom HTML: responsive, with booking, domain and your legal texts linked. From €990.">
+<title>One-page website: Leadpages, Wix, WordPress | mrlololi</title>
+<meta name="description" content="One-page website with Leadpages, Wix, WordPress or custom HTML: responsive, with booking, domain and legal texts linked. From €990.">
 <link rel="canonical" href="https://mrlololi.com/en/one-page-website/">
 <link rel="alternate" hreflang="de" href="https://mrlololi.com/website-one-pager/">
 <link rel="alternate" hreflang="en" href="https://mrlololi.com/en/one-page-website/">
 <link rel="alternate" hreflang="x-default" href="https://mrlololi.com/website-one-pager/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="mrlololi">
-<meta property="og:title" content="One-page website with Leadpages or Wix | mrlololi">
-<meta property="og:description" content="A one-page website with Leadpages, Wix or custom HTML: responsive, with booking, domain and your legal texts linked. From €990.">
+<meta property="og:title" content="One-page website: Leadpages, Wix, WordPress | mrlololi">
+<meta property="og:description" content="One-page website with Leadpages, Wix, WordPress or custom HTML: responsive, with booking, domain and legal texts linked. From €990.">
 <meta property="og:url" content="https://mrlololi.com/en/one-page-website/">
 <meta property="og:image" content="https://mrlololi.com/assets/og/en-website.png">
 <meta property="og:image:width" content="1200">
@@ -21,8 +21,8 @@
 <meta property="og:locale" content="en_GB">
 <meta property="og:locale:alternate" content="de_AT">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="One-page website with Leadpages or Wix | mrlololi">
-<meta name="twitter:description" content="A one-page website with Leadpages, Wix or custom HTML: responsive, with booking, domain and your legal texts linked. From €990.">
+<meta name="twitter:title" content="One-page website: Leadpages, Wix, WordPress | mrlololi">
+<meta name="twitter:description" content="One-page website with Leadpages, Wix, WordPress or custom HTML: responsive, with booking, domain and legal texts linked. From €990.">
 <meta name="twitter:image" content="https://mrlololi.com/assets/og/en-website.png">
 <meta name="theme-color" content="#F4C9D3">
 <link rel="icon" href="/assets/brand/favicon.ico" sizes="16x16 32x32 48x48">
@@ -396,8 +396,8 @@ padding: 0.3rem var(--space-4) 0.3rem 0.3rem;
 background: var(--sheet); border: 1px solid var(--line); border-radius: 999px; box-shadow: var(--shadow-soft);
 font-weight: 700; font-size: var(--step--1); line-height: 1.2;
 }
-.hero__chip picture { flex: none; }
-.hero__chip img { width: 2.75rem; height: 2.75rem; border-radius: 50%; object-fit: cover; }
+.hero__chip picture { flex: none; width: 2.75rem; height: 2.75rem; display: block; }
+.hero__chip img { width: 2.75rem; height: 2.75rem; aspect-ratio: 1 / 1; border-radius: 50%; object-fit: cover; display: block; }
 .hf { width: 100%; height: auto; overflow: visible; }
 .hf__wire { fill: none; stroke: var(--wire); stroke-width: 2.5; }
 .hf__pulse { fill: none; stroke: var(--blue-ink); stroke-width: 9; stroke-linecap: round; stroke-dasharray: 0.1 200; opacity: 0; }
@@ -623,7 +623,8 @@ html:not(.js) .brief__preview { display: none; }
 .contact__card a { color: #fff; }
 .contact__card :focus-visible { outline-color: #fff; }
 .contact__who { display: flex; align-items: flex-end; gap: var(--space-3); }
-.contact__who img { width: 4rem; height: 4rem; border-radius: 50%; object-fit: cover; border: 2px solid var(--pink); }
+.contact__who picture { flex: none; width: 4rem; height: 4rem; display: block; }
+.contact__who img { width: 4rem; height: 4rem; aspect-ratio: 1 / 1; border-radius: 50%; object-fit: cover; border: 2px solid var(--pink); display: block; }
 .contact__bubble { position: relative; padding: var(--space-3) var(--space-4); border-radius: 18px 18px 18px 4px; background: #fff; color: var(--ink); font-family: var(--font-accent); font-style: italic; font-size: var(--step-1); min-height: 2.6em; }
 .contact__reply { font-weight: 700; }
 .contact__time-row { font-size: var(--step--1); color: #D8D3E6; }
@@ -1691,6 +1692,7 @@ html:not(.js) .motion-toggle { display: none !important; }
 .proj__link--try .browser__view img { width: 100%; height: 100%; aspect-ratio: auto; object-fit: cover; object-position: top left; border: 0; border-radius: 0; display: block; }
 .proj__link--try .proj__name { font-size: var(--step-1); line-height: 1.28; }
 .projects__all--below { margin-top: var(--space-4); }
+@media (max-width: 799.98px) { .path { display: none; } }
 .faq__side, .faq__list, .faq__chat { min-width: 0; }
 .faq summary, .faq__a, .faq__chat .bubble { overflow-wrap: anywhere; hyphens: auto; }
 @media (min-width: 760px) {
@@ -1721,7 +1723,7 @@ html:not(.js) .faq__cats { display: none; }
 <script type="module">requestAnimationFrame(()=>requestAnimationFrame(()=>import('/assets/js/main.js')))</script>
 <link rel="modulepreload" href="/assets/js/kit/motion.js" fetchpriority="low">
 <link rel="modulepreload" href="/assets/js/kit/enter.js" fetchpriority="low">
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"ProfessionalService","@id":"https://mrlololi.com/#business","name":"mrlololi","alternateName":"Iva Tsatskrialashvili","description":"Ich teste Ihren Launch, bevor es Ihre Kundschaft tut. Technik hinter Online-Kursen: ActiveCampaign, Zapier, Zahlungen. Aus Graz. Iva Tsatskrialashvili (er/ihm).","url":"https://mrlololi.com/","email":"hello@mrlololi.com","image":"https://mrlololi.com/og-image-de.png","logo":"https://mrlololi.com/assets/brand/apple-touch-icon.png","sameAs":["https://www.linkedin.com/in/tsatskrialashvili-iva","https://www.malt.de/profile/ivatsatskrialashvili"],"areaServed":["AT","DE","CH","IT"],"address":{"@type":"PostalAddress","streetAddress":"Herbersteinstraße 4/4181","addressLocality":"Graz","postalCode":"8020","addressCountry":"AT"},"founder":{"@id":"https://mrlololi.com/#iva"},"priceRange":"€€"},{"@type":"Person","@id":"https://mrlololi.com/#iva","name":"Iva Tsatskrialashvili","alternateName":"mrlololi","gender":"Male","pronouns":"he/him","jobTitle":"Marketing Automation Technician","description":"Iva Tsatskrialashvili (he/him), known online as mrlololi, is a freelance marketing automation technician in Graz, Austria. He sets up and tests the technology behind online course launches for course creators across the German-speaking market.","knowsAbout":["ActiveCampaign","Zapier","Make","Leadpages","Stripe","E-Mail-Zustellbarkeit","Marketing-Automation"],"address":{"@type":"PostalAddress","addressLocality":"Graz","addressCountry":"AT"},"image":"https://mrlololi.com/assets/img/about-680.jpg","url":"https://mrlololi.com/","sameAs":["https://www.linkedin.com/in/tsatskrialashvili-iva","https://www.malt.de/profile/ivatsatskrialashvili","https://github.com/Mrlololi","https://www.instagram.com/mrlololi/"]},{"@type":"WebSite","@id":"https://mrlololi.com/#website","url":"https://mrlololi.com/","name":"mrlololi","inLanguage":"en","publisher":{"@id":"https://mrlololi.com/#business"}},{"@type":"Service","@id":"https://mrlololi.com/en/one-page-website/#service","name":"One-page website with Leadpages or Wix","serviceType":"One-page website","description":"A one-page website with Leadpages, Wix or custom HTML: responsive, with booking, domain and your legal texts linked. From €990.","url":"https://mrlololi.com/en/one-page-website/","inLanguage":"en","provider":{"@id":"https://mrlololi.com/#business"},"areaServed":[{"@type":"Country","name":"AT"},{"@type":"Country","name":"DE"},{"@type":"Country","name":"CH"}],"offers":{"@type":"Offer","name":"One-page website","url":"https://mrlololi.com/en/one-page-website/","priceCurrency":"EUR","priceSpecification":{"@type":"PriceSpecification","minPrice":990,"priceCurrency":"EUR"}}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mrlololi.com/en/"},{"@type":"ListItem","position":2,"name":"Services","item":"https://mrlololi.com/en/#services"},{"@type":"ListItem","position":3,"name":"One-page website","item":"https://mrlololi.com/en/one-page-website/"}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"ProfessionalService","@id":"https://mrlololi.com/#business","name":"mrlololi","alternateName":"Iva Tsatskrialashvili","description":"Ich teste Ihren Launch, bevor es Ihre Kundschaft tut. Technik hinter Online-Kursen: ActiveCampaign, Zapier, Zahlungen. Aus Graz. Iva Tsatskrialashvili (er/ihm).","url":"https://mrlololi.com/","email":"hello@mrlololi.com","image":"https://mrlololi.com/og-image-de.png","logo":"https://mrlololi.com/assets/brand/apple-touch-icon.png","sameAs":["https://www.linkedin.com/in/tsatskrialashvili-iva","https://www.malt.de/profile/ivatsatskrialashvili"],"areaServed":["AT","DE","CH","IT"],"address":{"@type":"PostalAddress","streetAddress":"Herbersteinstraße 4/4181","addressLocality":"Graz","postalCode":"8020","addressCountry":"AT"},"founder":{"@id":"https://mrlololi.com/#iva"},"priceRange":"€€"},{"@type":"Person","@id":"https://mrlololi.com/#iva","name":"Iva Tsatskrialashvili","alternateName":"mrlololi","gender":"Male","pronouns":"he/him","jobTitle":"Marketing Automation Technician","description":"Iva Tsatskrialashvili (he/him), known online as mrlololi, is a freelance marketing automation technician in Graz, Austria. He sets up and tests the technology behind online course launches for course creators across the German-speaking market.","knowsAbout":["ActiveCampaign","Zapier","Make","Leadpages","Stripe","E-Mail-Zustellbarkeit","Marketing-Automation"],"address":{"@type":"PostalAddress","addressLocality":"Graz","addressCountry":"AT"},"image":"https://mrlololi.com/assets/img/about-680.jpg","url":"https://mrlololi.com/","sameAs":["https://www.linkedin.com/in/tsatskrialashvili-iva","https://www.malt.de/profile/ivatsatskrialashvili","https://github.com/Mrlololi","https://www.instagram.com/mrlololi/"]},{"@type":"WebSite","@id":"https://mrlololi.com/#website","url":"https://mrlololi.com/","name":"mrlololi","inLanguage":"en","publisher":{"@id":"https://mrlololi.com/#business"}},{"@type":"Service","@id":"https://mrlololi.com/en/one-page-website/#service","name":"One-page website with Leadpages, Wix, WordPress or custom HTML","serviceType":"One-page website","description":"One-page website with Leadpages, Wix, WordPress or custom HTML: responsive, with booking, domain and legal texts linked. From €990.","url":"https://mrlololi.com/en/one-page-website/","inLanguage":"en","provider":{"@id":"https://mrlololi.com/#business"},"areaServed":[{"@type":"Country","name":"AT"},{"@type":"Country","name":"DE"},{"@type":"Country","name":"CH"}],"offers":{"@type":"Offer","name":"One-page website","url":"https://mrlololi.com/en/one-page-website/","priceCurrency":"EUR","priceSpecification":{"@type":"PriceSpecification","minPrice":990,"priceCurrency":"EUR"}}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mrlololi.com/en/"},{"@type":"ListItem","position":2,"name":"Services","item":"https://mrlololi.com/en/#services"},{"@type":"ListItem","position":3,"name":"One-page website","item":"https://mrlololi.com/en/one-page-website/"}]}]}</script>
 </head>
 <body class="page-service">
 <a class="skip" href="#main">Skip to content</a>
@@ -1752,8 +1754,8 @@ html:not(.js) .faq__cats { display: none; }
 <li><span class="crumbs__sep" aria-hidden="true">›</span><span aria-current="page">One-page website</span></li>
 </ol>
 </nav>
-<h1><span class="nowrap">One-page</span> website with Leadpages or Wix</h1>
-<p class="lead">A one-pager in Leadpages, Wix or custom HTML, published and ready.</p>
+<h1><span class="nowrap">One-page</span> website with Leadpages, Wix, WordPress or custom HTML</h1>
+<p class="lead">A one-pager in Leadpages, Wix, WordPress or custom HTML, published and ready.</p>
 <div class="svc-prices">
 <p class="svc-price"><span class="label label--pist">One-page website</span> <span class="svc-price__value">from €990</span></p>
 </div>

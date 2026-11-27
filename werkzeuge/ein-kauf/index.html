@@ -393,8 +393,8 @@ padding: 0.3rem var(--space-4) 0.3rem 0.3rem;
 background: var(--sheet); border: 1px solid var(--line); border-radius: 999px; box-shadow: var(--shadow-soft);
 font-weight: 700; font-size: var(--step--1); line-height: 1.2;
 }
-.hero__chip picture { flex: none; }
-.hero__chip img { width: 2.75rem; height: 2.75rem; border-radius: 50%; object-fit: cover; }
+.hero__chip picture { flex: none; width: 2.75rem; height: 2.75rem; display: block; }
+.hero__chip img { width: 2.75rem; height: 2.75rem; aspect-ratio: 1 / 1; border-radius: 50%; object-fit: cover; display: block; }
 .hf { width: 100%; height: auto; overflow: visible; }
 .hf__wire { fill: none; stroke: var(--wire); stroke-width: 2.5; }
 .hf__pulse { fill: none; stroke: var(--blue-ink); stroke-width: 9; stroke-linecap: round; stroke-dasharray: 0.1 200; opacity: 0; }
@@ -620,7 +620,8 @@ html:not(.js) .brief__preview { display: none; }
 .contact__card a { color: #fff; }
 .contact__card :focus-visible { outline-color: #fff; }
 .contact__who { display: flex; align-items: flex-end; gap: var(--space-3); }
-.contact__who img { width: 4rem; height: 4rem; border-radius: 50%; object-fit: cover; border: 2px solid var(--pink); }
+.contact__who picture { flex: none; width: 4rem; height: 4rem; display: block; }
+.contact__who img { width: 4rem; height: 4rem; aspect-ratio: 1 / 1; border-radius: 50%; object-fit: cover; border: 2px solid var(--pink); display: block; }
 .contact__bubble { position: relative; padding: var(--space-3) var(--space-4); border-radius: 18px 18px 18px 4px; background: #fff; color: var(--ink); font-family: var(--font-accent); font-style: italic; font-size: var(--step-1); min-height: 2.6em; }
 .contact__reply { font-weight: 700; }
 .contact__time-row { font-size: var(--step--1); color: #D8D3E6; }
@@ -1688,6 +1689,7 @@ html:not(.js) .motion-toggle { display: none !important; }
 .proj__link--try .browser__view img { width: 100%; height: 100%; aspect-ratio: auto; object-fit: cover; object-position: top left; border: 0; border-radius: 0; display: block; }
 .proj__link--try .proj__name { font-size: var(--step-1); line-height: 1.28; }
 .projects__all--below { margin-top: var(--space-4); }
+@media (max-width: 799.98px) { .path { display: none; } }
 .faq__side, .faq__list, .faq__chat { min-width: 0; }
 .faq summary, .faq__a, .faq__chat .bubble { overflow-wrap: anywhere; hyphens: auto; }
 @media (min-width: 760px) {
@@ -1732,6 +1734,7 @@ html:not(.js) .faq__cats { display: none; }
 .ek-switch[aria-pressed="true"] .ek-switch__off { display: inline; }
 .rl--kauf { grid-template-columns: minmax(0, 1fr); }
 .rl--kauf .rl__stage, .rl--kauf .rl__protocol { grid-column: auto; grid-row: auto; }
+.rl--kauf .rl__stage { overflow-x: clip; }
 .rl--kauf .rl__fehlt, .rl--kauf .rl__kommt, .rl--kauf .rl__log .i[data-icon="cross"] { display: none; }
 .rl--kauf .rl__log.is-off .rl__fehlt, .rl--kauf .rl__log.is-missing .rl__kommt { display: inline; margin-left: auto; font-weight: 700; }
 .rl--kauf .rl__log.is-off .rl__fehlt { color: var(--error); }
@@ -1741,6 +1744,8 @@ html:not(.js) .faq__cats { display: none; }
 .rl--kauf .rl__log.is-missing > span:first-of-type { color: var(--ink-soft); text-decoration: line-through; }
 .rl--kauf .rl__node.is-off { outline: 2px dashed var(--error); outline-offset: 2px; }
 .rl--kauf .rl__node.is-missing { opacity: 0.5; }
+.rl--kauf .rl__nodebtn { width: 100%; height: 100%; min-width: var(--target); min-height: var(--target); padding: 0; border: 0; border-radius: inherit; background: transparent; color: inherit; display: grid; place-items: center; cursor: pointer; }
+.rl--kauf .rl__nodebtn:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
 .js .rl--kauf:not(.is-intact) .rl__scene { display: none; }
 .rl--kauf.is-broken .rl__summary { color: var(--ink); }
 @media (prefers-reduced-motion: no-preference) {
@@ -1779,7 +1784,15 @@ html:not([data-motion="paused"]) .rl--kauf .rl__log.is-off .i[data-icon="cross"]
 .ek-grid { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); }
 }
 @media (max-width: 599.98px) {
-.js .ek-switches { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.ek-tool { padding-block: var(--space-5); }
+.ek-wrap { gap: var(--space-3); }
+.ek-log { gap: var(--space-2); }
+.js .ek-switches { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.35rem; }
+.ek-switch { padding: 0.35rem 0.5rem; gap: 0.35rem; font-size: 0.875rem; }
+.rl--kauf .rl__stage { padding: var(--space-3); gap: var(--space-2); }
+.rl--kauf .rl__protocol { padding: var(--space-3); }
+.rl--kauf .rl__logs { gap: 0.35rem; }
+.rl--kauf .rl__log { font-size: 0.875rem; }
 }</style>
 <script>document.documentElement.classList.add('js')</script>
 <script type="module">requestAnimationFrame(()=>requestAnimationFrame(()=>import('/assets/js/main.js')))</script>
@@ -1834,7 +1847,7 @@ html:not([data-motion="paused"]) .rl--kauf .rl__log.is-off .i[data-icon="cross"]
 <div class="rl rl--kauf is-end" data-step="5" data-total="6" data-step-of="Schritt {n} von {total}">
 <div class="rl__stage">
 <p class="rl__count" aria-hidden="true">Schritt 6 von 6</p>
-<div class="rl__railbox" aria-hidden="true"><ol class="rl__rail" role="list"><li class="rl__node is-done" data-i="0" data-id="bestellung"><svg class="i i--24" aria-hidden="true" focusable="false"><use href="#i-form"/></svg></li><li class="rl__node is-done" data-i="1" data-id="zahlung"><svg class="i i--24" aria-hidden="true" focusable="false"><use href="#i-card"/></svg></li><li class="rl__node is-done" data-i="2" data-id="rechnung"><svg class="i i--24" aria-hidden="true" focusable="false"><use href="#i-receipt"/></svg></li><li class="rl__node is-done" data-i="3" data-id="markierung"><svg class="i i--24" aria-hidden="true" focusable="false"><use href="#i-tag"/></svg></li><li class="rl__node is-done" data-i="4" data-id="zugang"><svg class="i i--24" aria-hidden="true" focusable="false"><use href="#i-unlock"/></svg></li><li class="rl__node is-done" data-i="5" data-id="willkommen"><svg class="i i--24" aria-hidden="true" focusable="false"><use href="#i-mail-star"/></svg></li></ol><span class="rl__car"><span class="rl__dot"></span></span></div>
+<div class="rl__railbox"><ol class="rl__rail" role="list"><li class="rl__node is-done" data-i="0" data-id="bestellung"><button class="rl__nodebtn" type="button" aria-pressed="false" data-step="bestellung" aria-label="Schritt ausschalten: Bestellformular"><svg class="i i--24" aria-hidden="true" focusable="false"><use href="#i-form"/></svg></button></li><li class="rl__node is-done" data-i="1" data-id="zahlung"><button class="rl__nodebtn" type="button" aria-pressed="false" data-step="zahlung" aria-label="Schritt ausschalten: Zahlung"><svg class="i i--24" aria-hidden="true" focusable="false"><use href="#i-card"/></svg></button></li><li class="rl__node is-done" data-i="2" data-id="rechnung"><button class="rl__nodebtn" type="button" aria-pressed="false" data-step="rechnung" aria-label="Schritt ausschalten: Rechnung"><svg class="i i--24" aria-hidden="true" focusable="false"><use href="#i-receipt"/></svg></button></li><li class="rl__node is-done" data-i="3" data-id="markierung"><button class="rl__nodebtn" type="button" aria-pressed="false" data-step="markierung" aria-label="Schritt ausschalten: Markierung"><svg class="i i--24" aria-hidden="true" focusable="false"><use href="#i-tag"/></svg></button></li><li class="rl__node is-done" data-i="4" data-id="zugang"><button class="rl__nodebtn" type="button" aria-pressed="false" data-step="zugang" aria-label="Schritt ausschalten: Zugang"><svg class="i i--24" aria-hidden="true" focusable="false"><use href="#i-unlock"/></svg></button></li><li class="rl__node is-done" data-i="5" data-id="willkommen"><button class="rl__nodebtn" type="button" aria-pressed="false" data-step="willkommen" aria-label="Schritt ausschalten: Willkommens-Mail"><svg class="i i--24" aria-hidden="true" focusable="false"><use href="#i-mail-star"/></svg></button></li></ol><span class="rl__car" aria-hidden="true"><span class="rl__dot"></span></span></div>
 <div class="rl__scene">
 <ol class="rl__steps" role="list"><li class="rl__step card card--pic is-done" data-i="0"><span class="card__media"><svg class="i i--48 tone-pink" data-icon="form" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="4" y="2.5" width="16" height="19" rx="2.5" style="fill: var(--i-fill, none)"/><path d="M7.5 6.5h6"/><rect x="7.5" y="9.5" width="9" height="3" rx="1.5"/><rect class="m" x="7.5" y="15.5" width="5.5" height="3" rx="1.5"/></svg></span><span class="rl__title card__title">Bestellformular</span><span class="rl__line card__text"><span class="rl__name">Anna</span> bestellt den Herbst-Kurs.</span></li><li class="rl__step card card--pic is-done" data-i="1"><span class="card__media"><svg class="i i--48 tone-blue" data-icon="card" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="2.5" y="5.5" width="19" height="13" rx="2.5" style="fill: var(--i-fill, none)"/><path d="M2.5 9.75h19"/><path class="m" d="M6 14.75h4.5"/></svg></span><span class="rl__title card__title">Zahlung (Stripe)</span><span class="rl__line card__text">Die Zahlung geht ein.</span></li><li class="rl__step card card--pic is-done" data-i="2"><span class="card__media"><svg class="i i--48 tone-blue" data-icon="receipt" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 3.5A1.5 1.5 0 0 1 7.5 2h9A1.5 1.5 0 0 1 18 3.5v16.5a1.5 1.5 0 0 1-3 0a1.5 1.5 0 0 1-3 0a1.5 1.5 0 0 1-3 0a1.5 1.5 0 0 1-3 0z" style="fill: var(--i-fill, none)"/><g class="m"><path d="M9 7h6"/><path d="M9 10.5h6"/></g><path d="M9 14h3.5"/></svg></span><span class="rl__title card__title">Rechnung (Quaderno)</span><span class="rl__line card__text">Die Rechnung wird erstellt und verschickt.</span></li><li class="rl__step card card--pic is-done" data-i="3"><span class="card__media"><svg class="i i--48 tone-pink" data-icon="tag" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g class="m"><rect x="3.5" y="7.5" width="16" height="9" rx="3" transform="rotate(-45 11.5 12)" style="fill: var(--i-fill, none)"/><circle cx="15.6" cy="7.9" r="1.4"/></g></svg></span><span class="rl__title card__title">Markierung</span><span class="rl__line card__text">Tag «Kunde Herbst-Kurs» wird gesetzt.</span></li><li class="rl__step card card--pic is-done" data-i="4"><span class="card__media"><svg class="i i--48 tone-pist" data-icon="unlock" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="5" y="11" width="14" height="10" rx="2.5" style="fill: var(--i-fill, none)"/><path class="m" d="M8.5 11V7.5a3.5 3.5 0 0 1 7 0"/><path d="M12 15v2"/></svg></span><span class="rl__title card__title">Zugang: Mitgliederbereich</span><span class="rl__line card__text">Der Kurs wird freigeschaltet.</span></li><li class="rl__step card card--pic is-current" data-i="5"><span class="card__media"><svg class="i i--48 tone-pist" data-icon="mail-star" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="2.5" y="9.5" width="13.5" height="10.5" rx="2" style="fill: var(--i-fill, none)"/><path d="M3 10.5l6.25 4.75L15.5 10.5"/><path class="m" d="M18.5 2.34L19.58 4.86 22.28 5.1 20.24 6.84 20.84 9.48 18.5 8.1 16.16 9.48 16.76 6.84 14.72 5.1 17.42 4.86z"/></svg></span><span class="rl__title card__title">Willkommens-Mail</span><span class="rl__line card__text">«Willkommen, <span class="rl__name">Anna</span>!» kommt an.</span></li></ol>
 <span class="mscene mscene--runlog rl__live" data-scene="runlog" aria-hidden="true"><svg viewBox="-8 -8 120 124" data-mascot="2" data-emo="joy" class="mascot mascot--live" data-base="joy" focusable="false"><ellipse data-part="shadow" class="m-shadow" cx="50" cy="109" rx="23" ry="3.6" fill="#2B2A33" opacity=".13"/><g data-part="rig"><g data-part="legs"><path class="o" d="M41 92v12M59 92v12" fill="none" stroke="#2B2A33" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><path class="o" d="M36 105h9M55 105h9" fill="none" stroke="#2B2A33" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g><g data-part="body"><clipPath id="mb-live-joy-runlog"><path d="M50 17C55 17 82 40 82 66A32 32 0 0 1 18 66C18 40 45 17 50 17z"/></clipPath><path d="M50 17C55 17 82 40 82 66A32 32 0 0 1 18 66C18 40 45 17 50 17z" fill="#CFE3C2"/><g data-part="belly"><ellipse clip-path="url(#mb-live-joy-runlog)" cx="50" cy="109" rx="36" ry="26" fill="#EAF4E3"/></g><circle cx="30" cy="72" r="4.6" fill="#3F6B31" opacity=".22"/><circle cx="70" cy="72" r="4.6" fill="#3F6B31" opacity=".22"/><ellipse cx="36" cy="44" rx="8" ry="4.8" fill="#fff" opacity=".6" transform="rotate(-48 36 44)"/><path class="o" d="M50 17C55 17 82 40 82 66A32 32 0 0 1 18 66C18 40 45 17 50 17z" fill="none" stroke="#2B2A33" stroke-width="3.5" stroke-linejoin="round"/></g><g data-part="eyes"><path d="M33 63.5q6-8 12 0M55 63.5q6-8 12 0" fill="none" stroke="#2B2A33" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></g><g data-part="mouth"><path d="M42 76q8 13 16 0z" fill="#2B2A33" stroke="#2B2A33" stroke-width="1.6" stroke-linejoin="round"/><path d="M46 82q4 3 8 0q-4-2-8 0z" fill="#E8838F"/></g><g data-part="accessory"><path class="o" d="M50 18V6" fill="none" stroke="#2B2A33" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path class="o" d="M50-5.6l1.8 4.2 4.5.4-3.4 2.9 1 4.4L50 4l-3.9 2.3 1-4.4-3.4-2.9 4.5-.4z" fill="#F7DCC8" stroke="#2B2A33" stroke-width="2" stroke-linejoin="round"/><path class="o" d="M39 2l-5-3M61 2l5-3" fill="none" stroke="#2B2A33" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></g><g data-part="arms"><path class="o" d="M19 74q-9 -6 -6 -20" fill="none" stroke="#2B2A33" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><circle class="o" cx="13" cy="54" r="4.4" fill="#CFE3C2" stroke="#2B2A33" stroke-width="2.4"/><path class="o" d="M81 74q9 -6 6 -20" fill="none" stroke="#2B2A33" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><circle class="o" cx="87" cy="54" r="4.4" fill="#CFE3C2" stroke="#2B2A33" stroke-width="2.4"/></g></g></svg></span>

@@ -25,6 +25,7 @@
 /* The run-log without its start form: one column (stage above the protocol). */
 .rl--kauf { grid-template-columns: minmax(0, 1fr); }
 .rl--kauf .rl__stage, .rl--kauf .rl__protocol { grid-column: auto; grid-row: auto; }
+.rl--kauf .rl__stage { overflow-x: clip; }
 
 /* The run-log in its break states. */
 .rl--kauf .rl__fehlt, .rl--kauf .rl__kommt, .rl--kauf .rl__log .i[data-icon="cross"] { display: none; }
@@ -36,6 +37,9 @@
 .rl--kauf .rl__log.is-missing > span:first-of-type { color: var(--ink-soft); text-decoration: line-through; }
 .rl--kauf .rl__node.is-off { outline: 2px dashed var(--error); outline-offset: 2px; }
 .rl--kauf .rl__node.is-missing { opacity: 0.5; }
+/* R6: step icons in the run-log are real clickable buttons (44 px target, visible focus ring). */
+.rl--kauf .rl__nodebtn { width: 100%; height: 100%; min-width: var(--target); min-height: var(--target); padding: 0; border: 0; border-radius: inherit; background: transparent; color: inherit; display: grid; place-items: center; cursor: pointer; }
+.rl--kauf .rl__nodebtn:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
 /* A step that is off: the picture card of the intact run would contradict the break, so the scene folds away
    (Iva 18.11.2026: no empty hole); rail and protocol stay. It comes back with «Zurücksetzen». The summary
    is not green («done»). */
@@ -81,5 +85,14 @@
   .ek-grid { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); }
 }
 @media (max-width: 599.98px) {
-  .js .ek-switches { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* R6: fit «Die sechs Schritte eines Kaufs» (switches + run-log) cleanly in one 390x844 phone screen. */
+  .ek-tool { padding-block: var(--space-5); }
+  .ek-wrap { gap: var(--space-3); }
+  .ek-log { gap: var(--space-2); }
+  .js .ek-switches { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.35rem; }
+  .ek-switch { padding: 0.35rem 0.5rem; gap: 0.35rem; font-size: 0.875rem; }
+  .rl--kauf .rl__stage { padding: var(--space-3); gap: var(--space-2); }
+  .rl--kauf .rl__protocol { padding: var(--space-3); }
+  .rl--kauf .rl__logs { gap: 0.35rem; }
+  .rl--kauf .rl__log { font-size: 0.875rem; }
 }

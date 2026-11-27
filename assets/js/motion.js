@@ -3,7 +3,7 @@
 // there; reduced motion gets no handler at all (CSS shows every final state).
 // Stage 6d: the entrances are back as before Stage 6; no hover effects (no tilt, no magnet, no
 // letter wave: they blurred text and made the cursor jump on the cards).
-const WIDE = '(min-width: 768px)';
+const WIDE = '(min-width: 800px)';
 
 export function initMotion(gsap, ScrollTrigger, loadScript) {
   ScrollTrigger.config({ ignoreMobileResize: true });
@@ -22,7 +22,7 @@ export function initMotion(gsap, ScrollTrigger, loadScript) {
   }).catch(() => null));
 
   const mm = gsap.matchMedia();
-  mm.add({ wide: WIDE, narrow: '(max-width: 767.98px)', reduce: '(prefers-reduced-motion: reduce)' }, (c) => {
+  mm.add({ wide: WIDE, narrow: '(max-width: 799.98px)', reduce: '(prefers-reduced-motion: reduce)' }, (c) => {
     const { wide, reduce } = c.conditions;
     if (reduce) return undefined;
     dock(gsap, wide);

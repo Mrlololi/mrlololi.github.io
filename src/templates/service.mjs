@@ -11,8 +11,8 @@ import { contactForm } from './sections.mjs';
 
 export const packagesOf = (t) => Object.fromEntries(t.pricing.groups.flatMap((g) => g.items).map((it) => [it.id, it]));
 
-// «Focus phrase | mrlololi», or the focus phrase alone when the suffix would pass 60 characters.
-export const serviceTitle = (s) => (`${s.h1} | mrlololi`.length <= 60 ? `${s.h1} | mrlololi` : s.h1);
+// «Focus phrase | mrlololi», or explicit s.title when H1 would pass 60 characters.
+export const serviceTitle = (s) => (s.title || (`${s.h1} | mrlololi`.length <= 60 ? `${s.h1} | mrlololi` : s.h1));
 
 // Stage 6f: «Anfragen» leads to the form with the package preselected (assets/js/contact.js reads ?paket=).
 const ask = (t, it) => `${t.paths.home}?paket=${it.id}#contact`;

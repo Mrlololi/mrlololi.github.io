@@ -4,16 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light">
-<title>Website als One-Pager mit Leadpages oder Wix | mrlololi</title>
-<meta name="description" content="Website als One-Pager mit Leadpages, Wix oder eigenem HTML: responsiv, mit Terminbuchung, Domain und Ihren Rechtstexten eingebunden. Ab 990 €.">
+<title>Website als One-Pager: Leadpages, Wix, WordPress | mrlololi</title>
+<meta name="description" content="Website als One-Pager mit Leadpages, Wix, WordPress oder eigenem HTML: responsiv, mit Terminbuchung, Domain und Rechtstexten. Ab 990 €.">
 <link rel="canonical" href="https://mrlololi.com/website-one-pager/">
 <link rel="alternate" hreflang="de" href="https://mrlololi.com/website-one-pager/">
 <link rel="alternate" hreflang="en" href="https://mrlololi.com/en/one-page-website/">
 <link rel="alternate" hreflang="x-default" href="https://mrlololi.com/website-one-pager/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="mrlololi">
-<meta property="og:title" content="Website als One-Pager mit Leadpages oder Wix | mrlololi">
-<meta property="og:description" content="Website als One-Pager mit Leadpages, Wix oder eigenem HTML: responsiv, mit Terminbuchung, Domain und Ihren Rechtstexten eingebunden. Ab 990 €.">
+<meta property="og:title" content="Website als One-Pager: Leadpages, Wix, WordPress | mrlololi">
+<meta property="og:description" content="Website als One-Pager mit Leadpages, Wix, WordPress oder eigenem HTML: responsiv, mit Terminbuchung, Domain und Rechtstexten. Ab 990 €.">
 <meta property="og:url" content="https://mrlololi.com/website-one-pager/">
 <meta property="og:image" content="https://mrlololi.com/assets/og/de-website.png">
 <meta property="og:image:width" content="1200">
@@ -21,8 +21,8 @@
 <meta property="og:locale" content="de_AT">
 <meta property="og:locale:alternate" content="en_GB">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Website als One-Pager mit Leadpages oder Wix | mrlololi">
-<meta name="twitter:description" content="Website als One-Pager mit Leadpages, Wix oder eigenem HTML: responsiv, mit Terminbuchung, Domain und Ihren Rechtstexten eingebunden. Ab 990 €.">
+<meta name="twitter:title" content="Website als One-Pager: Leadpages, Wix, WordPress | mrlololi">
+<meta name="twitter:description" content="Website als One-Pager mit Leadpages, Wix, WordPress oder eigenem HTML: responsiv, mit Terminbuchung, Domain und Rechtstexten. Ab 990 €.">
 <meta name="twitter:image" content="https://mrlololi.com/assets/og/de-website.png">
 <meta name="theme-color" content="#F4C9D3">
 <link rel="icon" href="/assets/brand/favicon.ico" sizes="16x16 32x32 48x48">
@@ -396,8 +396,8 @@ padding: 0.3rem var(--space-4) 0.3rem 0.3rem;
 background: var(--sheet); border: 1px solid var(--line); border-radius: 999px; box-shadow: var(--shadow-soft);
 font-weight: 700; font-size: var(--step--1); line-height: 1.2;
 }
-.hero__chip picture { flex: none; }
-.hero__chip img { width: 2.75rem; height: 2.75rem; border-radius: 50%; object-fit: cover; }
+.hero__chip picture { flex: none; width: 2.75rem; height: 2.75rem; display: block; }
+.hero__chip img { width: 2.75rem; height: 2.75rem; aspect-ratio: 1 / 1; border-radius: 50%; object-fit: cover; display: block; }
 .hf { width: 100%; height: auto; overflow: visible; }
 .hf__wire { fill: none; stroke: var(--wire); stroke-width: 2.5; }
 .hf__pulse { fill: none; stroke: var(--blue-ink); stroke-width: 9; stroke-linecap: round; stroke-dasharray: 0.1 200; opacity: 0; }
@@ -623,7 +623,8 @@ html:not(.js) .brief__preview { display: none; }
 .contact__card a { color: #fff; }
 .contact__card :focus-visible { outline-color: #fff; }
 .contact__who { display: flex; align-items: flex-end; gap: var(--space-3); }
-.contact__who img { width: 4rem; height: 4rem; border-radius: 50%; object-fit: cover; border: 2px solid var(--pink); }
+.contact__who picture { flex: none; width: 4rem; height: 4rem; display: block; }
+.contact__who img { width: 4rem; height: 4rem; aspect-ratio: 1 / 1; border-radius: 50%; object-fit: cover; border: 2px solid var(--pink); display: block; }
 .contact__bubble { position: relative; padding: var(--space-3) var(--space-4); border-radius: 18px 18px 18px 4px; background: #fff; color: var(--ink); font-family: var(--font-accent); font-style: italic; font-size: var(--step-1); min-height: 2.6em; }
 .contact__reply { font-weight: 700; }
 .contact__time-row { font-size: var(--step--1); color: #D8D3E6; }
@@ -1691,6 +1692,7 @@ html:not(.js) .motion-toggle { display: none !important; }
 .proj__link--try .browser__view img { width: 100%; height: 100%; aspect-ratio: auto; object-fit: cover; object-position: top left; border: 0; border-radius: 0; display: block; }
 .proj__link--try .proj__name { font-size: var(--step-1); line-height: 1.28; }
 .projects__all--below { margin-top: var(--space-4); }
+@media (max-width: 799.98px) { .path { display: none; } }
 .faq__side, .faq__list, .faq__chat { min-width: 0; }
 .faq summary, .faq__a, .faq__chat .bubble { overflow-wrap: anywhere; hyphens: auto; }
 @media (min-width: 760px) {
@@ -1721,7 +1723,7 @@ html:not(.js) .faq__cats { display: none; }
 <script type="module">requestAnimationFrame(()=>requestAnimationFrame(()=>import('/assets/js/main.js')))</script>
 <link rel="modulepreload" href="/assets/js/kit/motion.js" fetchpriority="low">
 <link rel="modulepreload" href="/assets/js/kit/enter.js" fetchpriority="low">
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"ProfessionalService","@id":"https://mrlololi.com/#business","name":"mrlololi","alternateName":"Iva Tsatskrialashvili","description":"Ich teste Ihren Launch, bevor es Ihre Kundschaft tut. Technik hinter Online-Kursen: ActiveCampaign, Zapier, Zahlungen. Aus Graz. Iva Tsatskrialashvili (er/ihm).","url":"https://mrlololi.com/","email":"hello@mrlololi.com","image":"https://mrlololi.com/og-image-de.png","logo":"https://mrlololi.com/assets/brand/apple-touch-icon.png","sameAs":["https://www.linkedin.com/in/tsatskrialashvili-iva","https://www.malt.de/profile/ivatsatskrialashvili"],"areaServed":["AT","DE","CH","IT"],"address":{"@type":"PostalAddress","streetAddress":"Herbersteinstraße 4/4181","addressLocality":"Graz","postalCode":"8020","addressCountry":"AT"},"founder":{"@id":"https://mrlololi.com/#iva"},"priceRange":"€€"},{"@type":"Person","@id":"https://mrlololi.com/#iva","name":"Iva Tsatskrialashvili","alternateName":"mrlololi","gender":"Male","pronouns":"er/ihm","jobTitle":"Techniker für Marketing-Automation","description":"Iva Tsatskrialashvili (er/ihm), online als mrlololi, ist selbstständiger Techniker für Marketing-Automation in Graz. Er richtet für Anbieterinnen und Anbieter von Online-Kursen im DACH-Raum die Technik hinter dem Launch ein und testet sie, bevor die Kundschaft kommt.","knowsAbout":["ActiveCampaign","Zapier","Make","Leadpages","Stripe","E-Mail-Zustellbarkeit","Marketing-Automation"],"address":{"@type":"PostalAddress","addressLocality":"Graz","addressCountry":"AT"},"image":"https://mrlololi.com/assets/img/about-680.jpg","url":"https://mrlololi.com/","sameAs":["https://www.linkedin.com/in/tsatskrialashvili-iva","https://www.malt.de/profile/ivatsatskrialashvili","https://github.com/Mrlololi","https://www.instagram.com/mrlololi/"]},{"@type":"WebSite","@id":"https://mrlololi.com/#website","url":"https://mrlololi.com/","name":"mrlololi","inLanguage":"de","publisher":{"@id":"https://mrlololi.com/#business"}},{"@type":"Service","@id":"https://mrlololi.com/website-one-pager/#service","name":"Website als One-Pager mit Leadpages oder Wix","serviceType":"Website als One-Pager","description":"Website als One-Pager mit Leadpages, Wix oder eigenem HTML: responsiv, mit Terminbuchung, Domain und Ihren Rechtstexten eingebunden. Ab 990 €.","url":"https://mrlololi.com/website-one-pager/","inLanguage":"de","provider":{"@id":"https://mrlololi.com/#business"},"areaServed":[{"@type":"Country","name":"AT"},{"@type":"Country","name":"DE"},{"@type":"Country","name":"CH"}],"offers":{"@type":"Offer","name":"Website als One-Pager","url":"https://mrlololi.com/website-one-pager/","priceCurrency":"EUR","priceSpecification":{"@type":"PriceSpecification","minPrice":990,"priceCurrency":"EUR"}}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Startseite","item":"https://mrlololi.com/"},{"@type":"ListItem","position":2,"name":"Leistungen","item":"https://mrlololi.com/#services"},{"@type":"ListItem","position":3,"name":"Website als One-Pager","item":"https://mrlololi.com/website-one-pager/"}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"ProfessionalService","@id":"https://mrlololi.com/#business","name":"mrlololi","alternateName":"Iva Tsatskrialashvili","description":"Ich teste Ihren Launch, bevor es Ihre Kundschaft tut. Technik hinter Online-Kursen: ActiveCampaign, Zapier, Zahlungen. Aus Graz. Iva Tsatskrialashvili (er/ihm).","url":"https://mrlololi.com/","email":"hello@mrlololi.com","image":"https://mrlololi.com/og-image-de.png","logo":"https://mrlololi.com/assets/brand/apple-touch-icon.png","sameAs":["https://www.linkedin.com/in/tsatskrialashvili-iva","https://www.malt.de/profile/ivatsatskrialashvili"],"areaServed":["AT","DE","CH","IT"],"address":{"@type":"PostalAddress","streetAddress":"Herbersteinstraße 4/4181","addressLocality":"Graz","postalCode":"8020","addressCountry":"AT"},"founder":{"@id":"https://mrlololi.com/#iva"},"priceRange":"€€"},{"@type":"Person","@id":"https://mrlololi.com/#iva","name":"Iva Tsatskrialashvili","alternateName":"mrlololi","gender":"Male","pronouns":"er/ihm","jobTitle":"Techniker für Marketing-Automation","description":"Iva Tsatskrialashvili (er/ihm), online als mrlololi, ist selbstständiger Techniker für Marketing-Automation in Graz. Er richtet für Anbieterinnen und Anbieter von Online-Kursen im DACH-Raum die Technik hinter dem Launch ein und testet sie, bevor die Kundschaft kommt.","knowsAbout":["ActiveCampaign","Zapier","Make","Leadpages","Stripe","E-Mail-Zustellbarkeit","Marketing-Automation"],"address":{"@type":"PostalAddress","addressLocality":"Graz","addressCountry":"AT"},"image":"https://mrlololi.com/assets/img/about-680.jpg","url":"https://mrlololi.com/","sameAs":["https://www.linkedin.com/in/tsatskrialashvili-iva","https://www.malt.de/profile/ivatsatskrialashvili","https://github.com/Mrlololi","https://www.instagram.com/mrlololi/"]},{"@type":"WebSite","@id":"https://mrlololi.com/#website","url":"https://mrlololi.com/","name":"mrlololi","inLanguage":"de","publisher":{"@id":"https://mrlololi.com/#business"}},{"@type":"Service","@id":"https://mrlololi.com/website-one-pager/#service","name":"Website als One-Pager mit Leadpages, Wix, WordPress oder eigenem HTML","serviceType":"Website als One-Pager","description":"Website als One-Pager mit Leadpages, Wix, WordPress oder eigenem HTML: responsiv, mit Terminbuchung, Domain und Rechtstexten. Ab 990 €.","url":"https://mrlololi.com/website-one-pager/","inLanguage":"de","provider":{"@id":"https://mrlololi.com/#business"},"areaServed":[{"@type":"Country","name":"AT"},{"@type":"Country","name":"DE"},{"@type":"Country","name":"CH"}],"offers":{"@type":"Offer","name":"Website als One-Pager","url":"https://mrlololi.com/website-one-pager/","priceCurrency":"EUR","priceSpecification":{"@type":"PriceSpecification","minPrice":990,"priceCurrency":"EUR"}}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Startseite","item":"https://mrlololi.com/"},{"@type":"ListItem","position":2,"name":"Leistungen","item":"https://mrlololi.com/#services"},{"@type":"ListItem","position":3,"name":"Website als One-Pager","item":"https://mrlololi.com/website-one-pager/"}]}]}</script>
 </head>
 <body class="page-service">
 <a class="skip" href="#main">Zum Inhalt springen</a>
@@ -1752,8 +1754,8 @@ html:not(.js) .faq__cats { display: none; }
 <li><span class="crumbs__sep" aria-hidden="true">›</span><span aria-current="page">Website als One-Pager</span></li>
 </ol>
 </nav>
-<h1>Website als <span class="nowrap">One-Pager</span> mit Leadpages oder Wix</h1>
-<p class="lead">Ein One-Pager mit Leadpages, Wix oder eigenem HTML, fertig veröffentlicht.</p>
+<h1>Website als <span class="nowrap">One-Pager</span> mit Leadpages, Wix, WordPress oder eigenem HTML</h1>
+<p class="lead">Ein One-Pager mit Leadpages, Wix, WordPress oder eigenem HTML, fertig veröffentlicht.</p>
 <div class="svc-prices">
 <p class="svc-price"><span class="label label--pist">Website als One-Pager</span> <span class="svc-price__value">ab 990 €</span></p>
 </div>

@@ -60,7 +60,7 @@ export function einKaufPage(t, config = {}) {
 <ol class="ek-switches" role="list">
 ${switches}
 </ol>
-${runlog(t, { variant: 'kauf', ids: KAUF_IDS, kauf: E })}
+${runlog(t, { variant: 'kauf', ids: KAUF_IDS, kauf: { ...E, titles: kauf.map((k) => k.titel) } })}
 </div>
 <div class="ek-side">
 ${mascotScene('kauf', [[0, 'think']], 'ek-logik', 'kauf')}

@@ -243,7 +243,19 @@ export async function stage7bGates(browser, base, { quick = false } = {}) {
       const first = await page.evaluate(() => [...document.querySelectorAll('[data-enter]')].filter((el) => el.getBoundingClientRect().top < innerHeight).map((el) => el.tagName));
       // Slow down, jump to the bottom, up again, a jump to the contact form.
       const h = await page.evaluate(() => document.documentElement.scrollHeight - innerHeight);
-      for (let y = 0; y <= h; y += 300) { await page.evaluate((v) => scrollTo(0, v), y); await page.waitForTimeout(250); }
+      const lowOpacity = [];
+      for (let y = 0; y <= h; y += 300) {
+        await page.evaluate((v) => scrollTo(0, v), y);
+        await page.waitForTimeout(250);
+        if (w < 800) {
+          const faded = await page.evaluate(() => [...document.querySelectorAll('[data-enter], [data-enter="stagger"] > *')].filter((el) => {
+            const b = el.getBoundingClientRect();
+            return b.height > 0 && b.bottom > 0 && b.top < innerHeight && Number(getComputedStyle(el).opacity) < 0.99;
+          }).map((el) => el.tagName + '.' + String(el.className).split(' ')[0]));
+          if (faded.length) lowOpacity.push(...faded);
+        }
+      }
+      if (w < 800) check(`entrances, phone (${w}px): zero opacity < 1 while scrolling: ${p}`, lowOpacity.length === 0, [...new Set(lowOpacity)].slice(0, 5).join(' '));
       await page.evaluate(() => scrollTo(0, 0)); await page.waitForTimeout(600);
       await page.evaluate(() => scrollTo(0, document.documentElement.scrollHeight)); await page.waitForTimeout(1500);
       for (let y = h; y >= 0; y -= 600) { await page.evaluate((v) => scrollTo(0, v), y); await page.waitForTimeout(150); }
